@@ -1,5 +1,7 @@
 package es.deusto.eleutradia.gui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.Particular;
@@ -31,40 +34,57 @@ public class VentanaLogin extends JFrame {
 	
 	public VentanaLogin() {
 		
-		// --- Configuracion del JFrame ---
+		configurarVentana();
+        crearYOrganizarPaneles();
+        registrarActionListeners();
+        
+        // Importante: hacer visible la ventana al final
+        this.setVisible(true);
+	}
+	
+	private void configurarVentana() {
+		
 		this.setTitle("Login/Registro");
 		this.setSize(400,250);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		// --- Creacion componentes ---
-		JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
-		panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+	}
+	
+	private void crearYOrganizarPaneles() {
 		
-		// Fila 1: Email
-		labelEmail = new JLabel("Email:");
-		panel.add(labelEmail);
-		
-		textoEmail = new JTextField(20);
-		panel.add(textoEmail);
-		
-		//Fila 2: Password
-		labelPassword = new JLabel("Password:");
-		panel.add(labelPassword);
-		
-		textoPassword = new JPasswordField(20);
-		panel.add(textoPassword);
-		
-		//Fila 3: Botones
+		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		botonLogin = new JButton("Login");
-		panel.add(botonLogin);
-		
+		panelBotones.add(botonLogin);
 		botonRegister = new JButton("Register");
-		panel.add(botonRegister);
+		panelBotones.add(botonRegister);
 		
-		// Añadir panel al JFrame
-		this.add(panel);
+		JPanel panelFormulario = new JPanel(new BorderLayout(10, 10));
+		panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+		
+		JPanel panelEtiquetas = new JPanel(new GridLayout(2, 1, 5,5));
+		labelEmail = new JLabel("Email:");
+		labelEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPassword = new JLabel("Password:");
+		labelPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelEtiquetas.add(labelEmail);
+		panelEtiquetas.add(labelPassword);
+		
+		JPanel panelCampos = new JPanel(new GridLayout(2, 1, 5, 5));
+		textoEmail = new JTextField(20);
+		panelCampos.add(textoEmail);
+		textoPassword = new JPasswordField(20);
+		panelCampos.add(textoPassword);
+		
+		panelFormulario.add(panelEtiquetas, BorderLayout.WEST);
+		panelFormulario.add(panelCampos, BorderLayout.CENTER);
+
+		this.getContentPane().add(panelFormulario, BorderLayout.CENTER);
+		this.getContentPane().add(panelBotones, BorderLayout.SOUTH);
+	}
+	
+	private void registrarActionListeners() {
 		
 		botonLogin.addActionListener(new ActionListener() {
 			
