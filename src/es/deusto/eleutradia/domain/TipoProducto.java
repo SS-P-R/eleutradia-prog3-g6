@@ -26,4 +26,9 @@ public enum TipoProducto {
 	private TipoProducto(ClaseActivo claseActivo) {
 		this.claseActivo = claseActivo;
 	}
+
+	public ClaseActivo getClaseActivo() {
+		return claseActivo;
+	}
+	
 }
