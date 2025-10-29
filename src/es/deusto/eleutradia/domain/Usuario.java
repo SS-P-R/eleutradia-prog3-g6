@@ -1,6 +1,7 @@
 package es.deusto.eleutradia.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Usuario {
     private String email;
@@ -8,7 +9,7 @@ public abstract class Usuario {
     private String direccion;
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
-    private ArrayList<CarteraVirtual> carterasVirtuales;
+    private List<CarteraVirtual> carterasVirtuales = new ArrayList<>();
     
 	public Usuario() {
 		this.email = "";
@@ -65,7 +66,7 @@ public abstract class Usuario {
 		this.perfilFinanciero = perfilFinanciero;
 	}
 
-	public ArrayList<CarteraVirtual> getCarterasVirtuales() {
+	public List<CarteraVirtual> getCarterasVirtuales() {
 		return carterasVirtuales;
 	}
 
