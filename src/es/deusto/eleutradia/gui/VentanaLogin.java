@@ -8,9 +8,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import es.deusto.eleutradia.domain.Usuario;
 
 public class VentanaLogin extends JFrame {
 
@@ -63,11 +66,25 @@ public class VentanaLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// ---Implementar logica inicio de sesion---
+				// --- Implementar logica inicio de sesion ---
+				String email = textoEmail.getText();
+				String password = new String(textoPassword.getPassword());
 				
+				Usuario usuario = null;
+				if ("user@test.com".equals(email) && "1234".equals(password)) {
+					usuario = new Usuario(1, "Usuario de Prueba", email);
+				}
 				
-				// Abrir la ventana principal
-				new VentanaPrincipal();
+				if (usuario != null) {
+					new VentanaPrincipal(usuario);
+					dispose(); // Cerrar la ventana de login
+				}
+				else {
+					JOptionPane.showMessageDialog(VentanaLogin.this,
+													"Email o contraseña incorrectos",
+													"Error de Login",
+													JOptionPane.ERROR_MESSAGE);
+				}
 				
 			}
 		});
