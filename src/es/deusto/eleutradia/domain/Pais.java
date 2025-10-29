@@ -5,8 +5,13 @@ public class Pais {
 	private String nombre;
 	private RegionGeografica region;
 	
+	public Pais() {
+		this.codigo = 0;
+		this.nombre = "";
+		this.region = null;
+	}
+
 	public Pais(int codigo, String nombre, RegionGeografica region) {
-		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.region = region;
