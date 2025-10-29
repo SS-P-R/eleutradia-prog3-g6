@@ -1,13 +1,19 @@
 package es.deusto.eleutradia.domain;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import java.util.ArrayList;
 
 public class Usuario {
 	
 	// --- Atributos ---
-	private String nombre, email, password;
+	private String nombre, DNI, telefono, direccion, email, password;
+	private LocalDate fechaNacimiento;
 	private NivelConocimiento nivelConocimiento;
 	private ArrayList<TipoProducto> listaInteres;
+	private PerfilFinanciero perfilFinanciero;
+    private ArrayList<CarteraVirtual> carterasVirtuales;
 	
 	// --- Constructores ---
 	public Usuario() {
