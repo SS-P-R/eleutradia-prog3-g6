@@ -10,7 +10,7 @@ public enum TipoProducto {
 	
 	// --- Activos de RV ---
 	ACCION(ClaseActivo.RENTA_VARIABLE),
-	FONDO_INVERSION(ClaseActivo.RENTA_VARIABLE),S
+	FONDO_INVERSION(ClaseActivo.RENTA_VARIABLE),
 	PLAN_PENSIONES(ClaseActivo.RENTA_VARIABLE),
 	ETF_RV(ClaseActivo.RENTA_VARIABLE),
 	
