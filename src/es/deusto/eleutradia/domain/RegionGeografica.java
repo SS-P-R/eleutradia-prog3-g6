@@ -1,30 +1,28 @@
 package es.deusto.eleutradia.domain;
 
-public class RegionGeografica {
-	private final int codigo;
-	private String nombre;
-	
-	public RegionGeografica(int codigo, String nombre) {
-		super();
-		this.codigo = codigo;
-		this.nombre = nombre;
-	}
+public enum RegionGeografica {
+	AMERICA_NORTE(1, "América del Norte"),
+    AMERICA_SUR(2, "América Latina"),
+    EUROPA_OCCIDENTAL(3, "Europa Occidental"),
+    EUROPA_ORIENTAL(4, "Europa Oriental"),
+    ASIA_PACIFICO(5, "Asia-Pacífico"),
+    MEDIO_ORIENTE(6, "Medio Oriente"),
+    AFRICA(7, "África"),
+	MUNDO(8, "Mundo"); // Para productos de cotizacion global
 
-	public String getNombre() {
-		return nombre;
-	}
+    private final int id;
+    private final String nombre;
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	public int getCodigo() {
-		return codigo;
-	}
-	
-	@Override
-	public String toString() {
-		return "RegionGeografica [codigo=" + codigo + ", nombre=" + nombre + "]";
-	}	
-	
+    private RegionGeografica(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

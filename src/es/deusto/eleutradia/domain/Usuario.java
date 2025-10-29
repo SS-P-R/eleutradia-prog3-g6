@@ -10,6 +10,13 @@ public abstract class Usuario {
     private PerfilFinanciero perfilFinanciero;
     private ArrayList<CarteraVirtual> carterasVirtuales;
     
+	public Usuario() {
+		this.email = "";
+		this.telefono = "";
+		this.direccion = "";
+		this.domicilioFiscal = new Pais();
+	}
+
 	public Usuario(String email, String telefono, String direccion, Pais domicilioFiscal) {
 		super();
 		this.email = email;
