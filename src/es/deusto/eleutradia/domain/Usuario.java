@@ -7,8 +7,6 @@ public abstract class Usuario {
     private String telefono;
     private String direccion;
     private Pais domicilioFiscal;
-    
-    // Relaciones
     private PerfilFinanciero perfilFinanciero;
     private ArrayList<CarteraVirtual> carterasVirtuales;
     

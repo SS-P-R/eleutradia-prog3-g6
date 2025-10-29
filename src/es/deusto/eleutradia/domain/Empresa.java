@@ -1,0 +1,30 @@
+package es.deusto.eleutradia.domain;
+
+public class Empresa extends Usuario {
+	private final String idEmpresa;
+	private String nombre;
+	
+	public Empresa(String idEmpresa, String nombre, String email, String telefono, String direccion, Pais domicilioFiscal) {
+		super(email, telefono, direccion, domicilioFiscal);
+		this.idEmpresa = idEmpresa;
+		this.nombre = nombre;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	@Override
+	public String toString() {
+		return "Empresa [idEmpresa=" + idEmpresa + ", nombre=" + nombre + "]";
+	}
+	
+}
