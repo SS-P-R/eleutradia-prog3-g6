@@ -3,14 +3,22 @@ package es.deusto.eleutradia.gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import es.deusto.eleutradia.domain.Pais;
+import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.domain.RegionGeografica;
+import es.deusto.eleutradia.domain.Usuario;
 
 public class VentanaLogin extends JFrame {
 
@@ -64,14 +72,27 @@ public class VentanaLogin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				// ---Implementar logica inicio de sesion---
-				
-				
-				// Abrir la ventana principal
-				new VentanaPrincipal();
-				
-			}
+                String email = textoEmail.getText();
+                String password = new String(textoPassword.getPassword());
+
+                Particular usuario = null;
+                if ("user@test.com".equals(email) && "1234".equals(password)) {
+                	usuario = new Particular("79123456", "Usuario Prueba", LocalDate.of(2000, 1, 1), new Pais(1, "Suiza", new RegionGeografica(1, "Europa")), email, "689123456", "Calle Prueba", new Pais(1, "Suiza", new RegionGeografica(1, "Europa")));
+                }
+
+                if (usuario != null) {
+                    new VentanaPrincipal(usuario);
+                    dispose(); // Cerrar la ventana de login
+                } else {
+                    JOptionPane.showMessageDialog(VentanaLogin.this, 
+                                                  "Email o contraseña incorrectos.", 
+                                                  "Error de Login", 
+                                                  JOptionPane.ERROR_MESSAGE);
+                }
+            }
 		});
-		
+			
+	
 		
 		
 	}
