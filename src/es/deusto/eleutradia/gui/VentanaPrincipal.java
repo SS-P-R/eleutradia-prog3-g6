@@ -12,6 +12,8 @@ public class VentanaPrincipal extends JFrame {
 	
 	public VentanaPrincipal(Usuario usuario) {
 		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		this.setVisible(true);
 	}
 	

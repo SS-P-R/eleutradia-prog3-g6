@@ -13,7 +13,6 @@ public class MainEleutradia {
 			
 			@Override
 			public void run() {
-				
 				// Crear una instancia de VentanaLogin
 				new VentanaLogin().setVisible(true);
 				
