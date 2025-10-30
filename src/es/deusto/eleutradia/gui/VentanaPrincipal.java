@@ -1,6 +1,7 @@
 package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -51,6 +52,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JPanel panelNavegacion = new JPanel();
 		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
+		panelNavegacion.setBackground(Color.BLACK);
 		
 		JLabel espacio = new JLabel();
 		espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
@@ -73,8 +75,7 @@ public class VentanaPrincipal extends JFrame {
         panelDashboard = new JPanel();
         panelDashboard.add(new JLabel("Aquí irá el Dashboard")); 
 
-        panelBusqueda = new JPanel();
-        panelBusqueda.add(new JLabel("Aquí irá el Módulo de Búsqueda")); 
+        panelBusqueda = new PanelBusqueda();
 
         panelPortfolio = new JPanel();
         panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
@@ -139,6 +140,7 @@ public class VentanaPrincipal extends JFrame {
         
         boton.setIcon(new ImageIcon(rutaIcono));
         
+        boton.setForeground(Color.GRAY);
         boton.setVerticalTextPosition(SwingConstants.BOTTOM); 
         boton.setHorizontalTextPosition(SwingConstants.CENTER); 
         

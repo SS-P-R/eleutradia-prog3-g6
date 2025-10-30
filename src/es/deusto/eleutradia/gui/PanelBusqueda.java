@@ -25,6 +25,7 @@ public class PanelBusqueda extends JPanel {
 		
 		JPanel panelBusqueda = new JPanel(new BorderLayout(5, 5));
 		
+		this.add(new JLabel("Prueba ventana busqueda"));
 		
 	}
 
