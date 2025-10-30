@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,11 +55,11 @@ public class VentanaPrincipal extends JFrame {
 		
 		JLabel espacio = new JLabel();
 		espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-		botonDashboard = new JButton("Dashboard");
-		botonBusqueda = new JButton("Búsqueda");
-		botonPortfolio = new JButton("Portfolio");
-		botonAprendizaje = new JButton("Aprendizaje");
-		botonPerfil = new JButton("Mi perfil");
+		botonDashboard = crearBotonNavegacion("Dashboard", "/imagenes/casaNegro.png");
+		botonBusqueda = crearBotonNavegacion("Búsqueda", "/imagenes/busquedaNegro.png");
+		botonPortfolio = crearBotonNavegacion("Portfolio", "/imagenes/carteraNegro.png");
+		botonAprendizaje = crearBotonNavegacion("Aprendizaje", "/imagenes/librosNegro.png");
+		botonPerfil = crearBotonNavegacion("Mi perfil", "/imagenes/perfilNegro.png");
 		
 		panelNavegacion.add(espacio);
 		panelNavegacion.add(botonDashboard);
@@ -126,5 +127,33 @@ public class VentanaPrincipal extends JFrame {
         
 		this.setVisible(true);
 	}
+	
+	private JButton crearBotonNavegacion(String texto, String rutaIcono) {
+        JButton boton = new JButton(texto);
+        
+        // 1. Cargar el Icono
+        try {
+            ImageIcon icono = new ImageIcon(getClass().getResource(rutaIcono));
+            boton.setIcon(icono);
+        } catch (Exception e) {
+            // Si el icono no se encuentra, el botón se mostrará solo con texto
+            System.err.println("Error al cargar icono: " + rutaIcono);
+        }
+        
+        boton.setIcon(new ImageIcon(rutaIcono));
+        
+        // 2. Configurar la Posición del Texto (¡Lo que estabas pidiendo!)
+        boton.setVerticalTextPosition(SwingConstants.BOTTOM); 
+        boton.setHorizontalTextPosition(SwingConstants.CENTER); 
+        
+        // Opcional: Estilo de botón para menú (para que no parezca un botón 3D estándar)
+        // Puedes ajustar esto según tu diseño
+        boton.setBorderPainted(false);
+        boton.setContentAreaFilled(false);
+        boton.setFocusPainted(false);
+        boton.setOpaque(false); // Puede ser útil si el panel de navegación tiene color
+        
+        return boton;
+    }
 	
 }
