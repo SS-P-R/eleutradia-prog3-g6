@@ -81,7 +81,7 @@ public abstract class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [email=" + email + ", telefono=" + telefono + ", direccion=" + direccion + ", domicilioFiscal="
-				+ domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero + ", carteras=" + carteras + "]";
+				+ domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero.getId() + ", carteras=" + carteras + "]";
 	}
     
 }

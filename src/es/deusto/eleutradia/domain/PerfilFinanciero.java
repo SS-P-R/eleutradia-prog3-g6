@@ -7,36 +7,41 @@ import java.util.List;
 public class PerfilFinanciero {
 	private static int contador = 1;
 	private final int id;
-	private double patrimonio;
-	private int horizonte;
+	private Usuario usuario;
 	private PerfilRiesgo perfilRiesgo;
+	private int horizonte; // Tiempo previsto de manteción del capital
 	private NivelConocimiento nivel;
 	private List<TipoProducto> tiposProducto;
 	
-	public PerfilFinanciero(double patrimonio, PerfilRiesgo perfilRiesgo, int horizonte,
+	public PerfilFinanciero(Usuario usuario, PerfilRiesgo perfilRiesgo, int horizonte,
 							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
         this.id = contador++; // Incremento automático
-        this.patrimonio = patrimonio;
+        this.usuario = usuario;
         this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
         this.nivel = nivel;
-        this.tiposProducto = tiposProducto;
+        if (tiposProducto != null) {
+        	this.tiposProducto = new ArrayList<>(tiposProducto);
+        } else {
+        	this.tiposProducto = new ArrayList<>();
+        }
     }
 
 	public PerfilFinanciero() {
 		this.id = contador++;
+		this.usuario = null;
+		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
+		this.horizonte = 0;
+		this.nivel = NivelConocimiento.PRINCIPIANTE;
 		this.tiposProducto = new ArrayList<>();
 	}
 
-	public double getPatrimonio() {
-		return patrimonio;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setPatrimonio(double patrimonio) {
-		if (patrimonio < 0) {
-            throw new IllegalArgumentException("El patrimonio no puede ser negativo");
-        }
-		this.patrimonio = patrimonio;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public PerfilRiesgo getPerfilRiesgo() {
@@ -71,17 +76,53 @@ public class PerfilFinanciero {
 		return Collections.unmodifiableList(tiposProducto);
 	}
 
-	public void setTiposProducto(List<TipoProducto> tiposProducto) {
-		this.tiposProducto = tiposProducto;
+	public void agregarTipoProducto(TipoProducto tipo) {
+	    if (tipo != null && !tiposProducto.contains(tipo)) {
+	        tiposProducto.add(tipo);
+	    }
+	}
+
+	public void eliminarTipoProducto(TipoProducto tipo) {
+	    tiposProducto.remove(tipo);
 	}
 
 	public int getId() {
 		return id;
 	}
 
+	public double calcularPatrimonioLiquido() {
+		Usuario usuario = this.getUsuario();
+	    if (usuario == null) return 0.0;
+	    double total = 0.0;
+	    for (Cartera cartera : usuario.getCarteras()) {
+	        total += cartera.getSaldo();
+	    }
+	    return total;
+	}
+	
+	public double calcularPatrimonioInvertido() {
+		Usuario usuario = this.getUsuario();
+	    if (usuario == null) return 0.0;
+	    double total = 0.0;
+	    for (Cartera cartera : usuario.getCarteras()) {
+	        total += cartera.calcularValorInversiones();
+	    }
+	    return total;
+	}
+	
+	public double calcularPatrimonioTotal() {
+		Usuario usuario = this.getUsuario();
+	    if (usuario == null) return 0.0;
+	    double total = 0.0;
+	    for (Cartera cartera : usuario.getCarteras()) {
+	        total += cartera.calcularPatrimonio();
+	    }
+	    return total;
+	}
+	
 	@Override
 	public String toString() {
-		return "PerfilFinanciero [id=" + id + ", patrimonio=" + patrimonio + ", perfilRiesgo=" + perfilRiesgo +
+		return "PerfilFinanciero [id=" + id + ", usuario" + usuario + ", perfilRiesgo=" + perfilRiesgo +
 				", horizonte=" + horizonte + ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
 	}
 	

@@ -6,20 +6,20 @@ public class Operacion {
 	private double cantidad;
 	private ProductoFinanciero prodFinanciero;
 	private LocalDate fechaOp;
-	private boolean esCompra; // true = Compra, false = Venta
+	private boolean tipoOp; // true = Compra, false = Venta
 	
 	public Operacion() {
 		this.cantidad = 0.0;
 		this.prodFinanciero = null;
 		this.fechaOp = LocalDate.now();
-		this.esCompra = true;
+		this.tipoOp = true;
 	}
 
-	public Operacion(double cantidad, ProductoFinanciero prodFinanciero, LocalDate fechaOp, boolean esCompra) {
+	public Operacion(double cantidad, ProductoFinanciero prodFinanciero, LocalDate fechaOp, boolean tipoOp) {
 		this.cantidad = cantidad;
 		this.prodFinanciero = prodFinanciero;
 		this.fechaOp = fechaOp;
-		this.esCompra = esCompra;
+		this.tipoOp = tipoOp;
 	}
 
 	public double getCantidad() {
@@ -46,17 +46,17 @@ public class Operacion {
 		this.fechaOp = fechaOp;
 	}
 
-	public boolean isTipoOp() {
-		return esCompra;
+	public boolean getTipoOp() {
+		return tipoOp;
 	}
 
 	public void setTipoOp(boolean tipoOp) {
-		this.esCompra = tipoOp;
+		this.tipoOp = tipoOp;
 	}
 
 	@Override
 	public String toString() {
 		return "Operacion [cantidad=" + cantidad + ", prodFinanciero=" + prodFinanciero + ", fechaOp=" + fechaOp
-				+ ", tipoOp=" + (esCompra ? "COMPRA" : "VENTA") + "]";
+				+ ", tipoOp=" + (tipoOp ? "COMPRA" : "VENTA") + "]";
 	}
 }

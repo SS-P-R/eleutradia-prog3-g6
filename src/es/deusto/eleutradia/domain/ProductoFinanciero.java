@@ -9,9 +9,10 @@ import java.util.Map;
 public class ProductoFinanciero {
 	private final int codigo;
 	private String nombre;
-	private YearMonth plazo;
+	private YearMonth plazo; // En caso de que lo haya (bonos)
 	private Map<PlazoRentabilidad, BigDecimal> rentabilidades;
-	private BigDecimal valorActual;
+	private double valorUnitario;
+	private double valorActual;
 	private TipoProducto tipoProducto;
 	private RegionGeografica regionGeografica;
 	private PeriodicidadPago perPago;
@@ -20,9 +21,10 @@ public class ProductoFinanciero {
 	public ProductoFinanciero() {
 		this.codigo = 0;
 	    this.nombre = "";
-	    this.plazo = YearMonth.now();
+	    this.plazo = null;
 	    this.rentabilidades = new EnumMap<>(PlazoRentabilidad.class);
-	    this.valorActual = BigDecimal.ZERO;
+	    this.valorUnitario = 0.0;
+	    this.valorActual = 0.0;
 	    this.tipoProducto = TipoProducto.ACCION;
 	    this.regionGeografica = RegionGeografica.MUNDO;
 	    this.perPago = PeriodicidadPago.MENSUAL;
@@ -30,12 +32,13 @@ public class ProductoFinanciero {
 	}
 
 	public ProductoFinanciero(int codigo, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
-			BigDecimal valorActual, TipoProducto tipoProducto,
+			double valorUnitario, double valorActual, TipoProducto tipoProducto,
 			RegionGeografica regionGeografica, PeriodicidadPago perPago, Divisa divisa) {
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.plazo = plazo;
 		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
+		this.valorUnitario = valorUnitario;
 		this.valorActual = valorActual;
 		this.tipoProducto = tipoProducto;
 		this.regionGeografica = regionGeografica;
@@ -67,11 +70,19 @@ public class ProductoFinanciero {
 		this.rentabilidades = rentabilidades;
 	}
 
-	public BigDecimal getValorActual() {
+	public double getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(double valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+	
+	public double getValorActual() {
 		return valorActual;
 	}
 
-	public void setValorActual(BigDecimal valorActual) {
+	public void setValorActual(double valorActual) {
 		this.valorActual = valorActual;
 	}
 
@@ -114,8 +125,9 @@ public class ProductoFinanciero {
 	@Override
 	public String toString() {
 		return "ProductoFinanciero [codigo=" + codigo + ", nombre=" + nombre + ", plazo=" + plazo + ", rentabilidades="
-				+ rentabilidades + ", valorActual=" + valorActual + ", tipoProducto=" + tipoProducto
-				+ ", regionGeografica=" + regionGeografica + ", perPago=" + perPago + ", divisa=" + divisa + "]";
+			+ rentabilidades + ", valorUnitario=" + valorUnitario + ", valorActual=" + valorActual
+			+ ", tipoProducto=" + tipoProducto + ", regionGeografica=" + regionGeografica
+			+ ", perPago=" + perPago + ", divisa=" + divisa + "]";
 	}
 	
 }
