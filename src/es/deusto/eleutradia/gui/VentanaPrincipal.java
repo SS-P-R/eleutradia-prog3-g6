@@ -35,11 +35,19 @@ public class VentanaPrincipal extends JFrame {
     private JPanel panelAprendizaje;
     private JPanel panelPerfil;
     
-    private JPanel panelContenido; 
+    private JPanel panelContenido;
+    
+    private ImageIcon iconoDashboard, iconoDashboardActivo;
+    private ImageIcon iconoBusqueda, iconoBusquedaActivo;
+    private ImageIcon iconoPortfolio, iconoPortfolioActivo;
+    private ImageIcon iconoAprendizaje, iconoAprendizajeActivo;
+    private ImageIcon iconoPerfil, iconoPerfilActivo;
 	
 	public VentanaPrincipal(Usuario usuario) {
 		
 		this.usuarioLogueado = usuario;
+		
+		cargarIconos();
 		
 		if (usuario instanceof Particular) {
 			this.setTitle("Plataforma de Inversion - Bienvenido/a " + (Particular)(usuarioLogueado));
@@ -59,11 +67,11 @@ public class VentanaPrincipal extends JFrame {
 		
 		JLabel espacio = new JLabel();
 		espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-		botonDashboard = crearBotonNavegacion("Dashboard", "/imagenes/casaNegro.png");
-		botonBusqueda = crearBotonNavegacion("Búsqueda", "/imagenes/busquedaNegro.png");
-		botonPortfolio = crearBotonNavegacion("Portfolio", "/imagenes/carteraNegro.png");
-		botonAprendizaje = crearBotonNavegacion("Aprendizaje", "/imagenes/librosNegro.png");
-		botonPerfil = crearBotonNavegacion("Mi perfil", "/imagenes/perfilNegro.png");
+		botonDashboard = crearBotonNavegacion("Dashboard", iconoDashboardActivo);
+		botonBusqueda = crearBotonNavegacion("Búsqueda", iconoBusqueda);
+		botonPortfolio = crearBotonNavegacion("Portfolio", iconoPortfolio);
+		botonAprendizaje = crearBotonNavegacion("Aprendizaje", iconoAprendizaje);
+		botonPerfil = crearBotonNavegacion("Mi perfil", iconoPerfil);
 		
 		panelNavegacion.add(espacio);
 		panelNavegacion.add(botonDashboard);
@@ -131,14 +139,38 @@ public class VentanaPrincipal extends JFrame {
 		this.setVisible(true);
 	}
 	
-	private JButton crearBotonNavegacion(String texto, String rutaIcono) {
+	private void cargarIconos() {
+
+		iconoDashboard = cargarIcono("/imagenes/casaNegro.png");
+        iconoDashboardActivo = cargarIcono("/imagenes/casaAzul.png");
+        
+        iconoBusqueda = cargarIcono("/imagenes/busquedaNegro.png"); // Asumiendo nombres
+        iconoBusquedaActivo = cargarIcono("/imagenes/busquedaAzul.png");
+        
+        iconoPortfolio = cargarIcono("/imagenes/portfolioNegro.png");
+        iconoPortfolioActivo = cargarIcono("/imagenes/portfolioAzul.png");
+        
+        iconoAprendizaje = cargarIcono("/imagenes/aprendizajeNegro.png");
+        iconoAprendizajeActivo = cargarIcono("/imagenes/aprendizajeAzul.png");
+        
+        iconoPerfil = cargarIcono("/imagenes/perfilNegro.png");
+        iconoPerfilActivo = cargarIcono("/imagenes/perfilAzul.png");		
+	}
+
+	private ImageIcon cargarIcono(String ruta) {
+        try {
+            return new ImageIcon(getClass().getResource(ruta));
+        } catch (Exception e) {
+            System.err.println("Error al cargar icono: " + ruta);
+            return null; // El botón se mostrará sin icono si falla
+        }
+	}
+
+	private JButton crearBotonNavegacion(String texto, ImageIcon icono) {
         JButton boton = new JButton(texto);
         
-        try {
-            ImageIcon icono = new ImageIcon(getClass().getResource(rutaIcono));
+        if (icono != null) {
             boton.setIcon(icono);
-        } catch (Exception e) {
-            System.err.println("Error al cargar icono");
         }
         
         boton.setForeground(Color.GRAY);
