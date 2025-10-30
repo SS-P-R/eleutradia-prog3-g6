@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -196,9 +197,10 @@ public class VentanaRegistro extends JFrame {
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
         try {
-            originalIcon = new ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"));
+        	Random random = new Random();
+            originalIcon = new ImageIcon(getClass().getResource("/imagenes/fondoLogin" + (random.nextInt(2)+1) + ".png"));
         } catch (Exception e) {
-            System.err.println("No se pudo cargar la imagen 'login_art.jpg'");
+            System.err.println("No se pudo cargar la imagen");
             originalIcon = null;
         }
         
