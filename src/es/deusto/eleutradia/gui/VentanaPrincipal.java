@@ -111,6 +111,12 @@ public class VentanaPrincipal extends JFrame {
                 String nombreBoton = e.getActionCommand();
                 
                 panelContenido.removeAll();
+                
+                botonDashboard.setIcon(iconoDashboard);
+                botonBusqueda.setIcon(iconoBusqueda);
+                botonPortfolio.setIcon(iconoPortfolio);
+                botonAprendizaje.setIcon(iconoAprendizaje);
+                botonPerfil.setIcon(iconoPerfil);
 
                 if (nombreBoton.equals("Dashboard")) {
             		panelContenido.add(panelDashboard, BorderLayout.CENTER);
@@ -133,6 +139,7 @@ public class VentanaPrincipal extends JFrame {
                 panelContenido.revalidate();
                 panelContenido.repaint();
             }
+
         };
 		
         botonDashboard.addActionListener(listenerNavegacion);
