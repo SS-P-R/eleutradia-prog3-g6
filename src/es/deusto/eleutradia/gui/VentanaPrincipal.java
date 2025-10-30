@@ -113,16 +113,21 @@ public class VentanaPrincipal extends JFrame {
                 panelContenido.removeAll();
 
                 if (nombreBoton.equals("Dashboard")) {
-                    panelContenido.add(panelDashboard, BorderLayout.CENTER);
-                } else if (nombreBoton.equals("Búsqueda")) {
-                    panelContenido.add(panelBusqueda, BorderLayout.CENTER);
-                } else if (nombreBoton.equals("Portfolio")) {
-                    panelContenido.add(panelPortfolio, BorderLayout.CENTER);
-                } else if (nombreBoton.equals("Aprendizaje")) {
-                    panelContenido.add(panelAprendizaje, BorderLayout.CENTER);
-                } else if (nombreBoton.equals("Mi perfil")) {
-                    panelContenido.add(panelPerfil, BorderLayout.CENTER);
-                }
+            		panelContenido.add(panelDashboard, BorderLayout.CENTER);
+                    botonDashboard.setIcon(iconoDashboardActivo);
+            	} else if (nombreBoton.equals("Búsqueda")) {
+            		panelContenido.add(panelBusqueda, BorderLayout.CENTER);
+                    botonBusqueda.setIcon(iconoBusquedaActivo);
+            	} else if (nombreBoton.equals("Portfolio")) {
+            		panelContenido.add(panelPortfolio, BorderLayout.CENTER);
+                    botonPortfolio.setIcon(iconoPortfolioActivo);
+            	} else if (nombreBoton.equals("Aprendizaje")) {
+            		panelContenido.add(panelAprendizaje, BorderLayout.CENTER);
+                    botonAprendizaje.setIcon(iconoAprendizajeActivo);
+            	} else if (nombreBoton.equals("Mi perfil")) {
+            		panelContenido.add(panelPerfil, BorderLayout.CENTER);
+                    botonPerfil.setIcon(iconoPerfilActivo);
+            	}
                 
                 // esto hay q hacer para actualizar el panel con el contenido de la nueva ventana
                 panelContenido.revalidate();
