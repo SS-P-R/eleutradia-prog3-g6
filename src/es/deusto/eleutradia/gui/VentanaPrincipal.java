@@ -2,6 +2,7 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -137,12 +138,17 @@ public class VentanaPrincipal extends JFrame {
             ImageIcon icono = new ImageIcon(getClass().getResource(rutaIcono));
             boton.setIcon(icono);
         } catch (Exception e) {
-            System.err.println("Error al cargar icono: " + rutaIcono);
+            System.err.println("Error al cargar icono");
         }
         
         boton.setForeground(Color.GRAY);
         boton.setVerticalTextPosition(SwingConstants.BOTTOM); 
-        boton.setHorizontalTextPosition(SwingConstants.CENTER); 
+        boton.setHorizontalTextPosition(SwingConstants.CENTER);
+        
+        boton.setVerticalAlignment(SwingConstants.CENTER);
+        boton.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        boton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         boton.setBorderPainted(false);
         boton.setContentAreaFilled(false);
