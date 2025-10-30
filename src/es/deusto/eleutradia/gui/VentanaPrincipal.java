@@ -54,7 +54,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		JPanel panelNavegacion = new JPanel();
 		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
-		panelNavegacion.setBackground(Color.BLACK);
+		panelNavegacion.setBackground(Color.WHITE);
 		
 		JLabel espacio = new JLabel();
 		espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
@@ -139,8 +139,6 @@ public class VentanaPrincipal extends JFrame {
         } catch (Exception e) {
             System.err.println("Error al cargar icono: " + rutaIcono);
         }
-        
-        boton.setIcon(new ImageIcon(rutaIcono));
         
         boton.setForeground(Color.GRAY);
         boton.setVerticalTextPosition(SwingConstants.BOTTOM); 
