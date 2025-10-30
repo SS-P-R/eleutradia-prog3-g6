@@ -2,6 +2,7 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -47,6 +48,7 @@ public class VentanaPrincipal extends JFrame {
 		this.setSize(800,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.setMinimumSize(new Dimension(800, 600));
 		
 		this.setLayout(new BorderLayout());
 		
