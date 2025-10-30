@@ -26,8 +26,10 @@ public class VentanaPrincipal extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JButton botonDashboard, botonBusqueda, botonPortfolio, botonAprendizaje, botonPerfil;
 	private Usuario usuarioLogueado;
+	
+	private JButton botonDashboard, botonBusqueda, botonPortfolio, botonAprendizaje, botonPerfil;
+	private JLabel espacioPrincipal, espacio1, espacio2, espacio3, espacio4;
 	
 	private JPanel panelDashboard;
     private JPanel panelBusqueda;
@@ -65,19 +67,39 @@ public class VentanaPrincipal extends JFrame {
 		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
 		panelNavegacion.setBackground(Color.WHITE);
 		
-		JLabel espacio = new JLabel();
-		espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-		botonDashboard = crearBotonNavegacion("Dashboard", iconoDashboardActivo);
-		botonBusqueda = crearBotonNavegacion("Búsqueda", iconoBusqueda);
-		botonPortfolio = crearBotonNavegacion("Portfolio", iconoPortfolio);
-		botonAprendizaje = crearBotonNavegacion("Aprendizaje", iconoAprendizaje);
-		botonPerfil = crearBotonNavegacion("Mi perfil", iconoPerfil);
+		espacioPrincipal = new JLabel();
+		espacioPrincipal.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
+		panelNavegacion.add(espacioPrincipal);
 		
-		panelNavegacion.add(espacio);
+		botonDashboard = crearBotonNavegacion("", iconoDashboardActivo);
 		panelNavegacion.add(botonDashboard);
+		
+		espacio1 = new JLabel();
+		espacio1.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+		panelNavegacion.add(espacio1);
+		
+		botonBusqueda = crearBotonNavegacion("Búsqueda", iconoBusqueda);
 		panelNavegacion.add(botonBusqueda);
+		
+		espacio2 = new JLabel();
+		espacio2.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+		panelNavegacion.add(espacio2);
+		
+		botonPortfolio = crearBotonNavegacion("Portfolio", iconoPortfolio);
 		panelNavegacion.add(botonPortfolio);
+		
+		espacio3 = new JLabel();
+		espacio3.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+		panelNavegacion.add(espacio3);
+		
+		botonAprendizaje = crearBotonNavegacion("Aprendizaje", iconoAprendizaje);
 		panelNavegacion.add(botonAprendizaje);
+		
+		espacio4 = new JLabel();
+		espacio4.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+		panelNavegacion.add(espacio4);
+		
+		botonPerfil = crearBotonNavegacion("Mi perfil", iconoPerfil);
 		panelNavegacion.add(botonPerfil);
 		
 		this.add(panelNavegacion, BorderLayout.WEST);
@@ -113,26 +135,40 @@ public class VentanaPrincipal extends JFrame {
                 panelContenido.removeAll();
                 
                 botonDashboard.setIcon(iconoDashboard);
+                botonDashboard.setText("Dashboard");
+                
                 botonBusqueda.setIcon(iconoBusqueda);
+                botonBusqueda.setText("Búsqueda");
+
                 botonPortfolio.setIcon(iconoPortfolio);
+                botonPortfolio.setText("Portfolio");
+
                 botonAprendizaje.setIcon(iconoAprendizaje);
+                botonAprendizaje.setText("Aprendizaje");
+
                 botonPerfil.setIcon(iconoPerfil);
+                botonPerfil.setText("Mi perfil");
 
                 if (nombreBoton.equals("Dashboard")) {
             		panelContenido.add(panelDashboard, BorderLayout.CENTER);
-                    botonDashboard.setIcon(iconoDashboardActivo);
+                    botonDashboard.setIcon(iconoDashboardActivo); 
+                    botonDashboard.setText("");
             	} else if (nombreBoton.equals("Búsqueda")) {
             		panelContenido.add(panelBusqueda, BorderLayout.CENTER);
-                    botonBusqueda.setIcon(iconoBusquedaActivo);
+                    botonBusqueda.setIcon(iconoBusquedaActivo); 
+                    botonBusqueda.setText("");
             	} else if (nombreBoton.equals("Portfolio")) {
             		panelContenido.add(panelPortfolio, BorderLayout.CENTER);
-                    botonPortfolio.setIcon(iconoPortfolioActivo);
+                    botonPortfolio.setIcon(iconoPortfolioActivo); 
+                    botonPortfolio.setText("");
             	} else if (nombreBoton.equals("Aprendizaje")) {
             		panelContenido.add(panelAprendizaje, BorderLayout.CENTER);
-                    botonAprendizaje.setIcon(iconoAprendizajeActivo);
+                    botonAprendizaje.setIcon(iconoAprendizajeActivo); 
+                    botonAprendizaje.setText("");
             	} else if (nombreBoton.equals("Mi perfil")) {
             		panelContenido.add(panelPerfil, BorderLayout.CENTER);
-                    botonPerfil.setIcon(iconoPerfilActivo);
+                    botonPerfil.setIcon(iconoPerfilActivo); 
+                    botonPerfil.setText("");
             	}
                 
                 // esto hay q hacer para actualizar el panel con el contenido de la nueva ventana
