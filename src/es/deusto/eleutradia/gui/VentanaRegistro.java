@@ -17,10 +17,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.domain.Usuario;
 
 public class VentanaRegistro extends JFrame {
 
@@ -218,8 +222,36 @@ public class VentanaRegistro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
                 dispose(); // Cerrar la ventana de que se ha abierto de registro y ahce que vuelva a la ventana de login
-                
             }
-		});		
+		});	
+		
+		botonConfirmarRegistro.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String nombre = textoNombre.getText();
+				String email = textoEmail.getText();
+				String password = new String(textoPassword.getPassword());
+				String passwordConfirmar = new String(textoConfirmarPassword.getPassword());
+				
+				if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
+					JOptionPane.showMessageDialog(VentanaRegistro.this, 
+													"Todos los campos son obligatorios",
+													"Error de Registro",
+													JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+				if (!password.equals(passwordConfirmar)) {
+					JOptionPane.showMessageDialog(VentanaRegistro.this, 
+													"Las contraseñas no coinciden",
+													"Error de Registro",
+													JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+			}
+		});
 	}
 }
