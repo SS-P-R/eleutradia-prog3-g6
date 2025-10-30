@@ -23,7 +23,6 @@ public class VentanaPrincipal extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JLabel labelBienvenida;
 	private JButton botonDashboard, botonBusqueda, botonPortfolio, botonAprendizaje, botonPerfil;
 	private Usuario usuarioLogueado;
 	
@@ -131,27 +130,22 @@ public class VentanaPrincipal extends JFrame {
 	private JButton crearBotonNavegacion(String texto, String rutaIcono) {
         JButton boton = new JButton(texto);
         
-        // 1. Cargar el Icono
         try {
             ImageIcon icono = new ImageIcon(getClass().getResource(rutaIcono));
             boton.setIcon(icono);
         } catch (Exception e) {
-            // Si el icono no se encuentra, el botón se mostrará solo con texto
             System.err.println("Error al cargar icono: " + rutaIcono);
         }
         
         boton.setIcon(new ImageIcon(rutaIcono));
         
-        // 2. Configurar la Posición del Texto (¡Lo que estabas pidiendo!)
         boton.setVerticalTextPosition(SwingConstants.BOTTOM); 
         boton.setHorizontalTextPosition(SwingConstants.CENTER); 
         
-        // Opcional: Estilo de botón para menú (para que no parezca un botón 3D estándar)
-        // Puedes ajustar esto según tu diseño
         boton.setBorderPainted(false);
         boton.setContentAreaFilled(false);
         boton.setFocusPainted(false);
-        boton.setOpaque(false); // Puede ser útil si el panel de navegación tiene color
+        boton.setOpaque(false);
         
         return boton;
     }
