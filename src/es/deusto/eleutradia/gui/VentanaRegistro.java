@@ -251,6 +251,23 @@ public class VentanaRegistro extends JFrame {
 					return;
 				}
 				
+                Particular nuevoUsuario = new Particular();
+                nuevoUsuario.setNombre(nombre);
+                nuevoUsuario.setEmail(email);
+                nuevoUsuario.setPassword(password);
+
+
+                // 4. Mostrar éxito y cerrar
+                JOptionPane.showMessageDialog(VentanaRegistro.this,
+                        "¡Registro (simulado) exitoso!\nNombre: " + nombre,
+                        "Registro Completado",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                System.out.println("SIMULACIÓN: Registrando usuario: " + nuevoUsuario.getNombre());
+
+                // Cerrar la ventana de registro
+                dispose();
+				
 			}
 		});
 	}
