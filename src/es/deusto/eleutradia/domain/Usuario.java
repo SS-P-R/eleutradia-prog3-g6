@@ -9,21 +9,25 @@ public abstract class Usuario {
     private String direccion;
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
-    private List<CarteraVirtual> carterasVirtuales = new ArrayList<>();
+    private List<Cartera> carteras;
     
 	public Usuario() {
 		this.email = "";
 		this.telefono = "";
 		this.direccion = "";
 		this.domicilioFiscal = new Pais();
+		this.perfilFinanciero = new PerfilFinanciero();
+		this.carteras = new ArrayList<Cartera>();
 	}
 
-	public Usuario(String email, String telefono, String direccion, Pais domicilioFiscal) {
-		super();
+	public Usuario(String email, String telefono, String direccion,
+			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
 		this.email = email;
 		this.telefono = telefono;
 		this.direccion = direccion;
 		this.domicilioFiscal = domicilioFiscal;
+		this.perfilFinanciero = perfilFinanciero;
+		this.carteras = carteras;
 	}
 
 	public String getEmail() {
@@ -66,19 +70,18 @@ public abstract class Usuario {
 		this.perfilFinanciero = perfilFinanciero;
 	}
 
-	public List<CarteraVirtual> getCarterasVirtuales() {
-		return carterasVirtuales;
+	public List<Cartera> getCarteras() {
+		return carteras;
 	}
 
-	public void setCarterasVirtuales(ArrayList<CarteraVirtual> carterasVirtuales) {
-		this.carterasVirtuales = carterasVirtuales;
+	public void setCarteras(ArrayList<Cartera> carteras) {
+		this.carteras = carteras;
 	}
 
 	@Override
 	public String toString() {
 		return "Usuario [email=" + email + ", telefono=" + telefono + ", direccion=" + direccion + ", domicilioFiscal="
-				+ domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero + ", carterasVirtuales="
-				+ carterasVirtuales + "]";
+				+ domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero + ", carteras=" + carteras + "]";
 	}
     
 }

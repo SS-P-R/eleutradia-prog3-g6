@@ -1,11 +1,24 @@
 package es.deusto.eleutradia.domain;
 
+import java.util.ArrayList;
+
 public class Empresa extends Usuario {
 	private final String idEmpresa;
 	private String nombre;
 	
-	public Empresa(String idEmpresa, String nombre, String email, String telefono, String direccion, Pais domicilioFiscal) {
-		super(email, telefono, direccion, domicilioFiscal);
+	public Empresa() {
+		this.idEmpresa = "";
+		this.nombre = "";
+	}
+
+	public Empresa(String idEmpresa, String nombre) {
+		this.idEmpresa = idEmpresa;
+		this.nombre = nombre;
+	}
+
+	public Empresa(String idEmpresa, String nombre, String email, String telefono, String direccion,
+				Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
+		super(email, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
 		this.idEmpresa = idEmpresa;
 		this.nombre = nombre;
 	}

@@ -1,6 +1,7 @@
 package es.deusto.eleutradia.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Particular extends Usuario {
 	private final String dni;
@@ -8,9 +9,24 @@ public class Particular extends Usuario {
     private LocalDate fechaNacimiento;
     private Pais paisResidencia;
     
+	public Particular() {
+		this.dni = "";
+		this.nombre = "";
+		this.fechaNacimiento = null;
+		this.paisResidencia = null;
+	}
+
+	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia) {
+		this.dni = dni;
+		this.nombre = nombre;
+		this.fechaNacimiento = fechaNacimiento;
+		this.paisResidencia = paisResidencia;
+	}
+
 	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia,
-					  String email, String telefono, String direccion, Pais domicilioFiscal) {
-		super(email, telefono, direccion, domicilioFiscal);
+			String email, String telefono, String direccion, Pais domicilioFiscal,
+			PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
+		super(email, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
 		this.dni = dni;
 		this.nombre = nombre;
 		this.fechaNacimiento = fechaNacimiento;

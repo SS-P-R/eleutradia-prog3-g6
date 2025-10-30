@@ -1,40 +1,121 @@
 package es.deusto.eleutradia.domain;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class ProductoFinanciero {
 	private final int codigo;
 	private String nombre;
 	private YearMonth plazo;
-	private Map<String, BigDecimal> rentabilidades;
+	private Map<PlazoRentabilidad, BigDecimal> rentabilidades;
 	private BigDecimal valorActual;
-	private LocalDate fechaLanzamiento;
 	private TipoProducto tipoProducto;
 	private RegionGeografica regionGeografica;
 	private PeriodicidadPago perPago;
 	private Divisa divisa;
 	
-	public ProductoFinanciero(int codigo, String nombre, YearMonth plazo, Map<String, BigDecimal> rentabilidades,
-			BigDecimal valorActual, LocalDate fechaLanzamiento, TipoProducto tipoProducto,
+	public ProductoFinanciero() {
+		this.codigo = 0;
+	    this.nombre = "";
+	    this.plazo = YearMonth.now();
+	    this.rentabilidades = new EnumMap<>(PlazoRentabilidad.class);
+	    this.valorActual = BigDecimal.ZERO;
+	    this.tipoProducto = TipoProducto.ACCION;
+	    this.regionGeografica = RegionGeografica.MUNDO;
+	    this.perPago = PeriodicidadPago.MENSUAL;
+	    this.divisa = Divisa.USD;
+	}
+
+	public ProductoFinanciero(int codigo, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
+			BigDecimal valorActual, TipoProducto tipoProducto,
 			RegionGeografica regionGeografica, PeriodicidadPago perPago, Divisa divisa) {
-		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.plazo = plazo;
-		this.rentabilidades = rentabilidades;
+		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
 		this.valorActual = valorActual;
-		this.fechaLanzamiento = fechaLanzamiento;
 		this.tipoProducto = tipoProducto;
 		this.regionGeografica = regionGeografica;
 		this.perPago = perPago;
 		this.divisa = divisa;
 	}
 
-	
-	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public YearMonth getPlazo() {
+		return plazo;
+	}
+
+	public void setPlazo(YearMonth plazo) {
+		this.plazo = plazo;
+	}
+
+	public Map<PlazoRentabilidad, BigDecimal> getRentabilidades() {
+		return rentabilidades;
+	}
+
+	public void setRentabilidades(Map<PlazoRentabilidad, BigDecimal> rentabilidades) {
+		this.rentabilidades = rentabilidades;
+	}
+
+	public BigDecimal getValorActual() {
+		return valorActual;
+	}
+
+	public void setValorActual(BigDecimal valorActual) {
+		this.valorActual = valorActual;
+	}
+
+	public TipoProducto getTipoProducto() {
+		return tipoProducto;
+	}
+
+	public void setTipoProducto(TipoProducto tipoProducto) {
+		this.tipoProducto = tipoProducto;
+	}
+
+	public RegionGeografica getRegionGeografica() {
+		return regionGeografica;
+	}
+
+	public void setRegionGeografica(RegionGeografica regionGeografica) {
+		this.regionGeografica = regionGeografica;
+	}
+
+	public PeriodicidadPago getPerPago() {
+		return perPago;
+	}
+
+	public void setPerPago(PeriodicidadPago perPago) {
+		this.perPago = perPago;
+	}
+
+	public Divisa getDivisa() {
+		return divisa;
+	}
+
+	public void setDivisa(Divisa divisa) {
+		this.divisa = divisa;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductoFinanciero [codigo=" + codigo + ", nombre=" + nombre + ", plazo=" + plazo + ", rentabilidades="
+				+ rentabilidades + ", valorActual=" + valorActual + ", tipoProducto=" + tipoProducto
+				+ ", regionGeografica=" + regionGeografica + ", perPago=" + perPago + ", divisa=" + divisa + "]";
+	}
 	
 }

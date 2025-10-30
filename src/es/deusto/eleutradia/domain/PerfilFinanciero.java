@@ -1,46 +1,51 @@
 package es.deusto.eleutradia.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PerfilFinanciero {
 	private static int contador = 1;
 	private final int id;
-	private final Usuario usuario;
 	private double patrimonio;
-	private double riesgo;
 	private int horizonte;
+	private PerfilRiesgo perfilRiesgo;
 	private NivelConocimiento nivel;
 	private List<TipoProducto> tiposProducto;
 	
-	public PerfilFinanciero(int id, Usuario usuario, double patrimonio, double riesgo, int horizonte,
+	public PerfilFinanciero(double patrimonio, PerfilRiesgo perfilRiesgo, int horizonte,
 							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
-        if (usuario == null) {
-            throw new IllegalArgumentException("Debe asociarse a un usuario");
-        }
         this.id = contador++; // Incremento automático
-        this.usuario = usuario;
-        usuario.setPerfilFinanciero(this); // Asignación bidireccional
         this.patrimonio = patrimonio;
-        this.riesgo = riesgo;
+        this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
         this.nivel = nivel;
         this.tiposProducto = tiposProducto;
     }
+
+	public PerfilFinanciero() {
+		this.id = contador++;
+		this.tiposProducto = new ArrayList<>();
+	}
 
 	public double getPatrimonio() {
 		return patrimonio;
 	}
 
 	public void setPatrimonio(double patrimonio) {
+		if (patrimonio < 0) {
+            throw new IllegalArgumentException("El patrimonio no puede ser negativo");
+        }
 		this.patrimonio = patrimonio;
 	}
 
-	public double getRiesgo() {
-		return riesgo;
+	public PerfilRiesgo getPerfilRiesgo() {
+		return perfilRiesgo;
 	}
 
-	public void setRiesgo(double riesgo) {
-		this.riesgo = riesgo;
+	public void setPerfilRiesgo(PerfilRiesgo perfilRiesgo) {
+
+		this.perfilRiesgo = perfilRiesgo;
 	}
 
 	public int getHorizonte() {
@@ -48,6 +53,9 @@ public class PerfilFinanciero {
 	}
 
 	public void setHorizonte(int horizonte) {
+		if (horizonte < 0) {
+            throw new IllegalArgumentException("El horizonte temporal no puede ser negativo");
+        }
 		this.horizonte = horizonte;
 	}
 
@@ -60,7 +68,7 @@ public class PerfilFinanciero {
 	}
 
 	public List<TipoProducto> getTiposProducto() {
-		return tiposProducto;
+		return Collections.unmodifiableList(tiposProducto);
 	}
 
 	public void setTiposProducto(List<TipoProducto> tiposProducto) {
@@ -71,14 +79,10 @@ public class PerfilFinanciero {
 		return id;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
 	@Override
 	public String toString() {
-		return "PerfilFinanciero [id=" + id + ", usuario=" + usuario + ", patrimonio=" + patrimonio + ", riesgo="
-				+ riesgo + ", horizonte=" + horizonte + ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
+		return "PerfilFinanciero [id=" + id + ", patrimonio=" + patrimonio + ", perfilRiesgo=" + perfilRiesgo +
+				", horizonte=" + horizonte + ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
 	}
 	
 }
