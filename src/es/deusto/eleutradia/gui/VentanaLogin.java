@@ -57,7 +57,7 @@ public class VentanaLogin extends JFrame {
 	private void configurarVentana() {
 		
 		this.setTitle("Login/Registro");
-		this.setSize(800,550);
+		this.setSize(800,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
