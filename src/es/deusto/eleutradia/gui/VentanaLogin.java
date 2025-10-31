@@ -202,7 +202,7 @@ public class VentanaLogin extends JFrame {
 
                 Particular usuario = null;
                 if ("user@test.com".equals(email) && "1234".equals(password)) {
-                	usuario = new Particular("79123456", "Usuario Prueba", LocalDate.of(2000, 1, 1), new Pais(1, "Suiza", RegionGeografica.EUROPA_OCCIDENTAL));
+                	usuario = new Particular("79123456", "Usuario Prueba", LocalDate.of(2000, 1, 1), new Pais(1, "Suiza", RegionGeografica.EUROPA_OCCIDENTAL), null);
                 }
 
                 if (usuario != null) {
