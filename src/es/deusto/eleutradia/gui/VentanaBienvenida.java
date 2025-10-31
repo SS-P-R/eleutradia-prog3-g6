@@ -8,4 +8,5 @@ public class VentanaBienvenida extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JLabel labelBienvenida = new JLabel("¡Bienvenido/a a Eleutradia!");
+	
 }

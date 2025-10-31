@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -24,16 +23,15 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.Particular;
-import es.deusto.eleutradia.domain.RegionGeografica;
+import es.deusto.eleutradia.main.MainEleutradia;
 
-public class VentanaLogin extends JFrame {
+public class VentanaLoginParticular extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JLabel labelTitulo, labelEmail, labelPassword, labelRegistro;
-	private JTextField textoEmail;
+	private JLabel labelTitulo, labelDni, labelPassword, labelRegistro;
+	private JTextField textoDni;
 	private JPasswordField textoPassword;
 	private JButton botonLogin, botonRegister;
 	private JLabel espacio, imageLabel;
@@ -46,7 +44,7 @@ public class VentanaLogin extends JFrame {
     private static final Font FONT_ETIQUETA = new Font("Arial", Font.BOLD, 12);
     private static final Font FONT_CAMPO = new Font("Arial", Font.PLAIN, 14);
 	
-	public VentanaLogin() {
+	public VentanaLoginParticular() {
 		
 		configurarVentana();
         crearYOrganizarPaneles();
@@ -97,23 +95,23 @@ public class VentanaLogin extends JFrame {
         espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         panel.add(espacio);
         
-        labelEmail = new JLabel("E-mail");
-        labelEmail.setFont(FONT_ETIQUETA);
-        labelEmail.setForeground(COLOR_TEXTO_ETIQUETA);
-        labelEmail.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelEmail);
+        labelDni = new JLabel("DNI:");
+        labelDni.setFont(FONT_ETIQUETA);
+        labelDni.setForeground(COLOR_TEXTO_ETIQUETA);
+        labelDni.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(labelDni);
 
-        textoEmail = new JTextField(20);
-        textoEmail.setFont(FONT_CAMPO);
-        textoEmail.setMaximumSize(new Dimension(500, 100)); // Tengo que ver mejor como funciona las dimensiones
-        textoEmail.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoEmail);
+        textoDni = new JTextField(20);
+        textoDni.setFont(FONT_CAMPO);
+        textoDni.setMaximumSize(new Dimension(500, 100)); // Tengo que ver mejor como funciona las dimensiones
+        textoDni.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(textoDni);
         
         espacio = new JLabel();
         espacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         panel.add(espacio);
 
-        labelPassword = new JLabel("Contraseña");
+        labelPassword = new JLabel("Contraseña:");
         labelPassword.setFont(FONT_ETIQUETA);
         labelPassword.setForeground(COLOR_TEXTO_ETIQUETA);
         labelPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -147,14 +145,14 @@ public class VentanaLogin extends JFrame {
         panelRegistrarse.setBackground(Color.WHITE);
         panelRegistrarse.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        labelRegistro = new JLabel("¿No tienes cuenta?");
+        labelRegistro = new JLabel("¿No tiene cuenta?");
         labelRegistro.setFont(FONT_ETIQUETA);
         labelRegistro.setForeground(COLOR_BOTON_LOGIN);
         labelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelRegistrarse.add(labelRegistro);
         
 
-        botonRegister = new JButton("Registrate aqui");
+        botonRegister = new JButton("Pulse aquí para registrarse");
         botonRegister.setFont(FONT_ETIQUETA);
         botonRegister.setBackground(Color.WHITE);
         botonRegister.setForeground(COLOR_BOTON_LOGIN);
@@ -197,21 +195,25 @@ public class VentanaLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-                String email = textoEmail.getText();
+                String dni = textoDni.getText().trim();
                 String password = new String(textoPassword.getPassword());
 
-                Particular usuario = null;
-                if ("user@test.com".equals(email) && "1234".equals(password)) {
-                	usuario = new Particular("79123456", "Usuario Prueba", LocalDate.of(2000, 1, 1), new Pais(1, "Suiza", RegionGeografica.EUROPA_OCCIDENTAL), null);
+                Particular usuarioFound = null;
+                
+                for (Particular p : MainEleutradia.listaParticulares) {
+                	if (p.getDni().equalsIgnoreCase(dni) && p.getPassword().equals(password)) {
+                        usuarioFound = p;
+                        break;
+                    }
                 }
 
-                if (usuario != null) {
-                    new VentanaPrincipal(usuario);
+                if (usuarioFound != null) {
+                    new VentanaPrincipal(usuarioFound);
                     dispose(); // Cerrar la ventana de login
                 } else {
-                    JOptionPane.showMessageDialog(VentanaLogin.this, 
+                    JOptionPane.showMessageDialog(VentanaLoginParticular.this, 
                                                   "Email o contraseña incorrectos.", 
-                                                  "Error de Login", 
+                                                  "Error de Login.", 
                                                   JOptionPane.ERROR_MESSAGE);
                 }
             }

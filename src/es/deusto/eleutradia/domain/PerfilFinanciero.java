@@ -5,18 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class PerfilFinanciero {
-	private static int contador = 1;
-	private final int id;
-	private Usuario usuario;
 	private PerfilRiesgo perfilRiesgo;
 	private int horizonte; // Tiempo previsto de manteción del capital
 	private NivelConocimiento nivel;
 	private List<TipoProducto> tiposProducto;
 	
-	public PerfilFinanciero(Usuario usuario, PerfilRiesgo perfilRiesgo, int horizonte,
+	public PerfilFinanciero(PerfilRiesgo perfilRiesgo, int horizonte,
 							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
-        this.id = contador++; // Incremento automático
-        this.usuario = usuario;
         this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
         this.nivel = nivel;
@@ -28,20 +23,10 @@ public class PerfilFinanciero {
     }
 
 	public PerfilFinanciero() {
-		this.id = contador++;
-		this.usuario = null;
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.horizonte = 0;
 		this.nivel = NivelConocimiento.PRINCIPIANTE;
 		this.tiposProducto = new ArrayList<>();
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public PerfilRiesgo getPerfilRiesgo() {
@@ -85,45 +70,11 @@ public class PerfilFinanciero {
 	public void eliminarTipoProducto(TipoProducto tipo) {
 	    tiposProducto.remove(tipo);
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public double calcularPatrimonioLiquido() {
-		Usuario usuario = this.getUsuario();
-	    if (usuario == null) return 0.0;
-	    double total = 0.0;
-	    for (Cartera cartera : usuario.getCarteras()) {
-	        total += cartera.getSaldo();
-	    }
-	    return total;
-	}
-	
-	public double calcularPatrimonioInvertido() {
-		Usuario usuario = this.getUsuario();
-	    if (usuario == null) return 0.0;
-	    double total = 0.0;
-	    for (Cartera cartera : usuario.getCarteras()) {
-	        total += cartera.calcularValorInversiones();
-	    }
-	    return total;
-	}
-	
-	public double calcularPatrimonioTotal() {
-		Usuario usuario = this.getUsuario();
-	    if (usuario == null) return 0.0;
-	    double total = 0.0;
-	    for (Cartera cartera : usuario.getCarteras()) {
-	        total += cartera.calcularPatrimonio();
-	    }
-	    return total;
-	}
 	
 	@Override
 	public String toString() {
-		return "PerfilFinanciero [id=" + id + ", usuario" + usuario + ", perfilRiesgo=" + perfilRiesgo +
-				", horizonte=" + horizonte + ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
+		return "PerfilFinanciero [perfilRiesgo=" + perfilRiesgo + ", horizonte=" + horizonte
+				+ ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
 	}
 	
 }

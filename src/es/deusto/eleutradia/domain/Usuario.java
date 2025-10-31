@@ -92,11 +92,35 @@ public abstract class Usuario {
 	public void setCarteras(ArrayList<Cartera> carteras) {
 		this.carteras = carteras;
 	}
+	
+	public double calcularPatrimonioLiquido() {
+	    double total = 0.0;
+	    for (Cartera cartera : this.getCarteras()) {
+	        total += cartera.getSaldo();
+	    }
+	    return total;
+	}
+	
+	public double calcularPatrimonioInvertido() {
+	    double total = 0.0;
+	    for (Cartera cartera : this.getCarteras()) {
+	        total += cartera.calcularValorInversiones();
+	    }
+	    return total;
+	}
+	
+	public double calcularPatrimonioTotal() {
+	    double total = 0.0;
+	    for (Cartera cartera : this.getCarteras()) {
+	        total += cartera.calcularPatrimonio();
+	    }
+	    return total;
+	}
 
 	@Override
 	public String toString() {
 		return "Usuario [email=" + email + ", password=" + password + ", telefono=" + telefono + ", direccion=" + direccion
-				+ ", domicilioFiscal=" + domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero.getId() + ", carteras=" + carteras + "]";
+				+ ", domicilioFiscal=" + domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero + ", carteras=" + carteras + "]";
 	}
     
 }

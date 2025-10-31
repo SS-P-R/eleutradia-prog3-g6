@@ -1,18 +1,15 @@
 package es.deusto.eleutradia.domain;
 
 public class Pais {
-	private final int codigo;
 	private String nombre;
 	private RegionGeografica region;
 	
 	public Pais() {
-		this.codigo = 0;
 		this.nombre = "";
 		this.region = null;
 	}
 
-	public Pais(int codigo, String nombre, RegionGeografica region) {
-		this.codigo = codigo;
+	public Pais(String nombre, RegionGeografica region) {
 		this.nombre = nombre;
 		this.region = region;
 	}
@@ -33,13 +30,9 @@ public class Pais {
 		this.region = region;
 	}
 
-	public int getCodigo() {
-		return codigo;
-	}
-
 	@Override
 	public String toString() {
-		return "Pais [codigo=" + codigo + ", nombre=" + nombre + "]";
+		return "Pais [nombre=" + nombre + ", region=" + region + "]";
 	}
 	
 }
