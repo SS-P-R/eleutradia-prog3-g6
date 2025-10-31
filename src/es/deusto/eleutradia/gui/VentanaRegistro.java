@@ -1,6 +1,7 @@
 package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,9 +22,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
 
@@ -34,6 +38,13 @@ public class VentanaRegistro extends JFrame {
 	private JTextField textoNombre, textoEmail;
 	private JPasswordField textoPassword, textoConfirmarPassword;
 	private JButton botonCancelar, botonConfirmarRegistro;
+	
+	private JLabel labelTipo;
+	private JRadioButton radioParticular, radioEmpresa;
+	private ButtonGroup grupoTipoUsuario;
+	private JPanel panelCamposEspecificos;
+	private CardLayout cardLayoutEspecificos;
+	
 	private JLabel espacio, imageLabel;
     private ImageIcon originalIcon;
     
@@ -98,6 +109,33 @@ public class VentanaRegistro extends JFrame {
         espacio = new JLabel();
         espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         panel.add(espacio);
+        
+        JPanel panelTipoUsuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelTipoUsuario.setBackground(COLOR_FONDO_FORM);
+        panelTipoUsuario.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelTipoUsuario.setMaximumSize(new Dimension(300,250));
+        panelTipoUsuario.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        
+        labelTipo = new JLabel("Tipo de cuenta:");
+        labelTipo.setFont(FONT_ETIQUETA);
+        labelTipo.setForeground(COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR);        
+        
+        radioParticular = new JRadioButton("Particular");
+        radioParticular.setBackground(COLOR_FONDO_FORM);
+        radioParticular.setSelected(true);
+        
+        radioEmpresa = new JRadioButton("Empresa");
+        radioEmpresa.setBackground(COLOR_FONDO_FORM);
+        
+        grupoTipoUsuario = new ButtonGroup();
+        grupoTipoUsuario.add(radioParticular);
+        grupoTipoUsuario.add(radioEmpresa);
+        
+        panelTipoUsuario.add(labelTipo);
+        panelTipoUsuario.add(radioParticular);
+        panelTipoUsuario.add(radioEmpresa);
+        
+        panel.add(panelTipoUsuario);
         
         labelNombre = new JLabel("Nombre Completo");
         labelNombre.setFont(FONT_ETIQUETA);
@@ -229,46 +267,68 @@ public class VentanaRegistro extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				String nombre = textoNombre.getText();
-				String email = textoEmail.getText();
-				String password = new String(textoPassword.getPassword());
-				String passwordConfirmar = new String(textoConfirmarPassword.getPassword());
-				
-				if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
-					JOptionPane.showMessageDialog(VentanaRegistro.this, 
-													"Todos los campos son obligatorios",
-													"Error de Registro",
-													JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-				
-				if (!password.equals(passwordConfirmar)) {
-					JOptionPane.showMessageDialog(VentanaRegistro.this, 
-													"Las contraseñas no coinciden",
-													"Error de Registro",
-													JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-				
-                Particular nuevoUsuario = new Particular();
-                nuevoUsuario.setNombre(nombre);
-                nuevoUsuario.setEmail(email);
-                nuevoUsuario.setPassword(password);
-
-
-                // 4. Mostrar éxito y cerrar
-                JOptionPane.showMessageDialog(VentanaRegistro.this,
-                        "¡Registro (simulado) exitoso!\nNombre: " + nombre,
-                        "Registro Completado",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                System.out.println("SIMULACIÓN: Registrando usuario: " + nuevoUsuario.getNombre());
-
-                // Cerrar la ventana de registro
-                dispose();
-				
+			
+				registrarUsuario();
 			}
 		});
+	}
+	
+	public void registrarUsuario() {
+		
+		String nombre = textoNombre.getText();
+		String email = textoEmail.getText();
+		String password = new String(textoPassword.getPassword());
+		String passwordConfirmar = new String(textoConfirmarPassword.getPassword());
+		
+		if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
+			JOptionPane.showMessageDialog(VentanaRegistro.this, 
+											"Todos los campos son obligatorios",
+											"Error de Registro",
+											JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+		if (!password.equals(passwordConfirmar)) {
+			JOptionPane.showMessageDialog(VentanaRegistro.this, 
+											"Las contraseñas no coinciden",
+											"Error de Registro",
+											JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+        Usuario nuevoUsuario = null;
+
+        try {
+			if (radioParticular.isSelected()) {
+				
+				Particular p = new Particular();
+				p.setNombre(nombre);
+				p.setEmail(email);
+				p.setPassword(password);
+				nuevoUsuario = p;
+				
+			} else {
+				
+				Empresa e = new Empresa();
+				e.setNombre(nombre);
+				e.setEmail(email);
+				e.setPassword(password);
+				nuevoUsuario = e;
+				
+			}
+			
+	        JOptionPane.showMessageDialog(VentanaRegistro.this,
+							                "¡Registro (simulado) exitoso!\nNombre: " + nombre,
+							                "Registro Completado",
+							                JOptionPane.INFORMATION_MESSAGE);
+
+	        dispose();
+				
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this,
+											"Error al crear usuario",
+											"Error",
+											JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
