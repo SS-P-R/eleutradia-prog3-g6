@@ -16,9 +16,9 @@ public class Empresa extends Usuario {
 		this.nombre = nombre;
 	}
 
-	public Empresa(String idEmpresa, String nombre, String email, String telefono, String direccion,
+	public Empresa(String idEmpresa, String nombre, String email, String password, String telefono, String direccion,
 				Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
-		super(email, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
+		super(email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
 		this.idEmpresa = idEmpresa;
 		this.nombre = nombre;
 	}

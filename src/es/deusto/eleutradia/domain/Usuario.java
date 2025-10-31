@@ -14,6 +14,7 @@ public abstract class Usuario {
     
 	public Usuario() {
 		this.email = "";
+		this.password = "";
 		this.telefono = "";
 		this.direccion = "";
 		this.domicilioFiscal = new Pais();
@@ -21,14 +22,19 @@ public abstract class Usuario {
 		this.carteras = new ArrayList<Cartera>();
 	}
 
-	public Usuario(String email, String telefono, String direccion,
+	public Usuario(String email, String password, String telefono, String direccion,
 			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
 		this.email = email;
+		this.password = password;
 		this.telefono = telefono;
 		this.direccion = direccion;
 		this.domicilioFiscal = domicilioFiscal;
 		this.perfilFinanciero = perfilFinanciero;
-		this.carteras = carteras;
+		if (carteras != null) {
+			this.carteras = new ArrayList<>(carteras);
+		} else {
+			this.carteras = new ArrayList<>();
+		}
 	}
 
 	public String getEmail() {
@@ -89,8 +95,8 @@ public abstract class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [email=" + email + ", telefono=" + telefono + ", direccion=" + direccion + ", domicilioFiscal="
-				+ domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero.getId() + ", carteras=" + carteras + "]";
+		return "Usuario [email=" + email + ", password=" + password + ", telefono=" + telefono + ", direccion=" + direccion
+				+ ", domicilioFiscal=" + domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero.getId() + ", carteras=" + carteras + "]";
 	}
     
 }
