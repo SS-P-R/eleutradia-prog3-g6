@@ -16,7 +16,7 @@ import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.PerfilRiesgo;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
-import es.deusto.eleutradia.gui.VentanaLoginParticular;
+import es.deusto.eleutradia.gui.VentanaLogin;
 
 public class MainEleutradia {
 	
@@ -107,7 +107,7 @@ public class MainEleutradia {
 			@Override
 			public void run() {
 				// Crear una instancia de VentanaLogin
-				new VentanaLoginParticular().setVisible(true);
+				new VentanaLogin().setVisible(true);
 				
 			}
 		});
