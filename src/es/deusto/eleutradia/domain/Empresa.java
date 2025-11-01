@@ -5,15 +5,17 @@ import java.util.ArrayList;
 public class Empresa extends Usuario {
 	private final String idEmpresa;
 	private String nombre;
+	private String NIF;
 	
 	public Empresa() {
 		this.idEmpresa = "";
 		this.nombre = "";
 	}
 
-	public Empresa(String idEmpresa, String nombre) {
+	public Empresa(String idEmpresa, String nombre, String NIF) {
 		this.idEmpresa = idEmpresa;
 		this.nombre = nombre;
+		this.NIF = NIF;
 	}
 
 	public Empresa(String idEmpresa, String nombre, String email, String password, String telefono, String direccion,
@@ -29,6 +31,14 @@ public class Empresa extends Usuario {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public String getNIF() {
+		return NIF;
+	}
+
+	public void setCIF(String nif) {
+		NIF = nif;
 	}
 
 	public String getIdEmpresa() {
