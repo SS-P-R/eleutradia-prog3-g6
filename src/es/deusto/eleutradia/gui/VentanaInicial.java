@@ -29,7 +29,7 @@ import javax.swing.SwingConstants;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
 
-public class VentanaLogin extends JFrame {
+public class VentanaInicial extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -51,7 +51,7 @@ public class VentanaLogin extends JFrame {
     private static final Font FONT_ETIQUETA = new Font("Serif", Font.BOLD, 12);
     private static final Font FONT_CAMPO = new Font("Serif", Font.PLAIN, 14);
 	
-	public VentanaLogin() {
+	public VentanaInicial() {
 		super("EleuTradia: Inicio");
 		configurarVentana();
         crearYOrganizarPaneles();
@@ -243,7 +243,7 @@ public class VentanaLogin extends JFrame {
                     new VentanaPrincipal(usuarioFound);
                     dispose(); // Cerrar la ventana de login
                 } else {
-                    JOptionPane.showMessageDialog(VentanaLogin.this, 
+                    JOptionPane.showMessageDialog(VentanaInicial.this, 
                                                   "Email o contraseña incorrectos.", 
                                                   "Error de Login.", 
                                                   JOptionPane.ERROR_MESSAGE);
