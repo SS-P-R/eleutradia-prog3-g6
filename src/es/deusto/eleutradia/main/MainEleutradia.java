@@ -102,16 +102,7 @@ public class MainEleutradia {
 		MainEleutradia.inicializarUsuarios();
 		
 		// ---Ejecutar la creacion de la GUI---
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				// Crear una instancia de VentanaLogin
-				new VentanaInicial().setVisible(true);
-				
-			}
-		});
-		
+		SwingUtilities.invokeLater(() -> new VentanaInicial().setVisible(true));
 	}
 	
 }

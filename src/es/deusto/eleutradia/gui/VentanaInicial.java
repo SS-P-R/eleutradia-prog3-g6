@@ -1,6 +1,5 @@
 package es.deusto.eleutradia.gui;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -9,8 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -40,22 +37,22 @@ public class VentanaInicial extends JFrame {
 	private JLabel labelRegistro;
 	private JTextField campoId;
 	private JPasswordField campoPassword;
-	private JButton botonLogin, botonRegister;
+	private JButton botonLogin, botonRegistro, botonVolver;
 	private JLabel imageLabel;
     private ImageIcon originalIcon;
 	
-	private static final Color COLOR_FONDO_LOGIN = Color.WHITE;					// Blanco
     private static final Color COLOR_BOTON_LOGIN = new Color(0, 100, 255); 		// Azul
     private static final Color COLOR_TEXTO_ETIQUETA = new Color(100, 100, 100); // Gris
-    private static final Font FONT_TITULO = new Font("Serif", Font.BOLD, 30);
+    private static final Font FONT_TITULO_BIENVENIDA = new Font("SansSerif", Font.BOLD, 18);
+    private static final Font FONT_TITULO_LOGIN = new Font("Serif", Font.BOLD, 18);
     private static final Font FONT_ETIQUETA = new Font("Serif", Font.BOLD, 12);
     private static final Font FONT_CAMPO = new Font("Serif", Font.PLAIN, 14);
 	
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
-		configurarVentana();
-        crearYOrganizarPaneles();
-        registrarActionListeners();
+		this.configurarVentana();
+        this.inicializarPaneles();
+        this.registrarActionListeners();
         this.setVisible(true);
 	}
 	
@@ -71,7 +68,7 @@ public class VentanaInicial extends JFrame {
 		this.add(contenedor);
 	}
 	
-	private void crearYOrganizarPaneles() {
+	private void inicializarPaneles() {
 		JPanel panelBienvenida = construirPanelBienvenida();
 	    JPanel panelLoginParticular = construirPanelLogin(true);
 	    JPanel panelLoginEmpresa = construirPanelLogin(false);
@@ -88,20 +85,20 @@ public class VentanaInicial extends JFrame {
 		panelIzdo.setBackground(Color.WHITE);
 		panelIzdo.setLayout(new BoxLayout(panelIzdo, BoxLayout.Y_AXIS));
 		panelIzdo.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
-		
 
 		JLabel titulo = new JLabel("Bienvenido/a a EleuTradia", JLabel.CENTER);
-		titulo.setFont(new Font("Serif", Font.BOLD, 28));
-		titulo.setAlignmentX(CENTER_ALIGNMENT);
+		titulo.setFont(FONT_TITULO_BIENVENIDA);
+		titulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, titulo.getPreferredSize().height));
 		panelIzdo.add(titulo);
 		panelIzdo.add(Box.createVerticalStrut(50));
 		
-		botonParticular.setAlignmentX(CENTER_ALIGNMENT);
-		botonEmpresa.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonParticular.setHorizontalAlignment(JButton.CENTER);
+		botonEmpresa.setHorizontalAlignment(JButton.CENTER);
 	    panelIzdo.add(botonParticular);
 	    panelIzdo.add(Box.createVerticalStrut(20));
 	    panelIzdo.add(botonEmpresa);
-	    panelIzdo.add(Box.createVerticalStrut(30));
+	    panelIzdo.add(Box.createVerticalStrut(160));
 	    
         JPanel panelRegistro = new JPanel(new FlowLayout());
         panelRegistro.setBackground(Color.WHITE);
@@ -113,14 +110,14 @@ public class VentanaInicial extends JFrame {
         labelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelRegistro.add(labelRegistro);
         
-        botonRegister = new JButton("Pulse aquí para abrir una cuenta");
-        botonRegister.setFont(FONT_ETIQUETA);
-        botonRegister.setBackground(Color.WHITE);
-        botonRegister.setForeground(COLOR_BOTON_LOGIN);
-        botonRegister.setFocusPainted(false);
-        botonRegister.setBorder(null);
-        botonRegister.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelRegistro.add(botonRegister);
+        botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
+        botonRegistro.setFont(FONT_ETIQUETA);
+        botonRegistro.setBackground(Color.WHITE);
+        botonRegistro.setForeground(COLOR_BOTON_LOGIN);
+        botonRegistro.setFocusPainted(false);
+        botonRegistro.setBorder(null);
+        botonRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelRegistro.add(botonRegistro);
         
         panelIzdo.add(panelRegistro);
 		
@@ -138,42 +135,49 @@ public class VentanaInicial extends JFrame {
 		
 		String tipoUsuario = esParticular ? "Particular" : "Empresa";
 		
-	    JLabel labelTituloLogin = new JLabel("Login de " + tipoUsuario + " - Introduzca sus datos", JLabel.CENTER);
-	    labelTituloLogin.setFont(new Font("Serif", Font.BOLD, 22));
-	    mainPanel.add(labelTituloLogin);
-		
         JPanel panelLogin = new JPanel();
         panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.Y_AXIS));
-        panelLogin.setBackground(COLOR_FONDO_LOGIN);
-        panelLogin.setBorder(BorderFactory.createEmptyBorder(50, 40, 50, 40));
-
-        JLabel labelTitulo = new JLabel("Acceda a su cuenta");
-        labelTitulo.setFont(FONT_TITULO);
-        labelTitulo.setHorizontalAlignment(JLabel.LEFT);
-        panelLogin.add(labelTitulo);
-        panelLogin.add(Box.createVerticalStrut(30));
+        panelLogin.setBackground(Color.WHITE);
+        panelLogin.setBorder(BorderFactory.createEmptyBorder(50, 60, 50, 60));
+        
+	    JLabel labelTituloLogin = new JLabel("Login de " + tipoUsuario, JLabel.CENTER);
+	    labelTituloLogin.setFont(FONT_TITULO_LOGIN);
+	    labelTituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    panelLogin.add(labelTituloLogin);
+	    panelLogin.add(Box.createVerticalStrut(10));
+	    
+	    JLabel labelSubtituloLogin = new JLabel("Introduzca sus datos", JLabel.CENTER);
+	    labelSubtituloLogin.setFont(new Font("SansSerif", Font.PLAIN, 14));
+	    labelSubtituloLogin.setForeground(COLOR_TEXTO_ETIQUETA);
+	    labelSubtituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    panelLogin.add(labelSubtituloLogin);
+	    panelLogin.add(Box.createVerticalStrut(30));
         
         JLabel labelId = new JLabel(esParticular ? "DNI:" : "NIF:");
         labelId.setFont(FONT_ETIQUETA);
         labelId.setForeground(COLOR_TEXTO_ETIQUETA);
-        labelId.setHorizontalAlignment(JLabel.LEFT);
+        labelId.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         panelLogin.add(labelId);
         panelLogin.add(Box.createVerticalStrut(20));
 
         campoId = new JTextField(20);
         campoId.setFont(FONT_CAMPO);
+        campoId.setMaximumSize(new Dimension(350, 35));
+        campoId.setPreferredSize(new Dimension(350, 35));
         panelLogin.add(campoId);
         panelLogin.add(Box.createVerticalStrut(20));
         
         JLabel labelPassword = new JLabel("Contraseña:");
         labelPassword.setFont(FONT_ETIQUETA);
         labelPassword.setForeground(COLOR_TEXTO_ETIQUETA);
-        labelPassword.setHorizontalAlignment(JLabel.LEFT);
+        labelPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         panelLogin.add(labelPassword);
         panelLogin.add(Box.createVerticalStrut(20));
 
         campoPassword = new JPasswordField(20);
         campoPassword.setFont(FONT_CAMPO);
+        campoPassword.setMaximumSize(new Dimension(350, 35));
+        campoPassword.setPreferredSize(new Dimension(350, 35));
         panelLogin.add(campoPassword);
         panelLogin.add(Box.createVerticalStrut(20));
         
@@ -186,16 +190,16 @@ public class VentanaInicial extends JFrame {
         botonLogin.setMaximumSize(new Dimension(Integer.MAX_VALUE, botonLogin.getPreferredSize().height));
         panelLogin.add(botonLogin);
 
-        JPanel panelImagen = construirPanelImagen();
+        JPanel panelDcho = construirPanelImagen();
         
         mainPanel.add(panelLogin);
-        mainPanel.add(panelImagen);
+        mainPanel.add(panelDcho);
 
         return mainPanel;
     }
 	
 	private JPanel construirPanelImagen() {
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout());
         panel.setBackground(Color.BLACK);
 
         imageLabel = new JLabel();
@@ -212,7 +216,7 @@ public class VentanaInicial extends JFrame {
         }
         
         imageLabel.setIcon(originalIcon);
-        panel.add(imageLabel, BorderLayout.CENTER);
+        panel.add(imageLabel);
         
         return panel;
     }
@@ -222,10 +226,7 @@ public class VentanaInicial extends JFrame {
 		botonParticular.addActionListener(e -> layout.show(contenedor, "loginParticular"));
 		botonEmpresa.addActionListener(e -> layout.show(contenedor, "loginEmpresa"));
 		
-		botonLogin.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		botonLogin.addActionListener(e -> {
 				
                 String dni = campoId.getText().trim();
                 String password = new String(campoPassword.getPassword());
@@ -243,21 +244,14 @@ public class VentanaInicial extends JFrame {
                     new VentanaPrincipal(usuarioFound);
                     dispose(); // Cerrar la ventana de login
                 } else {
-                    JOptionPane.showMessageDialog(VentanaInicial.this, 
-                                                  "Email o contraseña incorrectos.", 
-                                                  "Error de Login.", 
-                                                  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                    		VentanaInicial.this, 
+                    		"Email o contraseña incorrectos.", 
+                    		"Error de Login.", 
+                    		JOptionPane.ERROR_MESSAGE);
                 }
-            }
 		});
 		
-		botonRegister.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				new VentanaRegistro();
-			}
-		});
+		botonRegistro.addActionListener(e -> new VentanaRegistro());
 	}
 }
