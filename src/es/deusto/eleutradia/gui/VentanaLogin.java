@@ -37,14 +37,14 @@ public class VentanaLogin extends JFrame {
 	private JPanel contenedor;
 	private JButton botonParticular = new JButton("Acceder como Particular");
 	private JButton botonEmpresa = new JButton("Acceder como Empresa");
-	private JLabel labelTitulo, labelDni, labelPassword, labelRegistro;
-	private JTextField textoDni;
-	private JPasswordField textoPassword;
+	private JLabel labelRegistro;
+	private JTextField campoId;
+	private JPasswordField campoPassword;
 	private JButton botonLogin, botonRegister;
-	private JLabel espacio, imageLabel;
+	private JLabel imageLabel;
     private ImageIcon originalIcon;
 	
-	private static final Color COLOR_FONDO_FORM = Color.WHITE;					// Blanco
+	private static final Color COLOR_FONDO_LOGIN = Color.WHITE;					// Blanco
     private static final Color COLOR_BOTON_LOGIN = new Color(0, 100, 255); 		// Azul
     private static final Color COLOR_TEXTO_ETIQUETA = new Color(100, 100, 100); // Gris
     private static final Font FONT_TITULO = new Font("Serif", Font.BOLD, 30);
@@ -73,8 +73,8 @@ public class VentanaLogin extends JFrame {
 	
 	private void crearYOrganizarPaneles() {
 		JPanel panelBienvenida = construirPanelBienvenida();
-	    JPanel panelLoginParticular = construirPanelLoginParticular();
-	    JPanel panelLoginEmpresa = construirPanelLoginEmpresa();
+	    JPanel panelLoginParticular = construirPanelLogin(true);
+	    JPanel panelLoginEmpresa = construirPanelLogin(false);
 	    contenedor.add(panelBienvenida, "bienvenida");
 	    contenedor.add(panelLoginParticular, "loginParticular");
 	    contenedor.add(panelLoginEmpresa, "loginEmpresa");
@@ -90,7 +90,7 @@ public class VentanaLogin extends JFrame {
 		panelIzdo.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
 		
 
-		JLabel titulo = new JLabel("Bienvenido/a a EleuTradia", SwingConstants.CENTER);
+		JLabel titulo = new JLabel("Bienvenido/a a EleuTradia", JLabel.CENTER);
 		titulo.setFont(new Font("Serif", Font.BOLD, 28));
 		titulo.setAlignmentX(CENTER_ALIGNMENT);
 		panelIzdo.add(titulo);
@@ -101,6 +101,28 @@ public class VentanaLogin extends JFrame {
 	    panelIzdo.add(botonParticular);
 	    panelIzdo.add(Box.createVerticalStrut(20));
 	    panelIzdo.add(botonEmpresa);
+	    panelIzdo.add(Box.createVerticalStrut(30));
+	    
+        JPanel panelRegistro = new JPanel(new FlowLayout());
+        panelRegistro.setBackground(Color.WHITE);
+        panelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        labelRegistro = new JLabel("¿No es cliente?");
+        labelRegistro.setFont(FONT_ETIQUETA);
+        labelRegistro.setForeground(COLOR_BOTON_LOGIN);
+        labelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelRegistro.add(labelRegistro);
+        
+        botonRegister = new JButton("Pulse aquí para abrir una cuenta");
+        botonRegister.setFont(FONT_ETIQUETA);
+        botonRegister.setBackground(Color.WHITE);
+        botonRegister.setForeground(COLOR_BOTON_LOGIN);
+        botonRegister.setFocusPainted(false);
+        botonRegister.setBorder(null);
+        botonRegister.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelRegistro.add(botonRegister);
+        
+        panelIzdo.add(panelRegistro);
 		
 		JPanel panelDcho = construirPanelImagen();
 		panelDcho.setPreferredSize(new Dimension(this.getWidth()/2, this.getHeight()));
@@ -111,85 +133,49 @@ public class VentanaLogin extends JFrame {
 		return mainPanel;
 	}
 	
-	private JPanel construirPanelLoginParticular() {
+	private JPanel construirPanelLogin(boolean esParticular) {
 		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
 		
-	    JLabel label = new JLabel("Login de Particular - Introduzca sus datos");
-	    label.setHorizontalAlignment(SwingConstants.CENTER);
-	    label.setFont(new Font("Serif", Font.BOLD, 22));
-	    mainPanel.add(label, BorderLayout.CENTER);
+		String tipoUsuario = esParticular ? "Particular" : "Empresa";
 		
-		JPanel panelFormulario = construirPanelFormulario();
-		JPanel panelImagen = construirPanelImagen();
-		mainPanel.add(panelFormulario);
-		mainPanel.add(panelImagen);
+	    JLabel labelTituloLogin = new JLabel("Login de " + tipoUsuario + " - Introduzca sus datos", JLabel.CENTER);
+	    labelTituloLogin.setFont(new Font("Serif", Font.BOLD, 22));
+	    mainPanel.add(labelTituloLogin);
 		
-		return mainPanel;
-	}
-	
-	private JPanel construirPanelLoginEmpresa() {
-		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
-		
-		JLabel label = new JLabel("Login de Empresa - Introduzca los datos de la empresa");
-	    label.setHorizontalAlignment(SwingConstants.CENTER);
-	    label.setFont(new Font("Serif", Font.BOLD, 22));
-	    mainPanel.add(label, BorderLayout.CENTER);
-	    
-	    JPanel panelFormulario = construirPanelFormulario();
-		JPanel panelImagen = construirPanelImagen();
-		mainPanel.add(panelFormulario);
-		mainPanel.add(panelImagen);
-	    
-		return mainPanel;
-	}
-	
-	private JPanel construirPanelFormulario() {
-		
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_FONDO_FORM);
-        panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        JPanel panelLogin = new JPanel();
+        panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.Y_AXIS));
+        panelLogin.setBackground(COLOR_FONDO_LOGIN);
+        panelLogin.setBorder(BorderFactory.createEmptyBorder(50, 40, 50, 40));
 
-        labelTitulo = new JLabel("Accede a tu cuenta");
+        JLabel labelTitulo = new JLabel("Acceda a su cuenta");
         labelTitulo.setFont(FONT_TITULO);
-        labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelTitulo);
-
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
-        panel.add(espacio);
+        labelTitulo.setHorizontalAlignment(JLabel.LEFT);
+        panelLogin.add(labelTitulo);
+        panelLogin.add(Box.createVerticalStrut(30));
         
-        labelDni = new JLabel("DNI:");
-        labelDni.setFont(FONT_ETIQUETA);
-        labelDni.setForeground(COLOR_TEXTO_ETIQUETA);
-        labelDni.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelDni);
+        JLabel labelId = new JLabel(esParticular ? "DNI:" : "NIF:");
+        labelId.setFont(FONT_ETIQUETA);
+        labelId.setForeground(COLOR_TEXTO_ETIQUETA);
+        labelId.setHorizontalAlignment(JLabel.LEFT);
+        panelLogin.add(labelId);
+        panelLogin.add(Box.createVerticalStrut(20));
 
-        textoDni = new JTextField(20);
-        textoDni.setFont(FONT_CAMPO);
-        textoDni.setMaximumSize(new Dimension(500, 100)); // Tengo que ver mejor como funciona las dimensiones
-        textoDni.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoDni);
+        campoId = new JTextField(20);
+        campoId.setFont(FONT_CAMPO);
+        panelLogin.add(campoId);
+        panelLogin.add(Box.createVerticalStrut(20));
         
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        panel.add(espacio);
-
-        labelPassword = new JLabel("Contraseña:");
+        JLabel labelPassword = new JLabel("Contraseña:");
         labelPassword.setFont(FONT_ETIQUETA);
         labelPassword.setForeground(COLOR_TEXTO_ETIQUETA);
-        labelPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelPassword);
+        labelPassword.setHorizontalAlignment(JLabel.LEFT);
+        panelLogin.add(labelPassword);
+        panelLogin.add(Box.createVerticalStrut(20));
 
-        textoPassword = new JPasswordField(20);
-        textoPassword.setFont(FONT_CAMPO);
-        textoPassword.setMaximumSize(new Dimension(350, 100));
-        textoPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoPassword);
-        
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
-        panel.add(espacio);
+        campoPassword = new JPasswordField(20);
+        campoPassword.setFont(FONT_CAMPO);
+        panelLogin.add(campoPassword);
+        panelLogin.add(Box.createVerticalStrut(20));
         
         botonLogin = new JButton("Login");
         botonLogin.setFont(FONT_ETIQUETA);
@@ -198,36 +184,14 @@ public class VentanaLogin extends JFrame {
         botonLogin.setFocusPainted(false);
         botonLogin.setBorder(BorderFactory.createEmptyBorder(12, 0, 12, 0));
         botonLogin.setMaximumSize(new Dimension(Integer.MAX_VALUE, botonLogin.getPreferredSize().height));
-        botonLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(botonLogin);
+        panelLogin.add(botonLogin);
 
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 200, 0));
-        panel.add(espacio);        
-
-        JPanel panelRegistrarse = new JPanel(new FlowLayout());
-        panelRegistrarse.setBackground(Color.WHITE);
-        panelRegistrarse.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JPanel panelImagen = construirPanelImagen();
         
-        labelRegistro = new JLabel("¿No tiene cuenta?");
-        labelRegistro.setFont(FONT_ETIQUETA);
-        labelRegistro.setForeground(COLOR_BOTON_LOGIN);
-        labelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelRegistrarse.add(labelRegistro);
-        
+        mainPanel.add(panelLogin);
+        mainPanel.add(panelImagen);
 
-        botonRegister = new JButton("Pulse aquí para registrarse");
-        botonRegister.setFont(FONT_ETIQUETA);
-        botonRegister.setBackground(Color.WHITE);
-        botonRegister.setForeground(COLOR_BOTON_LOGIN);
-        botonRegister.setFocusPainted(false);
-        botonRegister.setBorder(null);
-        botonRegister.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panelRegistrarse.add(botonRegister);
-        
-        panel.add(panelRegistrarse);
-
-        return panel;
+        return mainPanel;
     }
 	
 	private JPanel construirPanelImagen() {
@@ -263,8 +227,8 @@ public class VentanaLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-                String dni = textoDni.getText().trim();
-                String password = new String(textoPassword.getPassword());
+                String dni = campoId.getText().trim();
+                String password = new String(campoPassword.getPassword());
 
                 Particular usuarioFound = null;
                 
