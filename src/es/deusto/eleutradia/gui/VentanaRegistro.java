@@ -10,6 +10,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -26,9 +28,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Empresa;
+import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.main.MainEleutradia;
 
 public class VentanaRegistro extends JFrame {
 
@@ -39,11 +44,11 @@ public class VentanaRegistro extends JFrame {
 	private JPasswordField textoPassword, textoConfirmarPassword;
 	private JButton botonCancelar, botonConfirmarRegistro;
 	
-	private JLabel labelTipo;
+	private JLabel labelTipo, labelDNI, labelNIF;
 	private JRadioButton radioParticular, radioEmpresa;
 	private ButtonGroup grupoTipoUsuario;
-	private JPanel panelCamposEspecificos;
-	private CardLayout cardLayoutEspecificos;
+	private JTextField textoDNI, textoNIF;
+	private JPanel panelCamposParticular, panelCamposEmpresa;
 	
 	private JLabel espacio, imageLabel;
     private ImageIcon originalIcon;
@@ -62,6 +67,9 @@ public class VentanaRegistro extends JFrame {
 		configurarVentana();
         crearYOrganizarPaneles();
         registrarActionListeners();
+        
+        panelCamposParticular.setVisible(true);
+        panelCamposEmpresa.setVisible(false);
         
         this.setVisible(true);
 	}
@@ -104,17 +112,14 @@ public class VentanaRegistro extends JFrame {
         labelTitulo = new JLabel("Crea tu cuenta");
         labelTitulo.setFont(FONT_TITULO);
         labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         panel.add(labelTitulo);
 
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
-        panel.add(espacio);
-        
         JPanel panelTipoUsuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelTipoUsuario.setBackground(COLOR_FONDO_FORM);
         panelTipoUsuario.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelTipoUsuario.setMaximumSize(new Dimension(300,250));
-        panelTipoUsuario.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        panelTipoUsuario.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         
         labelTipo = new JLabel("Tipo de cuenta:");
         labelTipo.setFont(FONT_ETIQUETA);
@@ -137,73 +142,18 @@ public class VentanaRegistro extends JFrame {
         
         panel.add(panelTipoUsuario);
         
-        labelNombre = new JLabel("Nombre Completo");
-        labelNombre.setFont(FONT_ETIQUETA);
-        labelNombre.setForeground(COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR);
-        labelNombre.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelNombre);
+        panel.add(panelCamposParticular = crearCampoFormulario(labelDNI = new JLabel("DNI"),textoDNI = new JTextField(20)));
+        panel.add(panelCamposEmpresa = crearCampoFormulario(labelNIF= new JLabel("NIF"),textoNIF = new JTextField(20)));
         
-        textoNombre = new JTextField(20);
-        textoNombre.setFont(FONT_CAMPO);
-        textoNombre.setMaximumSize(new Dimension(500, 100)); // Tengo que ver mejor como funciona las dimensiones
-        textoNombre.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoNombre);
-        
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        panel.add(espacio);
-        
-        labelEmail = new JLabel("E-mail");
-        labelEmail.setFont(FONT_ETIQUETA);
-        labelEmail.setForeground(COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR);
-        labelEmail.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelEmail);
-
-        textoEmail = new JTextField(20);
-        textoEmail.setFont(FONT_CAMPO);
-        textoEmail.setMaximumSize(new Dimension(500, 100)); // Tengo que ver mejor como funciona las dimensiones
-        textoEmail.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoEmail);
-        
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        panel.add(espacio);
-
-        labelPassword = new JLabel("Contraseña");
-        labelPassword.setFont(FONT_ETIQUETA);
-        labelPassword.setForeground(COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR);
-        labelPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelPassword);
-
-        textoPassword = new JPasswordField(20);
-        textoPassword.setFont(FONT_CAMPO);
-        textoPassword.setMaximumSize(new Dimension(350, 100));
-        textoPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoPassword);
-        
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
-        panel.add(espacio);
-        
-        labelConfirmarPassword = new JLabel("Confirmar Contraseña");
-        labelConfirmarPassword.setFont(FONT_ETIQUETA);
-        labelConfirmarPassword.setForeground(COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR);
-        labelConfirmarPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(labelConfirmarPassword);
-
-        textoConfirmarPassword = new JPasswordField(20);
-        textoConfirmarPassword.setFont(FONT_CAMPO);
-        textoConfirmarPassword.setMaximumSize(new Dimension(350, 100));
-        textoConfirmarPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(textoConfirmarPassword);
-        
-        espacio = new JLabel();
-        espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
-        panel.add(espacio);
+        panel.add(crearCampoFormulario(labelNombre = new JLabel("Nombre Completo"),textoNombre = new JTextField(15)));
+        panel.add(crearCampoFormulario(labelEmail = new JLabel("E-mail"),textoEmail = new JTextField(15)));
+        panel.add(crearCampoFormulario(labelPassword = new JLabel("Contraseña"),textoPassword = new JPasswordField(15)));
+        panel.add(crearCampoFormulario(labelConfirmarPassword = new JLabel("Confirmar Contraseña"),textoConfirmarPassword = new JPasswordField(15)));
 
         JPanel panelBotones = new JPanel(new FlowLayout());
         panelBotones.setBackground(Color.WHITE);
         panelBotones.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
         botonCancelar = new JButton("Cancelar");
         botonCancelar.setFont(FONT_ETIQUETA);
@@ -231,6 +181,26 @@ public class VentanaRegistro extends JFrame {
         return panel;
     }
 	
+	private JPanel crearCampoFormulario(JLabel labelCampo, Component textoCampo) {
+
+		JPanel panelCampo = new JPanel(new GridLayout(2, 1));
+		panelCampo.setMaximumSize(new Dimension(350, 250));
+		panelCampo.setBackground(COLOR_FONDO_FORM);
+		panelCampo.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelCampo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		
+		labelCampo.setFont(FONT_ETIQUETA);
+		labelCampo.setForeground(COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR);
+		labelCampo.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		textoCampo.setFont(FONT_CAMPO);
+        
+        panelCampo.add(labelCampo);
+        panelCampo.add(textoCampo);
+        
+		return panelCampo;
+	}
+
 	private JPanel construirPanelImagen() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.BLACK);
@@ -253,6 +223,25 @@ public class VentanaRegistro extends JFrame {
     }
 	
 	private void registrarActionListeners() {
+		
+		ActionListener radioListener= new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (radioParticular.isSelected()) {
+					panelCamposParticular.setVisible(true);
+					panelCamposEmpresa.setVisible(false);
+				} else {
+					panelCamposParticular.setVisible(false);
+					panelCamposEmpresa.setVisible(true);
+				}
+
+			}
+		};
+		
+		radioParticular.addActionListener(radioListener);
+		radioEmpresa.addActionListener(radioListener);
 		
 		botonCancelar.addActionListener(new ActionListener() {
 			
@@ -300,33 +289,33 @@ public class VentanaRegistro extends JFrame {
 
         try {
 			if (radioParticular.isSelected()) {
-				
-				Particular p = new Particular();
-				p.setNombre(nombre);
+				Particular p = new Particular(textoDNI.getText(), nombre, null, null, null);
 				p.setEmail(email);
 				p.setPassword(password);
 				nuevoUsuario = p;
 				
+		        MainEleutradia.listaParticulares.add((Particular)nuevoUsuario);
+				
 			} else {
 				
-				Empresa e = new Empresa();
-				e.setNombre(nombre);
+				Empresa e = new Empresa(null, nombre, textoNIF.getText());
 				e.setEmail(email);
 				e.setPassword(password);
 				nuevoUsuario = e;
 				
+		        MainEleutradia.listaEmpresas.add((Empresa)nuevoUsuario);
 			}
 			
 	        JOptionPane.showMessageDialog(VentanaRegistro.this,
 							                "¡Registro (simulado) exitoso!\nNombre: " + nombre,
 							                "Registro Completado",
 							                JOptionPane.INFORMATION_MESSAGE);
-
+	        
 	        dispose();
 				
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this,
-											"Error al crear usuario",
+											"Error al crear usuario" + e,
 											"Error",
 											JOptionPane.ERROR_MESSAGE);
 		}
