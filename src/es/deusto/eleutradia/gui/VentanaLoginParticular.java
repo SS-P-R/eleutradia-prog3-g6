@@ -95,7 +95,7 @@ public class VentanaLoginParticular extends JFrame {
         espacio.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         panel.add(espacio);
         
-        labelDni = new JLabel("DNI/NIF:");
+        labelDni = new JLabel("DNI / NIF:");
         labelDni.setFont(FONT_ETIQUETA);
         labelDni.setForeground(COLOR_TEXTO_ETIQUETA);
         labelDni.setAlignmentX(Component.LEFT_ALIGNMENT);
