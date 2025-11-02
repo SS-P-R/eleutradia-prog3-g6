@@ -58,9 +58,9 @@ public class VentanaRegistro extends JFrame {
 	private static final Color COLOR_FONDO_FORM = Color.WHITE;
     private static final Color COLOR_BOTON_REGISTRO = new Color(0, 100, 255); // Azul
     private static final Color COLOR_TEXTO_ETIQUETA_BOTON_CANCELAR = new Color(100, 100, 100); // Gris
-    private static final Font FONT_TITULO = new Font("Arial", Font.BOLD, 22);
-    private static final Font FONT_ETIQUETA = new Font("Arial", Font.BOLD, 12);
-    private static final Font FONT_CAMPO = new Font("Arial", Font.PLAIN, 14);
+    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 22);
+    private static final Font FONT_ETIQUETA = new Font("Segoe UI", Font.BOLD, 12);
+    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);
 	
 	public VentanaRegistro() {
 		
@@ -76,7 +76,7 @@ public class VentanaRegistro extends JFrame {
 	
 	private void configurarVentana() {
 		
-		this.setTitle("Registro de Nuevo Usuario");
+		this.setTitle("EleuTradia: Registro");
 		this.setSize(800,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -109,7 +109,7 @@ public class VentanaRegistro extends JFrame {
         panel.setBackground(COLOR_FONDO_FORM);
         panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
-        labelTitulo = new JLabel("Crea tu cuenta");
+        labelTitulo = new JLabel("Abra su cuenta");
         labelTitulo.setFont(FONT_TITULO);
         labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
         labelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));

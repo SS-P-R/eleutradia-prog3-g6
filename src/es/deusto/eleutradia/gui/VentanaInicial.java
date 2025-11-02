@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,9 +21,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
 
@@ -34,19 +37,18 @@ public class VentanaInicial extends JFrame {
 	private JPanel contenedor;
 	private JButton botonParticular = new JButton("Acceder como Particular");
 	private JButton botonEmpresa = new JButton("Acceder como Empresa");
-	private JLabel labelRegistro;
-	private JTextField campoId;
-	private JPasswordField campoPassword;
-	private JButton botonLogin, botonRegistro, botonVolver;
-	private JLabel imageLabel;
+	private JButton botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
+	private JTextField campoIdParticular, campoIdEmpresa;
+	private JPasswordField campoPasswordParticular, campoPasswordEmpresa;
+	private JButton botonLoginParticular, botonLoginEmpresa, botonVolverParticular, botonVolverEmpresa;
     private ImageIcon originalIcon;
 	
-    private static final Color COLOR_BOTON_LOGIN = new Color(0, 100, 255); 		// Azul
-    private static final Color COLOR_TEXTO_ETIQUETA = new Color(100, 100, 100); // Gris
-    private static final Font FONT_TITULO_BIENVENIDA = new Font("SansSerif", Font.BOLD, 18);
-    private static final Font FONT_TITULO_LOGIN = new Font("Serif", Font.BOLD, 18);
-    private static final Font FONT_ETIQUETA = new Font("Serif", Font.BOLD, 12);
-    private static final Font FONT_CAMPO = new Font("Serif", Font.PLAIN, 14);
+    private static final Color MY_AZUL = new Color(0, 100, 255); 		// Azul
+    private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
+    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
+    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font FONT_ETIQUETA = new Font("Segoe UI", Font.BOLD, 12);
+    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);
 	
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
@@ -78,51 +80,61 @@ public class VentanaInicial extends JFrame {
 	    layout.show(contenedor, "bienvenida");
 	}
 	
-	private JPanel construirPanelBienvenida() {
+	private JPanel construirPanelBienvenida() {		
 		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
 		
-		JPanel panelIzdo = new JPanel();
-		panelIzdo.setBackground(Color.WHITE);
-		panelIzdo.setLayout(new BoxLayout(panelIzdo, BoxLayout.Y_AXIS));
-		panelIzdo.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
+		JPanel panelDcho = new JPanel();
+		panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
+		panelDcho.setBackground(Color.WHITE);
+		panelDcho.setBorder(BorderFactory.createEmptyBorder(100, 50, 60, 50));
+		panelDcho.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+		panelDcho.setAlignmentY(JPanel.CENTER_ALIGNMENT);
 
-		JLabel titulo = new JLabel("Bienvenido/a a EleuTradia", JLabel.CENTER);
-		titulo.setFont(FONT_TITULO_BIENVENIDA);
+		JLabel titulo = new JLabel("¡Bienvenido/a a EleuTradia!", JLabel.CENTER);
+		titulo.setFont(FONT_TITULO);
 		titulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, titulo.getPreferredSize().height));
-		panelIzdo.add(titulo);
-		panelIzdo.add(Box.createVerticalStrut(50));
+		panelDcho.add(titulo);
+		panelDcho.add(Box.createVerticalStrut(10));
 		
-		botonParticular.setHorizontalAlignment(JButton.CENTER);
-		botonEmpresa.setHorizontalAlignment(JButton.CENTER);
-	    panelIzdo.add(botonParticular);
-	    panelIzdo.add(Box.createVerticalStrut(20));
-	    panelIzdo.add(botonEmpresa);
-	    panelIzdo.add(Box.createVerticalStrut(160));
+		JLabel subtitulo = new JLabel("Seleccione su método de acceso:", JLabel.CENTER);
+		subtitulo.setFont(FONT_SUBTITULO);
+		subtitulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		subtitulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, subtitulo.getPreferredSize().height));
+		panelDcho.add(subtitulo);
+		panelDcho.add(Box.createVerticalStrut(90));
+		
+		botonParticular.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		botonEmpresa.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		botonParticular.setMaximumSize(new Dimension(220, 40));
+		botonEmpresa.setMaximumSize(new Dimension(220, 40));
+		panelDcho.add(botonParticular);
+		panelDcho.add(Box.createVerticalStrut(20));
+		panelDcho.add(botonEmpresa);
+		panelDcho.add(Box.createVerticalStrut(120));
 	    
-        JPanel panelRegistro = new JPanel(new FlowLayout());
+        JPanel panelRegistro = new JPanel();
+        panelRegistro.setLayout(new BoxLayout(panelRegistro, BoxLayout.Y_AXIS));
         panelRegistro.setBackground(Color.WHITE);
-        panelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelRegistro.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         
-        labelRegistro = new JLabel("¿No es cliente?");
+        JLabel labelRegistro = new JLabel("¿No es cliente?");
         labelRegistro.setFont(FONT_ETIQUETA);
-        labelRegistro.setForeground(COLOR_BOTON_LOGIN);
-        labelRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelRegistro.setForeground(MY_AZUL);
+        labelRegistro.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panelRegistro.add(labelRegistro);
         
-        botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
         botonRegistro.setFont(FONT_ETIQUETA);
         botonRegistro.setBackground(Color.WHITE);
-        botonRegistro.setForeground(COLOR_BOTON_LOGIN);
+        botonRegistro.setForeground(MY_AZUL);
         botonRegistro.setFocusPainted(false);
         botonRegistro.setBorder(null);
-        botonRegistro.setAlignmentX(Component.LEFT_ALIGNMENT);
+        botonRegistro.setAlignmentX(JButton.CENTER_ALIGNMENT);
         panelRegistro.add(botonRegistro);
         
-        panelIzdo.add(panelRegistro);
+        panelDcho.add(panelRegistro);
 		
-		JPanel panelDcho = construirPanelImagen();
-		panelDcho.setPreferredSize(new Dimension(this.getWidth()/2, this.getHeight()));
+		JPanel panelIzdo = construirPanelImagen();
 		
 		mainPanel.add(panelIzdo);
 		mainPanel.add(panelDcho);
@@ -135,64 +147,98 @@ public class VentanaInicial extends JFrame {
 		
 		String tipoUsuario = esParticular ? "Particular" : "Empresa";
 		
-        JPanel panelLogin = new JPanel();
-        panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.Y_AXIS));
-        panelLogin.setBackground(Color.WHITE);
-        panelLogin.setBorder(BorderFactory.createEmptyBorder(50, 60, 50, 60));
+        JPanel panelDcho = new JPanel();
+        panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
+        panelDcho.setBackground(Color.WHITE);
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
         
-	    JLabel labelTituloLogin = new JLabel("Login de " + tipoUsuario, JLabel.CENTER);
-	    labelTituloLogin.setFont(FONT_TITULO_LOGIN);
-	    labelTituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-	    panelLogin.add(labelTituloLogin);
-	    panelLogin.add(Box.createVerticalStrut(10));
+	    JLabel tituloLogin = new JLabel("Inicio de sesión - " + tipoUsuario, JLabel.CENTER);
+	    tituloLogin.setFont(FONT_TITULO);
+	    tituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    panelDcho.add(tituloLogin);
+	    panelDcho.add(Box.createVerticalStrut(10));
 	    
-	    JLabel labelSubtituloLogin = new JLabel("Introduzca sus datos", JLabel.CENTER);
-	    labelSubtituloLogin.setFont(new Font("SansSerif", Font.PLAIN, 14));
-	    labelSubtituloLogin.setForeground(COLOR_TEXTO_ETIQUETA);
-	    labelSubtituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-	    panelLogin.add(labelSubtituloLogin);
-	    panelLogin.add(Box.createVerticalStrut(30));
+	    JLabel subtituloLogin = new JLabel("Introduzca sus datos:", JLabel.CENTER);
+	    subtituloLogin.setFont(FONT_SUBTITULO);
+	    subtituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    panelDcho.add(subtituloLogin);
+	    panelDcho.add(Box.createVerticalStrut(30));
+	    
+	    JPanel panelAcceso = new JPanel();
+	    panelAcceso.setLayout(new BoxLayout(panelAcceso, BoxLayout.Y_AXIS));
+	    panelAcceso.setBackground(Color.WHITE);
+	    panelAcceso.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel labelId = new JLabel(esParticular ? "DNI:" : "NIF:");
         labelId.setFont(FONT_ETIQUETA);
-        labelId.setForeground(COLOR_TEXTO_ETIQUETA);
+        labelId.setForeground(MY_GRIS);
         labelId.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-        panelLogin.add(labelId);
-        panelLogin.add(Box.createVerticalStrut(20));
+        panelAcceso.add(labelId);
+        panelAcceso.add(Box.createVerticalStrut(10));
 
-        campoId = new JTextField(20);
+        JTextField campoId = new JTextField(20);
         campoId.setFont(FONT_CAMPO);
         campoId.setMaximumSize(new Dimension(350, 35));
         campoId.setPreferredSize(new Dimension(350, 35));
-        panelLogin.add(campoId);
-        panelLogin.add(Box.createVerticalStrut(20));
+        campoId.setAlignmentX(LEFT_ALIGNMENT);
+        panelAcceso.add(campoId);
+        panelAcceso.add(Box.createVerticalStrut(20));
         
         JLabel labelPassword = new JLabel("Contraseña:");
         labelPassword.setFont(FONT_ETIQUETA);
-        labelPassword.setForeground(COLOR_TEXTO_ETIQUETA);
+        labelPassword.setForeground(MY_GRIS);
         labelPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-        panelLogin.add(labelPassword);
-        panelLogin.add(Box.createVerticalStrut(20));
+        panelAcceso.add(labelPassword);
+        panelAcceso.add(Box.createVerticalStrut(10));
 
-        campoPassword = new JPasswordField(20);
+        JPasswordField campoPassword = new JPasswordField(20);
         campoPassword.setFont(FONT_CAMPO);
         campoPassword.setMaximumSize(new Dimension(350, 35));
         campoPassword.setPreferredSize(new Dimension(350, 35));
-        panelLogin.add(campoPassword);
-        panelLogin.add(Box.createVerticalStrut(20));
+        campoPassword.setAlignmentX(LEFT_ALIGNMENT);
+        panelAcceso.add(campoPassword);
+        panelAcceso.add(Box.createVerticalStrut(40));
         
-        botonLogin = new JButton("Login");
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 20, 0));
+        panelBotones.setBackground(Color.WHITE);
+        panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        panelBotones.setMaximumSize(new Dimension(350, 50));
+        
+        JButton botonVolver = new JButton("Volver");
+        botonVolver.setFont(FONT_ETIQUETA);
+        botonVolver.setBackground(MY_GRIS);
+        botonVolver.setForeground(Color.WHITE);
+        botonVolver.setFocusPainted(false);
+        
+        JButton botonLogin = new JButton("Iniciar sesión");
         botonLogin.setFont(FONT_ETIQUETA);
-        botonLogin.setBackground(COLOR_BOTON_LOGIN);
+        botonLogin.setBackground(MY_AZUL);
         botonLogin.setForeground(Color.WHITE);
         botonLogin.setFocusPainted(false);
-        botonLogin.setBorder(BorderFactory.createEmptyBorder(12, 0, 12, 0));
-        botonLogin.setMaximumSize(new Dimension(Integer.MAX_VALUE, botonLogin.getPreferredSize().height));
-        panelLogin.add(botonLogin);
-
-        JPanel panelDcho = construirPanelImagen();
         
-        mainPanel.add(panelLogin);
+        if (esParticular) {
+            campoIdParticular = campoId;
+            campoPasswordParticular = campoPassword;
+            botonLoginParticular = botonLogin;
+            botonVolverParticular = botonVolver;
+        } else {
+            campoIdEmpresa = campoId;
+            campoPasswordEmpresa = campoPassword;
+            botonLoginEmpresa = botonLogin;
+            botonVolverEmpresa = botonVolver;
+        }
+        
+        panelBotones.add(botonVolver);
+        panelBotones.add(botonLogin);
+        
+        panelAcceso.add(panelBotones);
+        
+        panelDcho.add(panelAcceso);
+
+        JPanel panelIzdo = construirPanelImagen();
+        
+        mainPanel.add(panelIzdo);
         mainPanel.add(panelDcho);
 
         return mainPanel;
@@ -202,7 +248,7 @@ public class VentanaInicial extends JFrame {
         JPanel panel = new JPanel(new GridLayout());
         panel.setBackground(Color.BLACK);
 
-        imageLabel = new JLabel();
+        JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
         try {
@@ -223,35 +269,92 @@ public class VentanaInicial extends JFrame {
 	
 	private void registrarActionListeners() {
 		
-		botonParticular.addActionListener(e -> layout.show(contenedor, "loginParticular"));
-		botonEmpresa.addActionListener(e -> layout.show(contenedor, "loginEmpresa"));
-		
-		botonLogin.addActionListener(e -> {
-				
-                String dni = campoId.getText().trim();
-                String password = new String(campoPassword.getPassword());
-
-                Particular usuarioFound = null;
-                
-                for (Particular p : MainEleutradia.listaParticulares) {
-                	if (p.getDni().equalsIgnoreCase(dni) && p.getPassword().equals(password)) {
-                        usuarioFound = p;
-                        break;
-                    }
-                }
-
-                if (usuarioFound != null) {
-                    new VentanaPrincipal(usuarioFound);
-                    dispose(); // Cerrar la ventana de login
-                } else {
-                    JOptionPane.showMessageDialog(
-                    		VentanaInicial.this, 
-                    		"Email o contraseña incorrectos.", 
-                    		"Error de Login.", 
-                    		JOptionPane.ERROR_MESSAGE);
-                }
+		botonParticular.addActionListener(e -> {
+			layout.show(contenedor, "loginParticular");
+			setTitle("EleuTradia: Iniciar sesión");
 		});
 		
-		botonRegistro.addActionListener(e -> new VentanaRegistro());
+		botonEmpresa.addActionListener(e -> {
+			layout.show(contenedor, "loginEmpresa");
+			setTitle("EleuTradia: Iniciar sesión");
+		});
+		
+		botonVolverParticular.addActionListener(e -> {
+			layout.show(contenedor, "bienvenida");
+			setTitle("EleuTradia: Inicio");
+		});
+		
+		botonVolverEmpresa.addActionListener(e -> {
+			layout.show(contenedor, "bienvenida");
+			setTitle("EleuTradia: Inicio");
+		});
+		
+		botonLoginParticular.addActionListener(e -> {
+                String dni = campoIdParticular.getText().trim();
+                String password = new String(campoPasswordParticular.getPassword());
+                
+                if (!(dni.isBlank() || password.isEmpty())) {
+	                Particular usuarioFound = null;
+	                for (Particular p : MainEleutradia.listaParticulares) {
+	                	if (p.getDni().equalsIgnoreCase(dni) && p.getPassword().equals(password)) {
+	                        usuarioFound = p;
+	                        break;
+	                    }
+	                }
+	
+	                if (usuarioFound != null) {
+	                    new VentanaPrincipal(usuarioFound);
+	                    dispose(); // Cerrar la ventana de login
+	                } else {
+	                    JOptionPane.showMessageDialog(
+	                    		VentanaInicial.this, 
+	                    		"DNI o contraseña incorrectos.", 
+	                    		"Error de Login.", 
+	                    		JOptionPane.ERROR_MESSAGE);
+	                }
+                } else {
+    				JOptionPane.showMessageDialog(
+                    		VentanaInicial.this, 
+                    		"Por favor, rellene ambos campos.", 
+                    		"Campos incompletos", 
+                    		JOptionPane.ERROR_MESSAGE);
+    			}
+		});
+		
+		botonLoginEmpresa.addActionListener(e -> {
+            String nif = campoIdEmpresa.getText().trim();
+            String password = new String(campoPasswordEmpresa.getPassword());
+            
+            if (!(nif.isBlank()) && !(password.isEmpty())) {
+	            Empresa usuarioFound = null;
+	            for (Empresa emp : MainEleutradia.listaEmpresas) {
+	            	if (emp.getIdEmpresa().equalsIgnoreCase(nif) && emp.getPassword().equals(password)) {
+	                    usuarioFound = emp;
+	                    break;
+	                }
+	            }
+	
+	            if (usuarioFound != null) {
+	                new VentanaPrincipal(usuarioFound);
+	                dispose(); // Cerrar la ventana de login
+	            } else {
+	                JOptionPane.showMessageDialog(
+	                		VentanaInicial.this, 
+	                		"NIF o contraseña incorrectos.", 
+	                		"Error de inicio de sesión", 
+	                		JOptionPane.ERROR_MESSAGE);
+	            }
+			} else {
+				JOptionPane.showMessageDialog(
+                		VentanaInicial.this, 
+                		"Por favor, rellene ambos campos.", 
+                		"Campos incompletos", 
+                		JOptionPane.ERROR_MESSAGE);
+			}
+	});
+		
+		botonRegistro.addActionListener(e -> {
+			new VentanaRegistro();
+		});
 	}
 }

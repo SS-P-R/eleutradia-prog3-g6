@@ -53,7 +53,7 @@ public class MainEleutradia {
 	    ArrayList<Curso> cursosBasicos = new ArrayList<>();
 	    ArrayList<Curso> cursosAvanzados = new ArrayList<>();
 
-	    listaParticulares.add(new Particular("79459135R", "Sergio Pena", LocalDate.of(2006, 12, 26), espana,
+	    listaParticulares.add(new Particular("12345678R", "Sergio Pena", LocalDate.of(2006, 12, 26), espana,
 	                "sergio.pena@email.com", "123456", "600500400", "P/ Deusto 25, Bilbao",
 	                espana, pMddo1, carterasBasicas, cursosBasicos)
 	    		);
