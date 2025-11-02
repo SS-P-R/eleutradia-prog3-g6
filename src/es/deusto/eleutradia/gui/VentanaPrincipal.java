@@ -4,12 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,21 +26,20 @@ public class VentanaPrincipal extends JFrame {
 	
 	private Usuario usuarioLogueado;
 	
-	private JButton botonDashboard, botonBusqueda, botonPortfolio, botonAprendizaje, botonPerfil;
-	private JLabel espacioPrincipal, espacio1, espacio2, espacio3, espacio4;
+	private JButton botonInicio, botonExplorar, botonPortfolio, botonAprender, botonPerfil;
 	
-	private JPanel panelDashboard;
-    private JPanel panelBusqueda;
+	private JPanel panelInicio;
+    private JPanel panelExplorar;
     private JPanel panelPortfolio;
-    private JPanel panelAprendizaje;
+    private JPanel panelAprender;
     private JPanel panelPerfil;
     
     private JPanel panelContenido;
     
-    private ImageIcon iconoDashboard, iconoDashboardActivo;
-    private ImageIcon iconoBusqueda, iconoBusquedaActivo;
+    private ImageIcon iconoInicio, iconoInicioActivo;
+    private ImageIcon iconoExplorar, iconoExplorarActivo;
     private ImageIcon iconoPortfolio, iconoPortfolioActivo;
-    private ImageIcon iconoAprendizaje, iconoAprendizajeActivo;
+    private ImageIcon iconoAprender, iconoAprenderActivo;
     private ImageIcon iconoPerfil, iconoPerfilActivo;
 	
 	public VentanaPrincipal(Usuario usuario) {
@@ -52,9 +49,9 @@ public class VentanaPrincipal extends JFrame {
 		cargarIconos();
 		
 		if (usuario instanceof Particular) {
-			this.setTitle("Plataforma de Inversion - Bienvenido/a " + (Particular)(usuarioLogueado));
+			this.setTitle("EleuTradia - Bienvenido/a " + ((Particular)usuarioLogueado).getNombre());
 		} else {
-			this.setTitle("Plataforma de Inversion - Bienvenido/a " + (Empresa)(usuarioLogueado));
+			this.setTitle("EleuTradia - Bienvenido/a " + ((Empresa)usuarioLogueado).getNombre());
 		}
 		this.setSize(800,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,55 +63,44 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panelNavegacion = new JPanel();
 		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
 		panelNavegacion.setBackground(Color.WHITE);
+		panelNavegacion.setAlignmentY(CENTER_ALIGNMENT);
 		
-		espacioPrincipal = new JLabel();
-		espacioPrincipal.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-		panelNavegacion.add(espacioPrincipal);
+		panelNavegacion.add(Box.createVerticalGlue());
 		
-		botonDashboard = crearBotonNavegacion("", iconoDashboardActivo);
-		panelNavegacion.add(botonDashboard);
+		botonInicio = crearBotonNavegacion("", iconoInicioActivo);
+		panelNavegacion.add(botonInicio);
+		panelNavegacion.add(Box.createVerticalStrut(30));
 		
-		espacio1 = new JLabel();
-		espacio1.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-		panelNavegacion.add(espacio1);
-		
-		botonBusqueda = crearBotonNavegacion("Búsqueda", iconoBusqueda);
-		panelNavegacion.add(botonBusqueda);
-		
-		espacio2 = new JLabel();
-		espacio2.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-		panelNavegacion.add(espacio2);
+		botonExplorar = crearBotonNavegacion("Explorar", iconoExplorar);
+		panelNavegacion.add(botonExplorar);
+		panelNavegacion.add(Box.createVerticalStrut(30));
 		
 		botonPortfolio = crearBotonNavegacion("Portfolio", iconoPortfolio);
 		panelNavegacion.add(botonPortfolio);
+		panelNavegacion.add(Box.createVerticalStrut(30));
 		
-		espacio3 = new JLabel();
-		espacio3.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-		panelNavegacion.add(espacio3);
-		
-		botonAprendizaje = crearBotonNavegacion("Aprendizaje", iconoAprendizaje);
-		panelNavegacion.add(botonAprendizaje);
-		
-		espacio4 = new JLabel();
-		espacio4.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-		panelNavegacion.add(espacio4);
+		botonAprender = crearBotonNavegacion("Aprender", iconoAprender);
+		panelNavegacion.add(botonAprender);
+		panelNavegacion.add(Box.createVerticalStrut(30));
 		
 		botonPerfil = crearBotonNavegacion("Mi perfil", iconoPerfil);
 		panelNavegacion.add(botonPerfil);
 		
+		panelNavegacion.add(Box.createVerticalGlue());
+		
 		this.add(panelNavegacion, BorderLayout.WEST);
 		
 		// Ejemplo de las 5 ventanas
-        panelDashboard = new JPanel();
-        panelDashboard.add(new JLabel("Aquí irá el Dashboard")); 
+        panelInicio = new JPanel();
+        panelInicio.add(new JLabel("Aquí irá el Módulo de Inicio")); 
 
-        panelBusqueda = new PanelBusqueda();
+        panelExplorar = new PanelExplorar();
 
         panelPortfolio = new JPanel();
         panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
 
-        panelAprendizaje = new JPanel();
-        panelAprendizaje.add(new JLabel("Aquí irá el Módulo de Aprendizaje"));
+        panelAprender = new JPanel();
+        panelAprender.add(new JLabel("Aquí irá el Módulo de Aprender"));
         
         panelPerfil = new JPanel();
         panelPerfil.add(new JLabel("Aquí irá el Módulo de Perfil"));
@@ -122,9 +108,9 @@ public class VentanaPrincipal extends JFrame {
         // panel donde irian todo el contenido de las ventanas, ahora el texto de ejmplo
         panelContenido = new JPanel(new BorderLayout());
         
-        // mostrar el dashboard pordefecto
-        panelContenido.add(panelDashboard, BorderLayout.CENTER); 
-        add(panelContenido, BorderLayout.CENTER);
+        // Por defecto se muestra el Dashboard
+        panelContenido.add(panelInicio, BorderLayout.CENTER); 
+        this.add(panelContenido, BorderLayout.CENTER);
 		
 		ActionListener listenerNavegacion = new ActionListener() {
             @Override
@@ -134,37 +120,37 @@ public class VentanaPrincipal extends JFrame {
                 
                 panelContenido.removeAll();
                 
-                botonDashboard.setIcon(iconoDashboard);
-                botonDashboard.setText("Dashboard");
+                botonInicio.setIcon(iconoInicio);
+                botonInicio.setText("Inicio");
                 
-                botonBusqueda.setIcon(iconoBusqueda);
-                botonBusqueda.setText("Búsqueda");
+                botonExplorar.setIcon(iconoExplorar);
+                botonExplorar.setText("Explorar");
 
                 botonPortfolio.setIcon(iconoPortfolio);
                 botonPortfolio.setText("Portfolio");
 
-                botonAprendizaje.setIcon(iconoAprendizaje);
-                botonAprendizaje.setText("Aprendizaje");
+                botonAprender.setIcon(iconoAprender);
+                botonAprender.setText("Aprender");
 
                 botonPerfil.setIcon(iconoPerfil);
                 botonPerfil.setText("Mi perfil");
 
-                if (nombreBoton.equals("Dashboard")) {
-            		panelContenido.add(panelDashboard, BorderLayout.CENTER);
-                    botonDashboard.setIcon(iconoDashboardActivo); 
-                    botonDashboard.setText("");
-            	} else if (nombreBoton.equals("Búsqueda")) {
-            		panelContenido.add(panelBusqueda, BorderLayout.CENTER);
-                    botonBusqueda.setIcon(iconoBusquedaActivo); 
-                    botonBusqueda.setText("");
+                if (nombreBoton.equals("Inicio")) {
+            		panelContenido.add(panelInicio, BorderLayout.CENTER);
+                    botonInicio.setIcon(iconoInicioActivo); 
+                    botonInicio.setText("");
+            	} else if (nombreBoton.equals("Explorar")) {
+            		panelContenido.add(panelExplorar, BorderLayout.CENTER);
+                    botonExplorar.setIcon(iconoExplorarActivo); 
+                    botonExplorar.setText("");
             	} else if (nombreBoton.equals("Portfolio")) {
             		panelContenido.add(panelPortfolio, BorderLayout.CENTER);
                     botonPortfolio.setIcon(iconoPortfolioActivo); 
                     botonPortfolio.setText("");
-            	} else if (nombreBoton.equals("Aprendizaje")) {
-            		panelContenido.add(panelAprendizaje, BorderLayout.CENTER);
-                    botonAprendizaje.setIcon(iconoAprendizajeActivo); 
-                    botonAprendizaje.setText("");
+            	} else if (nombreBoton.equals("Aprender")) {
+            		panelContenido.add(panelAprender, BorderLayout.CENTER);
+                    botonAprender.setIcon(iconoAprenderActivo); 
+                    botonAprender.setText("");
             	} else if (nombreBoton.equals("Mi perfil")) {
             		panelContenido.add(panelPerfil, BorderLayout.CENTER);
                     botonPerfil.setIcon(iconoPerfilActivo); 
@@ -178,10 +164,10 @@ public class VentanaPrincipal extends JFrame {
 
         };
 		
-        botonDashboard.addActionListener(listenerNavegacion);
-        botonBusqueda.addActionListener(listenerNavegacion);
+        botonInicio.addActionListener(listenerNavegacion);
+        botonExplorar.addActionListener(listenerNavegacion);
         botonPortfolio.addActionListener(listenerNavegacion);
-        botonAprendizaje.addActionListener(listenerNavegacion);
+        botonAprender.addActionListener(listenerNavegacion);
         botonPerfil.addActionListener(listenerNavegacion);
         
 		this.setVisible(true);
@@ -189,17 +175,17 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void cargarIconos() {
 
-		iconoDashboard = cargarIcono("/imagenes/casaNegro.png");
-        iconoDashboardActivo = cargarIcono("/imagenes/casaAzul.png");
+		iconoInicio = cargarIcono("/imagenes/casaNegro.png");
+        iconoInicioActivo = cargarIcono("/imagenes/casaAzul.png");
         
-        iconoBusqueda = cargarIcono("/imagenes/busquedaNegro.png"); // Asumiendo nombres
-        iconoBusquedaActivo = cargarIcono("/imagenes/busquedaAzul.png");
+        iconoExplorar = cargarIcono("/imagenes/busquedaNegro.png"); // Asumiendo nombres
+        iconoExplorarActivo = cargarIcono("/imagenes/busquedaAzul.png");
         
         iconoPortfolio = cargarIcono("/imagenes/portfolioNegro.png");
         iconoPortfolioActivo = cargarIcono("/imagenes/portfolioAzul.png");
         
-        iconoAprendizaje = cargarIcono("/imagenes/aprendizajeNegro.png");
-        iconoAprendizajeActivo = cargarIcono("/imagenes/aprendizajeAzul.png");
+        iconoAprender = cargarIcono("/imagenes/aprendizajeNegro.png");
+        iconoAprenderActivo = cargarIcono("/imagenes/aprendizajeAzul.png");
         
         iconoPerfil = cargarIcono("/imagenes/perfilNegro.png");
         iconoPerfilActivo = cargarIcono("/imagenes/perfilAzul.png");		

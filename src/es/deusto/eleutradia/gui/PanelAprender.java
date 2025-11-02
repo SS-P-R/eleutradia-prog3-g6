@@ -1,5 +1,5 @@
 package es.deusto.eleutradia.gui;
 
-public class PanelDashboard {
+public class PanelAprender {
 
 }

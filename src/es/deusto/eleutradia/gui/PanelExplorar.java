@@ -10,16 +10,15 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class PanelBusqueda extends JPanel {
+public class PanelExplorar extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JLabel labelTituloBusqueda;
 	private JTextField campoBusqueda;
 	private JTable tablaResultados;
 	private DefaultTableModel modeloTablaResultado;
 	
-	public PanelBusqueda() {
+	public PanelExplorar() {
 		this.setLayout(new BorderLayout(10, 10));
 		this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		
