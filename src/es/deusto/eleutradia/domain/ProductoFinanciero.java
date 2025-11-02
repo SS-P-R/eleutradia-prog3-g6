@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class ProductoFinanciero {
-	private final int codigo;
+	private final String codigo;
 	private String nombre;
 	private YearMonth plazo; // En caso de que lo haya (bonos)
 	private Map<PlazoRentabilidad, BigDecimal> rentabilidades;
@@ -19,7 +19,7 @@ public class ProductoFinanciero {
 	private Divisa divisa;
 	
 	public ProductoFinanciero() {
-		this.codigo = 0;
+		this.codigo = "";
 	    this.nombre = "";
 	    this.plazo = null;
 	    this.rentabilidades = new EnumMap<>(PlazoRentabilidad.class);
@@ -31,7 +31,7 @@ public class ProductoFinanciero {
 	    this.divisa = Divisa.USD;
 	}
 
-	public ProductoFinanciero(int codigo, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
+	public ProductoFinanciero(String codigo, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
 			double valorUnitario, double valorActual, TipoProducto tipoProducto,
 			RegionGeografica regionGeografica, PeriodicidadPago perPago, Divisa divisa) {
 		this.codigo = codigo;
@@ -118,7 +118,7 @@ public class ProductoFinanciero {
 		this.divisa = divisa;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 

@@ -1,6 +1,7 @@
 package es.deusto.eleutradia.domain;
 
 public enum PeriodicidadPago {
+	SIN_PAGO(0),
 	DIARIA(1),
     SEMANAL(7),
     QUINCENAL(15),
