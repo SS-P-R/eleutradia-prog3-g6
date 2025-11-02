@@ -43,11 +43,12 @@ public class VentanaInicial extends JFrame {
 	private JButton botonLoginParticular, botonLoginEmpresa, botonVolverParticular, botonVolverEmpresa;
     private ImageIcon originalIcon;
 	
-    private static final Color MY_AZUL = new Color(0, 100, 255); 		// Azul
+    // Estilos
+    private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
     private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_ETIQUETA = new Font("Segoe UI", Font.BOLD, 12);
+    private static final Font FONT_NORMAL = new Font("Segoe UI", Font.BOLD, 12);
     private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);
 	
 	public VentanaInicial() {
@@ -119,12 +120,12 @@ public class VentanaInicial extends JFrame {
         panelRegistro.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         
         JLabel labelRegistro = new JLabel("¿No es cliente?");
-        labelRegistro.setFont(FONT_ETIQUETA);
+        labelRegistro.setFont(FONT_NORMAL);
         labelRegistro.setForeground(MY_AZUL);
         labelRegistro.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panelRegistro.add(labelRegistro);
         
-        botonRegistro.setFont(FONT_ETIQUETA);
+        botonRegistro.setFont(FONT_NORMAL);
         botonRegistro.setBackground(Color.WHITE);
         botonRegistro.setForeground(MY_AZUL);
         botonRegistro.setFocusPainted(false);
@@ -170,7 +171,7 @@ public class VentanaInicial extends JFrame {
 	    panelAcceso.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel labelId = new JLabel(esParticular ? "DNI:" : "NIF:");
-        labelId.setFont(FONT_ETIQUETA);
+        labelId.setFont(FONT_NORMAL);
         labelId.setForeground(MY_GRIS);
         labelId.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         panelAcceso.add(labelId);
@@ -185,7 +186,7 @@ public class VentanaInicial extends JFrame {
         panelAcceso.add(Box.createVerticalStrut(20));
         
         JLabel labelPassword = new JLabel("Contraseña:");
-        labelPassword.setFont(FONT_ETIQUETA);
+        labelPassword.setFont(FONT_NORMAL);
         labelPassword.setForeground(MY_GRIS);
         labelPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         panelAcceso.add(labelPassword);
@@ -206,13 +207,13 @@ public class VentanaInicial extends JFrame {
         panelBotones.setMaximumSize(new Dimension(350, 50));
         
         JButton botonVolver = new JButton("Volver");
-        botonVolver.setFont(FONT_ETIQUETA);
+        botonVolver.setFont(FONT_NORMAL);
         botonVolver.setBackground(MY_GRIS);
         botonVolver.setForeground(Color.WHITE);
         botonVolver.setFocusPainted(false);
         
         JButton botonLogin = new JButton("Iniciar sesión");
-        botonLogin.setFont(FONT_ETIQUETA);
+        botonLogin.setFont(FONT_NORMAL);
         botonLogin.setBackground(MY_AZUL);
         botonLogin.setForeground(Color.WHITE);
         botonLogin.setFocusPainted(false);

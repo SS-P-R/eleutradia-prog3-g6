@@ -14,9 +14,8 @@ public enum Divisa {
     AUD("Dólar australiano", new BigDecimal("1.52")),
     SEK("Corona sueca", new BigDecimal("9.40")),
     NOK("Corona noruega", new BigDecimal("10.03")),
-    DKK("Corona danesa", new BigDecimal("6.42")),
     HKD("Dólar de Hong Kong", new BigDecimal("7.77")),
-    SGD("Dólar de Singapur", new BigDecimal("1.30"));
+    CNY("Yuan chino", new BigDecimal("7.11"));
 	
 	private final String nombre;
 	private final BigDecimal tasaCambioUSD;

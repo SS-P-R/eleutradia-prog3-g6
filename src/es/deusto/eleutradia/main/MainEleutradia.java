@@ -13,6 +13,7 @@ import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Divisa;
 import es.deusto.eleutradia.domain.Empresa;
+import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.NivelConocimiento;
 import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.Particular;
@@ -31,18 +32,19 @@ public class MainEleutradia {
 	public static List<Empresa> listaEmpresas = new ArrayList<Empresa>();
 	public static List<ProductoFinanciero> listaProductos = new ArrayList<ProductoFinanciero>();
 	
+	// --- PAÍSES ---
+    public static Pais espana = new Pais("España", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais francia = new Pais("Francia", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais mexico = new Pais("México", RegionGeografica.AMERICA_NORTE);
+    public static Pais argentina = new Pais("Argentina", RegionGeografica.AMERICA_SUR);
+    public static Pais eeuu = new Pais("Estados Unidos", RegionGeografica.AMERICA_NORTE);
+    public static Pais alemania = new Pais("Alemania", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais reinounido = new Pais("Reino Unido", RegionGeografica.EUROPA_OCCIDENTAL);
+	
 	public static void inicializarUsuarios() {
 		//START-CHATGPT-MODIFICADO - Un particular añadido para acceso rápido
 
 		// === PARTICULARES ===
-	
-			// --- PAISES ---
-	    Pais espana = new Pais("España", RegionGeografica.EUROPA_OCCIDENTAL);
-	    Pais francia = new Pais("Francia", RegionGeografica.EUROPA_OCCIDENTAL);
-	    Pais mexico = new Pais("México", RegionGeografica.AMERICA_NORTE);
-	    Pais argentina = new Pais("Argentina", RegionGeografica.AMERICA_SUR);
-	    Pais eeuu = new Pais("Estados Unidos", RegionGeografica.AMERICA_NORTE);
-	    Pais alemania = new Pais("Alemania", RegionGeografica.EUROPA_OCCIDENTAL);
 
     		// --- PERFILES FINANCIEROS ---
 	    PerfilFinanciero pCons1 = new PerfilFinanciero(PerfilRiesgo.CONSERVADOR, 5,
@@ -136,19 +138,54 @@ public class MainEleutradia {
 	            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.20"),
 	            PlazoRentabilidad.MAX, new BigDecimal("0.25")
 	        );
+	        
+	        Gestora blackrock = new Gestora(
+	        	    "BlackRock Inc.",
+	        	    "50 Hudson Yards, New York, NY, Estados Unidos",
+	        	    eeuu,
+	        	    new ArrayList<>()
+	        	);
 
+	        Gestora vanguard = new Gestora(
+	        	    "Vanguard Group",
+	        	    "100 Vanguard Blvd, Malvern, PA, Estados Unidos",
+	        	    eeuu,
+	        	    new ArrayList<>()
+	        	);
+
+	        Gestora fidelity = new Gestora(
+	        	    "Fidelity Investments",
+	        	    "245 Summer Street, Boston, MA, Estados Unidos",
+	        	    eeuu,
+	        	    new ArrayList<>()
+	        	);
+
+	        Gestora jpmorgan = new Gestora(
+	        	    "J.P. Morgan Asset Management",
+	        	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
+	        	    reinounido,
+	        	    new ArrayList<>()
+	        	);
+
+	        Gestora amundi = new Gestora(
+	        	    "Amundi Asset Management",
+	        	    "90 Boulevard Pasteur, París, Francia",
+	        	    francia,
+	        	    new ArrayList<>()
+	        	);
+	        
 	    // --- DEPÓSITOS ---
 	    listaProductos.add(new ProductoFinanciero(
 	        "DEP001",
-	        "Depósito IberInvest 12M",
+	        "Depósito JP 12M",
 	        YearMonth.of(2025, 12),
 	        rentabConservadora,
-	        1000.0,
 	        1020.0,
 	        TipoProducto.DEPOSITO,
 	        RegionGeografica.EUROPA_OCCIDENTAL,
 	        PeriodicidadPago.ANUAL,
-	        Divisa.EUR
+	        Divisa.EUR,
+	        jpmorgan
 	    ));
 
 	    listaProductos.add(new ProductoFinanciero(
@@ -156,39 +193,66 @@ public class MainEleutradia {
 	        "Depósito CapitalFrance Plus",
 	        YearMonth.of(2026, 6),
 	        rentabModerada,
-	        2000.0,
 	        2100.0,
 	        TipoProducto.DEPOSITO,
 	        RegionGeografica.EUROPA_OCCIDENTAL,
 	        PeriodicidadPago.SEMESTRAL,
-	        Divisa.EUR
+	        Divisa.EUR,
+	        amundi
 	    ));
+	    
+	    // --- BONOS ---
+	    listaProductos.add(new ProductoFinanciero(
+		        "BON001",
+		        "Global Bond Index Fund",
+		        YearMonth.of(2026, 12),
+		        rentabConservadora,
+		        110.0,
+		        TipoProducto.BONO,
+		        RegionGeografica.MUNDO,
+		        PeriodicidadPago.ANUAL,
+		        Divisa.USD,
+		        blackrock
+		));
+	    
+	    listaProductos.add(new ProductoFinanciero(
+		        "BON002",
+		        "Global Short-Term Corporate Bond",
+		        YearMonth.of(2026, 12),
+		        rentabConservadora,
+		        155.0,
+		        TipoProducto.BONO,
+		        RegionGeografica.MUNDO,
+		        PeriodicidadPago.ANUAL,
+		        Divisa.EUR,
+		        amundi
+		));
 
 	    // --- ACCIONES ---
 	    listaProductos.add(new ProductoFinanciero(
 	        "ACC001",
-	        "Acción IberInvest",
+	        "NVIDIA",
 	        null,
 	        rentabAgresiva,
-	        100.0,
-	        115.0,
+	        175.0,
 	        TipoProducto.ACCION,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
+	        RegionGeografica.AMERICA_NORTE,
 	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.EUR
+	        Divisa.USD,
+	        null
 	    ));
 
 	    listaProductos.add(new ProductoFinanciero(
 	        "ACC002",
-	        "Acción FinTech México",
+	        "Xiaomi",
 	        null,
 	        rentabAgresiva,
-	        80.5,
-	        97.0,
+	        4.78,
 	        TipoProducto.ACCION,
-	        RegionGeografica.AMERICA_NORTE,
+	        RegionGeografica.ASIA_PACIFICO,
 	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.MXN
+	        Divisa.CNY,
+	        null
 	    ));
 
 	    // --- FONDOS DE INVERSIÓN ---
@@ -197,12 +261,12 @@ public class MainEleutradia {
 	        "Fondo CapitalFrance Global",
 	        null,
 	        rentabModerada,
-	        1500.0,
 	        1650.0,
 	        TipoProducto.FONDO_INVERSION,
 	        RegionGeografica.EUROPA_OCCIDENTAL,
 	        PeriodicidadPago.TRIMESTRAL,
-	        Divisa.EUR
+	        Divisa.EUR,
+	        amundi
 	    ));
 
 	    listaProductos.add(new ProductoFinanciero(
@@ -211,39 +275,25 @@ public class MainEleutradia {
 	        null,
 	        rentabModerada,
 	        950.0,
-	        1000.0,
 	        TipoProducto.FONDO_INVERSION,
 	        RegionGeografica.EUROPA_OCCIDENTAL,
 	        PeriodicidadPago.MENSUAL,
-	        Divisa.CHF
+	        Divisa.CHF,
+	        blackrock
 	    ));
-
-	    // --- CRIPTOMONEDAS ---
+	    
 	    listaProductos.add(new ProductoFinanciero(
-	        "CRP001",
-	        "BitTrust",
-	        null,
-	        rentabAgresiva,
-	        35.0,
-	        50.0,
-	        TipoProducto.CRIPTOMONEDA,
-	        RegionGeografica.AMERICA_NORTE,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.USD
-	    ));
-
-	    listaProductos.add(new ProductoFinanciero(
-	        "CRP002",
-	        "HongCoin",
-	        null,
-	        rentabAgresiva,
-	        2.5,
-	        3.8,
-	        TipoProducto.CRIPTOMONEDA,
-	        RegionGeografica.ASIA_PACIFICO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.HKD
-	    ));
+		        "FON003",
+		        "Fidelity S&P 500 Index",
+		        null,
+		        rentabModerada,
+		        950.0,
+		        TipoProducto.FONDO_INVERSION,
+		        RegionGeografica.AMERICA_NORTE,
+		        PeriodicidadPago.DIARIA,
+		        Divisa.USD,
+		        fidelity
+		));
 
 	    // --- ETFS ---
 	    listaProductos.add(new ProductoFinanciero(
@@ -252,11 +302,11 @@ public class MainEleutradia {
 	        null,
 	        rentabConservadora,
 	        120.0,
-	        125.0,
 	        TipoProducto.ETF_RF,
 	        RegionGeografica.EUROPA_OCCIDENTAL,
 	        PeriodicidadPago.ANUAL,
-	        Divisa.EUR
+	        Divisa.EUR,
+	        vanguard
 	    ));
 
 	    listaProductos.add(new ProductoFinanciero(
@@ -264,12 +314,66 @@ public class MainEleutradia {
 	        "ETF Renta Variable Global",
 	        null,
 	        rentabAgresiva,
-	        250.0,
 	        280.0,
 	        TipoProducto.ETF_RV,
-	        RegionGeografica.AMERICA_NORTE,
+	        RegionGeografica.MUNDO,
 	        PeriodicidadPago.ANUAL,
-	        Divisa.USD
+	        Divisa.USD,
+	        vanguard
+	    ));
+	    
+	    // --- CRIPTOMONEDAS ---
+	    listaProductos.add(new ProductoFinanciero(
+	        "CRP001",
+	        "Bitcoin",
+	        null,
+	        rentabAgresiva,
+	        110_000,
+	        TipoProducto.CRIPTOMONEDA,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.SIN_PAGO,
+	        Divisa.USD,
+	        null
+	    ));
+
+	    listaProductos.add(new ProductoFinanciero(
+	        "CRP002",
+	        "XRP",
+	        null,
+	        rentabAgresiva,
+	        2.5,
+	        TipoProducto.CRIPTOMONEDA,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.SIN_PAGO,
+	        Divisa.USD,
+	        null
+	    ));
+	    
+	    // --- MATERIAS PRIMAS ---
+	    listaProductos.add(new ProductoFinanciero(
+		        "CMD001",
+		        "Amundi Physical Gold",
+		        null,
+		        rentabModerada,
+		        77.88,
+		        TipoProducto.COMMODITY,
+		        RegionGeografica.MUNDO,
+		        PeriodicidadPago.SIN_PAGO,
+		        Divisa.USD,
+		        amundi
+		));
+	    
+	    listaProductos.add(new ProductoFinanciero(
+		        "CMD002",
+		        "iShares Physical Platinum",
+		        null,
+		        rentabAgresiva,
+		        22.72,
+		        TipoProducto.COMMODITY,
+		        RegionGeografica.MUNDO,
+		        PeriodicidadPago.SIN_PAGO,
+		        Divisa.USD,
+		        blackrock
 	    ));
 		//END-CHATGPT
 	}
