@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Usuario {
-    private String email;
+    private String nombre;
+	private String email;
     private String password;
     private String telefono;
     private String direccion;
@@ -13,6 +14,7 @@ public abstract class Usuario {
     private List<Cartera> carteras;
     
 	public Usuario() {
+		this.nombre="usuario";
 		this.email = "";
 		this.password = "";
 		this.telefono = "";
@@ -22,8 +24,9 @@ public abstract class Usuario {
 		this.carteras = new ArrayList<Cartera>();
 	}
 
-	public Usuario(String email, String password, String telefono, String direccion,
+	public Usuario(String nombre, String email, String password, String telefono, String direccion,
 			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
+		this.nombre= nombre;
 		this.email = email;
 		this.password = password;
 		this.telefono = telefono;
@@ -37,6 +40,14 @@ public abstract class Usuario {
 		}
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -119,7 +130,7 @@ public abstract class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [email=" + email + ", password=" + password + ", telefono=" + telefono + ", direccion=" + direccion
+		return "Usuario [nombre=" + nombre + ", email=" + email + ", password=" + password + ", telefono=" + telefono + ", direccion=" + direccion
 				+ ", domicilioFiscal=" + domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero + ", carteras=" + carteras + "]";
 	}
     

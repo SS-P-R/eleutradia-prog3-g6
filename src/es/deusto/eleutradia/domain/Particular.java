@@ -6,14 +6,12 @@ import java.util.ArrayList;
 
 public class Particular extends Usuario {
 	private final String dni;
-    private String nombre;
     private LocalDate fechaNacimiento;
     private Pais paisResidencia;
     private List<Curso> cursos;
     
 	public Particular() {
 		this.dni = "";
-		this.nombre = "";
 		this.fechaNacimiento = null;
 		this.paisResidencia = null;
 		this.cursos = new ArrayList<Curso>();
@@ -21,7 +19,6 @@ public class Particular extends Usuario {
 
 	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia, List<Curso> cursos) {
 		this.dni = dni;
-		this.nombre = nombre;
 		this.fechaNacimiento = fechaNacimiento;
 		this.paisResidencia = paisResidencia;
 		if (cursos != null) {
@@ -34,9 +31,8 @@ public class Particular extends Usuario {
 	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia,
 			String email, String password, String telefono, String direccion, Pais domicilioFiscal,
 			PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras, ArrayList<Curso> cursos) {
-		super(email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
+		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
 		this.dni = dni;
-		this.nombre = nombre;
 		this.fechaNacimiento = fechaNacimiento;
 		this.paisResidencia = paisResidencia;
 		if (cursos != null) {
@@ -44,14 +40,6 @@ public class Particular extends Usuario {
 		} else {
 			this.cursos = new ArrayList<>();
 		}
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	public Pais getPaisResidencia() {
@@ -80,7 +68,7 @@ public class Particular extends Usuario {
 
 	@Override
 	public String toString() {
-		return "Particular [dni=" + dni + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento
+		return "Particular [dni=" + dni + ", nombre=" + getNombre() + ", fechaNacimiento=" + fechaNacimiento
 				+ ", paisResidencia=" + paisResidencia + ", cursos=" + cursos + "]";
 	}
     

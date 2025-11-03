@@ -329,7 +329,7 @@ public class VentanaInicial extends JFrame {
             if (!(nif.isBlank()) && !(password.isEmpty())) {
 	            Empresa usuarioFound = null;
 	            for (Empresa emp : MainEleutradia.listaEmpresas) {
-	            	if (emp.getIdEmpresa().equalsIgnoreCase(nif) && emp.getPassword().equals(password)) {
+	            	if (emp.getNif().equalsIgnoreCase(nif) && emp.getPassword().equals(password)) {
 	                    usuarioFound = emp;
 	                    break;
 	                }

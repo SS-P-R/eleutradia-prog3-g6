@@ -88,7 +88,7 @@ public class Cartera {
 	    if (propietario instanceof Particular) {
 	        propietarioId = ((Particular) propietario).getDni();
 	    } else if (propietario instanceof Empresa) {
-	        propietarioId = ((Empresa) propietario).getIdEmpresa();
+	        propietarioId = ((Empresa) propietario).getNif();
 	    } else {
 	        propietarioId = "Desconocido";
 	    }

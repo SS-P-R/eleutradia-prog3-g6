@@ -298,7 +298,7 @@ public class VentanaRegistro extends JFrame {
 				
 			} else {
 				
-				Empresa e = new Empresa(null, nombre, textoNIF.getText());
+				Empresa e = new Empresa(textoNIF.getText());
 				e.setEmail(email);
 				e.setPassword(password);
 				nuevoUsuario = e;

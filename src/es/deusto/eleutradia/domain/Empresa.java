@@ -3,51 +3,34 @@ package es.deusto.eleutradia.domain;
 import java.util.ArrayList;
 
 public class Empresa extends Usuario {
-	private final String idEmpresa;
-	private String nombre;
-	private String NIF;
+	private String nif;
 	
 	public Empresa() {
-		this.idEmpresa = "";
-		this.nombre = "";
+		this.nif = "";
 	}
 
-	public Empresa(String idEmpresa, String nombre, String NIF) {
-		this.idEmpresa = idEmpresa;
-		this.nombre = nombre;
-		this.NIF = NIF;
+	public Empresa(String nif) {
+		this.nif = nif;
 	}
 
-	public Empresa(String idEmpresa, String nombre, String email, String password, String telefono, String direccion,
+	public Empresa(String nif, String nombre, String email, String password, String telefono, String direccion,
 				Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
-		super(email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
-		this.idEmpresa = idEmpresa;
-		this.nombre = nombre;
+		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
+		this.nif = nif;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
 	
-	public String getNIF() {
-		return NIF;
+	public String getNif() {
+		return nif;
 	}
 
-	public void setCIF(String nif) {
-		NIF = nif;
-	}
-
-	public String getIdEmpresa() {
-		return idEmpresa;
+	public void setNif(String nif) {
+		this.nif = nif;
 	}
 
 	@Override
 	public String toString() {
-		return "Empresa [idEmpresa=" + idEmpresa + ", nombre=" + nombre + "]";
+		return "Empresa [NIF=" + nif + ", nombre="+ getNombre() + "]";
 	}
 	
 }
