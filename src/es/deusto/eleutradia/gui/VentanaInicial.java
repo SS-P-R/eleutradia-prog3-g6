@@ -35,13 +35,24 @@ public class VentanaInicial extends JFrame {
 	
 	private CardLayout layout;
 	private JPanel contenedor;
+    private ImageIcon originalIcon;
+    
+    // Botones de vista de bienvenida
 	private JButton botonParticular = new JButton("Acceder como Particular");
 	private JButton botonEmpresa = new JButton("Acceder como Empresa");
 	private JButton botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
-	private JTextField campoIdParticular, campoIdEmpresa;
+	
+	// Botones y campos de vistas de inicio de sesión
+	private JTextField campoDni, campoNif;
 	private JPasswordField campoPasswordParticular, campoPasswordEmpresa;
 	private JButton botonLoginParticular, botonLoginEmpresa, botonVolverParticular, botonVolverEmpresa;
-    private ImageIcon originalIcon;
+	
+	// Botones y campos en vista de registro
+    private JRadioButton radioParticular, radioEmpresa;
+    private ButtonGroup grupoTipoUsuario;
+    private JTextField campoRegDni, campoRegNif, campoRegNombre, campoRegEmail;
+    private JPasswordField campoRegPassword, campoRegConfirmPassword;
+	private JButton botonRegistrar, botonCancelar;
 	
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
@@ -49,7 +60,7 @@ public class VentanaInicial extends JFrame {
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.BOLD, 12);
-    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);	
 	
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
@@ -75,9 +86,11 @@ public class VentanaInicial extends JFrame {
 		JPanel panelBienvenida = construirPanelBienvenida();
 	    JPanel panelLoginParticular = construirPanelLogin(true);
 	    JPanel panelLoginEmpresa = construirPanelLogin(false);
+	    JPanel panelRegistro = construirPanelRegistro();
 	    contenedor.add(panelBienvenida, "bienvenida");
 	    contenedor.add(panelLoginParticular, "loginParticular");
 	    contenedor.add(panelLoginEmpresa, "loginEmpresa");
+	    contenedor.add(panelRegistro, "registro");
 	    layout.show(contenedor, "bienvenida");
 	}
 	
@@ -219,12 +232,12 @@ public class VentanaInicial extends JFrame {
         botonLogin.setFocusPainted(false);
         
         if (esParticular) {
-            campoIdParticular = campoId;
+            campoDni = campoId;
             campoPasswordParticular = campoPassword;
             botonLoginParticular = botonLogin;
             botonVolverParticular = botonVolver;
         } else {
-            campoIdEmpresa = campoId;
+            campoNif = campoId;
             campoPasswordEmpresa = campoPassword;
             botonLoginEmpresa = botonLogin;
             botonVolverEmpresa = botonVolver;
@@ -244,6 +257,17 @@ public class VentanaInicial extends JFrame {
 
         return mainPanel;
     }
+	
+	private JPanel construirPanelRegistro() {
+		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
+		
+		JPanel panelDcho = new JPanel();
+        panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
+        panelDcho.setBackground(Color.WHITE);
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
+		
+		return mainPanel;
+	}
 	
 	private JPanel construirPanelImagen() {
         JPanel panel = new JPanel(new GridLayout());
@@ -291,7 +315,7 @@ public class VentanaInicial extends JFrame {
 		});
 		
 		botonLoginParticular.addActionListener(e -> {
-                String dni = campoIdParticular.getText().trim();
+                String dni = campoDni.getText().trim();
                 String password = new String(campoPasswordParticular.getPassword());
                 
                 if (!(dni.isBlank() || password.isEmpty())) {
@@ -323,7 +347,7 @@ public class VentanaInicial extends JFrame {
 		});
 		
 		botonLoginEmpresa.addActionListener(e -> {
-            String nif = campoIdEmpresa.getText().trim();
+            String nif = campoNif.getText().trim();
             String password = new String(campoPasswordEmpresa.getPassword());
             
             if (!(nif.isBlank()) && !(password.isEmpty())) {

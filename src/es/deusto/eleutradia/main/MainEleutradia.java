@@ -108,8 +108,8 @@ public class MainEleutradia {
 	}
 	
 	public static void inicializarProductos() {
-		//START-CHATGPT-MODIFICADO - Rentabilidades ajustadas para realismo
-		//						   - Nombres de productos cambiados
+		//IAG (herramienta: ChatGPT)
+		//ADAPTADO (Rentabilidades ajustadas para realismo y algunis productos añadidos
 		
 		// === PRODUCTOS FINANCIEROS ===
 	    listaProductos = new ArrayList<>();
@@ -375,7 +375,6 @@ public class MainEleutradia {
 		        Divisa.USD,
 		        blackrock
 	    ));
-		//END-CHATGPT
 	}
 	
 	public static void main(String[] args) {
