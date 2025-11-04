@@ -2,7 +2,6 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -24,6 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.JTextComponent;
 
 import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
@@ -36,23 +36,6 @@ public class VentanaInicial extends JFrame {
 	private CardLayout layout;
 	private JPanel contenedor;
     private ImageIcon originalIcon;
-    
-    // Botones de vista de bienvenida
-	private JButton botonParticular = new JButton("Acceder como Particular");
-	private JButton botonEmpresa = new JButton("Acceder como Empresa");
-	private JButton botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
-	
-	// Botones y campos de vistas de inicio de sesión
-	private JTextField campoDni, campoNif;
-	private JPasswordField campoPasswordParticular, campoPasswordEmpresa;
-	private JButton botonLoginParticular, botonLoginEmpresa, botonVolverParticular, botonVolverEmpresa;
-	
-	// Botones y campos en vista de registro
-    private JRadioButton radioParticular, radioEmpresa;
-    private ButtonGroup grupoTipoUsuario;
-    private JTextField campoRegDni, campoRegNif, campoRegNombre, campoRegEmail;
-    private JPasswordField campoRegPassword, campoRegConfirmPassword;
-	private JButton botonRegistrar, botonCancelar;
 	
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
@@ -66,7 +49,6 @@ public class VentanaInicial extends JFrame {
 		super("EleuTradia: Inicio");
 		this.configurarVentana();
         this.inicializarPaneles();
-        this.registrarActionListeners();
         this.setVisible(true);
 	}
 	
@@ -86,11 +68,11 @@ public class VentanaInicial extends JFrame {
 		JPanel panelBienvenida = construirPanelBienvenida();
 	    JPanel panelLoginParticular = construirPanelLogin(true);
 	    JPanel panelLoginEmpresa = construirPanelLogin(false);
-	    JPanel panelRegistro = construirPanelRegistro();
+	    JPanel panelReg = construirPanelRegistro(true);
 	    contenedor.add(panelBienvenida, "bienvenida");
 	    contenedor.add(panelLoginParticular, "loginParticular");
 	    contenedor.add(panelLoginEmpresa, "loginEmpresa");
-	    contenedor.add(panelRegistro, "registro");
+	    contenedor.add(panelReg, "registro");
 	    layout.show(contenedor, "bienvenida");
 	}
 	
@@ -118,13 +100,24 @@ public class VentanaInicial extends JFrame {
 		panelDcho.add(subtitulo);
 		panelDcho.add(Box.createVerticalStrut(90));
 		
+		JButton botonParticular = new JButton("Acceder como Particular");
 		botonParticular.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		botonEmpresa.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonParticular.setMaximumSize(new Dimension(220, 40));
-		botonEmpresa.setMaximumSize(new Dimension(220, 40));
 		panelDcho.add(botonParticular);
+		botonParticular.addActionListener(e -> {
+			layout.show(contenedor, "loginParticular");
+			setTitle("EleuTradia: Iniciar sesión");
+		});
 		panelDcho.add(Box.createVerticalStrut(20));
+		
+		JButton botonEmpresa = new JButton("Acceder como Empresa");
+		botonEmpresa.setMaximumSize(new Dimension(220, 40));
+		botonEmpresa.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		panelDcho.add(botonEmpresa);
+		botonEmpresa.addActionListener(e -> {
+			layout.show(contenedor, "loginEmpresa");
+			setTitle("EleuTradia: Iniciar sesión");
+		});
 		panelDcho.add(Box.createVerticalStrut(120));
 	    
         JPanel panelRegistro = new JPanel();
@@ -138,6 +131,7 @@ public class VentanaInicial extends JFrame {
         labelRegistro.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panelRegistro.add(labelRegistro);
         
+        JButton botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
         botonRegistro.setFont(FONT_NORMAL);
         botonRegistro.setBackground(Color.WHITE);
         botonRegistro.setForeground(MY_AZUL);
@@ -145,6 +139,10 @@ public class VentanaInicial extends JFrame {
         botonRegistro.setBorder(null);
         botonRegistro.setAlignmentX(JButton.CENTER_ALIGNMENT);
         panelRegistro.add(botonRegistro);
+        botonRegistro.addActionListener(e -> {
+			layout.show(contenedor, "registro");
+			setTitle("EleuTradia: Registro");
+        });
         
         panelDcho.add(panelRegistro);
 		
@@ -181,38 +179,26 @@ public class VentanaInicial extends JFrame {
 	    JPanel panelAcceso = new JPanel();
 	    panelAcceso.setLayout(new BoxLayout(panelAcceso, BoxLayout.Y_AXIS));
 	    panelAcceso.setBackground(Color.WHITE);
-	    panelAcceso.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    panelAcceso.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         
+	    // Campo de identificador
         JLabel labelId = new JLabel(esParticular ? "DNI:" : "NIF:");
-        labelId.setFont(FONT_NORMAL);
-        labelId.setForeground(MY_GRIS);
-        labelId.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-        panelAcceso.add(labelId);
+        panelAcceso.add(crearLabel(labelId));
         panelAcceso.add(Box.createVerticalStrut(10));
 
-        JTextField campoId = new JTextField(20);
-        campoId.setFont(FONT_CAMPO);
-        campoId.setMaximumSize(new Dimension(350, 35));
-        campoId.setPreferredSize(new Dimension(350, 35));
-        campoId.setAlignmentX(LEFT_ALIGNMENT);
+        JTextField campoId = (JTextField) crearCampo(false);
         panelAcceso.add(campoId);
         panelAcceso.add(Box.createVerticalStrut(20));
         
-        JLabel labelPassword = new JLabel("Contraseña:");
-        labelPassword.setFont(FONT_NORMAL);
-        labelPassword.setForeground(MY_GRIS);
-        labelPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-        panelAcceso.add(labelPassword);
+        // Campo de contraseña
+        panelAcceso.add(new JLabel("Contraseña:"));
         panelAcceso.add(Box.createVerticalStrut(10));
 
-        JPasswordField campoPassword = new JPasswordField(20);
-        campoPassword.setFont(FONT_CAMPO);
-        campoPassword.setMaximumSize(new Dimension(350, 35));
-        campoPassword.setPreferredSize(new Dimension(350, 35));
-        campoPassword.setAlignmentX(LEFT_ALIGNMENT);
+        JPasswordField campoPassword = (JPasswordField) crearCampo(true);
         panelAcceso.add(campoPassword);
         panelAcceso.add(Box.createVerticalStrut(40));
         
+        // Botones
         JPanel panelBotones = new JPanel(new GridLayout(1, 2, 20, 0));
         panelBotones.setBackground(Color.WHITE);
         panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
@@ -224,27 +210,19 @@ public class VentanaInicial extends JFrame {
         botonVolver.setBackground(MY_GRIS);
         botonVolver.setForeground(Color.WHITE);
         botonVolver.setFocusPainted(false);
+        panelBotones.add(botonVolver);
+        botonVolver.addActionListener(e -> {
+            layout.show(contenedor, "bienvenida");
+            setTitle("EleuTradia: Inicio");
+        });
         
         JButton botonLogin = new JButton("Iniciar sesión");
         botonLogin.setFont(FONT_NORMAL);
         botonLogin.setBackground(MY_AZUL);
         botonLogin.setForeground(Color.WHITE);
         botonLogin.setFocusPainted(false);
-        
-        if (esParticular) {
-            campoDni = campoId;
-            campoPasswordParticular = campoPassword;
-            botonLoginParticular = botonLogin;
-            botonVolverParticular = botonVolver;
-        } else {
-            campoNif = campoId;
-            campoPasswordEmpresa = campoPassword;
-            botonLoginEmpresa = botonLogin;
-            botonVolverEmpresa = botonVolver;
-        }
-        
-        panelBotones.add(botonVolver);
         panelBotones.add(botonLogin);
+        botonLogin.addActionListener(e -> procesarLogin(esParticular, campoId, campoPassword));
         
         panelAcceso.add(panelBotones);
         
@@ -258,13 +236,160 @@ public class VentanaInicial extends JFrame {
         return mainPanel;
     }
 	
-	private JPanel construirPanelRegistro() {
+	private JPanel construirPanelRegistro(boolean esParticular) {
 		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
 		
 		JPanel panelDcho = new JPanel();
         panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
         panelDcho.setBackground(Color.WHITE);
-        panelDcho.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        
+        JLabel tituloReg = new JLabel("Abra su cuenta:");
+        tituloReg.setFont(FONT_TITULO);
+        tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        panelDcho.add(tituloReg);
+        
+	    JPanel panelRegistro = new JPanel();
+	    panelRegistro.setLayout(new BoxLayout(panelRegistro, BoxLayout.Y_AXIS));
+	    panelRegistro.setBackground(Color.WHITE);
+	    panelRegistro.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+
+	    // Selector de tipo de usuario
+        JPanel panelTipoUsuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelTipoUsuario.setBackground(Color.WHITE);
+        panelTipoUsuario.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+        panelTipoUsuario.setMaximumSize(new Dimension(300, 250));
+        panelTipoUsuario.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));     
+        
+        JRadioButton radioParticular = new JRadioButton("Particular", true);
+        radioParticular.setBackground(Color.WHITE);
+        JRadioButton radioEmpresa = new JRadioButton("Empresa");
+        radioEmpresa.setBackground(Color.WHITE);
+        ButtonGroup grupoTipoUsuario = new ButtonGroup();
+        grupoTipoUsuario.add(radioParticular);
+        grupoTipoUsuario.add(radioEmpresa);
+        
+        panelTipoUsuario.add(crearLabel(new JLabel("Tipo de cuenta:")));
+        panelTipoUsuario.add(radioParticular);
+        panelTipoUsuario.add(radioEmpresa);
+        
+        panelRegistro.add(panelTipoUsuario);
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        // Campo de identificador
+        JLabel labelRegId = new JLabel(esParticular ? "DNI:" : "NIF:");
+        panelRegistro.add(crearLabel(labelRegId));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JTextField campoRegId = (JTextField) crearCampo(false);
+        panelRegistro.add(campoRegId);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Campo de nombre
+        JLabel labelRegNombre = new JLabel(esParticular ? "Nombre completo:" : "Nombre de la empresa:");
+        panelRegistro.add(crearLabel(labelRegNombre));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JTextField campoRegNombre = (JTextField) crearCampo(false);
+        panelRegistro.add(campoRegNombre);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Action Listeners del selector
+        radioParticular.addActionListener(e -> {
+        	labelRegId.setText("DNI:");
+            labelRegNombre.setText("Nombre completo:");
+        });
+        radioEmpresa.addActionListener(e -> {
+        	labelRegId.setText("NIF:");
+            labelRegNombre.setText("Nombre de la empresa:");
+        });
+        
+        // Campo de e-mail
+        panelRegistro.add(crearLabel(new JLabel("E-mail:")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JTextField campoRegEmail = (JTextField) crearCampo(false);
+        panelRegistro.add(campoRegEmail);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Campo de contraseña
+        panelRegistro.add(crearLabel(new JLabel("Contraseña:")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JPasswordField campoRegPassword = (JPasswordField) crearCampo(true);
+        panelRegistro.add(campoRegPassword);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Campo de confirmación de contraseña
+        panelRegistro.add(crearLabel(new JLabel("Confirme la contraseña:")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JPasswordField campoRegConfirmPassword = (JPasswordField) crearCampo(true);
+        panelRegistro.add(campoRegConfirmPassword);
+        panelRegistro.add(Box.createVerticalStrut(20));
+
+        // Botones
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 20, 0));;
+        panelBotones.setBackground(Color.WHITE);
+        panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        
+        JButton botonCancelar = new JButton("Cancelar");
+        botonCancelar.setFont(FONT_NORMAL);
+        botonCancelar.setBackground(MY_GRIS);
+        botonCancelar.setForeground(Color.WHITE);
+        botonCancelar.setFocusPainted(false);
+        botonCancelar.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        panelBotones.add(botonCancelar);
+		botonCancelar.addActionListener(e -> {
+			layout.show(contenedor, "bienvenida");
+			setTitle("EleuTradia: Inicio");
+		});
+        
+        JButton botonReg = new JButton("Confirmar");
+        botonReg.setFont(FONT_NORMAL);
+        botonReg.setBackground(MY_AZUL);
+        botonReg.setForeground(Color.WHITE);
+        botonReg.setFocusPainted(false);
+        botonReg.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        panelBotones.add(botonReg);
+        botonReg.addActionListener(e -> {
+        	
+            String id = campoRegId.getText().trim();
+            String nombre = campoRegNombre.getText().trim();
+            String email = campoRegEmail.getText().trim();
+            String pass = new String(campoRegPassword.getPassword());
+            String conf = new String(campoRegConfirmPassword.getPassword());
+
+            if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!pass.equals(conf)) {
+                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (esParticular) {
+                MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, "", "", null, null, null, null));
+            } else {
+                MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, "", "", null, null, null));
+            }
+            
+            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+            layout.show(contenedor, "bienvenida");
+            setTitle("EleuTradia: Inicio");
+        });
+        
+        panelRegistro.add(panelBotones);
+        
+        panelDcho.add(panelRegistro);
+        
+        JPanel panelIzdo = construirPanelImagen();
+        
+        mainPanel.add(panelIzdo);
+        mainPanel.add(panelDcho);
 		
 		return mainPanel;
 	}
@@ -290,96 +415,51 @@ public class VentanaInicial extends JFrame {
         panel.add(imageLabel);
         
         return panel;
-    }
+	}
 	
-	private void registrarActionListeners() {
-		
-		botonParticular.addActionListener(e -> {
-			layout.show(contenedor, "loginParticular");
-			setTitle("EleuTradia: Iniciar sesión");
-		});
-		
-		botonEmpresa.addActionListener(e -> {
-			layout.show(contenedor, "loginEmpresa");
-			setTitle("EleuTradia: Iniciar sesión");
-		});
-		
-		botonVolverParticular.addActionListener(e -> {
-			layout.show(contenedor, "bienvenida");
-			setTitle("EleuTradia: Inicio");
-		});
-		
-		botonVolverEmpresa.addActionListener(e -> {
-			layout.show(contenedor, "bienvenida");
-			setTitle("EleuTradia: Inicio");
-		});
-		
-		botonLoginParticular.addActionListener(e -> {
-                String dni = campoDni.getText().trim();
-                String password = new String(campoPasswordParticular.getPassword());
-                
-                if (!(dni.isBlank() || password.isEmpty())) {
-	                Particular usuarioFound = null;
-	                for (Particular p : MainEleutradia.listaParticulares) {
-	                	if (p.getDni().equalsIgnoreCase(dni) && p.getPassword().equals(password)) {
-	                        usuarioFound = p;
-	                        break;
-	                    }
-	                }
+	private JLabel crearLabel(JLabel myLabel) {
+        myLabel.setFont(FONT_NORMAL);
+        myLabel.setForeground(MY_GRIS);
+        myLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+        return myLabel;
+	}
 	
-	                if (usuarioFound != null) {
-	                    new VentanaPrincipal(usuarioFound);
-	                    dispose(); // Cerrar la ventana de login
-	                } else {
-	                    JOptionPane.showMessageDialog(
-	                    		VentanaInicial.this, 
-	                    		"DNI o contraseña incorrectos.", 
-	                    		"Error de Login.", 
-	                    		JOptionPane.ERROR_MESSAGE);
-	                }
-                } else {
-    				JOptionPane.showMessageDialog(
-                    		VentanaInicial.this, 
-                    		"Por favor, rellene ambos campos.", 
-                    		"Campos incompletos", 
-                    		JOptionPane.ERROR_MESSAGE);
-    			}
-		});
-		
-		botonLoginEmpresa.addActionListener(e -> {
-            String nif = campoNif.getText().trim();
-            String password = new String(campoPasswordEmpresa.getPassword());
-            
-            if (!(nif.isBlank()) && !(password.isEmpty())) {
-	            Empresa usuarioFound = null;
-	            for (Empresa emp : MainEleutradia.listaEmpresas) {
-	            	if (emp.getNif().equalsIgnoreCase(nif) && emp.getPassword().equals(password)) {
-	                    usuarioFound = emp;
-	                    break;
-	                }
+	private JTextComponent crearCampo(boolean oculto) {
+	    JTextComponent campo = oculto ? new JPasswordField(20) : new JTextField(20);
+	    campo.setFont(FONT_CAMPO);
+	    campo.setMaximumSize(new Dimension(350, 35));
+	    campo.setPreferredSize(new Dimension(350, 35));
+	    campo.setAlignmentX(LEFT_ALIGNMENT);
+	    return campo;
+	}
+	
+	private void procesarLogin(boolean esParticular, JTextField campoId, JPasswordField campoPassword) {
+	    String id = campoId.getText().trim();
+	    String password = new String(campoPassword.getPassword());
+
+	    if (id.isBlank() || password.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Por favor, rellene ambos campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+
+	    if (esParticular) {
+	        for (Particular p : MainEleutradia.listaParticulares) {
+	            if (p.getDni().equalsIgnoreCase(id) && p.getPassword().equals(password)) {
+	                new VentanaPrincipal(p);
+	                dispose();
+	                return;
 	            }
-	
-	            if (usuarioFound != null) {
-	                new VentanaPrincipal(usuarioFound);
-	                dispose(); // Cerrar la ventana de login
-	            } else {
-	                JOptionPane.showMessageDialog(
-	                		VentanaInicial.this, 
-	                		"NIF o contraseña incorrectos.", 
-	                		"Error de inicio de sesión", 
-	                		JOptionPane.ERROR_MESSAGE);
+	        }
+	        JOptionPane.showMessageDialog(this, "DNI o contraseña incorrectos.", "Error de Login.", JOptionPane.ERROR_MESSAGE);
+	    } else {
+	        for (Empresa e : MainEleutradia.listaEmpresas) {
+	            if (e.getNif().equalsIgnoreCase(id) && e.getPassword().equals(password)) {
+	                new VentanaPrincipal(e);
+	                dispose();
+	                return;
 	            }
-			} else {
-				JOptionPane.showMessageDialog(
-                		VentanaInicial.this, 
-                		"Por favor, rellene ambos campos.", 
-                		"Campos incompletos", 
-                		JOptionPane.ERROR_MESSAGE);
-			}
-	});
-		
-		botonRegistro.addActionListener(e -> {
-			new VentanaRegistro();
-		});
+	        }
+	        JOptionPane.showMessageDialog(this, "NIF o contraseña incorrectos.", "Error de Login.", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 }
