@@ -407,7 +407,7 @@ public class VentanaInicial extends JFrame {
             Image imagen = icon.getImage().getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
             originalIcon = new ImageIcon(imagen);
         } catch (Exception e) {
-            System.err.println("No se pudo cargar la imagen");
+            System.err.println("Error al cargar la imagen");
             originalIcon = null;
         }
         
