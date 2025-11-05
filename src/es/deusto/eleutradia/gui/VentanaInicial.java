@@ -21,7 +21,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
@@ -242,7 +244,7 @@ public class VentanaInicial extends JFrame {
 		JPanel panelDcho = new JPanel();
         panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
         panelDcho.setBackground(Color.WHITE);
-        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 20));
         
         JLabel tituloReg = new JLabel("Abra su cuenta:");
         tituloReg.setFont(FONT_TITULO);
@@ -313,6 +315,14 @@ public class VentanaInicial extends JFrame {
         panelRegistro.add(campoRegEmail);
         panelRegistro.add(Box.createVerticalStrut(20));
         
+        // Campo de teléfono
+        panelRegistro.add(crearLabel(new JLabel(esParticular ? "Teléfono:" : "Teléfono de empresa")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JTextField campoRegTlf = (JTextField) crearCampo(false);
+        panelRegistro.add(campoRegTlf);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
         // Campo de contraseña
         panelRegistro.add(crearLabel(new JLabel("Contraseña:")));
         panelRegistro.add(Box.createVerticalStrut(10));
@@ -330,9 +340,10 @@ public class VentanaInicial extends JFrame {
         panelRegistro.add(Box.createVerticalStrut(20));
 
         // Botones
-        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 20, 0));;
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 10, 0));;
         panelBotones.setBackground(Color.WHITE);
         panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        panelBotones.setMaximumSize(new Dimension(300, 25));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JButton botonCancelar = new JButton("Cancelar");
@@ -359,10 +370,11 @@ public class VentanaInicial extends JFrame {
             String id = campoRegId.getText().trim();
             String nombre = campoRegNombre.getText().trim();
             String email = campoRegEmail.getText().trim();
+            String tlf = campoRegTlf.getText().trim();
             String pass = new String(campoRegPassword.getPassword());
             String conf = new String(campoRegConfirmPassword.getPassword());
 
-            if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
+            if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -372,7 +384,7 @@ public class VentanaInicial extends JFrame {
             }
 
             if (esParticular) {
-                MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, "", "", null, null, null, null));
+                MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null, null, null));
             } else {
                 MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, "", "", null, null, null));
             }
@@ -384,7 +396,12 @@ public class VentanaInicial extends JFrame {
         
         panelRegistro.add(panelBotones);
         
-        panelDcho.add(panelRegistro);
+        JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
+        scrollRegistro.setBorder(null); // elimina el borde del scroll
+        scrollRegistro.setBackground(Color.WHITE);
+        scrollRegistro.getVerticalScrollBar().setUnitIncrement(16); // suaviza el scroll
+        scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        panelDcho.add(scrollRegistro);
         
         JPanel panelIzdo = construirPanelImagen();
         
@@ -427,8 +444,8 @@ public class VentanaInicial extends JFrame {
 	private JTextComponent crearCampo(boolean oculto) {
 	    JTextComponent campo = oculto ? new JPasswordField(20) : new JTextField(20);
 	    campo.setFont(FONT_CAMPO);
-	    campo.setMaximumSize(new Dimension(350, 35));
-	    campo.setPreferredSize(new Dimension(350, 35));
+	    campo.setMaximumSize(new Dimension(300, 25));
+	    campo.setPreferredSize(new Dimension(300, 25));
 	    campo.setAlignmentX(LEFT_ALIGNMENT);
 	    return campo;
 	}
