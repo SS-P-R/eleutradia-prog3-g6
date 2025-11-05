@@ -17,13 +17,14 @@ import es.deusto.eleutradia.domain.Usuario;
 public class PanelInicio extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	
+	private VentanaPrincipal ventanaPrincipal;
 	private Usuario usuario;
 
 	Font font;
 
-	public PanelInicio(Usuario usuario) {
+	public PanelInicio(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
 		this.usuario = usuario;
+		this.ventanaPrincipal = ventanaPrincipal;
 		//Fondo
 		setLayout(new BorderLayout(10,10));
 		
@@ -43,6 +44,9 @@ public class PanelInicio extends JPanel{
 	private JPanel PanelRecordatorio() {
 		JPanel recordatorio = new JPanel(new FlowLayout());
 		JButton completarPerfil = new JButton("Ir al perfil");
+		completarPerfil.addActionListener(e->{
+			ventanaPrincipal.mostrarPanel("Perfil");
+		});
 		if (usuario instanceof Particular) {
 			Particular particular = (Particular) usuario;
 			if (particular.getPaisResidencia()==null) {
@@ -52,7 +56,7 @@ public class PanelInicio extends JPanel{
 				recordatorio.add(completarPerfil);
 				recordatorio.add(new JLabel("Todavía no has completado tu perfil, añade tu dirección"));
 			}else {
-				recordatorio.add(new JLabel("Todo correcto mi pana"));
+				recordatorio.add(new JLabel("Todo correcto"));
 			}
 		}
 		return recordatorio;
@@ -77,8 +81,8 @@ public class PanelInicio extends JPanel{
 		saludoTxt.setFont(new Font("Times new roman",Font.BOLD,18));
 		
 		Border recuadro = BorderFactory.createLineBorder(Color.gray, 2);
-		Border posicion = (BorderFactory.createEmptyBorder(0,15,5,5));
-		saludoTxt.setBorder(BorderFactory.createCompoundBorder(recuadro, posicion));
+		Border posicion = (BorderFactory.createEmptyBorder(0,50,10,10));
+		saludoTxt.setBorder(BorderFactory.createCompoundBorder(posicion, recuadro));
 		
 		panelSaludo.add(saludoTxt);
 		return panelSaludo;

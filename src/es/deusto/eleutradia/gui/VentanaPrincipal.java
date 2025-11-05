@@ -68,7 +68,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void inicializarPaneles() {		
 		// Ejemplo de las 5 ventanas
-        PanelInicio panelInicio = new PanelInicio(usuario);
+        PanelInicio panelInicio = new PanelInicio(usuario, this);
         PanelExplorar panelExplorar = new PanelExplorar();
         JPanel panelPortfolio = new JPanel();
         panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
@@ -166,11 +166,53 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void resetBotones() {
-	    resetBoton(botonInicio, "/imagenes/casaNegro.png", "Inicio");
-	    resetBoton(botonExplorar, "/imagenes/busquedaNegro.png", "Explorar");
-	    resetBoton(botonPortfolio, "/imagenes/portfolioNegro.png", "Portfolio");
-	    resetBoton(botonAprender, "/imagenes/aprendizajeNegro.png", "Aprender");
-	    resetBoton(botonPerfil, "/imagenes/perfilNegro.png", "Perfil");
+		botonInicio.setIcon(cargarIcono("/imagenes/casaNegro.png"));
+		botonInicio.setText("Inicio");
+
+		botonExplorar.setIcon(cargarIcono("/imagenes/busquedaNegro.png"));
+		botonExplorar.setText("Explorar");
+
+	    botonPortfolio.setIcon(cargarIcono("/imagenes/portfolioNegro.png"));
+		botonPortfolio.setText("Portfolio");
+
+		botonAprender.setIcon(cargarIcono("/imagenes/aprendizajeNegro.png"));
+		botonAprender.setText("Aprender");
+
+		botonPerfil.setIcon(cargarIcono("/imagenes/perfilNegro.png"));
+		botonPerfil.setText("Perfil");
+
+    }
+	
+	public void mostrarPanel(String nombre) {
+		layout.show(contenedor, nombre);
+		resetBotones();
+		
+		switch (nombre) {
+		case "Inicio":
+			botonInicio.setIcon(cargarIcono(inicioAzul));
+			botonInicio.setText("Inicio");
+			break;
+		case "Explorar":
+			botonExplorar.setIcon(cargarIcono(explorarAzul));
+			botonExplorar.setText("Explorar");
+			break;
+		case "Portfolio":
+			botonPortfolio.setIcon(cargarIcono(portfolioAzul));
+			botonPortfolio.setText("Portfolio");
+			break;
+		case "Aprendizaje":
+			botonAprender.setIcon(cargarIcono(aprenderAzul));
+			botonAprender.setText("Aprendizaje");
+			break;
+
+		case "Perfil":
+			botonPerfil.setIcon(cargarIcono(perfilAzul));
+			botonPerfil.setText("Perfil");
+			break;
+			
+		default:
+			throw new IllegalArgumentException("No existe la pestaña: " + nombre);
+		}
 	}
 
 	private void resetBoton(JButton boton, String iconoRuta, String texto) {
