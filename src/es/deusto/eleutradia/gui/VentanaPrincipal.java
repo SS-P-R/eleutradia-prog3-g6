@@ -204,7 +204,6 @@ public class VentanaPrincipal extends JFrame {
 			botonAprender.setIcon(cargarIcono(ICONO_APRENDER_AZUL));
 			botonAprender.setText("Aprendizaje");
 			break;
-
 		case "Perfil":
 			botonPerfil.setIcon(cargarIcono(ICONO_PERFIL_AZUL));
 			botonPerfil.setText("Perfil");
