@@ -89,7 +89,7 @@ public class PanelExplorar extends JPanel {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         
         // Título
-        JLabel titulo = new JLabel("Explore productos de inversión", JLabel.CENTER);
+        JLabel titulo = new JLabel("Descubra nuestra selección de productos de inversión", JLabel.CENTER);
         titulo.setFont(FONT_TITULO);
         titulo.setForeground(MY_AZUL);
         
@@ -137,14 +137,16 @@ public class PanelExplorar extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MY_GRIS, 1),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+            BorderFactory.createLineBorder(MY_GRIS, 2),
+            BorderFactory.createEmptyBorder(20, 10, 10, 20)
         ));
         mainPanel.setPreferredSize(new Dimension(200, 0));
         
-        JLabel tituloFiltros = new JLabel("Filtros");
+        JLabel tituloFiltros = new JLabel("-FILTROS-");
         tituloFiltros.setFont(FONT_SUBTITULO);
-        tituloFiltros.setAlignmentX(LEFT_ALIGNMENT);
+        tituloFiltros.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        tituloFiltros.setHorizontalAlignment(JLabel.CENTER);
+        tituloFiltros.setMaximumSize(new Dimension(Integer.MAX_VALUE, tituloFiltros.getPreferredSize().height));
         mainPanel.add(tituloFiltros);
         mainPanel.add(Box.createVerticalStrut(15));
         
@@ -317,7 +319,7 @@ public class PanelExplorar extends JPanel {
             
             // Filtro por gestora
             if (!selectedGestora.equals("Todo") && cumpleFiltros) {
-            	String nombreGestora = (producto.getGestora() != null) ? producto.getGestora().getNombre() : "---";
+            	String nombreGestora = (producto.getGestora() != null) ? producto.getGestora().getNombreCompleto() : "---";
                 if (!(nombreGestora.equals(selectedGestora))) {
                     cumpleFiltros = false;
                 }
@@ -351,7 +353,7 @@ public class PanelExplorar extends JPanel {
                 p.getTipoProducto().getRiesgo(),
                 String.format("%.2f", p.getValorUnitario()),
                 p.getDivisa(),
-                (p.getGestora() != null ? p.getGestora().getNombre() : "---")
+                (p.getGestora() != null ? p.getGestora().getNombreCompleto() : "---")
             };
             modeloTabla.addRow(row);
         }
@@ -409,7 +411,7 @@ public class PanelExplorar extends JPanel {
         for (ProductoFinanciero p : MainEleutradia.listaProductos) {
         	Gestora g = p.getGestora();
         	if (g != null) {
-        		gestoras.add(g.getNombre());
+        		gestoras.add(g.getNombreCompleto());
         	}
         }
         return gestoras.toArray(new String[0]);

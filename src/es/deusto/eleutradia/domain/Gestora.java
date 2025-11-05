@@ -4,31 +4,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gestora {
-	private String nombre;
+	private String nombreComercial;
+	private String nombreCompleto;
 	private String direccion;
 	private Pais sede;
 	private List<ProductoFinanciero> ofertaProductos;
 	
 	public Gestora() {
-		this.nombre = "";
+		this.nombreComercial = "";
+		this.nombreCompleto = "";
 		this.direccion = "";
 		this.sede = null;
 		this.ofertaProductos = new ArrayList<ProductoFinanciero>();
 	}
 
-	public Gestora(String nombre, String direccion, Pais sede, List<ProductoFinanciero> ofertaProductos) {
-		this.nombre = nombre;
+	public Gestora(String nombreComercial, String nombre, String direccion, Pais sede, List<ProductoFinanciero> ofertaProductos) {
+		this.nombreComercial = nombreComercial;
+		this.nombreCompleto = nombre;
 		this.direccion = direccion;
 		this.sede = sede;
 		this.ofertaProductos = ofertaProductos;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreComercial() {
+		return nombreComercial;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreComercial(String nombreComercial) {
+		this.nombreComercial = nombreComercial;
+	}
+
+	public String getNombreCompleto() {
+		return nombreCompleto;
+	}
+
+	public void setNombreCompleto(String nombreCompleto) {
+		this.nombreCompleto = nombreCompleto;
 	}
 
 	public String getDireccion() {
@@ -57,7 +68,7 @@ public class Gestora {
 
 	@Override
 	public String toString() {
-		return "Gestora [nombre=" + nombre + ", direccion=" + direccion + ", sede=" + sede + ", ofertaProductos="
+		return "Gestora [nombre=" + nombreCompleto + ", direccion=" + direccion + ", sede=" + sede + ", ofertaProductos="
 				+ ofertaProductos + "]";
 	}
 	

@@ -144,6 +144,7 @@ public class MainEleutradia {
 	        );
 	        
 	        Gestora blackrock = new Gestora(
+	        		"iShares",
 	        	    "BlackRock Inc.",
 	        	    "50 Hudson Yards, New York, NY, Estados Unidos",
 	        	    eeuu,
@@ -151,6 +152,7 @@ public class MainEleutradia {
 	        	);
 
 	        Gestora vanguard = new Gestora(
+	        		"Vanguard",
 	        	    "Vanguard Group",
 	        	    "100 Vanguard Blvd, Malvern, PA, Estados Unidos",
 	        	    eeuu,
@@ -158,6 +160,7 @@ public class MainEleutradia {
 	        	);
 
 	        Gestora fidelity = new Gestora(
+	        		"Fidelity",
 	        	    "Fidelity Investments",
 	        	    "245 Summer Street, Boston, MA, Estados Unidos",
 	        	    eeuu,
@@ -165,6 +168,7 @@ public class MainEleutradia {
 	        	);
 
 	        Gestora jpmorgan = new Gestora(
+	        		"JPMAM",
 	        	    "J.P. Morgan Asset Management",
 	        	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
 	        	    reinounido,
@@ -172,16 +176,25 @@ public class MainEleutradia {
 	        	);
 
 	        Gestora amundi = new Gestora(
+	        		"Amundi",
 	        	    "Amundi Asset Management",
 	        	    "90 Boulevard Pasteur, París, Francia",
 	        	    francia,
 	        	    new ArrayList<>()
 	        	);
 	        
+	        Gestora bbva = new Gestora(
+	        		"BBVA",
+	        		"BBVA Asset Management",
+	        		"Paseo Castellana 81, Madrid, España",
+	        		espana,
+	        		new ArrayList<>()
+	        	);
+	        
 	    // --- DEPÓSITOS ---
 	    listaProductos.add(new ProductoFinanciero(
 	        "DEP001",
-	        "Depósito JP 12M",
+	        "Depósito 12M",
 	        YearMonth.of(2025, 12),
 	        rentabConservadora,
 	        1020.0,
@@ -194,7 +207,7 @@ public class MainEleutradia {
 
 	    listaProductos.add(new ProductoFinanciero(
 	        "DEP002",
-	        "Depósito CapitalFrance Plus",
+	        "Depósito Capital France",
 	        YearMonth.of(2026, 6),
 	        rentabModerada,
 	        2100.0,
@@ -275,7 +288,7 @@ public class MainEleutradia {
 
 	    listaProductos.add(new ProductoFinanciero(
 	        "FON002",
-	        "Fondo SwissBank Moderado",
+	        "Fondo SwissBank",
 	        null,
 	        rentabModerada,
 	        950.0,
@@ -288,7 +301,7 @@ public class MainEleutradia {
 	    
 	    listaProductos.add(new ProductoFinanciero(
 		        "FON003",
-		        "Fidelity S&P 500 Index",
+		        "S&P 500 Index",
 		        null,
 		        rentabModerada,
 		        950.0,

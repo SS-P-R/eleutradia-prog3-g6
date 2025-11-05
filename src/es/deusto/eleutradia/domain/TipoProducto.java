@@ -10,12 +10,13 @@ public enum TipoProducto {
 	BONO(ClaseActivo.RENTA_FIJA, 2, 1000.0),
 	LETRA_TESORO(ClaseActivo.RENTA_FIJA, 1, 100.0),
 	DEPOSITO(ClaseActivo.RENTA_FIJA, 1, 10000.0),
+	PLAN_PENSIONES_RF(ClaseActivo.RENTA_FIJA, 3, 100.0),
 	ETF_RF(ClaseActivo.RENTA_FIJA, 3, 1000.0),
 	
 	// --- Activos de RV ---
 	ACCION(ClaseActivo.RENTA_VARIABLE, 5, 10.0),
 	FONDO_INVERSION(ClaseActivo.RENTA_VARIABLE, 4, 1.0),
-	PLAN_PENSIONES(ClaseActivo.RENTA_VARIABLE, 4, 100.0),
+	PLAN_PENSIONES_RV(ClaseActivo.RENTA_VARIABLE, 4, 100.0),
 	ETF_RV(ClaseActivo.RENTA_VARIABLE, 4, 10.0),
 	
 	// --- Activos alternativos ---

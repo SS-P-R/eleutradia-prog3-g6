@@ -127,7 +127,7 @@ public class ProductoFinanciero {
 		return "ProductoFinanciero [codigo=" + codigo + ", nombre=" + nombre + ", plazo=" + plazo
 				+ ", rentabilidades=" + rentabilidades + ", valorUnitario=" + valorUnitario
 				+ ", tipoProducto=" + tipoProducto + ", regionGeografica=" + regionGeografica
-				+ ", perPago=" + perPago + ", divisa=" + divisa + ", gestora=" + gestora.getNombre() + "]";
+				+ ", perPago=" + perPago + ", divisa=" + divisa + "]";
 	}
 	
 }

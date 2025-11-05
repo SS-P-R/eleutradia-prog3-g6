@@ -386,7 +386,7 @@ public class VentanaInicial extends JFrame {
             if (esParticular) {
                 MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null, null, null));
             } else {
-                MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, "", "", null, null, null));
+                MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null, null));
             }
             
             JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
