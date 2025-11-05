@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -83,6 +85,9 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panelNavegacion = new JPanel();
 		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
 		panelNavegacion.setBackground(Color.WHITE);
+		panelNavegacion.setBorder(BorderFactory.createTitledBorder(
+			    BorderFactory.createLineBorder(Color.BLACK, 4), "Menú", javax.swing.border.TitledBorder.CENTER,
+			    javax.swing.border.TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 14), Color.BLACK));
 		panelNavegacion.add(Box.createVerticalGlue());
 		
 		agregarBotonNavegacion(panelNavegacion, "Inicio", "Inicio",
@@ -120,7 +125,7 @@ public class VentanaPrincipal extends JFrame {
         JButton boton = new JButton(texto);
         if (icono != null) boton.setIcon(icono);
         
-        boton.setForeground(Color.GRAY);
+        boton.setForeground(Color.BLACK);
         boton.setVerticalTextPosition(JButton.BOTTOM); 
         boton.setHorizontalTextPosition(JButton.CENTER);
         boton.setAlignmentX(JButton.CENTER_ALIGNMENT);
