@@ -184,18 +184,23 @@ public class VentanaPrincipal extends JFrame {
 		switch (nombre) {
 		case "Inicio":
 			botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
+			botonInicio.setText("");
 			break;
 		case "Explorar":
 			botonExplorar.setIcon(cargarIcono(ICONO_EXPLORAR_AZUL));
+			botonExplorar.setText("");
 			break;
 		case "Portfolio":
 			botonPortfolio.setIcon(cargarIcono(ICONO_PORTFOLIO_AZUL));
+			botonPortfolio.setText("");
 			break;
 		case "Aprendizaje":
 			botonAprender.setIcon(cargarIcono(ICONO_APRENDER_AZUL));
+			botonAprender.setText("");
 			break;
 		case "Perfil":
 			botonPerfil.setIcon(cargarIcono(ICONO_PERFIL_AZUL));
+			botonPerfil.setText("");
 			break;
 			
 		default:
