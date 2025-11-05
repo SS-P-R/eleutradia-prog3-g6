@@ -19,15 +19,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
-import es.deusto.eleutradia.domain.Empresa;
 
 public class VentanaPrincipal extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Usuario usuarioLogueado;
+	private Usuario usuario;
 	        
     private CardLayout layout;
     private JPanel contenedor;
@@ -39,21 +37,53 @@ public class VentanaPrincipal extends JFrame {
     private ImageIcon iconoPortfolio;
     private ImageIcon iconoAprender;
     private ImageIcon iconoPerfil;
-    private String iconoInicioS = "/imagenes/casaAzul.png";
-    private String iconoExplorarS = "/imagenes/busquedaAzul.png";
-    private String iconoPortfolioS = "/imagenes/portfolioAzul.png";
-    private String iconoAprenderS = "/imagenes/aprendizajeAzul.png";        
-    private String iconoPerfilS = "/imagenes/perfilAzul.png";
+    
+    private String inicioAzul = "/imagenes/casaAzul.png";
+    private String explorarAzul = "/imagenes/busquedaAzul.png";
+    private String portfolioAzul = "/imagenes/portfolioAzul.png";
+    private String aprenderAzul = "/imagenes/aprendizajeAzul.png";        
+    private String perfilAzul = "/imagenes/perfilAzul.png";
 	
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
-		configurarVentana();
-		this.usuarioLogueado = usuario;
-		cargarIconos();
-		inicializarPaneles();
-		construirPanelNavegacion();
-
+		this.usuario = usuario;
+		this.configurarVentana();
+		this.inicializarPaneles();
+		this.construirPanelNavegacion();
+		this.cargarIconos();
 		this.setVisible(true);
+	}
+	
+	private void configurarVentana() {
+		this.setLayout(new BorderLayout());
+		this.setSize(800,600);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setMinimumSize(new Dimension(800, 600));
+		
+		layout = new CardLayout();
+		contenedor = new JPanel(layout);
+		this.add(contenedor);
+	}
+	
+	private void inicializarPaneles() {		
+		// Ejemplo de las 5 ventanas
+        PanelInicio panelInicio = new PanelInicio(usuario);
+        PanelExplorar panelExplorar = new PanelExplorar();
+        JPanel panelPortfolio = new JPanel();
+        panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
+        JPanel panelAprender = new JPanel();
+        panelAprender.add(new JLabel("Aquí irá el Módulo de Aprender"));
+        JPanel panelPerfil = new PanelPerfil();
+        
+        contenedor.add(panelInicio, "Inicio");
+        contenedor.add(panelExplorar, "Explorador");
+        contenedor.add(panelPortfolio, "Portfolio");
+        contenedor.add(panelAprender,"Aprendizaje");
+        contenedor.add(panelPerfil,"Perfil");
+        
+        layout.show(contenedor, "Inicio");
 	}
 	
 	private void construirPanelNavegacion() {
@@ -63,14 +93,13 @@ public class VentanaPrincipal extends JFrame {
 		panelNavegacion.setAlignmentY(CENTER_ALIGNMENT);
 		panelNavegacion.add(Box.createVerticalGlue());
 		
-		
 		botonInicio = crearBotonNavegacion("", iconoInicio);
 		panelNavegacion.add(botonInicio);
 		panelNavegacion.add(Box.createVerticalStrut(30));
-		botonInicio.addActionListener(e->{
+		botonInicio.addActionListener(e-> {
 			layout.show(contenedor, "Inicio");
 			resetBotones();
-            botonInicio.setIcon(cargarIcono(iconoInicioS)); 
+            botonInicio.setIcon(cargarIcono(inicioAzul)); 
             botonInicio.setText("");
 		});
 		
@@ -80,7 +109,7 @@ public class VentanaPrincipal extends JFrame {
 		botonExplorar.addActionListener(e->{
 			layout.show(contenedor, "Explorador");
 			resetBotones();
-            botonExplorar.setIcon(cargarIcono(iconoExplorarS)); 
+            botonExplorar.setIcon(cargarIcono(explorarAzul)); 
             botonExplorar.setText("");
 		});
 		
@@ -90,7 +119,7 @@ public class VentanaPrincipal extends JFrame {
 		botonPortfolio.addActionListener(e->{
 			layout.show(contenedor, "Portfolio");
 			resetBotones();
-            botonPortfolio.setIcon(cargarIcono(iconoPortfolioS)); 
+            botonPortfolio.setIcon(cargarIcono(portfolioAzul)); 
             botonPortfolio.setText("");
 		});
 		
@@ -101,7 +130,7 @@ public class VentanaPrincipal extends JFrame {
 		botonAprender.addActionListener(e->{
 			layout.show(contenedor, "Aprendizaje");
 			resetBotones();
-            botonAprender.setIcon(cargarIcono(iconoAprenderS)); 
+            botonAprender.setIcon(cargarIcono(aprenderAzul)); 
             botonAprender.setText("");
 		});
 		
@@ -111,7 +140,7 @@ public class VentanaPrincipal extends JFrame {
 		botonPerfil.addActionListener(e->{
 			layout.show(contenedor, "Perfil");
 			resetBotones();
-            botonPerfil.setIcon(cargarIcono(iconoPerfilS)); 
+            botonPerfil.setIcon(cargarIcono(perfilAzul)); 
             botonPerfil.setText("");
 		});
 		
@@ -120,41 +149,6 @@ public class VentanaPrincipal extends JFrame {
 		this.add(panelNavegacion, BorderLayout.WEST);
 		
 	}
-
-	private void configurarVentana() {
-		this.setLayout(new BorderLayout());
-		this.setSize(800,600);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		this.setMinimumSize(new Dimension(800, 600));
-		
-		layout = new CardLayout();
-		contenedor = new JPanel(layout);
-		this.add(contenedor);
-		
-	}
-	
-	private void inicializarPaneles() {		
-		// Ejemplo de las 5 ventanas
-        PanelInicio panelInicio = new PanelInicio(usuarioLogueado);
-        PanelExplorar panelExplorar = new PanelExplorar();
-        JPanel panelPortfolio = new JPanel();
-        panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
-        JPanel panelAprender = new JPanel();
-        panelAprender.add(new JLabel("Aquí irá el Módulo de Aprender"));
-        JPanel panelPerfil = new JPanel();
-        panelPerfil.add(new JLabel("Aquí irá el Módulo de Perfil"));
-        
-        contenedor.add(panelInicio, "Inicio");
-        contenedor.add(panelExplorar, "Explorador");
-        contenedor.add(panelPortfolio, "Portfolio");
-        contenedor.add(panelAprender,"Aprendizaje");
-        contenedor.add(panelPerfil,"Perfil");
-        
-        layout.show(contenedor, "Inicio");
-	}
-
-	
 
 	private void cargarIconos() {
 		iconoInicio = cargarIcono("/imagenes/casaAzul.png");

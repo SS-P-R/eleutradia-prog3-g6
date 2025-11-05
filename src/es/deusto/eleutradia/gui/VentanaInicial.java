@@ -69,6 +69,8 @@ public class VentanaInicial extends JFrame {
 	}
 	
 	private void inicializarPaneles() {
+		// Construimos los diferentes paneles y
+		// los añadimos como opciones ("cartas") al contenedor
 		JPanel panelBienvenida = construirPanelBienvenida();
 	    JPanel panelLoginParticular = construirPanelLogin(true);
 	    JPanel panelLoginEmpresa = construirPanelLogin(false);
