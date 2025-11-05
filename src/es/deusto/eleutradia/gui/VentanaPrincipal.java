@@ -32,17 +32,17 @@ public class VentanaPrincipal extends JFrame {
     
     private JButton botonInicio, botonExplorar, botonPortfolio, botonAprender, botonPerfil;
     
-    // Imágenes
-    private String inicioNegro = "/imagenes/casaNegro.png";
-    private String explorarNegro = "/imagenes/busquedaNegro.png";
-    private String portfolioNegro = "/imagenes/portfolioNegro.png";
-    private String aprenderNegro = "/imagenes/aprendizajeNegro.png";        
-    private String perfilNegro = "/imagenes/perfilNegro.png";
-    private String inicioAzul = "/imagenes/casaAzul.png";
-    private String explorarAzul = "/imagenes/busquedaAzul.png";
-    private String portfolioAzul = "/imagenes/portfolioAzul.png";
-    private String aprenderAzul = "/imagenes/aprendizajeAzul.png";        
-    private String perfilAzul = "/imagenes/perfilAzul.png";
+    // Rutas de los iconos de pestaña
+    private static final String ICONO_INICIO_NEGRO = "/imagenes/casaNegro.png";
+    private static final String ICONO_EXPLORAR_NEGRO = "/imagenes/busquedaNegro.png";
+    private static final String ICONO_PORTFOLIO_NEGRO = "/imagenes/portfolioNegro.png";
+    private static final String ICONO_APRENDER_NEGRO = "/imagenes/aprendizajeNegro.png";        
+    private static final String ICONO_PERFIL_NEGRO = "/imagenes/perfilNegro.png";
+    private static final String ICONO_INICIO_AZUL = "/imagenes/casaAzul.png";
+    private static final String ICONO_EXPLORAR_AZUL = "/imagenes/busquedaAzul.png";
+    private static final String ICONO_PORTFOLIO_AZUL = "/imagenes/portfolioAzul.png";
+    private static final String ICONO_APRENDER_AZUL = "/imagenes/aprendizajeAzul.png";        
+    private static final String ICONO_PERFIL_AZUL = "/imagenes/perfilAzul.png";
 	
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
@@ -92,24 +92,24 @@ public class VentanaPrincipal extends JFrame {
 		panelNavegacion.add(Box.createVerticalGlue());
 		
 		agregarBotonNavegacion(panelNavegacion, "Inicio", "Inicio",
-	            inicioNegro, inicioAzul);
+	            ICONO_INICIO_NEGRO, ICONO_INICIO_AZUL);
 		
 	    agregarBotonNavegacion(panelNavegacion, "Explorador", "Explorar",
-	            explorarNegro, explorarAzul);
+	            ICONO_EXPLORAR_NEGRO, ICONO_EXPLORAR_AZUL);
 		
 	    agregarBotonNavegacion(panelNavegacion, "Portfolio", "Portfolio",
-	            portfolioNegro, portfolioAzul);
+	            ICONO_PORTFOLIO_NEGRO, ICONO_PORTFOLIO_AZUL);
 
 	    agregarBotonNavegacion(panelNavegacion, "Aprendizaje", "Aprender",
-	            aprenderNegro, aprenderAzul);
+	            ICONO_APRENDER_NEGRO, ICONO_APRENDER_AZUL);
 
 	    agregarBotonNavegacion(panelNavegacion, "Perfil", "Perfil",
-	            perfilNegro, perfilAzul);
+	            ICONO_PERFIL_NEGRO, ICONO_PERFIL_AZUL);
 		
 		panelNavegacion.add(Box.createVerticalGlue());
 		this.add(panelNavegacion, BorderLayout.WEST);
 		
-		botonInicio.setIcon(cargarIcono("/imagenes/casaAzul.png"));
+		botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
 		botonInicio.setText("");
 	}
 
@@ -166,22 +166,22 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void resetBotones() {
-		botonInicio.setIcon(cargarIcono("/imagenes/casaNegro.png"));
-		botonInicio.setText("Inicio");
+		resetBoton(botonInicio, ICONO_INICIO_NEGRO, "Inicio");
 
-		botonExplorar.setIcon(cargarIcono("/imagenes/busquedaNegro.png"));
-		botonExplorar.setText("Explorar");
+		resetBoton(botonExplorar, ICONO_EXPLORAR_NEGRO, "Explorar");
 
-	    botonPortfolio.setIcon(cargarIcono("/imagenes/portfolioNegro.png"));
-		botonPortfolio.setText("Portfolio");
+		resetBoton(botonPortfolio, ICONO_PORTFOLIO_NEGRO, "Portfolio");
 
-		botonAprender.setIcon(cargarIcono("/imagenes/aprendizajeNegro.png"));
-		botonAprender.setText("Aprender");
+		resetBoton(botonAprender, ICONO_APRENDER_NEGRO, "Aprender");
 
-		botonPerfil.setIcon(cargarIcono("/imagenes/perfilNegro.png"));
-		botonPerfil.setText("Perfil");
+		resetBoton(botonPerfil, ICONO_PERFIL_NEGRO, "Perfil");
 
     }
+	
+	private void resetBoton(JButton boton, String iconoRuta, String texto) {
+	    boton.setIcon(cargarIcono(iconoRuta));
+	    boton.setText(texto);
+	}
 	
 	public void mostrarPanel(String nombre) {
 		layout.show(contenedor, nombre);
@@ -189,34 +189,29 @@ public class VentanaPrincipal extends JFrame {
 		
 		switch (nombre) {
 		case "Inicio":
-			botonInicio.setIcon(cargarIcono(inicioAzul));
+			botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
 			botonInicio.setText("Inicio");
 			break;
 		case "Explorar":
-			botonExplorar.setIcon(cargarIcono(explorarAzul));
+			botonExplorar.setIcon(cargarIcono(ICONO_EXPLORAR_AZUL));
 			botonExplorar.setText("Explorar");
 			break;
 		case "Portfolio":
-			botonPortfolio.setIcon(cargarIcono(portfolioAzul));
+			botonPortfolio.setIcon(cargarIcono(ICONO_PORTFOLIO_AZUL));
 			botonPortfolio.setText("Portfolio");
 			break;
 		case "Aprendizaje":
-			botonAprender.setIcon(cargarIcono(aprenderAzul));
+			botonAprender.setIcon(cargarIcono(ICONO_APRENDER_AZUL));
 			botonAprender.setText("Aprendizaje");
 			break;
 
 		case "Perfil":
-			botonPerfil.setIcon(cargarIcono(perfilAzul));
+			botonPerfil.setIcon(cargarIcono(ICONO_PERFIL_AZUL));
 			botonPerfil.setText("Perfil");
 			break;
 			
 		default:
 			throw new IllegalArgumentException("No existe la pestaña: " + nombre);
 		}
-	}
-
-	private void resetBoton(JButton boton, String iconoRuta, String texto) {
-	    boton.setIcon(cargarIcono(iconoRuta));
-	    boton.setText(texto);
 	}
 }
