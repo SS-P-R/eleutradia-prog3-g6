@@ -91,7 +91,7 @@ public class VentanaPrincipal extends JFrame {
 		this.add(panelNavegacion, BorderLayout.WEST);
 		
 		// Ejemplo de las 5 ventanas
-        panelInicio = new PanelInicio();
+        panelInicio = new PanelInicio(usuarioLogueado);
 
         panelExplorar = new PanelExplorar();
 
