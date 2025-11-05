@@ -26,7 +26,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
 import es.deusto.eleutradia.domain.Empresa;
@@ -52,6 +51,7 @@ public class VentanaInicial extends JFrame {
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
 		this.configurarVentana();
+		this.generarImagenRandom();
         this.inicializarPaneles();
         this.setVisible(true);
 	}
@@ -111,6 +111,9 @@ public class VentanaInicial extends JFrame {
 		JButton botonParticular = new JButton("Acceder como Particular");
 		botonParticular.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonParticular.setMaximumSize(new Dimension(220, 40));
+		botonParticular.setBackground(MY_AZUL);
+		botonParticular.setForeground(Color.WHITE);
+		botonParticular.setFocusPainted(false);
 		panelDcho.add(botonParticular);
 		botonParticular.addActionListener(e -> {
 			layout.show(contenedor, "loginParticular");
@@ -119,8 +122,11 @@ public class VentanaInicial extends JFrame {
 		panelDcho.add(Box.createVerticalStrut(20));
 		
 		JButton botonEmpresa = new JButton("Acceder como Empresa");
-		botonEmpresa.setMaximumSize(new Dimension(220, 40));
 		botonEmpresa.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		botonEmpresa.setMaximumSize(new Dimension(220, 40));
+		botonEmpresa.setBackground(MY_AZUL);
+		botonEmpresa.setForeground(Color.WHITE);
+		botonEmpresa.setFocusPainted(false);
 		panelDcho.add(botonEmpresa);
 		botonEmpresa.addActionListener(e -> {
 			layout.show(contenedor, "loginEmpresa");
@@ -208,27 +214,20 @@ public class VentanaInicial extends JFrame {
         
         // Key Listener
     	KeyListener myKeyListener = new KeyListener() {
-
     		@Override
     		public void keyTyped(KeyEvent e) {
-    			// TODO Auto-generated method stub
     		}
 
     		@Override
     		public void keyPressed(KeyEvent e) {
-    			// TODO Auto-generated method stub
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
     				procesarLogin(esParticular, campoId, campoPassword);
     			}
-
     		}
 
     		@Override
     		public void keyReleased(KeyEvent e) {
-    			// TODO Auto-generated method stub
-    			
     		}
-    		
     	};
     	campoId.addKeyListener(myKeyListener);
     	campoPassword.addKeyListener(myKeyListener);
@@ -449,9 +448,15 @@ public class VentanaInicial extends JFrame {
         panel.setBackground(Color.BLACK);
 
         JLabel imageLabel = new JLabel();
-        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        imageLabel.setIcon(originalIcon);
+        panel.add(imageLabel);
         
-        try {
+        return panel;
+	}
+	
+	private void generarImagenRandom() {
+		try {
         	Random random = new Random();
             ImageIcon icon = new ImageIcon(getClass().getResource("/imagenes/fondoLogin" + (random.nextInt(2)+1) + ".png"));
             Image imagen = icon.getImage().getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
@@ -460,11 +465,6 @@ public class VentanaInicial extends JFrame {
             System.err.println("Error al cargar la imagen");
             originalIcon = null;
         }
-        
-        imageLabel.setIcon(originalIcon);
-        panel.add(imageLabel);
-        
-        return panel;
 	}
 	
 	private JLabel crearLabel(JLabel myLabel) {
