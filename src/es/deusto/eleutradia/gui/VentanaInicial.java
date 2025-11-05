@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -199,6 +201,33 @@ public class VentanaInicial extends JFrame {
         JPasswordField campoPassword = (JPasswordField) crearCampo(true);
         panelAcceso.add(campoPassword);
         panelAcceso.add(Box.createVerticalStrut(40));
+        
+        // Key Listener
+    	KeyListener myKeyListener = new KeyListener() {
+
+    		@Override
+    		public void keyTyped(KeyEvent e) {
+    			// TODO Auto-generated method stub
+    		}
+
+    		@Override
+    		public void keyPressed(KeyEvent e) {
+    			// TODO Auto-generated method stub
+    			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+    				procesarLogin(esParticular, campoId, campoPassword);
+    			}
+
+    		}
+
+    		@Override
+    		public void keyReleased(KeyEvent e) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+    		
+    	};
+    	campoId.addKeyListener(myKeyListener);
+    	campoPassword.addKeyListener(myKeyListener);
         
         // Botones
         JPanel panelBotones = new JPanel(new GridLayout(1, 2, 20, 0));
