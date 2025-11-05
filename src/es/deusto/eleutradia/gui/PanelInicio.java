@@ -81,8 +81,8 @@ public class PanelInicio extends JPanel{
 		saludoTxt.setFont(new Font("Times new roman",Font.BOLD,18));
 		
 		Border recuadro = BorderFactory.createLineBorder(Color.gray, 2);
-		Border posicion = (BorderFactory.createEmptyBorder(0,50,10,10));
-		saludoTxt.setBorder(BorderFactory.createCompoundBorder(posicion, recuadro));
+		Border posicion = BorderFactory.createEmptyBorder(5,10,5,10);
+		saludoTxt.setBorder(BorderFactory.createCompoundBorder(recuadro, posicion));
 		
 		panelSaludo.add(saludoTxt);
 		return panelSaludo;
