@@ -75,10 +75,12 @@ public class VentanaInicial extends JFrame {
 	    JPanel panelLoginParticular = construirPanelLogin(true);
 	    JPanel panelLoginEmpresa = construirPanelLogin(false);
 	    JPanel panelReg = construirPanelRegistro(true);
+	    
 	    contenedor.add(panelBienvenida, "bienvenida");
 	    contenedor.add(panelLoginParticular, "loginParticular");
 	    contenedor.add(panelLoginEmpresa, "loginEmpresa");
 	    contenedor.add(panelReg, "registro");
+	    
 	    layout.show(contenedor, "bienvenida");
 	}
 	

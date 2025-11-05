@@ -32,12 +32,12 @@ public class VentanaPrincipal extends JFrame {
     
     private JButton botonInicio, botonExplorar, botonPortfolio, botonAprender, botonPerfil;
     
-    private ImageIcon iconoInicio;
-    private ImageIcon iconoExplorar;
-    private ImageIcon iconoPortfolio;
-    private ImageIcon iconoAprender;
-    private ImageIcon iconoPerfil;
-    
+    // Imágenes
+    private String inicioNegro = "/imagenes/casaNegro.png";
+    private String explorarNegro = "/imagenes/busquedaNegro.png";
+    private String portfolioNegro = "/imagenes/portfolioNegro.png";
+    private String aprenderNegro = "/imagenes/aprendizajeNegro.png";        
+    private String perfilNegro = "/imagenes/perfilNegro.png";
     private String inicioAzul = "/imagenes/casaAzul.png";
     private String explorarAzul = "/imagenes/busquedaAzul.png";
     private String portfolioAzul = "/imagenes/portfolioAzul.png";
@@ -50,7 +50,6 @@ public class VentanaPrincipal extends JFrame {
 		this.configurarVentana();
 		this.inicializarPaneles();
 		this.construirPanelNavegacion();
-		this.cargarIconos();
 		this.setVisible(true);
 	}
 	
@@ -87,75 +86,31 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	private void construirPanelNavegacion() {
-		JPanel panelNavegacion = new JPanel(new GridLayout(5, 1));
+		JPanel panelNavegacion = new JPanel();
 		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
 		panelNavegacion.setBackground(Color.WHITE);
-		panelNavegacion.setAlignmentY(CENTER_ALIGNMENT);
 		panelNavegacion.add(Box.createVerticalGlue());
 		
-		botonInicio = crearBotonNavegacion("", iconoInicio);
-		panelNavegacion.add(botonInicio);
-		panelNavegacion.add(Box.createVerticalStrut(30));
-		botonInicio.addActionListener(e-> {
-			layout.show(contenedor, "Inicio");
-			resetBotones();
-            botonInicio.setIcon(cargarIcono(inicioAzul)); 
-            botonInicio.setText("");
-		});
+		agregarBotonNavegacion(panelNavegacion, "Inicio", "Inicio",
+	            inicioNegro, inicioAzul);
 		
-		botonExplorar = crearBotonNavegacion("Explorar", iconoExplorar);
-		panelNavegacion.add(botonExplorar);
-		panelNavegacion.add(Box.createVerticalStrut(30));
-		botonExplorar.addActionListener(e->{
-			layout.show(contenedor, "Explorador");
-			resetBotones();
-            botonExplorar.setIcon(cargarIcono(explorarAzul)); 
-            botonExplorar.setText("");
-		});
+	    agregarBotonNavegacion(panelNavegacion, "Explorador", "Explorar",
+	            explorarNegro, explorarAzul);
 		
-		botonPortfolio = crearBotonNavegacion("Portfolio", iconoPortfolio);
-		panelNavegacion.add(botonPortfolio);
-		panelNavegacion.add(Box.createVerticalStrut(30));
-		botonPortfolio.addActionListener(e->{
-			layout.show(contenedor, "Portfolio");
-			resetBotones();
-            botonPortfolio.setIcon(cargarIcono(portfolioAzul)); 
-            botonPortfolio.setText("");
-		});
-		
-		
-		botonAprender = crearBotonNavegacion("Aprender", iconoAprender);
-		panelNavegacion.add(botonAprender);
-		panelNavegacion.add(Box.createVerticalStrut(30));
-		botonAprender.addActionListener(e->{
-			layout.show(contenedor, "Aprendizaje");
-			resetBotones();
-            botonAprender.setIcon(cargarIcono(aprenderAzul)); 
-            botonAprender.setText("");
-		});
-		
-		botonPerfil = crearBotonNavegacion("Mi perfil", iconoPerfil);
-		panelNavegacion.add(botonPerfil);
-		panelNavegacion.add(Box.createVerticalStrut(30));
-		botonPerfil.addActionListener(e->{
-			layout.show(contenedor, "Perfil");
-			resetBotones();
-            botonPerfil.setIcon(cargarIcono(perfilAzul)); 
-            botonPerfil.setText("");
-		});
+	    agregarBotonNavegacion(panelNavegacion, "Portfolio", "Portfolio",
+	            portfolioNegro, portfolioAzul);
+
+	    agregarBotonNavegacion(panelNavegacion, "Aprendizaje", "Aprender",
+	            aprenderNegro, aprenderAzul);
+
+	    agregarBotonNavegacion(panelNavegacion, "Perfil", "Perfil",
+	            perfilNegro, perfilAzul);
 		
 		panelNavegacion.add(Box.createVerticalGlue());
-		
 		this.add(panelNavegacion, BorderLayout.WEST);
 		
-	}
-
-	private void cargarIconos() {
-		iconoInicio = cargarIcono("/imagenes/casaAzul.png");
-        iconoExplorar = cargarIcono("/imagenes/busquedaNegro.png"); // Asumiendo nombres
-        iconoPortfolio = cargarIcono("/imagenes/portfolioNegro.png");
-        iconoAprender = cargarIcono("/imagenes/aprendizajeNegro.png");        
-        iconoPerfil = cargarIcono("/imagenes/perfilNegro.png");
+		botonInicio.setIcon(cargarIcono("/imagenes/casaAzul.png"));
+		botonInicio.setText("");
 	}
 
 	private ImageIcon cargarIcono(String ruta) {
@@ -169,20 +124,12 @@ public class VentanaPrincipal extends JFrame {
 
 	private JButton crearBotonNavegacion(String texto, ImageIcon icono) {
         JButton boton = new JButton(texto);
-        
-        if (icono != null) {
-            boton.setIcon(icono);
-        }
+        if (icono != null) boton.setIcon(icono);
         
         boton.setForeground(Color.GRAY);
-        boton.setVerticalTextPosition(SwingConstants.BOTTOM); 
-        boton.setHorizontalTextPosition(SwingConstants.CENTER);
-        
-        boton.setVerticalAlignment(SwingConstants.CENTER);
-        boton.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        boton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+        boton.setVerticalTextPosition(JButton.BOTTOM); 
+        boton.setHorizontalTextPosition(JButton.CENTER);
+        boton.setAlignmentX(JButton.CENTER_ALIGNMENT);
         boton.setBorderPainted(false);
         boton.setContentAreaFilled(false);
         boton.setFocusPainted(false);
@@ -190,22 +137,44 @@ public class VentanaPrincipal extends JFrame {
         
         return boton;
     }
+	
+	private void agregarBotonNavegacion(JPanel panel, String nombrePanel,
+			String texto, String iconoNormal, String iconoActivo) {
+		
+	    ImageIcon icono = cargarIcono(iconoNormal);
+	    JButton boton = crearBotonNavegacion(texto, icono);
+	    panel.add(boton);
+	    panel.add(Box.createVerticalStrut(30));
+
+	    boton.addActionListener(e -> {
+	        layout.show(contenedor, nombrePanel);
+	        resetBotones();
+	        boton.setIcon(cargarIcono(iconoActivo));
+	        boton.setText("");
+	    });
+
+	    // IA (ChatGPT)
+	    // SIN MODIFICAR
+	    // Guarda la referencia para resetBotones()
+	    switch (nombrePanel) {
+	        case "Inicio" -> botonInicio = boton;
+	        case "Explorador" -> botonExplorar = boton;
+	        case "Portfolio" -> botonPortfolio = boton;
+	        case "Aprendizaje" -> botonAprender = boton;
+	        case "Perfil" -> botonPerfil = boton;
+	    }
+	}
 
 	private void resetBotones() {
-		botonInicio.setIcon(cargarIcono("/imagenes/casaNegro.png"));
-		botonInicio.setText("Inicio");
+	    resetBoton(botonInicio, "/imagenes/casaNegro.png", "Inicio");
+	    resetBoton(botonExplorar, "/imagenes/busquedaNegro.png", "Explorar");
+	    resetBoton(botonPortfolio, "/imagenes/portfolioNegro.png", "Portfolio");
+	    resetBoton(botonAprender, "/imagenes/aprendizajeNegro.png", "Aprender");
+	    resetBoton(botonPerfil, "/imagenes/perfilNegro.png", "Perfil");
+	}
 
-		botonExplorar.setIcon(cargarIcono("/imagenes/busquedaNegro.png"));
-		botonExplorar.setText("Explorar");
-
-	    botonPortfolio.setIcon(cargarIcono("/imagenes/portfolioNegro.png"));
-		botonPortfolio.setText("Portfolio");
-
-		botonAprender.setIcon(cargarIcono("/imagenes/aprendizajeNegro.png"));
-		botonAprender.setText("Aprender");
-
-		botonPerfil.setIcon(cargarIcono("/imagenes/perfilNegro.png"));
-		botonPerfil.setText("Perfil");
-
-    }
+	private void resetBoton(JButton boton, String iconoRuta, String texto) {
+	    boton.setIcon(cargarIcono(iconoRuta));
+	    boton.setText(texto);
+	}
 }
