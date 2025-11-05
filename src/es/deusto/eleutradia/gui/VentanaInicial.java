@@ -199,7 +199,7 @@ public class VentanaInicial extends JFrame {
         panelAcceso.add(Box.createVerticalStrut(20));
         
         // Campo de contraseña
-        panelAcceso.add(new JLabel("Contraseña:"));
+        panelAcceso.add(crearLabel(new JLabel("Contraseña:")));
         panelAcceso.add(Box.createVerticalStrut(10));
 
         JPasswordField campoPassword = (JPasswordField) crearCampo(true);
