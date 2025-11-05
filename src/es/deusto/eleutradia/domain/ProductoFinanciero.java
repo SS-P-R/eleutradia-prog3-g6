@@ -109,7 +109,7 @@ public class ProductoFinanciero {
 	public void setDivisa(Divisa divisa) {
 		this.divisa = divisa;
 	}
-
+	
 	public Gestora getGestora() {
 		return gestora;
 	}
@@ -127,7 +127,7 @@ public class ProductoFinanciero {
 		return "ProductoFinanciero [codigo=" + codigo + ", nombre=" + nombre + ", plazo=" + plazo
 				+ ", rentabilidades=" + rentabilidades + ", valorUnitario=" + valorUnitario
 				+ ", tipoProducto=" + tipoProducto + ", regionGeografica=" + regionGeografica
-				+ ", perPago=" + perPago + ", divisa=" + divisa + "]";
+				+ ", perPago=" + perPago + ", divisa=" + divisa + ", gestora=" + gestora + "]";
 	}
 	
 }

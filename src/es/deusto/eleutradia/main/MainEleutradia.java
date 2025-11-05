@@ -119,77 +119,77 @@ public class MainEleutradia {
 	    listaProductos = new ArrayList<>();
 
 	    	// --- Rentabilidades tipo ejemplo ---
-	    Map<PlazoRentabilidad, BigDecimal> rentabConservadora = Map.of(
-	            PlazoRentabilidad.YTD, new BigDecimal("0.01"),
-	            PlazoRentabilidad.UN_ANO, new BigDecimal("0.02"),
-	            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.03"),
-	            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.035"),
-	            PlazoRentabilidad.MAX, new BigDecimal("0.04")
-	        );
+    	Map<PlazoRentabilidad, BigDecimal> rentabConservadora = Map.of(
+            PlazoRentabilidad.YTD, new BigDecimal("0.01"),
+            PlazoRentabilidad.UN_ANO, new BigDecimal("0.02"),
+            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.03"),
+            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.035"),
+            PlazoRentabilidad.MAX, new BigDecimal("0.04")
+        );
 
-	        Map<PlazoRentabilidad, BigDecimal> rentabModerada = Map.of(
-	            PlazoRentabilidad.YTD, new BigDecimal("0.03"),
-	            PlazoRentabilidad.UN_ANO, new BigDecimal("0.05"),
-	            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.07"),
-	            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.09"),
-	            PlazoRentabilidad.MAX, new BigDecimal("0.10")
-	        );
+        Map<PlazoRentabilidad, BigDecimal> rentabModerada = Map.of(
+            PlazoRentabilidad.YTD, new BigDecimal("0.03"),
+            PlazoRentabilidad.UN_ANO, new BigDecimal("0.05"),
+            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.07"),
+            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.09"),
+            PlazoRentabilidad.MAX, new BigDecimal("0.10")
+        );
 
-	        Map<PlazoRentabilidad, BigDecimal> rentabAgresiva = Map.of(
-	            PlazoRentabilidad.YTD, new BigDecimal("0.06"),
-	            PlazoRentabilidad.UN_ANO, new BigDecimal("0.10"),
-	            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.15"),
-	            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.20"),
-	            PlazoRentabilidad.MAX, new BigDecimal("0.25")
-	        );
-	        
-	        Gestora blackrock = new Gestora(
-	        		"iShares",
-	        	    "BlackRock Inc.",
-	        	    "50 Hudson Yards, New York, NY, Estados Unidos",
-	        	    eeuu,
-	        	    new ArrayList<>()
-	        	);
+        Map<PlazoRentabilidad, BigDecimal> rentabAgresiva = Map.of(
+            PlazoRentabilidad.YTD, new BigDecimal("0.06"),
+            PlazoRentabilidad.UN_ANO, new BigDecimal("0.10"),
+            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.15"),
+            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.20"),
+            PlazoRentabilidad.MAX, new BigDecimal("0.25")
+        );
+        
+        Gestora blackrock = new Gestora(
+    		"iShares",
+    	    "BlackRock Inc.",
+    	    "50 Hudson Yards, New York, NY, Estados Unidos",
+    	    eeuu,
+    	    new ArrayList<>()
+    	);
 
-	        Gestora vanguard = new Gestora(
-	        		"Vanguard",
-	        	    "Vanguard Group",
-	        	    "100 Vanguard Blvd, Malvern, PA, Estados Unidos",
-	        	    eeuu,
-	        	    new ArrayList<>()
-	        	);
+        Gestora vanguard = new Gestora(
+    		"Vanguard",
+    	    "Vanguard Group",
+    	    "100 Vanguard Blvd, Malvern, PA, Estados Unidos",
+    	    eeuu,
+    	    new ArrayList<>()
+    	);
 
-	        Gestora fidelity = new Gestora(
-	        		"Fidelity",
-	        	    "Fidelity Investments",
-	        	    "245 Summer Street, Boston, MA, Estados Unidos",
-	        	    eeuu,
-	        	    new ArrayList<>()
-	        	);
+        Gestora fidelity = new Gestora(
+    		"Fidelity",
+    	    "Fidelity Investments",
+    	    "245 Summer Street, Boston, MA, Estados Unidos",
+    	    eeuu,
+    	    new ArrayList<>()
+    	);
 
-	        Gestora jpmorgan = new Gestora(
-	        		"JPMAM",
-	        	    "J.P. Morgan Asset Management",
-	        	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
-	        	    reinounido,
-	        	    new ArrayList<>()
-	        	);
+        Gestora jpmorgan = new Gestora(
+    		"JPMAM",
+    	    "J.P. Morgan Asset Management",
+    	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
+    	    reinounido,
+    	    new ArrayList<>()
+    	);
 
-	        Gestora amundi = new Gestora(
-	        		"Amundi",
-	        	    "Amundi Asset Management",
-	        	    "90 Boulevard Pasteur, París, Francia",
-	        	    francia,
-	        	    new ArrayList<>()
-	        	);
-	        
-	        Gestora bbva = new Gestora(
-	        		"BBVA",
-	        		"BBVA Asset Management",
-	        		"Paseo Castellana 81, Madrid, España",
-	        		espana,
-	        		new ArrayList<>()
-	        	);
+        Gestora amundi = new Gestora(
+    		"Amundi",
+    	    "Amundi Asset Management",
+    	    "90 Boulevard Pasteur, París, Francia",
+    	    francia,
+    	    new ArrayList<>()
+    	);
+        
+        Gestora bbva = new Gestora(
+    		"BBVA",
+    		"BBVA Asset Management",
+    		"Paseo Castellana 81, Madrid, España",
+    		espana,
+    		new ArrayList<>()
+    	);
 	        
 	    // --- DEPÓSITOS ---
 	    listaProductos.add(new ProductoFinanciero(
@@ -220,29 +220,29 @@ public class MainEleutradia {
 	    
 	    // --- BONOS ---
 	    listaProductos.add(new ProductoFinanciero(
-		        "BON001",
-		        "Global Bond Index Fund",
-		        YearMonth.of(2026, 12),
-		        rentabConservadora,
-		        110.0,
-		        TipoProducto.BONO,
-		        RegionGeografica.MUNDO,
-		        PeriodicidadPago.ANUAL,
-		        Divisa.USD,
-		        blackrock
+	        "BON001",
+	        "Global Bond Index Fund",
+	        YearMonth.of(2026, 12),
+	        rentabConservadora,
+	        110.0,
+	        TipoProducto.BONO,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.ANUAL,
+	        Divisa.USD,
+	        vanguard
 		));
 	    
 	    listaProductos.add(new ProductoFinanciero(
-		        "BON002",
-		        "Global Short-Term Corporate Bond",
-		        YearMonth.of(2026, 12),
-		        rentabConservadora,
-		        155.0,
-		        TipoProducto.BONO,
-		        RegionGeografica.MUNDO,
-		        PeriodicidadPago.ANUAL,
-		        Divisa.EUR,
-		        amundi
+	        "BON002",
+	        "Global Short-Term Corporate Bond",
+	        YearMonth.of(2026, 12),
+	        rentabConservadora,
+	        155.0,
+	        TipoProducto.BONO,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.ANUAL,
+	        Divisa.EUR,
+	        blackrock
 		));
 
 	    // --- ACCIONES ---
@@ -296,20 +296,47 @@ public class MainEleutradia {
 	        RegionGeografica.EUROPA_OCCIDENTAL,
 	        PeriodicidadPago.MENSUAL,
 	        Divisa.CHF,
-	        blackrock
+	        vanguard
 	    ));
 	    
 	    listaProductos.add(new ProductoFinanciero(
-		        "FON003",
-		        "S&P 500 Index",
-		        null,
-		        rentabModerada,
-		        950.0,
-		        TipoProducto.FONDO_INVERSION,
-		        RegionGeografica.AMERICA_NORTE,
-		        PeriodicidadPago.DIARIA,
-		        Divisa.USD,
-		        fidelity
+	        "FON003",
+	        "S&P 500 Index",
+	        null,
+	        rentabModerada,
+	        950.0,
+	        TipoProducto.FONDO_INVERSION,
+	        RegionGeografica.AMERICA_NORTE,
+	        PeriodicidadPago.DIARIA,
+	        Divisa.USD,
+	        fidelity
+		));
+	    
+	    // --- PLANES DE PENSIONES ---
+	    listaProductos.add(new ProductoFinanciero(
+	        "PDP001",
+	        "Plan Jubilación Renta Fija",
+	        null,
+	        rentabConservadora,
+	        2.0,
+	        TipoProducto.PLAN_PENSIONES_RF,
+	        RegionGeografica.EUROPA_OCCIDENTAL,
+	        PeriodicidadPago.MENSUAL,
+	        Divisa.EUR,
+	        bbva
+		));
+	    
+	    listaProductos.add(new ProductoFinanciero(
+	        "PDP002",
+	        "Plan Jubilación Renta Variable",
+	        null,
+	        rentabModerada,
+	        5.0,
+	        TipoProducto.PLAN_PENSIONES_RV,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.SIN_PAGO,
+	        Divisa.EUR,
+	        bbva
 		));
 
 	    // --- ETFS ---
@@ -336,7 +363,7 @@ public class MainEleutradia {
 	        RegionGeografica.MUNDO,
 	        PeriodicidadPago.ANUAL,
 	        Divisa.USD,
-	        vanguard
+	        fidelity
 	    ));
 	    
 	    // --- CRIPTOMONEDAS ---
@@ -368,29 +395,29 @@ public class MainEleutradia {
 	    
 	    // --- MATERIAS PRIMAS ---
 	    listaProductos.add(new ProductoFinanciero(
-		        "CMD001",
-		        "Amundi Physical Gold",
-		        null,
-		        rentabModerada,
-		        77.88,
-		        TipoProducto.COMMODITY,
-		        RegionGeografica.MUNDO,
-		        PeriodicidadPago.SIN_PAGO,
-		        Divisa.USD,
-		        amundi
+	        "CMD001",
+	        "Physical Gold",
+	        null,
+	        rentabModerada,
+	        77.88,
+	        TipoProducto.COMMODITY,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.SIN_PAGO,
+	        Divisa.USD,
+	        amundi
 		));
 	    
 	    listaProductos.add(new ProductoFinanciero(
-		        "CMD002",
-		        "iShares Physical Platinum",
-		        null,
-		        rentabAgresiva,
-		        22.72,
-		        TipoProducto.COMMODITY,
-		        RegionGeografica.MUNDO,
-		        PeriodicidadPago.SIN_PAGO,
-		        Divisa.USD,
-		        blackrock
+	        "CMD002",
+	        "Physical Platinum",
+	        null,
+	        rentabAgresiva,
+	        22.72,
+	        TipoProducto.COMMODITY,
+	        RegionGeografica.MUNDO,
+	        PeriodicidadPago.SIN_PAGO,
+	        Divisa.USD,
+	        blackrock
 	    ));
 	}
 	
