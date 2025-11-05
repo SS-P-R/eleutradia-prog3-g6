@@ -3,12 +3,7 @@ package es.deusto.eleutradia.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import es.deusto.eleutradia.domain.Usuario;
 
@@ -33,15 +27,15 @@ public class VentanaPrincipal extends JFrame {
     private JButton botonInicio, botonExplorar, botonPortfolio, botonAprender, botonPerfil;
     
     // Rutas de los iconos de pestaña
-    private static final String ICONO_INICIO_NEGRO = "/imagenes/casaNegro.png";
-    private static final String ICONO_EXPLORAR_NEGRO = "/imagenes/busquedaNegro.png";
+    private static final String ICONO_INICIO_NEGRO = "/imagenes/inicioNegro.png";
+    private static final String ICONO_INICIO_AZUL = "/imagenes/inicioAzul.png";
+    private static final String ICONO_EXPLORAR_NEGRO = "/imagenes/explorarNegro.png";
+    private static final String ICONO_EXPLORAR_AZUL = "/imagenes/explorarAzul.png";
     private static final String ICONO_PORTFOLIO_NEGRO = "/imagenes/portfolioNegro.png";
-    private static final String ICONO_APRENDER_NEGRO = "/imagenes/aprendizajeNegro.png";        
-    private static final String ICONO_PERFIL_NEGRO = "/imagenes/perfilNegro.png";
-    private static final String ICONO_INICIO_AZUL = "/imagenes/casaAzul.png";
-    private static final String ICONO_EXPLORAR_AZUL = "/imagenes/busquedaAzul.png";
     private static final String ICONO_PORTFOLIO_AZUL = "/imagenes/portfolioAzul.png";
-    private static final String ICONO_APRENDER_AZUL = "/imagenes/aprendizajeAzul.png";        
+    private static final String ICONO_APRENDER_NEGRO = "/imagenes/aprenderNegro.png";  
+    private static final String ICONO_APRENDER_AZUL = "/imagenes/aprenderAzul.png";    
+    private static final String ICONO_PERFIL_NEGRO = "/imagenes/perfilNegro.png";    
     private static final String ICONO_PERFIL_AZUL = "/imagenes/perfilAzul.png";
 	
 	public VentanaPrincipal(Usuario usuario) {
