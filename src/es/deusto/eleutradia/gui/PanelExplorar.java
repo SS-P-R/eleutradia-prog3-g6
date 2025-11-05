@@ -15,12 +15,15 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.SwingUtilities;
 
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Gestora;
@@ -62,7 +65,6 @@ public class PanelExplorar extends JPanel {
         
         cargarProductos();
         
-        // Construir componentes
         JPanel panelSuperior = construirPanelSuperior();
         JPanel panelFiltros = construirPanelFiltros();
         JPanel panelTabla = construirPanelTabla();
@@ -70,8 +72,7 @@ public class PanelExplorar extends JPanel {
         this.add(panelSuperior, BorderLayout.NORTH);
         this.add(panelFiltros, BorderLayout.WEST);
         this.add(panelTabla, BorderLayout.CENTER);
-        
-        // Cargar todos los productos inicialmente
+
         actualizarTabla(productosTotales);
     }
     
@@ -97,7 +98,7 @@ public class PanelExplorar extends JPanel {
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         panelBusqueda.setBackground(Color.WHITE);
         
-        JLabel labelBuscar = new JLabel("Buscar: ");
+        JLabel labelBuscar = new JLabel("Buscar:");
         labelBuscar.setFont(FONT_SUBTITULO);
         
         campoBusqueda = new JTextField(25);
@@ -137,7 +138,7 @@ public class PanelExplorar extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MY_GRIS, 2),
+            BorderFactory.createLineBorder(Color.BLACK, 2),
             BorderFactory.createEmptyBorder(20, 10, 10, 20)
         ));
         mainPanel.setPreferredSize(new Dimension(200, 0));
@@ -235,7 +236,7 @@ public class PanelExplorar extends JPanel {
         tablaProductos.setSelectionBackground(new Color(200, 220, 255));
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
-        scrollPane.setBorder(BorderFactory.createLineBorder(MY_GRIS, 1));
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         
         panel.add(scrollPane, BorderLayout.CENTER);
         
@@ -243,13 +244,13 @@ public class PanelExplorar extends JPanel {
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelAcciones.setBackground(Color.WHITE);
         
-        JButton botonVerDetalle = new JButton("Ver Detalle");
+        JButton botonVerDetalle = new JButton("Ver detalle");
         botonVerDetalle.setFont(FONT_NORMAL);
         botonVerDetalle.setBackground(MY_AZUL);
         botonVerDetalle.setForeground(Color.WHITE);
         botonVerDetalle.setFocusPainted(false);
         
-        JButton botonAñadirCartera = new JButton("Añadir a Cartera");
+        JButton botonAñadirCartera = new JButton("Añadir a cartera");
         botonAñadirCartera.setFont(FONT_NORMAL);
         botonAñadirCartera.setBackground(new Color(40, 167, 69));
         botonAñadirCartera.setForeground(Color.WHITE);
@@ -346,7 +347,7 @@ public class PanelExplorar extends JPanel {
         modeloTabla.setRowCount(0);
         
         for (ProductoFinanciero p : productos) {
-            Object[] row = {
+            Object[] fila = {
                 p.getNombre(),
                 p.getTipoProducto(),
                 p.getRegionGeografica(),
@@ -355,7 +356,7 @@ public class PanelExplorar extends JPanel {
                 p.getDivisa(),
                 (p.getGestora() != null ? p.getGestora().getNombreCompleto() : "---")
             };
-            modeloTabla.addRow(row);
+            modeloTabla.addRow(fila);
         }
     }
     
@@ -363,9 +364,16 @@ public class PanelExplorar extends JPanel {
         int filaSeleccionada = tablaProductos.getSelectedRow();
         if (filaSeleccionada >= 0) {
             ProductoFinanciero producto = productosFiltrados.get(filaSeleccionada);
-            // Aquí podrías abrir una ventana de diálogo con los detalles
-            System.out.println("Ver detalle de: " + producto.getNombre());
-            // new VentanaDetalleProducto(producto);
+            System.out.println("Viendo detalle de: " + producto.getNombre());
+            //IAG (ChatGPT)
+            //SIN CAMBIOS
+            JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+            new VentanaDetalleProducto(framePadre, producto, true);
+            //END-IAG
+        } else {
+        	JOptionPane.showMessageDialog(this,
+        			"Por favor, seleccione un producto de la tabla para ver los detalles.",
+        			"Selección", JOptionPane.WARNING_MESSAGE);
         }
     }
     
