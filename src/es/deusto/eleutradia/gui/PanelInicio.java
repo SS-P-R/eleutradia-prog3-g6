@@ -9,8 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import es.deusto.eleutradia.domain.Particular;
@@ -72,11 +70,16 @@ public class PanelInicio extends JPanel{
 	}
 
 	private JPanel PanelSaludo() {
-		JPanel panelSaludo = new JPanel();
+		JPanel panelSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel saludoTxt = new JLabel("Hola, " + usuario.getNombre());
-		saludoTxt.setFont(new Font("Times new roman",Font.BOLD,18));
-		saludoTxt.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+		
 		saludoTxt.setBackground(Color.cyan);
+		saludoTxt.setFont(new Font("Times new roman",Font.BOLD,18));
+		
+		Border recuadro = BorderFactory.createLineBorder(Color.gray, 2);
+		Border posicion = (BorderFactory.createEmptyBorder(0,15,5,5));
+		saludoTxt.setBorder(BorderFactory.createCompoundBorder(recuadro, posicion));
+		
 		panelSaludo.add(saludoTxt);
 		return panelSaludo;
 	}	
