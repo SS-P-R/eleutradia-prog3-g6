@@ -48,9 +48,7 @@ public class PanelInicio extends JPanel{
 		
 		JPanel centro = new JPanel(new GridLayout(2,2,10,10));
 		centro.setBackground(new Color(144, 238, 144));
-		Border bordeInterior = BorderFactory.createLineBorder(Color.black,3);
-		Border bordeExterior = BorderFactory.createEmptyBorder(10,10,10,10);
-		centro.setBorder(BorderFactory.createCompoundBorder(bordeExterior, bordeInterior));
+		centro.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		centro.add(panelCursos);
 		centro.add(panelLecciones);
 		centro.add(panelActivos);
@@ -102,15 +100,16 @@ public class PanelInicio extends JPanel{
 	private JPanel PanelLecciones() {
 		JPanel proxLecJPanel = new JPanel();
 		proxLecJPanel.setBackground(new Color(173, 216, 230));
-		proxLecJPanel.setBorder(BorderFactory.createEmptyBorder(20,10,20,10));
+		proxLecJPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
 		proxLecJPanel.setLayout(new BoxLayout(proxLecJPanel, BoxLayout.Y_AXIS));
 		
 		JLabel mensajeLecciones = new JLabel();
 		mensajeLecciones.setText("¿Preparado para tu próxima lección?");
 		mensajeLecciones.setFont(new Font("Times new roman", Font.BOLD,16));
+		proxLecJPanel.add(mensajeLecciones);
+
 		JLabel mensajeLecciones2 = new JLabel("Lecciones recomendadas para continuar aprendiendo:");
 		mensajeLecciones2.setFont(new Font("Times new roman", Font.BOLD,12));
-		proxLecJPanel.add(mensajeLecciones);
 		proxLecJPanel.add(Box.createVerticalStrut(10));
 		proxLecJPanel.add(mensajeLecciones2);
 
@@ -121,7 +120,7 @@ public class PanelInicio extends JPanel{
 	private JPanel PanelCursos() {
 		JPanel cursosPanel = new JPanel();
 		cursosPanel.setBackground(new Color(173, 216, 230));
-		cursosPanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
+		cursosPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
 		
 		JLabel mensajeCursos = new JLabel();
 		mensajeCursos.setText("Cursos en progreso: ");
@@ -134,9 +133,8 @@ public class PanelInicio extends JPanel{
 
 	private JPanel PanelActivos() {
 		JPanel activosPanel = new JPanel();
-//		activosPanel.setLayout(new BorderLayout());
 		activosPanel.setBackground(new Color(173, 216, 230));
-		activosPanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
+		activosPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
 		
 		JLabel mensajeActivos = new JLabel();
 		mensajeActivos.setText("Resumen de mis activos: ");
