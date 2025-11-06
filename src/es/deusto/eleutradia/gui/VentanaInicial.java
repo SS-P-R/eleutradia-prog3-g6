@@ -52,6 +52,7 @@ public class VentanaInicial extends JFrame {
     //END IAG
     
     // Expresiones para validar identificadores
+    
     //IAG (ChatGPT)
     //SIN MODIFICAR
     private static final String DNI_REGEX = "^[0-9]{8}[A-Za-z]$";
