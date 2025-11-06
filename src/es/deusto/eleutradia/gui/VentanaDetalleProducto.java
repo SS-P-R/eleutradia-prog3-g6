@@ -24,6 +24,7 @@ public class VentanaDetalleProducto extends JDialog {
         this.setSize(600, 450);
         this.setLocationRelativeTo(padre);
         this.setLayout(new BorderLayout());
+        this.setResizable(false);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

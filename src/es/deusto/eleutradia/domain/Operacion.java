@@ -3,8 +3,8 @@ package es.deusto.eleutradia.domain;
 import java.time.LocalDate;
 
 public class Operacion {
-	private double cantidad;
 	private ProductoFinanciero prodFinanciero;
+	private double cantidad;
 	private LocalDate fechaOp;
 	private boolean tipoOp; // true = Compra, false = Venta
 	
@@ -15,19 +15,11 @@ public class Operacion {
 		this.tipoOp = true;
 	}
 
-	public Operacion(double cantidad, ProductoFinanciero prodFinanciero, LocalDate fechaOp, boolean tipoOp) {
+	public Operacion(ProductoFinanciero prodFinanciero, double cantidad, LocalDate fechaOp, boolean tipoOp) {
 		this.cantidad = cantidad;
 		this.prodFinanciero = prodFinanciero;
 		this.fechaOp = fechaOp;
 		this.tipoOp = tipoOp;
-	}
-
-	public double getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(double cantidad) {
-		this.cantidad = cantidad;
 	}
 
 	public ProductoFinanciero getProdFinanciero() {
@@ -36,6 +28,14 @@ public class Operacion {
 
 	public void setProdFinanciero(ProductoFinanciero prodFinanciero) {
 		this.prodFinanciero = prodFinanciero;
+	}
+	
+	public double getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(double cantidad) {
+		this.cantidad = cantidad;
 	}
 
 	public LocalDate getFechaOp() {
@@ -56,7 +56,7 @@ public class Operacion {
 
 	@Override
 	public String toString() {
-		return "Operacion [cantidad=" + cantidad + ", prodFinanciero=" + prodFinanciero + ", fechaOp=" + fechaOp
-				+ ", tipoOp=" + (tipoOp ? "COMPRA" : "VENTA") + "]";
+		return "Operacion [prodFinanciero=" + prodFinanciero + ", cantidad=" + cantidad
+				+ ", fechaOp=" + fechaOp + ", tipoOp=" + (tipoOp ? "COMPRA" : "VENTA") + "]";
 	}
 }

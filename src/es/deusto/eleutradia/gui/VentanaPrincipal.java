@@ -65,7 +65,7 @@ public class VentanaPrincipal extends JFrame {
 	private void inicializarPaneles() {		
 		// Ejemplo de las 5 ventanas
         PanelInicio panelInicio = new PanelInicio(usuario, this);
-        PanelExplorar panelExplorar = new PanelExplorar();
+        PanelExplorar panelExplorar = new PanelExplorar(usuario);
         JPanel panelPortfolio = new JPanel();
         panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
         JPanel panelAprender = new JPanel();

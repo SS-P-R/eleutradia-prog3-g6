@@ -30,12 +30,14 @@ import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
+import es.deusto.eleutradia.domain.Usuario;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 public class PanelExplorar extends JPanel {
     
     private static final long serialVersionUID = 1L;
     
+    private Usuario usuario;
     private JTextField campoBusqueda;
     private JButton botonBuscar;
     private JComboBox<String> selectTipoProducto;
@@ -58,7 +60,9 @@ public class PanelExplorar extends JPanel {
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 12);
     
-    public PanelExplorar() {
+    public PanelExplorar(Usuario usuario) {
+    	this.usuario = usuario;
+    	
         this.setLayout(new BorderLayout(10, 10));
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -373,7 +377,7 @@ public class PanelExplorar extends JPanel {
         } else {
         	JOptionPane.showMessageDialog(this,
         			"Por favor, seleccione un producto de la tabla para ver los detalles.",
-        			"Selección", JOptionPane.WARNING_MESSAGE);
+        			"Selección necesaria", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -381,8 +385,8 @@ public class PanelExplorar extends JPanel {
         int filaSeleccionada = tablaProductos.getSelectedRow();
         if (filaSeleccionada >= 0) {
             ProductoFinanciero producto = productosFiltrados.get(filaSeleccionada);
-            // TODO Implementar logica de añadir a cartera
-            System.out.println("Añado a cartera: " + producto.getNombre());
+            JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+            new VentanaAnadirACartera(framePadre, usuario, producto, true);
         }
     }
     

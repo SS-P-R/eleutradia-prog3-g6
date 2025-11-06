@@ -1,10 +1,12 @@
 package es.deusto.eleutradia.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cartera {
     private Usuario propietario;
+    private String nombre;
     private double saldo;
     private PerfilRiesgo perfilRiesgo;
     private Divisa divisa;
@@ -12,14 +14,17 @@ public class Cartera {
     
 	public Cartera() {
 		this.propietario = null;
+		this.nombre = "";
 		this.saldo = 0.0;
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.divisa = Divisa.USD;
 		this.operaciones = new ArrayList<Operacion>();
 	}
 
-	public Cartera(Usuario propietario, double saldo, PerfilRiesgo perfilRiesgo, Divisa divisa, List<Operacion> operaciones) {
+	public Cartera(Usuario propietario, String nombre, double saldo, PerfilRiesgo perfilRiesgo,
+			Divisa divisa, List<Operacion> operaciones) {
 		this.propietario = propietario;
+		this.nombre = nombre;
 		this.saldo = saldo;
 		this.perfilRiesgo = perfilRiesgo;
 		this.divisa = divisa;
@@ -32,6 +37,14 @@ public class Cartera {
 
 	public void setPropietario(Usuario propietario) {
 		this.propietario = propietario;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public double getSaldo() {
@@ -80,6 +93,19 @@ public class Cartera {
 	public double calcularPatrimonio() {
 	    return saldo + calcularValorInversiones();
 	}
+	
+	public boolean anadirProducto(ProductoFinanciero producto, double cantidad) {
+	    if (producto == null || cantidad <= 0) return false;
+	    for (Operacion op : operaciones) {
+	    	ProductoFinanciero p = op.getProdFinanciero();
+	        if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
+	            System.out.println("El producto ya está en la cartera.");
+	            return false;
+	        }
+	    }
+		this.operaciones.add(new Operacion(producto, cantidad, LocalDate.now(), true));
+		return true;
+	}
 
 	@Override
 	public String toString() {
@@ -94,6 +120,7 @@ public class Cartera {
 	    }
 	    
 	    return "Cartera [propietario=" + propietarioId
+	    		+ ", nombre=" + nombre
 	            + ", saldo=" + saldo
 	            + ", perfilRiesgo=" + perfilRiesgo
 	            + ", divisa=" + divisa
