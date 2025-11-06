@@ -47,8 +47,10 @@ public class PanelAprender extends JPanel {
 	private CardLayout layoutContenedorCentro;
 	private JPanel panelContenedorCentro;
 	
-	private JPanel panelTodosLosCursos, panelMisCursos;
+	private JPanel panelBotonTodosLosCursos, panelBotonMisCursos;
 	private JButton botonTodosLosCursos, botonMisCursos;
+	
+	private JPanel panelTodosLosCursos, panelMisCursos;
 	
 	private JPanel panelCursosInfo;
 	private Curso cursoInfo;
@@ -99,10 +101,14 @@ public class PanelAprender extends JPanel {
 		panelContenedorCentro = new JPanel(layoutContenedorCentro);
 		
 		panelTodosLosCursos = new JPanel(new GridLayout(0, 2));
+		panelTodosLosCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
+		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
 		
 		panelMisCursos = new JPanel(new GridLayout(0, 2, 10, 10));
+		panelMisCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
+		scrollMis.setBorder(BorderFactory.createEmptyBorder());
 		
 		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
 		panelContenedorCentro.add(scrollMis, "MIS_CURSOS");
@@ -135,13 +141,15 @@ public class PanelAprender extends JPanel {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		panel.setBackground(COLOR_FONDO_PRINCIPAL);
 		
-		botonMisCursos = new JButton("Mis Cursos");
-		botonTodosLosCursos = new JButton("Todos los Cursos");
+		botonMisCursos = crearBotonPestanas("Mis Cursos");
+		botonTodosLosCursos = crearBotonPestanas("Todos los Cursos");
 		
 		botonMisCursos.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				panelBotonTodosLosCursos.setBackground(COLOR_BOTON_INACTIVO);
+				panelBotonMisCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 				actualizarPanelMisCursos();
 				layoutContenedorCentro.show(panelContenedorCentro, "MIS_CURSOS");				
 			}
@@ -151,15 +159,35 @@ public class PanelAprender extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				panelBotonMisCursos.setBackground(COLOR_BOTON_INACTIVO);
+				panelBotonTodosLosCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 				actualizarPanelTodosLosCursos();
 				layoutContenedorCentro.show(panelContenedorCentro, "TODOS_LOS_CURSOS");				
 			}
 		});
+		
+		panelBotonTodosLosCursos = new JPanel();
+		panelBotonTodosLosCursos.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelBotonMisCursos = new JPanel();
+		panelBotonMisCursos.setBackground(COLOR_BOTON_INACTIVO);
 				
-		panel.add(botonTodosLosCursos);
-		panel.add(botonMisCursos);
+		panelBotonTodosLosCursos.add(botonTodosLosCursos);
+		panelBotonMisCursos.add(botonMisCursos);
+		
+		panel.add(panelBotonTodosLosCursos);
+		panel.add(panelBotonMisCursos);
 		
 		return panel;
+	}
+	
+	private JButton crearBotonPestanas(String texto) {
+		
+		JButton boton = new JButton(texto);
+		boton.setPreferredSize(new Dimension(180, 40));
+		boton.setContentAreaFilled(false);
+		boton.setBorder(BorderFactory.createEmptyBorder());
+		boton.setFocusPainted(false);
+		return boton;
 	}
 	
 	private void actualizarPanelTodosLosCursos() {
@@ -186,6 +214,7 @@ public class PanelAprender extends JPanel {
 			});
 			
 			JPanel panelEnvolver = new JPanel(new GridBagLayout());
+			panelEnvolver.setBackground(COLOR_FONDO_PRINCIPAL);
 			panelEnvolver.add(botonCurso);
 			panelTodosLosCursos.add(panelEnvolver);
 		}
