@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -77,7 +79,8 @@ public class PanelAprender extends JPanel {
 		panelAprender = new JPanel(layoutPanelAprender);
 		
 		JPanel panelCursos = crearPanelCursos();
-		panelCursosInfo = new JPanel(new BorderLayout(10, 10));
+		panelCursosInfo = new JPanel(new BorderLayout(20, 20));
+		panelCursosInfo.setBackground(COLOR_FONDO_SECUNDARIO);
 		
 		panelAprender.add(panelCursos, "PANEL_CURSOS");
 		panelAprender.add(panelCursosInfo, "PANEL_CURSOS_INFO");
@@ -93,7 +96,7 @@ public class PanelAprender extends JPanel {
 	private JPanel crearPanelCursos() {
 
 		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
-		panelPrincipalPestanasCurso.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelPrincipalPestanasCurso.setBackground(COLOR_FONDO_SECUNDARIO);
 		
 		JPanel panelPestanasCursos = new JPanel(new BorderLayout());
 		JPanel panelPestanas = crearPanelPestanas();
@@ -127,16 +130,22 @@ public class PanelAprender extends JPanel {
 		panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panelDerecho.setPreferredSize(new Dimension(160, 0));
 		
+		JPanel panelProgreso = new JPanel();
+		panelProgreso.setLayout(new BoxLayout(panelProgreso, BoxLayout.Y_AXIS));
+		panelProgreso.setMaximumSize(new Dimension(160, 50));
+		panelProgreso.setBackground(COLOR_FONDO_PRINCIPAL);
 		JLabel labelProgreso = new JLabel("Progreso Cursos");
 		labelProgreso.setForeground(COLOR_TEXTO);
+		labelProgreso.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		labelProgreso.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		progressBarRacha = new JProgressBar(0, 100);
 		progressBarRacha.setStringPainted(true);
-		progressBarRacha.setMaximumSize(new Dimension(150, 25));
+		progressBarRacha.setMaximumSize(new Dimension(100, 30));
 		
-		panelDerecho.add(labelProgreso);
-		panelDerecho.add(progressBarRacha);
+		panelProgreso.add(labelProgreso);
+		panelProgreso.add(progressBarRacha);
+		panelDerecho.add(panelProgreso);
 		
 		panelPrincipalPestanasCurso.add(panelDerecho, BorderLayout.EAST);
 		
@@ -261,11 +270,13 @@ public class PanelAprender extends JPanel {
 		
 		panelCursosInfo.removeAll();
 		
-		JPanel panelInfoCentro = new JPanel(new GridLayout());
+		JPanel panelInfoCentro = new JPanel(new BorderLayout(20, 20));
+		panelInfoCentro.setBackground(COLOR_FONDO_PRINCIPAL);
 		panelInfoCentro.add(new JLabel("Informacion sobre el curso " + cursoInfo.getNombre()));
 		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
 		
-		JPanel panelLateral = new JPanel(new GridLayout(2, 1, 10, 10));
+		JPanel panelLateral = new JPanel(new GridLayout());
+		panelLateral.setPreferredSize(new Dimension(160, 0));
 		
 		JButton botonApuntar = new JButton("Apuntarse");
 		
@@ -289,8 +300,6 @@ public class PanelAprender extends JPanel {
 			}
 		});
 		
-		panelLateral.add(botonApuntar);
-		
 		JButton botonVolver = new JButton("Volver");
 		
 		botonVolver.addActionListener(new ActionListener() {
@@ -302,7 +311,17 @@ public class PanelAprender extends JPanel {
 			}
 		});
 		
-		panelLateral.add(botonVolver);
+		
+		JPanel panelBotones = new JPanel();
+		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
+		panelBotones.setMaximumSize(new Dimension(160, 50));
+		panelBotones.setBackground(COLOR_FONDO_PRINCIPAL);
+		
+		panelBotones.add(botonApuntar);
+		panelBotones.add(Box.createRigidArea(new Dimension(0, 200)));
+		panelBotones.add(botonVolver);
+		
+		panelLateral.add(panelBotones);
 		
 		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
 		
