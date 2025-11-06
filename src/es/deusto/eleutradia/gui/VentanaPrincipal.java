@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -13,7 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import es.deusto.eleutradia.domain.Particular;
@@ -54,6 +55,9 @@ public class VentanaPrincipal extends JFrame {
 		this.configurarVentana();
 		this.inicializarPaneles();
 		this.construirPanelNavegacion();
+		this.addKeyListener(navegacionKeyListener);
+		this.setFocusable(true);
+		this.requestFocusInWindow();;
 		this.setVisible(true);
 	}
 	
@@ -172,10 +176,10 @@ public class VentanaPrincipal extends JFrame {
 	    panel.add(Box.createVerticalStrut(30));
 
 	    boton.addActionListener(e -> {
-	        layout.show(contenedor, nombrePanel);
-	        resetBotones();
+	        mostrarPanel(nombrePanel);
 	        boton.setIcon(cargarIcono(iconoActivo));
 	        boton.setText("");
+	        VentanaPrincipal.this.requestFocusInWindow();
 	    });
 
 	    //IAG (ChatGPT)
@@ -213,6 +217,13 @@ public class VentanaPrincipal extends JFrame {
 		layout.show(contenedor, nombre);
 		resetBotones();
 		
+	    for (int i = 0; i < nombresPaneles.length; i++) {
+	        if (nombresPaneles[i].equals(nombre)) {
+	            indicePanelActual = i;
+	            break;
+	        }
+	    }
+		
 		switch (nombre) {
 		case "Inicio":
 			botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
@@ -239,4 +250,32 @@ public class VentanaPrincipal extends JFrame {
 			throw new IllegalArgumentException("No existe la pestaña: " + nombre);
 		}
 	}
+	
+	KeyListener navegacionKeyListener = new KeyListener() {
+		
+		@Override
+		public void keyTyped(KeyEvent e) { }
+		
+		@Override
+		public void keyReleased(KeyEvent e) { }
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.isControlDown() && e.getKeyCode()==KeyEvent.VK_UP) {
+				int nuevoIndice = indicePanelActual - 1;
+				if (nuevoIndice < 0) {
+					nuevoIndice = nombresPaneles.length - 1;
+				}
+				indicePanelActual = nuevoIndice;
+				mostrarPanel(nombresPaneles[indicePanelActual]);
+			} else if (e.isControlDown() && e.getKeyCode()==KeyEvent.VK_DOWN) {
+				int nuevoIndice = indicePanelActual + 1;
+				if (nuevoIndice >= nombresPaneles.length) {
+					nuevoIndice = 0;
+				}
+				indicePanelActual = nuevoIndice;
+				mostrarPanel(nombresPaneles[indicePanelActual]);
+			}
+		}
+	};
 }
