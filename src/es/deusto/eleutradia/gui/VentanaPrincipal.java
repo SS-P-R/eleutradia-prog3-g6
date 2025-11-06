@@ -70,8 +70,15 @@ public class VentanaPrincipal extends JFrame {
         PanelExplorar panelExplorar = new PanelExplorar(usuario);
         JPanel panelPortfolio = new JPanel();
         panelPortfolio.add(new JLabel("Aquí irá el Módulo de Portfolio"));
-        JPanel panelAprender = new JPanel();
-        panelAprender.add(new JLabel("Aquí irá el Módulo de Aprender"));
+        JPanel panelAprender;
+        if (usuario instanceof Particular) {
+        	Particular pUsuario = (Particular) usuario;
+        	panelAprender = new PanelAprender(pUsuario);
+        } else {
+        	panelAprender = new JPanel();
+        	panelAprender.add(new JLabel("El modulo de Aprender solo esta disponible para Particulares"));
+        }
+
         JPanel panelPerfil = new PanelPerfil();
         
         contenedor.add(panelInicio, "Inicio");
