@@ -84,6 +84,8 @@ public class VentanaPrincipal extends JFrame {
         	JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
         	botonCrearParticular.setBackground(Color.WHITE);
         	botonCrearParticular.setForeground(MY_AZUL);
+        	botonCrearParticular.setBorderPainted(false);
+        	botonCrearParticular.setFocusPainted(false);
         	panelAprender.add(botonCrearParticular);
         	botonCrearParticular.addActionListener(e -> {
     			new VentanaInicial().setVisible(true);
