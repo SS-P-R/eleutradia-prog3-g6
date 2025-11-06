@@ -268,4 +268,3 @@ public class PanelInicio extends JPanel{
 		});
 	}
 }
-
