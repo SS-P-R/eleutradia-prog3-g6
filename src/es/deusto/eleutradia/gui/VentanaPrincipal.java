@@ -13,8 +13,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
 
 public class VentanaPrincipal extends JFrame {
