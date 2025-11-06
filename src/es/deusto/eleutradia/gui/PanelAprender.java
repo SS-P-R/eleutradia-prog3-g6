@@ -1,20 +1,25 @@
 package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollBar;
@@ -27,24 +32,28 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import es.deusto.eleutradia.domain.Curso;
+import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.main.MainEleutradia;
 
 public class PanelAprender extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel panelPrincipal, panelProgresoFiltros, panelCursos;
+	private Particular usuarioLogeado;
 	
-	private JTable tablaCursos;
-	private DefaultTableModel modeloTabla;
-	private JLabel labelContenidos;
+	private CardLayout layoutPanelAprender;
+	private JPanel panelAprender;
 	
-	private JButton botonTodosCursos, botonMisCursos;
+	private CardLayout layoutContenedorCentro;
+	private JPanel panelContenedorCentro;
 	
-	private JLabel labelCompletados;
+	private JPanel panelTodosLosCursos, panelMisCursos;
+	private JButton botonTodosLosCursos, botonMisCursos;
+	
+	private JPanel panelCursosInfo;
+	private Curso cursoInfo;
+	
 	private JProgressBar progressBarRacha;
-	
-	private JTextField textoBusqueda;
-	private JCheckBox checkNivelBasico, checkNivelMedio, checkNivelAvanzado;
 	
     private static final Color COLOR_FONDO_PRINCIPAL = Color.WHITE;
     private static final Color COLOR_BOTON_INACTIVO = new Color(220, 220, 220); // Gris claro
@@ -52,40 +61,71 @@ public class PanelAprender extends JPanel {
     
     private ArrayList<Curso> listaCursos;
 	
-	public PanelAprender() {
+	public PanelAprender(Particular usuario) {
+		
+		usuarioLogeado = usuario;
 		
 		this.setLayout(new BorderLayout(10, 10));
 		this.setBorder(BorderFactory.createEmptyBorder());
 		
-		panelPrincipal = crearPanelPrincipal();
-		panelProgresoFiltros = crearPanelProgresoFiltros();
-
-		this.add(panelPrincipal, BorderLayout.CENTER);
-		this.add(panelProgresoFiltros, BorderLayout.EAST);
+		layoutPanelAprender = new CardLayout();
+		panelAprender = new JPanel(layoutPanelAprender);
 		
-		registrarListeners();
+		JPanel panelCursos = crearPanelCursos();
+		panelCursosInfo = new JPanel(new BorderLayout(10, 10));
 		
+		panelAprender.add(panelCursos, "PANEL_CURSOS");
+		panelAprender.add(panelCursosInfo, "PANEL_CURSOS_INFO");
+		
+		this.add(panelAprender, BorderLayout.CENTER);
+		
+		actualizarPanelTodosLosCursos();
+		actualizarProgressBar();
+		layoutPanelAprender.show(panelAprender, "PANEL_CURSOS");
+				
 	}
 
-	private JPanel crearPanelPrincipal() {
+	private JPanel crearPanelCursos() {
 
-		JPanel panel = new JPanel(new BorderLayout(10, 10));
-		panel.setBackground(COLOR_FONDO_PRINCIPAL);
+		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
+		panelPrincipalPestanasCurso.setBackground(COLOR_FONDO_PRINCIPAL);
 		
 		JPanel panelPestanas = crearPanelPestanas();
-		panel.add(panelPestanas, BorderLayout.NORTH);
+		panelPestanas.add(panelPestanas, BorderLayout.NORTH);
 		
-		JPanel panelBusquedaCursos = new JPanel(new BorderLayout(0, 10));
-		panelBusquedaCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		
-		textoBusqueda = new JTextField();
-		panelBusquedaCursos.add(textoBusqueda, BorderLayout.NORTH);
-		JScrollPane panelTarjetaScroll = crearPanelCursos();
-		panelBusquedaCursos.add(panelTarjetaScroll, BorderLayout.CENTER);
+		layoutContenedorCentro = new CardLayout();
+		panelContenedorCentro = new JPanel(layoutContenedorCentro);
 		
-		panel.add(panelBusquedaCursos, BorderLayout.CENTER);
+		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 10, 10));
+		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
 		
-		return panel;
+		panelMisCursos = new JPanel(new GridLayout(0, 2, 10, 10));
+		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
+		
+		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
+		panelContenedorCentro.add(scrollMis, "MIS_CURSOS");
+		
+		panelPrincipalPestanasCurso.add(panelContenedorCentro, BorderLayout.CENTER);
+		
+		
+		JPanel panelDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
+		panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panelDerecho.setPreferredSize(new Dimension(160, 0));
+		
+		JLabel labelProgreso = new JLabel("Progreso Cursos");
+		labelProgreso.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		progressBarRacha = new JProgressBar(0, 100);
+		progressBarRacha.setStringPainted(true);
+		progressBarRacha.setMaximumSize(new Dimension(150, 25));
+		
+		panelDerecho.add(labelProgreso);
+		panelDerecho.add(progressBarRacha);
+		
+		panelPrincipalPestanasCurso.add(panelDerecho, BorderLayout.EAST);
+		
+		return panelPrincipalPestanasCurso;
 	}
 	
 	private JPanel crearPanelPestanas() {
@@ -94,118 +134,156 @@ public class PanelAprender extends JPanel {
 		panel.setBackground(COLOR_FONDO_PRINCIPAL);
 		
 		botonMisCursos = new JButton("Todas los Cursos");
-		botonTodosCursos = new JButton("Tus Cursos");
+		botonTodosLosCursos = new JButton("Tus Cursos");
 		
-		JPanel fondoMisCursos = new JPanel(new BorderLayout());
-		fondoMisCursos.add(botonMisCursos, BorderLayout.CENTER);
-		JPanel fondoTodosCurso = new JPanel(new BorderLayout());
-		fondoTodosCurso.add(botonTodosCursos, BorderLayout.CENTER);
+		botonMisCursos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actualizarPanelMisCursos();
+				layoutContenedorCentro.show(panelContenedorCentro, "MIS_CURSOS");				
+			}
+		});
 		
-		panel.add(fondoMisCursos);
-		panel.add(fondoTodosCurso);
+		botonTodosLosCursos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actualizarPanelTodosLosCursos();
+				layoutContenedorCentro.show(panelContenedorCentro, "TODOS_LOS_CURSOS");				
+			}
+		});
+				
+		panel.add(botonTodosLosCursos);
+		panel.add(botonMisCursos);
 		
 		return panel;
 	}
 	
-	private JScrollPane crearPanelCursos() {
+	private void actualizarPanelTodosLosCursos() {
 		
-		panelCursos = new JPanel(new GridLayout(0, 2, 5, 5));
-		panelCursos.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelTodosLosCursos.removeAll();
 		
-		JScrollPane scrollPane = new JScrollPane(panelCursos);
-		scrollPane.setBorder(null);
-		scrollPane.getViewport().setBackground(COLOR_FONDO_PRINCIPAL);
+		List<Curso> listaCursos = MainEleutradia.listaCursos;
 		
-		return scrollPane;
-	}
-
-	private JPanel crearPanelProgresoFiltros() {
-
-		JPanel panelLateral = new JPanel(new BorderLayout(10, 10));
-		panelLateral.setPreferredSize(new Dimension(250, 10));
+		for (Curso curso : listaCursos) {
+			
+			JButton botonCurso = new JButton(curso.getNombre());
+			botonCurso.setPreferredSize(new Dimension(150, 80));
+			
+			botonCurso.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					cursoInfo = curso;
+					actualizarPanelInfoCurso();
+					layoutPanelAprender.show(panelAprender, "PANEL_CURSO_INFO");
+				}
+			});
+			panelTodosLosCursos.add(botonCurso);
+		}
 		
-		JPanel panelRacha = crearPanelRacha();
-		JPanel panelFiltros = crearPanelFiltros();
+		panelTodosLosCursos.revalidate();
+		panelTodosLosCursos.repaint();
 		
-		return null;
-	}
-	
-	private JPanel crearPanelRacha() {
-		
-		JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
-		
-		JLabel labelTitulo = new JLabel("Lecciones Completadas");
-		progressBarRacha = new JProgressBar(0, 100);
-		progressBarRacha.setStringPainted(true);
-		
-		panel.add(labelTitulo);
-		panel.add(progressBarRacha);
-		
-		return null;
 	}
 	
-	private JPanel crearPanelFiltros() {
+	private void actualizarPanelMisCursos() {
 		
-		JPanel panel = new JPanel(new BorderLayout(10, 10));
+		panelTodosLosCursos.removeAll();
 		
-		JPanel panelFiltrosAvanzados = new JPanel(new GridLayout(2, 1, 5, 10));
+		List<Curso> listaCursos = usuarioLogeado.getCursos();
 		
-		JPanel panelNivel = new JPanel(new GridLayout(3, 1));
+		if (listaCursos.isEmpty()) {
+			
+		} else {
+			panelMisCursos.setLayout(new GridLayout(0, 2, 10, 10));
+			for (Curso curso : listaCursos) {
+				
+				JButton botonCurso = new JButton(curso.getNombre());
+				botonCurso.setPreferredSize(new Dimension(150, 80));
+				
+				botonCurso.setEnabled(false);
+				panelMisCursos.add(botonCurso);
+			}	
+		}
 		
-		checkNivelBasico = new JCheckBox("Basico");
-		checkNivelMedio = new JCheckBox("Medio");
-		checkNivelAvanzado = new JCheckBox("Avanzado");
+		panelTodosLosCursos.revalidate();
+		panelTodosLosCursos.repaint();
 		
-		panelNivel.add(checkNivelBasico);
-		panelNivel.add(checkNivelMedio);
-		panelNivel.add(checkNivelAvanzado);
-		
-		panelFiltrosAvanzados.add(panelNivel);
-		panel.add(panelFiltrosAvanzados, BorderLayout.CENTER);
-		
-		return null;
 	}
 	
-	private JButton crearBotonCurso(Curso curso) {
+	private void actualizarPanelInfoCurso() {
 		
-		JButton boton = new JButton(curso.getNombre());
-		boton.addActionListener(new ActionListener() {
+		panelCursosInfo.removeAll();
+		
+		JPanel panelInfoCentro = new JPanel(new GridLayout());
+		panelInfoCentro.add(new JLabel("Informacion sobre el curso " + cursoInfo.getNombre()));
+		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
+		
+		JPanel panelLateral = new JPanel(new GridLayout(2, 1, 10, 10));
+		
+		JButton botonApuntar = new JButton("Apuntarse");
+		
+		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
+			botonApuntar.setEnabled(false);
+			botonApuntar.setText("Ya estas inscrito");
+		}
+		
+		botonApuntar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				usuarioLogeado.addCurso(cursoInfo);
+				JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
 				
+				botonApuntar.setEnabled(false);
+				botonApuntar.setText("Ya estas inscrito");
+				
+				actualizarProgressBar();
 			}
 		});
 		
-		return boton;
-	}
-	
-	private void registrarListeners() {
+		panelLateral.add(botonApuntar);
 		
-		textoBusqueda.getDocument().addDocumentListener(new DocumentListener() {
+		JButton botonVolver = new JButton("Volver");
+		
+		botonApuntar.addActionListener(new ActionListener() {
+			
 			@Override
-			public void insertUpdate(DocumentEvent e) {
-				filtrarCursos();
+			public void actionPerformed(ActionEvent e) {
+				
+				layoutPanelAprender.show(panelAprender, "PANEL_CURSOS");
 			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				filtrarCursos();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) { }			
-		});	
-	}
+		});
+		
+		panelLateral.add(botonApuntar);
+		
+		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
+		
+		panelCursosInfo.revalidate();
+		panelCursosInfo.repaint();
+		
+	}	
 	
-	private void filtrarCursos() {
+	private void actualizarProgressBar() {
+
+		int totalCursos = MainEleutradia.listaCursos;
+		int misCursos = usuarioLogeado.getCursos().size();
 		
-		String texto = textoBusqueda.getText().toLowerCase();
-		
-		panelCursos.removeAll();
-		
+		if (totalCursos == 0) {
+			
+			progressBarRacha.setValue(0);
+			progressBarRacha.setString("No hay Cursos");
+			
+		} else {
+			
+			int porcentajeBarra = (int) (((double) totalCursos / misCursos) * 100);
+			progressBarRacha.setValue(porcentajeBarra);
+			progressBarRacha.setString(misCursos + "/" + totalCursos);
+		}
 	}
 
-	
 }
