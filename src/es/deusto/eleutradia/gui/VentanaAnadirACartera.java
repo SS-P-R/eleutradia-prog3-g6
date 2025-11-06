@@ -50,7 +50,7 @@ public class VentanaAnadirACartera extends JDialog {
 	}
 	
 	private void construirVentana() {
-        JLabel titulo = new JLabel("Selecciona la cartera donde añadir el producto", JLabel.CENTER);
+        JLabel titulo = new JLabel("Seleccione la cartera donde añadir el producto", JLabel.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
         titulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         this.add(titulo, BorderLayout.NORTH);
@@ -58,8 +58,8 @@ public class VentanaAnadirACartera extends JDialog {
         JPanel panelCentral = new JPanel(new FlowLayout());
         
         comboCarteras = new JComboBox<>();
+        comboCarteras.addItem("Ninguna cartera seleccionada");
         if (usuario.getCarteras().isEmpty()) {
-            comboCarteras.addItem("No tienes carteras disponibles");
             comboCarteras.setEnabled(false);
         } else {
             for (Cartera c : usuario.getCarteras()) {
