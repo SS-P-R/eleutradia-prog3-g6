@@ -79,7 +79,7 @@ public class VentanaPrincipal extends JFrame {
         	panelAprender.add(new JLabel("El modulo de Aprender solo esta disponible para Particulares"));
         }
 
-        JPanel panelPerfil = new PanelPerfil();
+        JPanel panelPerfil = new PanelPerfil(usuario);
         
         contenedor.add(panelInicio, "Inicio");
         contenedor.add(panelExplorar, "Explorador");

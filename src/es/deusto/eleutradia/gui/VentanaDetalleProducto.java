@@ -36,7 +36,7 @@ public class VentanaDetalleProducto extends JDialog {
             panel.add(new JLabel("Rentabilidad a " + plazo + ": " + valor + "%"));
         }
         panel.add(new JLabel("Riesgo: " + producto.getTipoProducto().getRiesgo()));
-        panel.add(new JLabel("Importe mínimo: " + producto.getTipoProducto().getImporteMin()));
+        panel.add(new JLabel("Importe mínimo: " + producto.getTipoProducto().getImporteMin() + " " + producto.getDivisa()));
         if (producto.getGestora() != null) {
             panel.add(new JLabel("Gestora: " + producto.getGestora().getNombreCompleto()));
         }
@@ -44,7 +44,8 @@ public class VentanaDetalleProducto extends JDialog {
         add(panel, BorderLayout.CENTER);
 
         JButton cerrar = new JButton("Cerrar");
-        cerrar.setBackground(Color.GRAY);
+        cerrar.setBackground(new Color(100, 100, 100));
+        cerrar.setForeground(Color.WHITE);
         cerrar.setFocusPainted(false);
         cerrar.addActionListener(e -> dispose());
         this.add(cerrar, BorderLayout.SOUTH);

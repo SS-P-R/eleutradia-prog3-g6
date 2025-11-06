@@ -18,5 +18,9 @@ public class PanelPerfil extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
+	private Usuario usuario;
 	
+	public PanelPerfil(Usuario usuario) {
+		this.usuario = usuario;
+	}
 }
