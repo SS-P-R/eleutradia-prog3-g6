@@ -126,11 +126,6 @@ public class VentanaAnadirACartera extends JDialog {
 		
 		if (carteraSel != null) {
 			carteraSel.anadirProducto(producto, cantidad);
-            JOptionPane.showMessageDialog(this,
-                    "Añadido " + cantidad + " de " + producto.getNombre() +
-                            " a la cartera \"" + carteraSel.getNombre() + "\"",
-                    "Compra exitosa", JOptionPane.INFORMATION_MESSAGE);
-            
             dispose();
 		}
 	}

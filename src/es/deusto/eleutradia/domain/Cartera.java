@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class Cartera {
     private String nombre;
     private double saldo;
@@ -84,15 +86,61 @@ public class Cartera {
 	}
 	
 	public boolean anadirProducto(ProductoFinanciero producto, double cantidad) {
-	    if (producto == null || cantidad <= 0) return false;
-	    for (Operacion op : operaciones) {
+	    if (producto == null || cantidad <= 0) {
+	        JOptionPane.showMessageDialog(null, "Cantidad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    };
+	    
+	    double coste = cantidad*producto.getValorUnitario();
+	    if (coste > saldo) {
+	        JOptionPane.showMessageDialog(null, "Saldo insuficiente.", "Error", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    boolean productoExiste = false;
+	    
+	    for (Operacion op : this.operaciones) {
 	    	ProductoFinanciero p = op.getProdFinanciero();
 	        if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
-	            System.out.println("El producto ya está en la cartera.");
+	        	productoExiste = true;
+	    	    int confirmacionRecompra = JOptionPane.showConfirmDialog(
+	    	            null,
+	    	            "Esta cartera ya contiene el producto seleccionado."
+	    	            + "¿Desea añadir " + cantidad + producto.getDivisa() + " a la cantidad existente?",
+	    	            "Verificación de compra",
+	    	            JOptionPane.YES_NO_OPTION,
+	    	            JOptionPane.QUESTION_MESSAGE
+	    	    );
+	    	    
+	    	    if (confirmacionRecompra != JOptionPane.YES_OPTION) {
+	    	    	return false;
+	    	    }
+	    	    break;
+	        }
+	    }
+	    
+	    if (!productoExiste) {
+		    int confirmacionCompra = JOptionPane.showConfirmDialog(
+		            null,
+		            "¿Desea comprar " + cantidad + producto.getDivisa() + " de " + producto.getNombre() + "?",
+		            "Verificación de compra",
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE
+		    );
+		    
+	        if (confirmacionCompra != JOptionPane.YES_OPTION) {
 	            return false;
 	        }
 	    }
+
 		this.operaciones.add(new Operacion(producto, cantidad, LocalDate.now(), true));
+		saldo -= coste;
+		JOptionPane.showMessageDialog(
+			    null,
+			    "Compra de " + cantidad + " " + producto.getDivisa() + " de " + producto.getNombre() + " realizada con éxito.",
+			    "Confirmación de compra",
+			    JOptionPane.INFORMATION_MESSAGE
+			);
 		return true;
 	}
 
