@@ -91,7 +91,7 @@ public class PanelAprender extends JPanel {
 		panelPrincipalPestanasCurso.setBackground(COLOR_FONDO_PRINCIPAL);
 		
 		JPanel panelPestanas = crearPanelPestanas();
-		panelPestanas.add(panelPestanas, BorderLayout.NORTH);
+		panelPrincipalPestanasCurso.add(panelPestanas, BorderLayout.NORTH);
 		
 		
 		layoutContenedorCentro = new CardLayout();
@@ -133,8 +133,8 @@ public class PanelAprender extends JPanel {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		panel.setBackground(COLOR_FONDO_PRINCIPAL);
 		
-		botonMisCursos = new JButton("Todas los Cursos");
-		botonTodosLosCursos = new JButton("Tus Cursos");
+		botonMisCursos = new JButton("Mis Cursos");
+		botonTodosLosCursos = new JButton("Todos los Cursos");
 		
 		botonMisCursos.addActionListener(new ActionListener() {
 			
@@ -178,7 +178,7 @@ public class PanelAprender extends JPanel {
 					
 					cursoInfo = curso;
 					actualizarPanelInfoCurso();
-					layoutPanelAprender.show(panelAprender, "PANEL_CURSO_INFO");
+					layoutPanelAprender.show(panelAprender, "PANEL_CURSOS_INFO");
 				}
 			});
 			panelTodosLosCursos.add(botonCurso);
@@ -191,7 +191,7 @@ public class PanelAprender extends JPanel {
 	
 	private void actualizarPanelMisCursos() {
 		
-		panelTodosLosCursos.removeAll();
+		panelMisCursos.removeAll();
 		
 		List<Curso> listaCursos = usuarioLogeado.getCursos();
 		
@@ -202,7 +202,7 @@ public class PanelAprender extends JPanel {
 			for (Curso curso : listaCursos) {
 				
 				JButton botonCurso = new JButton(curso.getNombre());
-				botonCurso.setPreferredSize(new Dimension(150, 80));
+				botonCurso.setPreferredSize(new Dimension(120, 60));
 				
 				botonCurso.setEnabled(false);
 				panelMisCursos.add(botonCurso);
@@ -250,7 +250,7 @@ public class PanelAprender extends JPanel {
 		
 		JButton botonVolver = new JButton("Volver");
 		
-		botonApuntar.addActionListener(new ActionListener() {
+		botonVolver.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -259,7 +259,7 @@ public class PanelAprender extends JPanel {
 			}
 		});
 		
-		panelLateral.add(botonApuntar);
+		panelLateral.add(botonVolver);
 		
 		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
 		
@@ -280,7 +280,7 @@ public class PanelAprender extends JPanel {
 			
 		} else {
 			
-			int porcentajeBarra = (int) (((double) totalCursos / misCursos) * 100);
+			int porcentajeBarra = (int) (((double) misCursos / totalCursos) * 100);
 			progressBarRacha.setValue(porcentajeBarra);
 			progressBarRacha.setString(misCursos + "/" + totalCursos);
 		}
