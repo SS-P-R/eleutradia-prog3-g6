@@ -99,19 +99,19 @@ public class MainEleutradia {
 	    		);
 
     	// === EMPRESAS ===
-	    listaEmpresas.add(new Empresa("EMP001", "IberInvest S.A.", "contacto@iberinvest.com", "iber2025", "914445566",
+	    listaEmpresas.add(new Empresa("A1234567B", "IberInvest S.A.", "contacto@iberinvest.com", "1234", "914445566",
 	                "Calle Alcalá 55, Madrid", espana, pMddo1, carterasVacia)
 	    		);
-	    listaEmpresas.add(new Empresa("EMP002", "FinTech México", "info@fintechmx.com", "finmex2024", "5589654321",
+	    listaEmpresas.add(new Empresa("C1234567D", "FinTech México", "info@fintechmx.com", "finmex2024", "5589654321",
 	                "Av. Reforma 100, CDMX", mexico, pAgvo1, carterasVacia)
 	    		);
-	    listaEmpresas.add(new Empresa("EMP003", "CapitalFrance", "admin@capitalfr.fr", "capfr2025", "0145678901",
+	    listaEmpresas.add(new Empresa("E1234567F", "CapitalFrance", "admin@capitalfr.fr", "capfr2025", "0145678901",
 	                "Boulevard Haussmann 12, Paris", francia, pCons1, carterasVacia)
 	    		);
-	    listaEmpresas.add(new Empresa("EMP004", "InvestUS LLC", "support@investus.com", "investus2024", "+1 202 555 0198",
+	    listaEmpresas.add(new Empresa("G1234567H", "InvestUS LLC", "support@investus.com", "investus2024", "+1 202 555 0198",
 	                "Wall Street 45, New York", eeuu, pAgvo1, carterasVacia)
 	    		);
-	    listaEmpresas.add(new Empresa("EMP005", "ArgentBank", "info@argentbank.com", "argent2025", "1134567890",
+	    listaEmpresas.add(new Empresa("I1234567J", "ArgentBank", "info@argentbank.com", "argent2025", "1134567890",
 	                "Av. Corrientes 200, Buenos Aires", argentina, pMddo1, carterasVacia)
 	    		);
 	//END-CHATGPT

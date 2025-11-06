@@ -41,6 +41,10 @@ public class VentanaPrincipal extends JFrame {
     private static final String ICONO_APRENDER_AZUL = "/imagenes/aprenderAzul.png";    
     private static final String ICONO_PERFIL_NEGRO = "/imagenes/perfilNegro.png";    
     private static final String ICONO_PERFIL_AZUL = "/imagenes/perfilAzul.png";
+    
+    // Estilos
+    private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
+    private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
 	
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
@@ -76,7 +80,16 @@ public class VentanaPrincipal extends JFrame {
         	panelAprender = new PanelAprender(pUsuario);
         } else {
         	panelAprender = new JPanel();
-        	panelAprender.add(new JLabel("El modulo de Aprender solo esta disponible para Particulares"));
+        	panelAprender.add(new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares."), JLabel.CENTER);
+        	JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
+        	botonCrearParticular.setBackground(Color.WHITE);
+        	botonCrearParticular.setForeground(MY_AZUL);
+        	panelAprender.add(botonCrearParticular);
+        	botonCrearParticular.addActionListener(e -> {
+    			new VentanaInicial().setVisible(true);
+    			dispose();
+        	});
+        	
         }
 
         JPanel panelPerfil = new PanelPerfil(usuario);
