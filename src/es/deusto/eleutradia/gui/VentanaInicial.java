@@ -43,10 +43,13 @@ public class VentanaInicial extends JFrame {
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
     private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
+    //IAG (ChatGPT)
+    //ADAPTADO: tamaño reducido
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.BOLD, 12);
-    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);	
+    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);
+    //END IAG
     
     // Expresiones para validar identificadores
     //IAG (ChatGPT)
