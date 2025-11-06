@@ -57,8 +57,10 @@ public class PanelAprender extends JPanel {
 	
 	private JProgressBar progressBarRacha;
 	
-    private static final Color COLOR_FONDO_PRINCIPAL = Color.WHITE;
-    private static final Color COLOR_BOTON_INACTIVO = new Color(220, 220, 220); // Gris claro
+    private static final Color COLOR_FONDO_SECUNDARIO = new Color(48, 46, 43); // Gris claro
+    private static final Color COLOR_FONDO_PRINCIPAL = new Color(38, 37, 34); // Gris medio
+    private static final Color COLOR_BOTON_INACTIVO = new Color(33, 32, 29); // Gris oscuro
+    private static final Color COLOR_TEXTO = new Color(223, 223, 222); // Gris oscuro
     private static final Color COLOR_TARJETA_COMPLETADA = new Color(220, 255, 220); // Verde claro
     
     private ArrayList<Curso> listaCursos;
@@ -67,8 +69,9 @@ public class PanelAprender extends JPanel {
 		
 		usuarioLogeado = usuario;
 		
-		this.setLayout(new BorderLayout(10, 10));
-		this.setBorder(BorderFactory.createEmptyBorder());
+		this.setLayout(new BorderLayout());
+		this.setBackground(COLOR_FONDO_SECUNDARIO);
+		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 		
 		layoutPanelAprender = new CardLayout();
 		panelAprender = new JPanel(layoutPanelAprender);
@@ -99,13 +102,15 @@ public class PanelAprender extends JPanel {
 		
 		layoutContenedorCentro = new CardLayout();
 		panelContenedorCentro = new JPanel(layoutContenedorCentro);
+		panelContenedorCentro.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelContenedorCentro.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		
-		panelTodosLosCursos = new JPanel(new GridLayout(0, 2));
+		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 0));
 		panelTodosLosCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
 		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
 		
-		panelMisCursos = new JPanel(new GridLayout(0, 2, 10, 10));
+		panelMisCursos = new JPanel(new GridLayout(0, 2, 0, 20));
 		panelMisCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
 		scrollMis.setBorder(BorderFactory.createEmptyBorder());
@@ -118,10 +123,12 @@ public class PanelAprender extends JPanel {
 		panelPrincipalPestanasCurso.add(panelPestanasCursos, BorderLayout.CENTER);
 		
 		JPanel panelDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
+		panelDerecho.setBackground(COLOR_FONDO_PRINCIPAL);
 		panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panelDerecho.setPreferredSize(new Dimension(160, 0));
 		
 		JLabel labelProgreso = new JLabel("Progreso Cursos");
+		labelProgreso.setForeground(COLOR_TEXTO);
 		labelProgreso.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		progressBarRacha = new JProgressBar(0, 100);
@@ -138,7 +145,7 @@ public class PanelAprender extends JPanel {
 	
 	private JPanel crearPanelPestanas() {
 		
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		JPanel panel = new JPanel(new GridLayout(1, 2));
 		panel.setBackground(COLOR_FONDO_PRINCIPAL);
 		
 		botonMisCursos = crearBotonPestanas("Mis Cursos");
@@ -183,6 +190,7 @@ public class PanelAprender extends JPanel {
 	private JButton crearBotonPestanas(String texto) {
 		
 		JButton boton = new JButton(texto);
+		boton.setForeground(COLOR_TEXTO);
 		boton.setPreferredSize(new Dimension(180, 40));
 		boton.setContentAreaFilled(false);
 		boton.setBorder(BorderFactory.createEmptyBorder());
