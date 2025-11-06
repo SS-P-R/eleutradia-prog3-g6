@@ -148,7 +148,7 @@ public class PanelExplorar extends JPanel {
         ));
         mainPanel.setPreferredSize(new Dimension(200, 0));
         
-        JLabel tituloFiltros = new JLabel("-FILTROS-");
+        JLabel tituloFiltros = new JLabel("- FILTROS -");
         tituloFiltros.setFont(FONT_SUBTITULO);
         tituloFiltros.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloFiltros.setHorizontalAlignment(JLabel.CENTER);
@@ -350,7 +350,6 @@ public class PanelExplorar extends JPanel {
     
     private void actualizarTabla(List<ProductoFinanciero> productos) {
         modeloTabla.setRowCount(0);
-        
         for (ProductoFinanciero p : productos) {
             Object[] fila = {
                 p.getNombre(),

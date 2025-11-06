@@ -58,7 +58,7 @@ public class MainEleutradia {
 
     		// --- CARTERAS ---
 	    Cartera c1 = new Cartera();
-	    Cartera c2 = new Cartera("Cartera de Sergio", 100.0, PerfilRiesgo.MODERADO, Divisa.EUR, new ArrayList<Operacion>());
+	    Cartera c2 = new Cartera("Cartera de Sergio", 15.0, PerfilRiesgo.MODERADO, Divisa.EUR, new ArrayList<Operacion>());
 	    ArrayList<Cartera> carterasVacia = new ArrayList<>();
 	    ArrayList<Cartera> carterasEjemplo = new ArrayList<>(Arrays.asList(c1, c2));
 
