@@ -2,10 +2,16 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
+import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +27,6 @@ public class PanelPerfil extends JPanel {
 	
 	private Usuario usuario;
 	
-	private JButton botonCerrarSesion;
 	private JButton botonPrivacidad;
 	private JButton botonEvaluacion;
 	private JButton botonApariencia;
@@ -30,9 +35,12 @@ public class PanelPerfil extends JPanel {
 	private JButton botonEditarTelefono;
 	private JButton botonEditarPassword;
 	
+	// Ruta de icono de configuración
+	private static final String ICONO_CONFIGURACION = "/imagenes/configuracion.png";
+	
 	// Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
-    private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
+    private static final Color MY_GRIS = new Color(200, 200, 200); // Gris
     private static final Color MY_ROJO = new Color(220, 53, 69);   // Rojo
 	private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
@@ -52,32 +60,56 @@ public class PanelPerfil extends JPanel {
 		
 		this.add(panelSesion, BorderLayout.NORTH);
 		this.add(panelPerfil, BorderLayout.CENTER);
-		this.add(panelOpciones, BorderLayout.EAST);
 	}
 	
 	private JPanel construirPanelSesion() {
-		JPanel mainPanel = new JPanel(new FlowLayout());
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.setBackground(getBackground());
 		
-		JLabel labelTitulo = new JLabel("Mi perfil", JLabel.CENTER);
+		JLabel labelTitulo = new JLabel("Mi perfil", JLabel.LEFT);
+		labelTitulo.setFont(FONT_TITULO);
+		labelTitulo.setForeground(Color.BLACK);
+		mainPanel.add(labelTitulo, BorderLayout.WEST);
 		
+		JPanel panelBotones = new JPanel(new FlowLayout(20));
+		panelBotones.setBackground(getBackground());
 		
-		botonCerrarSesion = new JButton("Cerrar sesión");
-        botonCerrarSesion.setBackground(MY_ROJO);
-        botonCerrarSesion.setForeground(Color.WHITE);
-        botonCerrarSesion.setFocusPainted(false);
-        botonCerrarSesion.setFont(FONT_SUBTITULO);
+		JButton botonEditar = new JButton("Editar perfil");
+		botonEditar.setPreferredSize(new Dimension(120, 35));
+		botonEditar.setFont(FONT_SUBTITULO);
+		botonEditar.setBackground(new Color(40, 167, 69));
+		botonEditar.setForeground(Color.WHITE);
+		botonEditar.setFocusPainted(false);
+		panelBotones.add(botonEditar);
+		
+		ImageIcon config = new ImageIcon(getClass().getResource(ICONO_CONFIGURACION));
+		ImageIcon configEscalada = new ImageIcon(config.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+		JButton botonConfiguracion = new JButton(configEscalada);
+		botonConfiguracion.setBackground(MY_GRIS);
+		botonConfiguracion.setBorder(BorderFactory.createBevelBorder(1, MY_GRIS, MY_AZUL));
+		botonConfiguracion.setFocusPainted(false);
+        panelBotones.add(botonConfiguracion);
+        
+        mainPanel.add(panelBotones, BorderLayout.EAST);
 		
         return mainPanel;
 	}
 
 	private JPanel construirPanelPerfil() {
 		JPanel mainPanel = new JPanel();
+		mainPanel.setBackground(getBackground());
 		
 		return mainPanel;
 	}
 	
 	private JPanel construirPanelOpciones() {
 		JPanel mainPanel = new JPanel();
+		
+		JButton botonCerrarSesion = new JButton("Cerrar sesión");
+        botonCerrarSesion.setFont(FONT_SUBTITULO);
+        botonCerrarSesion.setBackground(MY_ROJO);
+        botonCerrarSesion.setForeground(Color.WHITE);
+        botonCerrarSesion.setFocusPainted(false);
 		
 		return mainPanel;
 	}
