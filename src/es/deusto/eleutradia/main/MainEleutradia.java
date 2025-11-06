@@ -47,7 +47,8 @@ public class MainEleutradia {
     public static Pais reinounido = new Pais("Reino Unido", RegionGeografica.EUROPA_OCCIDENTAL);
 	
 	public static void inicializarUsuarios() {
-		//START-CHATGPT-MODIFICADO - Un particular añadido para acceso rápido
+		//IAG (ChatGPT)
+		//ADAPTADO: Un particular añadido para acceso rápido
 
 		// === PARTICULARES ===
 
@@ -114,7 +115,7 @@ public class MainEleutradia {
 	    listaEmpresas.add(new Empresa("I1234567J", "ArgentBank", "info@argentbank.com", "argent2025", "1134567890",
 	                "Av. Corrientes 200, Buenos Aires", argentina, pMddo1, carterasVacia)
 	    		);
-	//END-CHATGPT
+	    //END-IAG
 	}
 	
 	public static void inicializarCursos() {
