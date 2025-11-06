@@ -90,8 +90,9 @@ public class PanelAprender extends JPanel {
 		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
 		panelPrincipalPestanasCurso.setBackground(COLOR_FONDO_PRINCIPAL);
 		
+		JPanel panelPestanasCursos = new JPanel(new BorderLayout());
 		JPanel panelPestanas = crearPanelPestanas();
-		panelPrincipalPestanasCurso.add(panelPestanas, BorderLayout.NORTH);
+		panelPestanasCursos.add(panelPestanas, BorderLayout.NORTH);
 		
 		
 		layoutContenedorCentro = new CardLayout();
@@ -106,8 +107,9 @@ public class PanelAprender extends JPanel {
 		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
 		panelContenedorCentro.add(scrollMis, "MIS_CURSOS");
 		
-		panelPrincipalPestanasCurso.add(panelContenedorCentro, BorderLayout.CENTER);
+		panelPestanasCursos.add(panelContenedorCentro, BorderLayout.CENTER);
 		
+		panelPrincipalPestanasCurso.add(panelPestanasCursos, BorderLayout.CENTER);
 		
 		JPanel panelDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
 		panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
