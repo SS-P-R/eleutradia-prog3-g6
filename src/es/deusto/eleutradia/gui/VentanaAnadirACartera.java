@@ -100,6 +100,14 @@ public class VentanaAnadirACartera extends JDialog {
 	}
 	
 	private void seleccionarCartera() {
+	    Object carteraSeleccionada = comboCarteras.getSelectedItem();
+	    if (carteraSeleccionada == null || carteraSeleccionada.toString().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this,
+	                "Por favor, seleccione una cartera antes de continuar.",
+	                "Ninguna cartera seleccionada", JOptionPane.WARNING_MESSAGE);
+	        return;
+	    }
+		
 		if (usuario.getCarteras().isEmpty()) {
 			JOptionPane.showMessageDialog(this, 
 					"Debe tener al menos una cartera creada para realizar esta acción.",
