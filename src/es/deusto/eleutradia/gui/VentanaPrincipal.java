@@ -30,6 +30,9 @@ public class VentanaPrincipal extends JFrame {
     
     private JButton botonInicio, botonExplorar, botonPortfolio, botonAprender, botonPerfil;
     
+    private final String[] nombresPaneles = {"Inicio", "Explorar", "Portfolio", "Aprender", "Perfil"};
+    private int indicePanelActual = 0;
+    
     // Rutas de los iconos de pestaña
     private static final String ICONO_INICIO_NEGRO = "/imagenes/inicioNegro.png";
     private static final String ICONO_INICIO_AZUL = "/imagenes/inicioAzul.png";
@@ -44,7 +47,6 @@ public class VentanaPrincipal extends JFrame {
     
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
-    private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
 	
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
@@ -97,9 +99,9 @@ public class VentanaPrincipal extends JFrame {
         JPanel panelPerfil = new PanelPerfil(usuario);
         
         contenedor.add(panelInicio, "Inicio");
-        contenedor.add(panelExplorar, "Explorador");
+        contenedor.add(panelExplorar, "Explorar");
         contenedor.add(panelPortfolio, "Portfolio");
-        contenedor.add(panelAprender,"Aprendizaje");
+        contenedor.add(panelAprender,"Aprender");
         contenedor.add(panelPerfil,"Perfil");
         
         layout.show(contenedor, "Inicio");
@@ -117,13 +119,13 @@ public class VentanaPrincipal extends JFrame {
 		agregarBotonNavegacion(panelNavegacion, "Inicio", "Inicio",
 	            ICONO_INICIO_NEGRO, ICONO_INICIO_AZUL);
 		
-	    agregarBotonNavegacion(panelNavegacion, "Explorador", "Explorar",
+	    agregarBotonNavegacion(panelNavegacion, "Explorar", "Explorar",
 	            ICONO_EXPLORAR_NEGRO, ICONO_EXPLORAR_AZUL);
 		
 	    agregarBotonNavegacion(panelNavegacion, "Portfolio", "Portfolio",
 	            ICONO_PORTFOLIO_NEGRO, ICONO_PORTFOLIO_AZUL);
 
-	    agregarBotonNavegacion(panelNavegacion, "Aprendizaje", "Aprender",
+	    agregarBotonNavegacion(panelNavegacion, "Aprender", "Aprender",
 	            ICONO_APRENDER_NEGRO, ICONO_APRENDER_AZUL);
 
 	    agregarBotonNavegacion(panelNavegacion, "Perfil", "Perfil",
@@ -181,9 +183,9 @@ public class VentanaPrincipal extends JFrame {
 	    // Guarda la referencia para resetBotones()
 	    switch (nombrePanel) {
 	        case "Inicio" -> botonInicio = boton;
-	        case "Explorador" -> botonExplorar = boton;
+	        case "Explorar" -> botonExplorar = boton;
 	        case "Portfolio" -> botonPortfolio = boton;
-	        case "Aprendizaje" -> botonAprender = boton;
+	        case "Aprender" -> botonAprender = boton;
 	        case "Perfil" -> botonPerfil = boton;
 	    }
 	    //END IAG
@@ -224,7 +226,7 @@ public class VentanaPrincipal extends JFrame {
 			botonPortfolio.setIcon(cargarIcono(ICONO_PORTFOLIO_AZUL));
 			botonPortfolio.setText("");
 			break;
-		case "Aprendizaje":
+		case "Aprender":
 			botonAprender.setIcon(cargarIcono(ICONO_APRENDER_AZUL));
 			botonAprender.setText("");
 			break;
