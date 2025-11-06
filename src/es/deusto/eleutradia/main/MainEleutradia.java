@@ -27,12 +27,15 @@ import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.gui.VentanaInicial;
+import es.deusto.eleutradia.domain.Leccion;
+import es.deusto.eleutradia.domain.Modulo;
 
 public class MainEleutradia {
 	
 	public static List<Particular> listaParticulares = new ArrayList<Particular>();
 	public static List<Empresa> listaEmpresas = new ArrayList<Empresa>();
 	public static List<ProductoFinanciero> listaProductos = new ArrayList<ProductoFinanciero>();
+	public static List<Curso> listaCursos = new ArrayList<Curso>();
 	
 	// --- PAÍSES ---
     public static Pais espana = new Pais("España", RegionGeografica.EUROPA_OCCIDENTAL);
@@ -113,6 +116,49 @@ public class MainEleutradia {
 	    		);
 	//END-CHATGPT
 	}
+	
+	public static void inicializarCursos() {
+        
+        // --- 1. CURSO: 2 Módulos (2 Lecciones + 2 Lecciones) ---
+        Leccion l1_1 = new Leccion(101, "Renta Fija vs. Renta Variable", 1);
+        Leccion l1_2 = new Leccion(102, "El papel de los Brokers", 2);
+        List<Leccion> leccionesC1M1 = List.of(l1_1, l1_2);
+        Leccion l1_3 = new Leccion(103, "Introducción a las Acciones", 1);
+        Leccion l1_4 = new Leccion(104, "Introducción a los ETFs", 2);
+        List<Leccion> leccionesC1M2 = List.of(l1_3, l1_4);
+        Modulo m1_1 = new Modulo(10, "Conceptos Fundamentales", 1, leccionesC1M1);
+        Modulo m1_2 = new Modulo(11, "Principales Activos", 2, leccionesC1M2);
+        List<Modulo> modulosCurso1 = List.of(m1_1, m1_2);
+        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1);
+        listaCursos.add(cursoIntro);
+        
+        // --- 2. CURSO: 1 Módulo (3 Lecciones) ---
+        Leccion l2_1 = new Leccion(201, "Interpretación de Gráficos de Velas", 1);
+        Leccion l2_2 = new Leccion(202, "Medias Móviles (SMA/EMA)", 2);
+        Leccion l2_3 = new Leccion(203, "Indicador RSI y MACD", 3);
+        List<Leccion> leccionesC2M1 = List.of(l2_1, l2_2, l2_3);
+        Modulo m2_1 = new Modulo(20, "Indicadores Técnicos", 1, leccionesC2M1);
+        List<Modulo> modulosCurso2 = List.of(m2_1);
+        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2);
+        listaCursos.add(cursoAnalisis);
+
+        // --- 3. CURSO: 3 Módulos (2 Lecciones + 2 Lecciones + 1 Lección) ---
+        Leccion l3_1 = new Leccion(301, "Diversificación y Riesgo", 1);
+        Leccion l3_2 = new Leccion(302, "Asignación de Activos (Asset Allocation)", 2);
+        List<Leccion> leccionesC3M1 = List.of(l3_1, l3_2);
+        Leccion l3_3 = new Leccion(303, "Introducción a Opciones (Call/Put)", 1);
+        Leccion l3_4 = new Leccion(304, "Introducción a Futuros", 2);
+        List<Leccion> leccionesC3M2 = List.of(l3_3, l3_4);
+        Leccion l3_5 = new Leccion(305, "Estrategias de Cobertura (Hedging)", 1);
+        List<Leccion> leccionesC3M3 = List.of(l3_5);
+        Modulo m3_1 = new Modulo(30, "Gestión del Riesgo", 1, leccionesC3M1);
+        Modulo m3_2 = new Modulo(31, "Instrumentos Derivados", 2, leccionesC3M2);
+        Modulo m3_3 = new Modulo(32, "Estrategias Avanzadas", 3, leccionesC3M3);
+        List<Modulo> modulosCurso3 = List.of(m3_1, m3_2, m3_3);
+        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3);
+        listaCursos.add(cursoAvanzado);
+        
+    }
 	
 	public static void inicializarProductos() {
 		//IAG (herramienta: ChatGPT)
@@ -428,6 +474,7 @@ public class MainEleutradia {
 		
 		MainEleutradia.inicializarUsuarios();
 		MainEleutradia.inicializarProductos();
+		MainEleutradia.inicializarCursos();
 		
 		// ---Ejecutar la creacion de la GUI---
 		SwingUtilities.invokeLater(() -> new VentanaInicial().setVisible(true));

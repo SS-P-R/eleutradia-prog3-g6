@@ -1,6 +1,7 @@
 package es.deusto.eleutradia.domain;
 
 import java.util.List;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -56,6 +57,10 @@ public class Particular extends Usuario {
 
 	public void setCursos(List<Curso> cursos) {
 		this.cursos = cursos;
+	}
+	
+	public void addCurso(Curso curso) {
+		this.cursos.add(curso);
 	}
 
 	public String getDni() {

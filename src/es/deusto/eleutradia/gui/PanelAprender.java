@@ -270,7 +270,7 @@ public class PanelAprender extends JPanel {
 	
 	private void actualizarProgressBar() {
 
-		int totalCursos = MainEleutradia.listaCursos;
+		int totalCursos = MainEleutradia.listaCursos.size();
 		int misCursos = usuarioLogeado.getCursos().size();
 		
 		if (totalCursos == 0) {
