@@ -130,6 +130,7 @@ public class VentanaAnadirACartera extends JDialog {
                     "Añadido " + cantidad + " de " + producto.getNombre() +
                             " a la cartera \"" + carteraSel.getNombre() + "\"",
                     "Compra exitosa", JOptionPane.INFORMATION_MESSAGE);
+            
             dispose();
 		}
 	}
