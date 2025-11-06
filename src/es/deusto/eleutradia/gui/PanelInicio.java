@@ -2,20 +2,18 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -38,6 +36,7 @@ public class PanelInicio extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private VentanaPrincipal ventanaPrincipal;
 	private Usuario usuario;
+	private JFrame frame;
 	
     private java.util.List<ProductoFinanciero> productos;
 
@@ -46,10 +45,12 @@ public class PanelInicio extends JPanel{
 	public PanelInicio(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
 		this.usuario = usuario;
 		this.ventanaPrincipal = ventanaPrincipal;
+		
 		//Fondo
 		setLayout(new BorderLayout(10,10));
 		setBackground(getBackground());
 		
+		//Cargar paneles
 		JPanel panelSaludo = PanelSaludo();
 		JPanel panelCursos = PanelCursos();
 		JPanel panelLecciones = PanelLecciones();
@@ -57,10 +58,12 @@ public class PanelInicio extends JPanel{
 		JPanel panelActivos = PanelActivos();
 		JPanel panelGraficos = PanelGraficos();
 		
+		//Paneles accesorios con saludo incial y recordatorios
 		setVisible(true);
 		add(panelSaludo, BorderLayout.NORTH);
 		add(panelRecordatorio, BorderLayout.SOUTH);
 		
+		//Panel central
 		JPanel centro = new JPanel(new GridLayout(2,2,10,10));
 		centro.setBackground(getBackground());
 		centro.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -92,7 +95,7 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelRecordatorio() {
 		JPanel recordatorio = new JPanel(new FlowLayout());
-//		recordatorio.setBackground(new Color(144, 238, 144) );
+		recordatorio.setBackground(getBackground());
 		JButton completarPerfil = new JButton("Ir al perfil");
 		completarPerfil.addActionListener(e->{
 			ventanaPrincipal.mostrarPanel("Perfil");
@@ -101,12 +104,12 @@ public class PanelInicio extends JPanel{
 			Particular particular = (Particular) usuario;
 			if (particular.getPaisResidencia()==null) {
 				recordatorio.add(completarPerfil);
-				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su país"));
+				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su país."));
 			}else if (particular.getDireccion()==null) {
 				recordatorio.add(completarPerfil);
-				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su dirección"));
+				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su dirección."));
 			}else {
-				recordatorio.add(new JLabel("Todo correcto"));
+				recordatorio.add(new JLabel("Todo correcto."));
 			}
 		}
 		return recordatorio;
@@ -129,6 +132,7 @@ public class PanelInicio extends JPanel{
 		proxLecJPanel.add(Box.createVerticalStrut(10));
 		proxLecJPanel.add(mensajeLecciones2);
 
+		proxLecJPanel.setName("Aprender");
 		PanelFocus(proxLecJPanel);
 		return proxLecJPanel;
 	}
@@ -143,6 +147,7 @@ public class PanelInicio extends JPanel{
 		mensajeCursos.setFont(new Font("Segoe UI", Font.BOLD,16));
 		cursosPanel.add(mensajeCursos);
 		
+		cursosPanel.setName("Aprender");
 		PanelFocus(cursosPanel);
 		return cursosPanel;
 	}
@@ -168,6 +173,7 @@ public class PanelInicio extends JPanel{
 		tablaResumen.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD,12));		
 		activosPanel.add(tablaResumen);
 
+		activosPanel.setName("Portfolio");
 		PanelFocus(activosPanel);
 		return activosPanel;
 	};
@@ -178,12 +184,17 @@ public class PanelInicio extends JPanel{
 		panelGraficos.setBorder(BorderFactory.createLineBorder(Color.black,3));
 		
 		String productoRandom = RandomizadorProductos().getNombre();
-		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + productoRandom);
+		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandom+"'");
 		panelGraficos.add(mensajeGraficos);
 		
-		JFrame frame = new JFrame("Gráfico en Panel");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
+		frame = new JFrame("Gráfico en Panel");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(900, 500);
+		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
+		frame.setMinimumSize(new Dimension(500,300));
+		
+		//IAG (ChatGPT)
         try {
         // Configuración del gráfico (codificada)
         String chartConfig = "{type:'line',data:"
@@ -200,19 +211,29 @@ public class PanelInicio extends JPanel{
         		+ "}";
         String encodedConfig = URLEncoder.encode(chartConfig, "UTF-8");
         String urlString = "https://quickchart.io/chart?width=150&height=85&c=" + encodedConfig;
+        String urlString2 = "https://quickchart.io/chart?width=400&height=200&c=" + encodedConfig;
 
-        // ✅ Forma moderna: usar URI y luego convertir a URL
+        // Forma moderna: usar URI y luego convertir a URL
         URI uri = URI.create(urlString);
         URL url = uri.toURL();
-
+        URI uri2 = URI.create(urlString2);
+        URL url2 = uri2.toURL();
+        
         ImageIcon icon = new ImageIcon(url);
         JLabel label = new JLabel(icon);
         panelGraficos.add(label, BorderLayout.CENTER);
+        ImageIcon icon2 = new ImageIcon(url2);
+        JLabel label2 = new JLabel(icon2);
+	    //END-IAG
 
+        frame.add(label2);
         frame.setVisible(false);
+        
         }catch (Exception e) {
 			System.err.println("Error");
 		}
+        
+		panelGraficos.setName("Grafico");
 		PanelFocus(panelGraficos);
 		return panelGraficos;
 	}
@@ -250,8 +271,11 @@ public class PanelInicio extends JPanel{
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+				if (panel.getName()=="Grafico") {
+				frame.setVisible(true);	
+				}else {
+				ventanaPrincipal.mostrarPanel(panel.getName());
+				}
 			}
 
 			@Override
