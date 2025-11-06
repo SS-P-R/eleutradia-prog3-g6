@@ -47,6 +47,13 @@ public class VentanaInicial extends JFrame {
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.BOLD, 12);
     private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);	
+    
+    // Expresiones para validar identificadores
+    //IAG (ChatGPT)
+    //SIN MODIFICAR
+    private static final String DNI_REGEX = "^[0-9]{8}[A-Za-z]$";
+    private static final String NIF_REGEX = "^[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-Z]$";
+    //END IAG
 	
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
@@ -410,6 +417,10 @@ public class VentanaInicial extends JFrame {
                 JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (pass.length()<8) {
+            	JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (!pass.equals(conf)) {
                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -493,6 +504,10 @@ public class VentanaInicial extends JFrame {
 	    }
 
 	    if (esParticular) {
+	    	if (!id.matches(DNI_REGEX)) {
+	    		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    		return;
+	    	}
 	        for (Particular p : MainEleutradia.listaParticulares) {
 	            if (p.getDni().equalsIgnoreCase(id) && p.getPassword().equals(password)) {
 	                new VentanaPrincipal(p);
@@ -500,8 +515,12 @@ public class VentanaInicial extends JFrame {
 	                return;
 	            }
 	        }
-	        JOptionPane.showMessageDialog(this, "DNI o contraseña incorrectos.", "Error de Login.", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(this, "DNI o contraseña incorrectos.", "Error de Login", JOptionPane.ERROR_MESSAGE);
 	    } else {
+	    	if (!id.matches(NIF_REGEX)) {
+	    		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    		return;
+	    	}
 	        for (Empresa e : MainEleutradia.listaEmpresas) {
 	            if (e.getNif().equalsIgnoreCase(id) && e.getPassword().equals(password)) {
 	                new VentanaPrincipal(e);
@@ -509,7 +528,7 @@ public class VentanaInicial extends JFrame {
 	                return;
 	            }
 	        }
-	        JOptionPane.showMessageDialog(this, "NIF o contraseña incorrectos.", "Error de Login.", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(this, "NIF o contraseña incorrectos.", "Error de Login", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
 }

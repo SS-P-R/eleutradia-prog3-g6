@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cartera {
-    private Usuario propietario;
     private String nombre;
     private double saldo;
     private PerfilRiesgo perfilRiesgo;
@@ -13,30 +12,20 @@ public class Cartera {
     private List<Operacion> operaciones;
     
 	public Cartera() {
-		this.propietario = null;
 		this.nombre = "";
 		this.saldo = 0.0;
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
-		this.divisa = Divisa.USD;
+		this.divisa = Divisa.EUR;
 		this.operaciones = new ArrayList<Operacion>();
 	}
 
-	public Cartera(Usuario propietario, String nombre, double saldo, PerfilRiesgo perfilRiesgo,
+	public Cartera(String nombre, double saldo, PerfilRiesgo perfilRiesgo,
 			Divisa divisa, List<Operacion> operaciones) {
-		this.propietario = propietario;
 		this.nombre = nombre;
 		this.saldo = saldo;
 		this.perfilRiesgo = perfilRiesgo;
 		this.divisa = divisa;
 		this.operaciones = operaciones;
-	}
-
-	public Usuario getPropietario() {
-		return propietario;
-	}
-
-	public void setPropietario(Usuario propietario) {
-		this.propietario = propietario;
 	}
 	
 	public String getNombre() {
@@ -109,18 +98,8 @@ public class Cartera {
 
 	@Override
 	public String toString() {
-		String propietarioId;
-
-	    if (propietario instanceof Particular) {
-	        propietarioId = ((Particular) propietario).getDni();
-	    } else if (propietario instanceof Empresa) {
-	        propietarioId = ((Empresa) propietario).getNif();
-	    } else {
-	        propietarioId = "Desconocido";
-	    }
 	    
-	    return "Cartera [propietario=" + propietarioId
-	    		+ ", nombre=" + nombre
+	    return "Cartera [nombre=" + nombre
 	            + ", saldo=" + saldo
 	            + ", perfilRiesgo=" + perfilRiesgo
 	            + ", divisa=" + divisa
