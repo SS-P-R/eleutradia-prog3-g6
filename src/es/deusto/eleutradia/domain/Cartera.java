@@ -121,12 +121,8 @@ public class Cartera {
 	    
 	    if (!productoExiste) {
 		    int confirmacionCompra = JOptionPane.showConfirmDialog(
-		            null,
-		            "¿Desea comprar " + cantidad + producto.getDivisa() + " de " + producto.getNombre() + "?",
-		            "Verificación de compra",
-		            JOptionPane.YES_NO_OPTION,
-		            JOptionPane.QUESTION_MESSAGE
-		    );
+		            null, "¿Desea comprar " + cantidad + producto.getDivisa() + " de " + producto.getNombre() + "?",
+		            "Verificación de compra", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		    
 	        if (confirmacionCompra != JOptionPane.YES_OPTION) {
 	            return false;
