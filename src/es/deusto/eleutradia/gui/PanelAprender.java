@@ -98,7 +98,7 @@ public class PanelAprender extends JPanel {
 		layoutContenedorCentro = new CardLayout();
 		panelContenedorCentro = new JPanel(layoutContenedorCentro);
 		
-		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 10, 10));
+		panelTodosLosCursos = new JPanel(new GridLayout(0, 2));
 		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
 		
 		panelMisCursos = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -171,7 +171,8 @@ public class PanelAprender extends JPanel {
 		for (Curso curso : listaCursos) {
 			
 			JButton botonCurso = new JButton(curso.getNombre());
-			botonCurso.setPreferredSize(new Dimension(150, 80));
+			botonCurso.setPreferredSize(new Dimension(220, 150));
+			botonCurso.setMaximumSize(new Dimension(220, 150));
 			
 			botonCurso.addActionListener(new ActionListener() {
 				
@@ -183,7 +184,10 @@ public class PanelAprender extends JPanel {
 					layoutPanelAprender.show(panelAprender, "PANEL_CURSOS_INFO");
 				}
 			});
-			panelTodosLosCursos.add(botonCurso);
+			
+			JPanel panelEnvolver = new JPanel(new GridBagLayout());
+			panelEnvolver.add(botonCurso);
+			panelTodosLosCursos.add(panelEnvolver);
 		}
 		
 		panelTodosLosCursos.revalidate();
