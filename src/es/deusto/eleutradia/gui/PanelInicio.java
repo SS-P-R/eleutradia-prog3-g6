@@ -52,7 +52,7 @@ public class PanelInicio extends JPanel{
 
 	private JPanel PanelSaludo() {
 		JPanel panelSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel saludoTxt = new JLabel("Hola, " + usuario.getNombre());
+		JLabel saludoTxt = new JLabel("Hola " + usuario.getNombre()+ ",");
 		
 		saludoTxt.setBackground(Color.cyan);
 		saludoTxt.setFont(new Font("Times new roman",Font.BOLD,20));

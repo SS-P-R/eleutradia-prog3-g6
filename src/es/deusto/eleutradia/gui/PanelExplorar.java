@@ -74,6 +74,7 @@ public class PanelExplorar extends JPanel {
         this.add(panelTabla, BorderLayout.CENTER);
 
         actualizarTabla(productosTotales);
+        
     }
     
     private void cargarProductos() {
