@@ -8,13 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -23,13 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import es.deusto.eleutradia.domain.Cartera;
-import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.Usuario;
 
@@ -48,12 +41,10 @@ public class PanelPerfil extends JPanel {
     private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
     private static final Color COLOR_ACENTO = new Color(0, 123, 255);
     private static final Color COLOR_EXITO = new Color(40, 167, 69);
-    private static final Color COLOR_PELIGRO = new Color(220, 53, 69);
     
     //Tema oscuro colores
     private static final Color COLOR_FONDO_OSCURO = new Color(33, 37, 41);
     private static final Color COLOR_CARD_OSCURO = new Color(52, 58, 64);
-    private static final Color COLOR_BORDE_OSCURO = new Color(73, 80, 87);
     private static final Color COLOR_TEXTO_OSCURO = new Color(248, 249, 250);
 	
     public PanelPerfil(Usuario usuario) {
@@ -90,7 +81,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(20, 10));
         JLabel lblAvatar = new JLabel("👤");
-        lblAvatar.setFont(new Font("Arial", Font.PLAIN, 64));
+        lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 64));
         lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
         lblAvatar.setPreferredSize(new Dimension(100, 100));
         panel.add(lblAvatar, BorderLayout.WEST);
@@ -98,15 +89,15 @@ public class PanelPerfil extends JPanel {
         infoPanel.setBackground(getColorCard());
         
         JLabel lblNombre = new JLabel(usuarioActual.getNombre());
-        lblNombre.setFont(new Font("Arial", Font.BOLD, 28));
+        lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblNombre.setForeground(getColorTextoPrincipal());
         
         JLabel lblEmail = new JLabel(usuarioActual.getEmail());
-        lblEmail.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         lblEmail.setForeground(COLOR_TEXTO_SECUNDARIO);
         
         JLabel lblTipo = new JLabel("Cuenta Activa • " + usuarioActual.getCarteras().size() + " Cartera(s)");
-        lblTipo.setFont(new Font("Arial", Font.PLAIN, 14));
+        lblTipo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         lblTipo.setForeground(COLOR_EXITO);
         
         infoPanel.add(lblNombre);
@@ -122,7 +113,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Información Personal");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -139,7 +130,7 @@ public class PanelPerfil extends JPanel {
             usuarioActual.getDireccion().isEmpty() ? "No especificada" : usuarioActual.getDireccion()));
         contentPanel.add(crearCampoInfo("Domicilio Fiscal", 
             usuarioActual.getDomicilioFiscal() != null ? 
-            usuarioActual.getDomicilioFiscal().toString() : "No especificado"));
+            usuarioActual.getDomicilioFiscal().getNombre() : "No especificado"));
         
         panel.add(contentPanel, BorderLayout.CENTER);
         JButton btnEditar = new JButton("Editar Información");
