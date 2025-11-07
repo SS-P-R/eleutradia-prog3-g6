@@ -81,8 +81,11 @@ public class PanelPerfil extends JPanel {
     private JPanel crearPanelCabecera() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(20, 10));
-        JLabel lblAvatar = new JLabel("Foto de Perfil");
-        lblAvatar.setFont(FONT_NORMAL1);
+        String inicialNombre = String.valueOf(usuarioActual.getNombre().charAt(0));
+        String inicialApellido = String.valueOf(usuarioActual.getNombre().split(" ")[1].charAt(0));
+        JLabel lblAvatar = new JLabel(inicialNombre + inicialApellido);
+        lblAvatar.setForeground(Color.LIGHT_GRAY);
+        lblAvatar.setFont(new Font("Segoe UI", Font.BOLD, 56));
         lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
         lblAvatar.setPreferredSize(new Dimension(100, 100));
         panel.add(lblAvatar, BorderLayout.WEST);
