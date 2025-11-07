@@ -181,7 +181,7 @@ public class PanelInicio extends JPanel{
 			
 			
 		}else {
-			leccion1.setText("Esta función no esta disponible");
+			leccion1.setText("Esta función no está disponible");
 		}
 		
 		proxLecJPanel.setName("Aprender");
@@ -221,7 +221,7 @@ public class PanelInicio extends JPanel{
 				
 				
 				cursosProgreso.add(Box.createVerticalStrut(10));
-				JLabel mensaje2 = new JLabel("¿A que esperas?");
+				JLabel mensaje2 = new JLabel("¿A qué espera?");
 				mensaje2.setFont(FONT_NORMAL1);
 				cursosProgreso.add(mensaje2);
 				
@@ -295,7 +295,7 @@ public class PanelInicio extends JPanel{
 		
 	
 		String productoRandomNombre = productoRandom.get(sel).getNombre();
-		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandomNombre+"'");
+		JLabel mensajeGraficos = new JLabel("Échele un vistazo a " + "'"+productoRandomNombre+"'");
 		panelGraficos.add(mensajeGraficos);
 		
 		frame = new JFrame("Gráfico en Panel");
@@ -354,7 +354,7 @@ public class PanelInicio extends JPanel{
         });
         
         panelGraficos.add(siguiente);
-		panelGraficos.setName("Grafico");
+		panelGraficos.setName("Gráfico");
 		PanelFocus(panelGraficos,null);
 		return panelGraficos;
 	}
@@ -399,7 +399,7 @@ public class PanelInicio extends JPanel{
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (panel.getName()=="Grafico") {
+				if (panel.getName()=="Gráfico") {
 				frame.setVisible(true);	
 				}else {
 				ventanaPrincipal.mostrarPanel(panel.getName());
