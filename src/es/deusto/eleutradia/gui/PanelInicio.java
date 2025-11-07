@@ -51,6 +51,9 @@ public class PanelInicio extends JPanel{
     private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
 	
+    private ArrayList<ProductoFinanciero> productoRandom = new ArrayList<>();
+
+    
     private java.util.List<ProductoFinanciero> productos;
 
 
@@ -266,8 +269,11 @@ public class PanelInicio extends JPanel{
 		panelGraficos.setBackground(COLOR_CARD);
 		panelGraficos.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
-		String productoRandom = RandomizadorProductos().getNombre();
-		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandom+"'");
+		if (productoRandom.isEmpty()) {
+			productoRandom.add(RandomizadorProductos());
+		}
+		String productoRandomNombre = productoRandom.getLast().getNombre();
+		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandomNombre+"'");
 		panelGraficos.add(mensajeGraficos);
 		
 		frame = new JFrame("Gráfico en Panel");
@@ -282,7 +288,7 @@ public class PanelInicio extends JPanel{
         // Configuración del gráfico (codificada)
         String chartConfig = "{type:'line',data:"
         		+ "{labels:['Lun','Mar','Mie','Jue'],"
-        		+ "datasets:[{label:'"+productoRandom+"',data:["+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+"],"
+        		+ "datasets:[{label:'"+productoRandomNombre+"',data:["+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+"],"
         		+ "borderColor:'blue',fill:false}]},"
         	    + "options:{"
         	    + "plugins:{legend:{display:false}}," //TODO no funciona
@@ -318,6 +324,22 @@ public class PanelInicio extends JPanel{
         
         JButton siguiente = new JButton("Siguiente");
         siguiente.addActionListener(e->{
+        	productos = new ArrayList<ProductoFinanciero>();
+            if (MainEleutradia.listaProductos != null) {
+            	productos = new ArrayList<>(MainEleutradia.listaProductos);
+            }
+            int i = 1;
+        	for (ProductoFinanciero producto : productos) {
+        		i+=1;
+        		if (producto == productoRandom.getFirst()) {
+        			if (i<productos.size()) {
+        				productoRandom.add(producto);
+        			}else {
+        				productoRandom.add(productos.getFirst());
+        			}
+        		break;
+        		}
+        	}
         	PanelGraficos();
         });
         
