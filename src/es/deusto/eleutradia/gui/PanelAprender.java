@@ -69,7 +69,7 @@ public class PanelAprender extends JPanel {
     private static final Color COLOR_BOTON_TEXTO = Color.WHITE;// Gris oscuro
     private static final Color COLOR_TARJETA_COMPLETADA = new Color(220, 255, 220); // Verde claro
     private static final Color COLOR_BOTON_CURSOS = new Color(249, 249, 249); // Verde claro
-    private static final Color COLOR_BOTON_VOLVER = new Color(40, 167, 69); // Verde medio
+    private static final Color COLOR_BOTON_VOLVER = new Color(100, 100, 100); // Verde medio
     private static final Color COLOR_BOTON_APUNTAR = new Color(0, 100, 255); // Azul medio
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
     
@@ -231,6 +231,15 @@ public class PanelAprender extends JPanel {
 			botonCurso.setFocusPainted(false);
 			botonCurso.setPreferredSize(new Dimension(220, 150));
 			botonCurso.setMaximumSize(new Dimension(220, 150));
+			int cantidadModulos = 0;
+			int cantidadLeciones = 0;
+			for (Modulo modulo : curso.getModulos()) {
+				cantidadModulos++;
+				for (Leccion leccion : modulo.getLecciones()) {
+					cantidadLeciones++;
+				}
+			}
+			botonCurso.setToolTipText("Cantidad de Modulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
 			
 			botonCurso.addActionListener(new ActionListener() {
 				
@@ -267,7 +276,11 @@ public class PanelAprender extends JPanel {
 			for (Curso curso : listaCursos) {
 				
 				JButton botonCurso = new JButton(curso.getNombre());
-				botonCurso.setPreferredSize(new Dimension(120, 60));
+				botonCurso.setBackground(COLOR_BOTON_CURSOS);
+				botonCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
+				botonCurso.setFocusPainted(false);
+				botonCurso.setPreferredSize(new Dimension(220, 150));
+				botonCurso.setMaximumSize(new Dimension(220, 150));
 				
 				botonCurso.setEnabled(false);
 				panelMisCursos.add(botonCurso);
