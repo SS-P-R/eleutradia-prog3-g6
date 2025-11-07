@@ -51,7 +51,7 @@ public class PanelInicio extends JPanel{
 		
 		//Fondo
 		setLayout(new BorderLayout(10,10));
-		setBackground(getBackground());
+		setBackground(new Color(248, 249, 250));
 		
 		//Cargar paneles
 		JPanel panelSaludo = PanelSaludo();
@@ -81,12 +81,12 @@ public class PanelInicio extends JPanel{
 
 	private JPanel PanelSaludo() {
 		JPanel panelSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel saludoTxt = new JLabel("Hola " + usuario.getNombre()+ ",");
-		
-		saludoTxt.setBackground(Color.cyan);
+		JLabel saludoTxt = new JLabel("¡Hola, " + usuario.getNombre().split(" ")[0] + "!");
+		saludoTxt.setOpaque(true);
+		saludoTxt.setBackground(new Color(248, 249, 250));
 		saludoTxt.setFont(new Font("Segoe UI",Font.BOLD,20));
 		
-		Border recuadro = BorderFactory.createLineBorder(Color.gray, 2);
+		Border recuadro = BorderFactory.createLineBorder(Color.gray, 1);
 		Border posicion = BorderFactory.createEmptyBorder(5,10,5,10);
 		saludoTxt.setBorder(BorderFactory.createCompoundBorder(recuadro, posicion));
 		
@@ -98,7 +98,7 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelRecordatorio() {
 		JPanel recordatorio = new JPanel(new FlowLayout());
-		recordatorio.setBackground(getBackground());
+		recordatorio.setBackground(new Color(248, 249, 250));
 		JButton completarPerfil = new JButton("Ir al perfil");
 		completarPerfil.addActionListener(e->{
 			ventanaPrincipal.mostrarPanel("Perfil");
@@ -121,8 +121,8 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelLecciones() {
 		JPanel proxLecJPanel = new JPanel();
-		proxLecJPanel.setBackground(new Color(173, 216, 230));
-		proxLecJPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		proxLecJPanel.setBackground(Color.WHITE);
+		proxLecJPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
 		
 		JLabel mensajeLecciones = new JLabel();
 		mensajeLecciones.setText("¿Preparado para su próxima lección?");
@@ -178,8 +178,8 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelCursos() {
 		JPanel cursosPanel = new JPanel();
-		cursosPanel.setBackground(new Color(173, 216, 230));
-		cursosPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		cursosPanel.setBackground(Color.WHITE);
+		cursosPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
 		
 		JLabel mensajeCursos = new JLabel();
 		mensajeCursos.setText("Cursos en progreso: ");
@@ -200,8 +200,8 @@ public class PanelInicio extends JPanel{
 				cursosProgreso.add(new JLabel(curso.getNombre()));
 			}
 			if (listaCursosActivos.isEmpty()) {
-				cursosProgreso.add(Box.createVerticalStrut(10));
-				cursosProgreso.add(new JLabel("Es hora de empezar un curso."));
+				cursosProgreso.add(Box.createVerticalStrut(40));
+				cursosProgreso.add(new JLabel("Todavía vacio, es hora de empezar un curso."));
 				cursosProgreso.add(Box.createVerticalStrut(10));
 				cursosProgreso.add(new JLabel("¿A que esperas?"));
 				cursosProgreso.add(Box.createVerticalStrut(10));
@@ -217,8 +217,8 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelActivos() {
 		JPanel activosPanel = new JPanel();
-		activosPanel.setBackground(new Color(173, 216, 230));
-		activosPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		activosPanel.setBackground(Color.WHITE);
+		activosPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
 		
 		JLabel mensajeActivos = new JLabel();
 		mensajeActivos.setText("Resumen de sus activos: ");
@@ -245,8 +245,8 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelGraficos() {
 		JPanel panelGraficos = new JPanel();
-		panelGraficos.setBackground(new Color(173, 216, 230));
-		panelGraficos.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		panelGraficos.setBackground(Color.WHITE);
+		panelGraficos.setBorder(BorderFactory.createLineBorder(Color.black,1));
 		
 		String productoRandom = RandomizadorProductos().getNombre();
 		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandom+"'");
@@ -298,6 +298,8 @@ public class PanelInicio extends JPanel{
 			System.err.println("Error");
 		}
         
+        
+        //TODO añadir boton siguiente
 		panelGraficos.setName("Grafico");
 		PanelFocus(panelGraficos,null);
 		return panelGraficos;
