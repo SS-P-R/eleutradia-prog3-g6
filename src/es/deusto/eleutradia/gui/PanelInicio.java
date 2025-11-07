@@ -285,13 +285,13 @@ public class PanelInicio extends JPanel{
 				i+=1;
 			}
 		}
-		while (productos.size()>productoRandom.size()) {
-			if (productos.size()>i+1) {
-			}else {
-				i=0;
-				productoRandom.add(productos.get(i));
-			}
-		}
+//		while (productos.size()>productoRandom.size()) {
+//			if (productos.size()>i+1) {
+//			}else {
+//				i=0;
+//				productoRandom.add(productos.get(i));
+//			}
+//		}
 		
 	
 		String productoRandomNombre = productoRandom.get(sel).getNombre();
@@ -347,7 +347,7 @@ public class PanelInicio extends JPanel{
         JButton siguiente = new JButton("Siguiente");
         siguiente.addActionListener(e->{
         	sel += 1;
-        	if (sel>productos.size()) {
+        	if (sel>=productos.size()) {
         		sel=0;
         	}
         	PanelGraficos();
