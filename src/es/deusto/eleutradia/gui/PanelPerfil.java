@@ -33,6 +33,8 @@ import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.Usuario;
 
+//DISCLAIMER: ESTO ES UN BOCETO. Muchas cosas no funcionan y están mal configuradas. 
+
 public class PanelPerfil extends JPanel {
     private static final long serialVersionUID = 1L;
     
@@ -165,8 +167,6 @@ public class PanelPerfil extends JPanel {
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
-        
-        // Content
         PerfilFinanciero perfil = usuarioActual.getPerfilFinanciero();
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
         contentPanel.setBackground(getColorCard());

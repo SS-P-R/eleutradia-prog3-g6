@@ -8,6 +8,8 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
+//DISCLAIMER: ESTO ES UN BOCETO. Muchas cosas no funcionan y están mal configuradas. 
+
 public class PanelPortfolio extends JPanel {
 	private static final long serialVersionUID = 1L;
 
