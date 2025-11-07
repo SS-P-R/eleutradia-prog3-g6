@@ -124,7 +124,7 @@ public class PanelPortfolio extends JPanel {
         lbl1.setFont(FONT_NORMAL2);
         lbl1.setForeground(COLOR_TEXTO_SECUNDARIO);
         lblPatrimonioTotalUsuario = new JLabel("0,00 €");
-        lblPatrimonioTotalUsuario.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        lblPatrimonioTotalUsuario.setFont(FONT_TITULO1);
         card1.add(lbl1, BorderLayout.NORTH);
         card1.add(lblPatrimonioTotalUsuario, BorderLayout.CENTER);
         panelPrincipal.add(card1);
