@@ -34,6 +34,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import es.deusto.eleutradia.domain.Curso;
+import es.deusto.eleutradia.domain.Leccion;
+import es.deusto.eleutradia.domain.Modulo;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
 
@@ -59,11 +61,15 @@ public class PanelAprender extends JPanel {
 	
 	private JProgressBar progressBarRacha;
 	
-    private static final Color COLOR_FONDO_SECUNDARIO = new Color(48, 46, 43); // Gris claro
-    private static final Color COLOR_FONDO_PRINCIPAL = new Color(38, 37, 34); // Gris medio
-    private static final Color COLOR_BOTON_INACTIVO = new Color(33, 32, 29); // Gris oscuro
-    private static final Color COLOR_TEXTO = new Color(223, 223, 222); // Gris oscuro
+    private static final Color COLOR_FONDO_SECUNDARIO = new Color(248, 249, 250); // Blanco
+    private static final Color COLOR_FONDO_PRINCIPAL = Color.WHITE; // Gris claro
+    private static final Color COLOR_BOTON_INACTIVO = new Color(223, 223, 222); // Gris medio
+    private static final Color COLOR_TEXTO = new Color(169, 168, 162);// Gris oscuro
+    private static final Color COLOR_BOTON_TEXTO = Color.BLACK;// Gris oscuro
     private static final Color COLOR_TARJETA_COMPLETADA = new Color(220, 255, 220); // Verde claro
+    private static final Color COLOR_BOTON_CURSOS = new Color(208, 209, 210); // Verde claro
+    private static final Color COLOR_BOTON_VOLVER = new Color(129, 182, 76); // Verde medio
+    private static final Color COLOR_BOTON_APUNTAR = new Color(0, 140, 209); // Azul medio
     
     private ArrayList<Curso> listaCursos;
 	
@@ -216,6 +222,7 @@ public class PanelAprender extends JPanel {
 		for (Curso curso : listaCursos) {
 			
 			JButton botonCurso = new JButton(curso.getNombre());
+			botonCurso.setBackground(COLOR_BOTON_CURSOS);
 			botonCurso.setPreferredSize(new Dimension(220, 150));
 			botonCurso.setMaximumSize(new Dimension(220, 150));
 			
@@ -270,15 +277,25 @@ public class PanelAprender extends JPanel {
 		
 		panelCursosInfo.removeAll();
 		
-		JPanel panelInfoCentro = new JPanel(new BorderLayout(20, 20));
-		panelInfoCentro.setBackground(COLOR_FONDO_PRINCIPAL);
-		panelInfoCentro.add(new JLabel("Informacion sobre el curso " + cursoInfo.getNombre()));
+		JPanel panelInfoCentro = mostrarInfoCursos(cursoInfo);
 		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
 		
+//		JPanel panelInfoCentro = new JPanel(new BorderLayout(20, 20));
+//		panelInfoCentro.setBackground(COLOR_FONDO_PRINCIPAL);
+//		panelInfoCentro.add(new JLabel("Informacion sobre el curso " + cursoInfo.getNombre()));
+//		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
+		
 		JPanel panelLateral = new JPanel(new GridLayout());
+		//panelLateral.setLayout(new BoxLayout(panelLateral, BoxLayout.Y_AXIS));
 		panelLateral.setPreferredSize(new Dimension(160, 0));
+		panelLateral.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		JButton botonApuntar = new JButton("Apuntarse");
+		botonApuntar.setMinimumSize(new Dimension(150, 50));
+		botonApuntar.setPreferredSize(new Dimension(150, 50));
+		botonApuntar.setBackground(COLOR_BOTON_APUNTAR);
+		botonApuntar.setForeground(COLOR_BOTON_TEXTO);
+		botonApuntar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
 			botonApuntar.setEnabled(false);
@@ -301,6 +318,11 @@ public class PanelAprender extends JPanel {
 		});
 		
 		JButton botonVolver = new JButton("Volver");
+		botonVolver.setMinimumSize(new Dimension(150, 50));
+		botonVolver.setPreferredSize(new Dimension(150, 50));
+		botonVolver.setBackground(COLOR_BOTON_VOLVER);
+		botonVolver.setForeground(COLOR_BOTON_TEXTO);
+		botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		botonVolver.addActionListener(new ActionListener() {
 			
@@ -318,7 +340,7 @@ public class PanelAprender extends JPanel {
 		panelBotones.setBackground(COLOR_FONDO_PRINCIPAL);
 		
 		panelBotones.add(botonApuntar);
-		panelBotones.add(Box.createRigidArea(new Dimension(0, 200)));
+		//panelBotones.add(Box.createRigidArea(new Dimension(0, 300)));
 		panelBotones.add(botonVolver);
 		
 		panelLateral.add(panelBotones);
@@ -328,7 +350,29 @@ public class PanelAprender extends JPanel {
 		panelCursosInfo.revalidate();
 		panelCursosInfo.repaint();
 		
-	}	
+	}
+	
+	private JPanel mostrarInfoCursos(Curso curso) {
+		
+		JPanel panelInfo = new JPanel();
+		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
+		
+		JLabel labelCurso = new JLabel("Informacion sobre el curso: " + curso.getNombre());
+		panelInfo.add(labelCurso);
+		
+		for (Modulo modulo : curso.getModulos()) {
+			
+			JLabel labelModulo = new JLabel("   Modulo: " + modulo.getNombre());
+			panelInfo.add(labelModulo);
+			
+			for (Leccion leccion : modulo.getLecciones()) {
+				JLabel labelLeccion = new JLabel("      Leccion: " + leccion.getTitulo());
+				panelInfo.add(labelLeccion);
+			}
+		}
+		
+		return panelInfo;
+	}
 	
 	private void actualizarProgressBar() {
 
