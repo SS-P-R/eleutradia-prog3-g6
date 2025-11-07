@@ -269,10 +269,10 @@ public class PanelPerfil extends JPanel {
         }
         double patrimonioTotal = usuarioActual.calcularPatrimonioTotal();
         
-        contentPanel.add(crearEstadistica("Carteras Activas", String.valueOf(totalCarteras), "💼"));
-        contentPanel.add(crearEstadistica("Operaciones Totales", String.valueOf(totalOperaciones), "📈"));
-        contentPanel.add(crearEstadistica("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "💰"));
-        contentPanel.add(crearEstadistica("Estado de Cuenta", "Verificada ✓", "✅"));
+        contentPanel.add(crearEstadistica("Carteras Activas", String.valueOf(totalCarteras), "Icono"));
+        contentPanel.add(crearEstadistica("Operaciones Totales", String.valueOf(totalOperaciones), "Icono"));
+        contentPanel.add(crearEstadistica("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "Icono"));
+        contentPanel.add(crearEstadistica("Estado de Cuenta", "Verificada", "Icono"));
         
         panel.add(contentPanel, BorderLayout.CENTER);
         
