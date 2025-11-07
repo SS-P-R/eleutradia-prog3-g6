@@ -1,5 +1,431 @@
 package es.deusto.eleutradia.gui;
 
-public class PanelPortfolio {
+import es.deusto.eleutradia.domain.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
+import java.util.List;
 
+public class PanelPortfolio extends JPanel {
+	private static final long serialVersionUID = 1L;
+
+    private Usuario usuarioActual;
+    private Cartera carteraSeleccionada;
+    private JComboBox<String> comboCarteras;
+    private JLabel lblPatrimonioTotalUsuario;
+    private JLabel lblPatrimonioLiquido;
+    private JLabel lblPatrimonioInvertido;
+    private JLabel lblNombreCartera;
+    private JLabel lblPatrimonioCartera;
+    private JLabel lblSaldoDisponible;
+    private JLabel lblValorInversiones;
+    private JLabel lblGananciasTotal;
+    private JTable tablePosiciones;
+    private DefaultTableModel tableModel;
+    private DefaultListModel<String> operationsListModel;
+    private static final Color COLOR_GANANCIA = new Color(0, 153, 76);
+    private static final Color COLOR_PERDIDA = new Color(220, 53, 69);
+    private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
+    private static final Color COLOR_CARD = Color.WHITE;
+    private static final Color COLOR_BORDE = new Color(222, 226, 230);
+    private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
+    private static final Color COLOR_ACENTO = new Color(0, 123, 255);
+    
+    public PanelPortfolio(Usuario usuario) {
+        this.usuarioActual = usuario;
+        if (!usuario.getCarteras().isEmpty()) {
+            this.carteraSeleccionada = usuario.getCarteras().get(0);
+        }
+        
+        setLayout(new BorderLayout(15, 15));
+        setBackground(COLOR_FONDO_PRINCIPAL);
+        setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        
+        initComponents();
+        cargarDatosPortfolio();
+    }
+    
+    private void initComponents() {
+        JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
+        mainPanel.setBackground(COLOR_FONDO_PRINCIPAL);
+        JPanel topPanel = new JPanel(new BorderLayout(15, 15));
+        topPanel.setBackground(COLOR_FONDO_PRINCIPAL);
+        topPanel.add(crearPanelSelector(), BorderLayout.NORTH);
+        topPanel.add(crearPanelResumenUsuario(), BorderLayout.CENTER);
+        mainPanel.add(topPanel, BorderLayout.NORTH);  
+        mainPanel.add(crearPanelResumenCartera(), BorderLayout.CENTER);
+        JPanel bottomContainer = new JPanel(new BorderLayout(15, 15));
+        bottomContainer.setBackground(COLOR_FONDO_PRINCIPAL);
+        bottomContainer.add(crearPanelPosiciones(), BorderLayout.CENTER);  
+        bottomContainer.add(crearPanelOperacionesRecientes(), BorderLayout.SOUTH);
+        mainPanel.add(bottomContainer, BorderLayout.SOUTH);
+        
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        add(scrollPane, BorderLayout.CENTER);
+        
+        add(crearPanelBotones(), BorderLayout.SOUTH);
+    }
+    
+    private JPanel crearPanelSelector() {
+        JPanel panel = crearCard();
+        panel.setLayout(new BorderLayout(15, 10));
+        
+        JLabel lblTitulo = new JLabel("Mis Carteras");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(lblTitulo, BorderLayout.WEST);
+        
+        comboCarteras = new JComboBox<>();
+        comboCarteras.setFont(new Font("Arial", Font.PLAIN, 14));
+        comboCarteras.setPreferredSize(new Dimension(300, 35));
+        
+        for (Cartera cartera : usuarioActual.getCarteras()) {
+            comboCarteras.addItem(cartera.getNombre());
+        }
+        
+        if (usuarioActual.getCarteras().isEmpty()) {
+            comboCarteras.addItem("No hay carteras disponibles");
+            comboCarteras.setEnabled(false);
+        }
+        
+        comboCarteras.addActionListener(e -> {
+            int index = comboCarteras.getSelectedIndex();
+            if (index >= 0 && index < usuarioActual.getCarteras().size()) {
+                carteraSeleccionada = usuarioActual.getCarteras().get(index);
+                cargarDatosPortfolio();
+            }
+        });
+        
+        panel.add(comboCarteras, BorderLayout.EAST);
+        
+        return panel;
+    }
+    
+    private JPanel crearPanelResumenUsuario() {
+        JPanel panelPrincipal = new JPanel(new GridLayout(1, 3, 15, 0));
+        panelPrincipal.setBackground(COLOR_FONDO_PRINCIPAL);
+        
+        JPanel card1 = crearCard();
+        card1.setLayout(new BorderLayout(5, 5));
+        JLabel lbl1 = new JLabel("Patrimonio Total (Todas las Carteras)");
+        lbl1.setFont(new Font("Arial", Font.PLAIN, 12));
+        lbl1.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblPatrimonioTotalUsuario = new JLabel("0,00 €");
+        lblPatrimonioTotalUsuario.setFont(new Font("Arial", Font.BOLD, 20));
+        card1.add(lbl1, BorderLayout.NORTH);
+        card1.add(lblPatrimonioTotalUsuario, BorderLayout.CENTER);
+        panelPrincipal.add(card1);
+        JPanel card2 = crearCard();
+        card2.setLayout(new BorderLayout(5, 5));
+        JLabel lbl2 = new JLabel("Efectivo Total");
+        lbl2.setFont(new Font("Arial", Font.PLAIN, 12));
+        lbl2.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblPatrimonioLiquido = new JLabel("0,00 €");
+        lblPatrimonioLiquido.setFont(new Font("Arial", Font.BOLD, 20));
+        card2.add(lbl2, BorderLayout.NORTH);
+        card2.add(lblPatrimonioLiquido, BorderLayout.CENTER);
+        panelPrincipal.add(card2);
+        JPanel card3 = crearCard();
+        card3.setLayout(new BorderLayout(5, 5));
+        JLabel lbl3 = new JLabel("Inversiones Totales");
+        lbl3.setFont(new Font("Arial", Font.PLAIN, 12));
+        lbl3.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblPatrimonioInvertido = new JLabel("0,00 €");
+        lblPatrimonioInvertido.setFont(new Font("Arial", Font.BOLD, 20));
+        card3.add(lbl3, BorderLayout.NORTH);
+        card3.add(lblPatrimonioInvertido, BorderLayout.CENTER);
+        panelPrincipal.add(card3);
+        
+        return panelPrincipal;
+    }
+    
+    private JPanel crearPanelResumenCartera() {
+        JPanel panelPrincipal = new JPanel(new GridLayout(1, 2, 15, 0));
+        panelPrincipal.setBackground(COLOR_FONDO_PRINCIPAL);
+        panelPrincipal.add(crearCardPatrimonioCartera());
+        panelPrincipal.add(crearCardDesgloseCartera());
+        return panelPrincipal;
+    }
+    
+    private JPanel crearCardPatrimonioCartera() {
+        JPanel card = crearCard();
+        card.setLayout(new BorderLayout(10, 10));
+        lblNombreCartera = new JLabel("Cartera Seleccionada");
+        lblNombreCartera.setFont(new Font("Arial", Font.BOLD, 16));
+        lblNombreCartera.setForeground(COLOR_ACENTO);
+        card.add(lblNombreCartera, BorderLayout.NORTH);
+        lblPatrimonioCartera = new JLabel("0,00 €");
+        lblPatrimonioCartera.setFont(new Font("Arial", Font.BOLD, 36));
+        lblPatrimonioCartera.setForeground(new Color(33, 37, 41));
+        card.add(lblPatrimonioCartera, BorderLayout.CENTER);
+        lblGananciasTotal = new JLabel("▲ +0,00 € (0,00%)");
+        lblGananciasTotal.setFont(new Font("Arial", Font.BOLD, 14));
+        lblGananciasTotal.setForeground(COLOR_GANANCIA);
+        card.add(lblGananciasTotal, BorderLayout.SOUTH);
+        return card;
+    }
+    
+    private JPanel crearCardDesgloseCartera() {
+        JPanel card = crearCard();
+        card.setLayout(new GridLayout(3, 1, 0, 15));
+        JPanel panelSaldo = crearItemDesglose("Saldo Disponible");
+        lblSaldoDisponible = new JLabel("0,00 €");
+        lblSaldoDisponible.setFont(new Font("Arial", Font.BOLD, 18));
+        panelSaldo.add(lblSaldoDisponible);
+        card.add(panelSaldo);
+        JPanel panelInversiones = crearItemDesglose("Valor de Inversiones");
+        lblValorInversiones = new JLabel("0,00 €");
+        lblValorInversiones.setFont(new Font("Arial", Font.BOLD, 18));
+        panelInversiones.add(lblValorInversiones);
+        card.add(panelInversiones);
+        JPanel panelRiesgo = crearItemDesglose("Perfil de Riesgo");
+        JLabel lblRiesgo = new JLabel("-");
+        lblRiesgo.setFont(new Font("Arial", Font.BOLD, 18));
+        panelRiesgo.add(lblRiesgo);
+        card.add(panelRiesgo);
+        
+        return card;
+    }
+    
+    private JPanel crearItemDesglose(String titulo) {
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBackground(COLOR_CARD);
+        JLabel lblTitulo = new JLabel(titulo);
+        lblTitulo.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblTitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
+        panel.add(lblTitulo, BorderLayout.NORTH);
+        
+        return panel;
+    }
+    
+    private JPanel crearPanelPosiciones() {
+        JPanel panel = crearCard();
+        panel.setLayout(new BorderLayout(0, 15));
+        panel.setPreferredSize(new Dimension(0, 400));
+        JLabel lblTitulo = new JLabel("Posiciones Actuales");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        panel.add(lblTitulo, BorderLayout.NORTH);
+        String[] columnNames = {
+            "Producto", "Tipo", "Cantidad", "Precio Medio", 
+            "Precio Actual", "Valor Total", "Ganancia/Pérdida", "%"
+        };
+        
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tablePosiciones = new JTable(tableModel);
+        tablePosiciones.setRowHeight(35);
+        tablePosiciones.setFont(new Font("Arial", Font.PLAIN, 13));
+        tablePosiciones.setGridColor(COLOR_BORDE);
+        tablePosiciones.setSelectionBackground(new Color(232, 244, 253));
+        tablePosiciones.setSelectionForeground(Color.BLACK);
+        JTableHeader header = tablePosiciones.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 13));
+        header.setBackground(COLOR_FONDO_PRINCIPAL);
+        header.setForeground(COLOR_TEXTO_SECUNDARIO);
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, COLOR_BORDE));
+        tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(200);
+        tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(120);
+        tablePosiciones.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tablePosiciones.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tablePosiciones.getColumnModel().getColumn(4).setPreferredWidth(120);
+        tablePosiciones.getColumnModel().getColumn(5).setPreferredWidth(130);
+        tablePosiciones.getColumnModel().getColumn(6).setPreferredWidth(150);
+        tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(new RendererGananciaPerdida());
+        tablePosiciones.getColumnModel().getColumn(7).setCellRenderer(new RendererGananciaPerdida());
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tablePosiciones.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tablePosiciones.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        JScrollPane scrollPane = new JScrollPane(tablePosiciones);
+        scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
+        panel.add(scrollPane, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private JPanel crearPanelOperacionesRecientes() {
+        JPanel panel = crearCard();
+        panel.setLayout(new BorderLayout(0, 15));
+        panel.setPreferredSize(new Dimension(0, 200));
+        JLabel lblTitulo = new JLabel("Operaciones Recientes");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        panel.add(lblTitulo, BorderLayout.NORTH);
+        operationsListModel = new DefaultListModel<>();
+        JList<String> operationsList = new JList<>(operationsListModel);
+        operationsList.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        operationsList.setFixedCellHeight(30);
+        operationsList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JScrollPane scrollPane = new JScrollPane(operationsList);
+        scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
+        panel.add(scrollPane, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private JPanel crearPanelBotones() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panel.setBackground(COLOR_FONDO_PRINCIPAL);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        JButton btnActualizar = new JButton("🔄 Actualizar Datos");
+        btnActualizar.setFont(new Font("Arial", Font.BOLD, 13));
+        btnActualizar.setBackground(COLOR_ACENTO);
+        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setFocusPainted(false);
+        btnActualizar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnActualizar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnActualizar.addActionListener(e -> cargarDatosPortfolio());
+        panel.add(btnActualizar);
+        
+        return panel;
+    }
+    
+    private JPanel crearCard() {
+        JPanel card = new JPanel();
+        card.setBackground(COLOR_CARD);
+        card.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(COLOR_BORDE, 1),
+            BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
+        return card;
+    }
+    
+    private void cargarDatosPortfolio() {
+        double patrimonioTotal = usuarioActual.calcularPatrimonioTotal();
+        double patrimonioLiquido = usuarioActual.calcularPatrimonioLiquido();
+        double patrimonioInvertido = usuarioActual.calcularPatrimonioInvertido();
+        
+        lblPatrimonioTotalUsuario.setText(String.format("%,.2f €", patrimonioTotal));
+        lblPatrimonioLiquido.setText(String.format("%,.2f €", patrimonioLiquido));
+        lblPatrimonioInvertido.setText(String.format("%,.2f €", patrimonioInvertido));
+        
+        if (carteraSeleccionada == null) {
+            lblNombreCartera.setText("No hay carteras disponibles");
+            lblPatrimonioCartera.setText("0,00 €");
+            lblSaldoDisponible.setText("0,00 €");
+            lblValorInversiones.setText("0,00 €");
+            lblGananciasTotal.setText("N/A");
+            tableModel.setRowCount(0);
+            operationsListModel.clear();
+            return;
+        }
+        
+        double patrimonio = carteraSeleccionada.calcularPatrimonio();
+        double saldo = carteraSeleccionada.getSaldo();
+        double inversiones = carteraSeleccionada.calcularValorInversiones();
+        lblNombreCartera.setText(carteraSeleccionada.getNombre());
+        lblPatrimonioCartera.setText(String.format("%,.2f %s", patrimonio, carteraSeleccionada.getDivisa()));
+        lblSaldoDisponible.setText(String.format("%,.2f %s", saldo, carteraSeleccionada.getDivisa()));
+        lblValorInversiones.setText(String.format("%,.2f %s", inversiones, carteraSeleccionada.getDivisa()));
+        List<Posicion> posiciones = carteraSeleccionada.obtenerPosicionesActuales();
+        double gananciaTotal = 0;
+        double inversionTotal = 0;
+        for (Posicion pos : posiciones) {
+            gananciaTotal += pos.getGanancia();
+            inversionTotal += pos.getCantidadTotal() * pos.getPrecioMedioCompra();
+        }
+        
+        double porcentajeGanancia = inversionTotal > 0 ? (gananciaTotal / inversionTotal) * 100 : 0;
+        String simbolo = gananciaTotal >= 0 ? "▲" : "▼";
+        String signo = gananciaTotal >= 0 ? "+" : "";
+        lblGananciasTotal.setText(String.format("%s %s%,.2f %s (%s%.2f%%)", 
+            simbolo, signo, gananciaTotal, carteraSeleccionada.getDivisa(), signo, porcentajeGanancia));
+        lblGananciasTotal.setForeground(gananciaTotal >= 0 ? COLOR_GANANCIA : COLOR_PERDIDA);
+        tableModel.setRowCount(0);
+        
+        for (Posicion posicion : posiciones) {
+            ProductoFinanciero producto = posicion.getProducto();
+            Object[] row = {
+                producto.getNombre(),
+                producto.getTipoProducto().toString(),
+                String.format("%.2f", posicion.getCantidadTotal()),
+                String.format("%.2f %s", posicion.getPrecioMedioCompra(), producto.getDivisa()),
+                String.format("%.2f %s", producto.getValorUnitario(), producto.getDivisa()),
+                String.format("%.2f %s", posicion.getValorTotal(), producto.getDivisa()),
+                String.format("%.2f %s", posicion.getGanancia(), producto.getDivisa()),
+                String.format("%.2f%%", posicion.getPorcentajeGanancia())
+            };
+            tableModel.addRow(row);
+        }
+        
+        if (posiciones.isEmpty()) {
+            Object[] row = {
+                "No hay posiciones activas en esta cartera", "", "", "", "", "", "", ""
+            };
+            tableModel.addRow(row);
+        }
+        
+        operationsListModel.clear();
+        List<Operacion> ops = carteraSeleccionada.getOperaciones();
+        int start = Math.max(0, ops.size() - 10);
+        
+        for (int i = ops.size() - 1; i >= start; i--) {
+            Operacion op = ops.get(i);
+            String tipo = op.getTipoOp() ? "COMPRA" : "VENTA ";
+            String simboloOp = op.getTipoOp() ? "↑" : "↓";
+            operationsListModel.addElement(String.format("%s %s | %s | %.2f unidades de %s",
+                simboloOp,
+                op.getFechaOp().toString(),
+                tipo,
+                op.getCantidad(),
+                op.getProdFinanciero().getNombre()
+            ));
+        }
+        
+        if (ops.isEmpty()) {
+            operationsListModel.addElement("No hay operaciones registradas en esta cartera");
+        }
+    }
+    
+    private class RendererGananciaPerdida extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            if (!isSelected) {
+                c.setBackground(Color.WHITE);
+            }
+            
+            if (value != null && !value.toString().isEmpty()) {
+                String strValue = value.toString();
+                
+                try {
+                    strValue = strValue.replace("%", "").replace("€", "").replace("$", "")
+                                       .replace("USD", "").replace("EUR", "").trim();
+                    double numValue = Double.parseDouble(strValue);
+                    
+                    if (numValue > 0) {
+                        c.setForeground(COLOR_GANANCIA);
+                        setFont(new Font("Arial", Font.BOLD, 13));
+                    } else if (numValue < 0) {
+                        c.setForeground(COLOR_PERDIDA);
+                        setFont(new Font("Arial", Font.BOLD, 13));
+                    } else {
+                        c.setForeground(Color.BLACK);
+                        setFont(new Font("Arial", Font.PLAIN, 13));
+                    }
+                } catch (NumberFormatException e) {
+                    c.setForeground(Color.BLACK);
+                    setFont(new Font("Arial", Font.PLAIN, 13));
+                }
+            }
+            
+            setHorizontalAlignment(JLabel.RIGHT);
+            return c;
+        }
+    }
+    
+    public void refrescarDatos() {
+        cargarDatosPortfolio();
+    }
 }
