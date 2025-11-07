@@ -239,7 +239,7 @@ public class PanelAprender extends JPanel {
 					cantidadLeciones++;
 				}
 			}
-			botonCurso.setToolTipText("Cantidad de Modulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
+			botonCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
 			
 			botonCurso.addActionListener(new ActionListener() {
 				
@@ -322,7 +322,7 @@ public class PanelAprender extends JPanel {
 		
 		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
 			botonApuntar.setEnabled(false);
-			botonApuntar.setText("Ya estas inscrito");
+			botonApuntar.setText("Ya estás inscrito");
 		}
 		
 		botonApuntar.addActionListener(new ActionListener() {
@@ -334,7 +334,7 @@ public class PanelAprender extends JPanel {
 				JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
 				
 				botonApuntar.setEnabled(false);
-				botonApuntar.setText("Ya estas inscrito");
+				botonApuntar.setText("Ya estás inscrito");
 				
 				actualizarProgressBar();
 			}
@@ -375,16 +375,16 @@ public class PanelAprender extends JPanel {
 		JPanel panelInfo = new JPanel();
 		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
 		
-		JLabel labelCurso = new JLabel("Informacion sobre el curso: " + curso.getNombre());
+		JLabel labelCurso = new JLabel("Información sobre el curso: " + curso.getNombre());
 		panelInfo.add(labelCurso);
 		
 		for (Modulo modulo : curso.getModulos()) {
 			
-			JLabel labelModulo = new JLabel("   Modulo: " + modulo.getNombre());
+			JLabel labelModulo = new JLabel("   Módulo: " + modulo.getNombre());
 			panelInfo.add(labelModulo);
 			
 			for (Leccion leccion : modulo.getLecciones()) {
-				JLabel labelLeccion = new JLabel("      Leccion: " + leccion.getTitulo());
+				JLabel labelLeccion = new JLabel("      Lección: " + leccion.getTitulo());
 				panelInfo.add(labelLeccion);
 			}
 		}
