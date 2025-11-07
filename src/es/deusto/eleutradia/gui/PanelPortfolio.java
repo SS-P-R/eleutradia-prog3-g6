@@ -53,11 +53,11 @@ public class PanelPortfolio extends JPanel {
         setBackground(COLOR_FONDO_PRINCIPAL);
         setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         
-        initComponents();
+        inicializarPaneles();
         cargarDatosPortfolio();
     }
     
-    private void initComponents() {
+    private void inicializarPaneles() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBackground(COLOR_FONDO_PRINCIPAL);
         JPanel topPanel = new JPanel(new BorderLayout(15, 15));
