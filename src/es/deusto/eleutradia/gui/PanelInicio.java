@@ -41,9 +41,18 @@ public class PanelInicio extends JPanel{
 	private Usuario usuario;
 	private JFrame frame;
 	
+	private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
+    private static final Color COLOR_CARD = Color.WHITE;
+    private static final Color COLOR_BORDE = new Color(222, 226, 230);
+
+    private static final Font FONT_TITULO1 = new Font("Segoe UI", Font.BOLD, 20);
+    private static final Font FONT_TITULO2 = new Font("Segoe UI", Font.BOLD, 16);
+    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
+	
     private java.util.List<ProductoFinanciero> productos;
 
-	Font font;
 
 	public PanelInicio(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
 		this.usuario = usuario;
@@ -51,7 +60,7 @@ public class PanelInicio extends JPanel{
 		
 		//Fondo
 		setLayout(new BorderLayout(10,10));
-		setBackground(new Color(248, 249, 250));
+		setBackground(COLOR_FONDO_PRINCIPAL);
 		
 		//Cargar paneles
 		JPanel panelSaludo = PanelSaludo();
@@ -83,12 +92,12 @@ public class PanelInicio extends JPanel{
 		JPanel panelSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel saludoTxt = new JLabel("¡Hola, " + usuario.getNombre().split(" ")[0] + "!");
 		saludoTxt.setOpaque(true);
-		saludoTxt.setBackground(new Color(248, 249, 250));
-		saludoTxt.setFont(new Font("Segoe UI",Font.BOLD,20));
+		saludoTxt.setBackground(COLOR_FONDO_PRINCIPAL);
+		saludoTxt.setFont(FONT_TITULO1);
 		
-		Border recuadro = BorderFactory.createLineBorder(Color.gray, 1);
+//		Border recuadro = BorderFactory.createLineBorder(Color.gray, 1);
 		Border posicion = BorderFactory.createEmptyBorder(5,10,5,10);
-		saludoTxt.setBorder(BorderFactory.createCompoundBorder(recuadro, posicion));
+		saludoTxt.setBorder(posicion);
 		
 		panelSaludo.setBackground(getBackground());
 		panelSaludo.add(saludoTxt);
@@ -98,7 +107,7 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelRecordatorio() {
 		JPanel recordatorio = new JPanel(new FlowLayout());
-		recordatorio.setBackground(new Color(248, 249, 250));
+		recordatorio.setBackground(COLOR_FONDO_PRINCIPAL);
 		JButton completarPerfil = new JButton("Ir al perfil");
 		completarPerfil.addActionListener(e->{
 			ventanaPrincipal.mostrarPanel("Perfil");
@@ -121,12 +130,12 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelLecciones() {
 		JPanel proxLecJPanel = new JPanel();
-		proxLecJPanel.setBackground(Color.WHITE);
-		proxLecJPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
+		proxLecJPanel.setBackground(COLOR_CARD);
+		proxLecJPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
 		JLabel mensajeLecciones = new JLabel();
 		mensajeLecciones.setText("¿Preparado para su próxima lección?");
-		mensajeLecciones.setFont(new Font("Segoe UI", Font.BOLD,16));
+		mensajeLecciones.setFont(FONT_TITULO2);
 		proxLecJPanel.add(mensajeLecciones);
 
 		
@@ -136,7 +145,7 @@ public class PanelInicio extends JPanel{
 		proxLecJPanel.add(leccionesPanel);
 
 		JLabel mensajeLecciones2 = new JLabel("Lecciones recomendadas para continuar aprendiendo:");
-		mensajeLecciones2.setFont(new Font("Segoe UI", Font.BOLD,12));
+		mensajeLecciones2.setFont(FONT_NORMAL2);
 		leccionesPanel.add(Box.createVerticalStrut(10));
 		leccionesPanel.add(mensajeLecciones2);
 
@@ -156,11 +165,13 @@ public class PanelInicio extends JPanel{
 			}
 			for (Leccion leccion : listaLecciones) {
 				leccionesPanel.add(Box.createVerticalStrut(10));
-				leccionesPanel.add(new JLabel(leccion.getTitulo()));
+				JLabel leccionSumada  = new JLabel(leccion.getTitulo());
+				leccionSumada.setFont(FONT_NORMAL1);
+				leccionesPanel.add(leccionSumada);
 			}
-			if(listaCursosActivos.isEmpty()) {
+			if(listaCursosActivos.size()==todosCursos.size()) {
 				leccionesPanel.add(Box.createVerticalStrut(10));
-				leccionesPanel.add(new JLabel("Asombroso, has terminado todos las lecciones."));
+				leccionesPanel.add(new JLabel("Asombroso, no hay lecciones nuevas que recomendar."));
 				leccionesPanel.add(Box.createVerticalStrut(10));
 				//TODO Añadir imagen de un trofeo
 			}
@@ -178,12 +189,12 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelCursos() {
 		JPanel cursosPanel = new JPanel();
-		cursosPanel.setBackground(Color.WHITE);
-		cursosPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
+		cursosPanel.setBackground(COLOR_CARD);
+		cursosPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
 		JLabel mensajeCursos = new JLabel();
 		mensajeCursos.setText("Cursos en progreso: ");
-		mensajeCursos.setFont(new Font("Segoe UI", Font.BOLD,16));
+		mensajeCursos.setFont(FONT_TITULO2);
 		cursosPanel.add(mensajeCursos);
 		
 		JPanel cursosProgreso = new JPanel();
@@ -200,10 +211,17 @@ public class PanelInicio extends JPanel{
 				cursosProgreso.add(new JLabel(curso.getNombre()));
 			}
 			if (listaCursosActivos.isEmpty()) {
-				cursosProgreso.add(Box.createVerticalStrut(40));
-				cursosProgreso.add(new JLabel("Todavía vacio, es hora de empezar un curso."));
+				cursosProgreso.add(Box.createVerticalStrut(20));
+				JLabel mensaje1 = new JLabel("Todavía vacío, es hora de empezar un curso.");
+				mensaje1.setFont(FONT_NORMAL1);
+				cursosProgreso.add(mensaje1);
+				
+				
 				cursosProgreso.add(Box.createVerticalStrut(10));
-				cursosProgreso.add(new JLabel("¿A que esperas?"));
+				JLabel mensaje2 = new JLabel("¿A que esperas?");
+				mensaje2.setFont(FONT_NORMAL1);
+				cursosProgreso.add(mensaje2);
+				
 				cursosProgreso.add(Box.createVerticalStrut(10));
 				//TODO Añadir imagen de un reloj
 			}
@@ -218,11 +236,11 @@ public class PanelInicio extends JPanel{
 	private JPanel PanelActivos() {
 		JPanel activosPanel = new JPanel();
 		activosPanel.setBackground(Color.WHITE);
-		activosPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
+		activosPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
 		JLabel mensajeActivos = new JLabel();
 		mensajeActivos.setText("Resumen de sus activos: ");
-		mensajeActivos.setFont(new Font("Segoe UI", Font.BOLD,16));
+		mensajeActivos.setFont(FONT_TITULO2);
 		activosPanel.add(mensajeActivos);
 		
 		String[] columnas = {"Nombre","Varianza", "Valor total (€)"};
@@ -231,9 +249,9 @@ public class PanelInicio extends JPanel{
 		JScrollPane scroll = new JScrollPane(tablaResumen);
 		activosPanel.add(scroll);
 		
-		tablaResumen.setFont(new Font("Segoe UI", Font.BOLD,12));
+		tablaResumen.setFont(FONT_NORMAL2);
 		tablaResumen.setRowHeight(20);
-		tablaResumen.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD,12));		
+		tablaResumen.getTableHeader().setFont(FONT_NORMAL2);		
 		//TODO Mejorar tabla
 		activosPanel.add(tablaResumen);
 
@@ -245,8 +263,8 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel PanelGraficos() {
 		JPanel panelGraficos = new JPanel();
-		panelGraficos.setBackground(Color.WHITE);
-		panelGraficos.setBorder(BorderFactory.createLineBorder(Color.black,1));
+		panelGraficos.setBackground(COLOR_CARD);
+		panelGraficos.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
 		String productoRandom = RandomizadorProductos().getNombre();
 		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandom+"'");
@@ -298,8 +316,12 @@ public class PanelInicio extends JPanel{
 			System.err.println("Error");
 		}
         
+        JButton siguiente = new JButton("Siguiente");
+        siguiente.addActionListener(e->{
+        	PanelGraficos();
+        });
         
-        //TODO añadir boton siguiente
+        panelGraficos.add(siguiente);
 		panelGraficos.setName("Grafico");
 		PanelFocus(panelGraficos,null);
 		return panelGraficos;
