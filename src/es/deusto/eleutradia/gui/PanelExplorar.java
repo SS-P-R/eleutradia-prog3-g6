@@ -447,7 +447,7 @@ public class PanelExplorar extends JPanel {
         return gestoras.toArray(new String[0]);
     }
     
-//    MouseAdapter listenerPanel = new MouseAdapter() {
+//  MouseAdapter listenerPanel = new MouseAdapter() {
 //		@Override
 //		public void mouseEntered(MouseEvent e) {
 //	        JPanel panel = (JPanel) e.getSource();
