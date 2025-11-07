@@ -26,8 +26,6 @@ import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.Usuario;
 
-//DISCLAIMER: ESTO ES UN BOCETO. Muchas cosas no funcionan y están mal configuradas. 
-
 public class PanelPerfil extends JPanel {
     private static final long serialVersionUID = 1L;
     
@@ -84,7 +82,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(20, 10));
         JLabel lblAvatar = new JLabel("Foto de Perfil");
-        lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 64));
+        lblAvatar.setFont(FONT_NORMAL1);
         lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
         lblAvatar.setPreferredSize(new Dimension(100, 100));
         panel.add(lblAvatar, BorderLayout.WEST);
