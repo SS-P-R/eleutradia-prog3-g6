@@ -33,6 +33,7 @@ public class PanelPerfil extends JPanel {
     
     private Usuario usuarioActual;
 
+    // Estilos
     private boolean temaOscuro = false;
     private static final Color COLOR_FONDO_CLARO = new Color(248, 249, 250);
     private static final Color COLOR_CARD_CLARO = Color.WHITE;
@@ -41,11 +42,14 @@ public class PanelPerfil extends JPanel {
     private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
     private static final Color COLOR_ACENTO = new Color(0, 123, 255);
     private static final Color COLOR_EXITO = new Color(40, 167, 69);
-    
-    //Tema oscuro colores
     private static final Color COLOR_FONDO_OSCURO = new Color(33, 37, 41);
     private static final Color COLOR_CARD_OSCURO = new Color(52, 58, 64);
     private static final Color COLOR_TEXTO_OSCURO = new Color(248, 249, 250);
+    
+    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
+    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
+    private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
 	
     public PanelPerfil(Usuario usuario) {
         this.usuarioActual = usuario;
@@ -79,7 +83,7 @@ public class PanelPerfil extends JPanel {
     private JPanel crearPanelCabecera() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(20, 10));
-        JLabel lblAvatar = new JLabel("👤");
+        JLabel lblAvatar = new JLabel("Foto de Perfil");
         lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 64));
         lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
         lblAvatar.setPreferredSize(new Dimension(100, 100));
@@ -92,11 +96,11 @@ public class PanelPerfil extends JPanel {
         lblNombre.setForeground(getColorTextoPrincipal());
         
         JLabel lblEmail = new JLabel(usuarioActual.getEmail());
-        lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        lblEmail.setFont(FONT_NORMAL1);
         lblEmail.setForeground(COLOR_TEXTO_SECUNDARIO);
         
         JLabel lblTipo = new JLabel("Cuenta Activa • " + usuarioActual.getCarteras().size() + " Cartera(s)");
-        lblTipo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lblTipo.setFont(FONT_NORMAL1);
         lblTipo.setForeground(COLOR_EXITO);
         
         infoPanel.add(lblNombre);
@@ -112,7 +116,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Información Personal");
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitulo.setFont(FONT_TITULO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -133,7 +137,7 @@ public class PanelPerfil extends JPanel {
         
         panel.add(contentPanel, BorderLayout.CENTER);
         JButton btnEditar = new JButton("Editar Información");
-        btnEditar.setFont(new Font("Arial", Font.BOLD, 13));
+        btnEditar.setFont(FONT_SUBTITULO);
         btnEditar.setBackground(COLOR_TEXTO_SECUNDARIO);
         btnEditar.setForeground(Color.WHITE);
         btnEditar.setFocusPainted(false);
@@ -153,7 +157,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Perfil Financiero");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setFont(FONT_TITULO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -186,7 +190,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Configuración de Cuenta");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setFont(FONT_TITULO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -195,10 +199,10 @@ public class PanelPerfil extends JPanel {
         JPanel panelPassword = new JPanel(new BorderLayout(10, 5));
         panelPassword.setBackground(getColorCard());
         JLabel lblPassword = new JLabel("Contraseña");
-        lblPassword.setFont(new Font("Arial", Font.BOLD, 14));
+        lblPassword.setFont(FONT_SUBTITULO);
         lblPassword.setForeground(getColorTextoPrincipal());
         JButton btnCambiarPassword = new JButton("Cambiar Contraseña");
-        btnCambiarPassword.setFont(new Font("Arial", Font.PLAIN, 12));
+        btnCambiarPassword.setFont(FONT_NORMAL2);
         btnCambiarPassword.setBackground(COLOR_ACENTO);
         btnCambiarPassword.setForeground(Color.WHITE);
         btnCambiarPassword.setFocusPainted(false);
@@ -210,10 +214,10 @@ public class PanelPerfil extends JPanel {
         JPanel panelTema = new JPanel(new BorderLayout(10, 5));
         panelTema.setBackground(getColorCard());
         JLabel lblTema = new JLabel("Tema de Interfaz");
-        lblTema.setFont(new Font("Arial", Font.BOLD, 14));
+        lblTema.setFont(FONT_SUBTITULO);
         lblTema.setForeground(getColorTextoPrincipal());
         JToggleButton toggleTema = new JToggleButton(temaOscuro ? "Oscuro" : "Claro");
-        toggleTema.setFont(new Font("Arial", Font.PLAIN, 12));
+        toggleTema.setFont(FONT_NORMAL2);
         toggleTema.setSelected(temaOscuro);
         toggleTema.setFocusPainted(false);
         toggleTema.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -228,10 +232,10 @@ public class PanelPerfil extends JPanel {
         JPanel panelNotif = new JPanel(new BorderLayout(10, 5));
         panelNotif.setBackground(getColorCard());
         JLabel lblNotif = new JLabel("Notificaciones por Email");
-        lblNotif.setFont(new Font("Arial", Font.BOLD, 14));
+        lblNotif.setFont(FONT_SUBTITULO);
         lblNotif.setForeground(getColorTextoPrincipal());
         JCheckBox checkNotif = new JCheckBox("Activar");
-        checkNotif.setFont(new Font("Arial", Font.PLAIN, 12));
+        checkNotif.setFont(FONT_NORMAL2);
         checkNotif.setSelected(true);
         checkNotif.setBackground(getColorCard());
         checkNotif.setForeground(getColorTextoPrincipal());
@@ -255,7 +259,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Estadísticas de Cuenta");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setFont(FONT_TITULO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -283,11 +287,11 @@ public class PanelPerfil extends JPanel {
         panel.setBackground(getColorCard());
         
         JLabel lblLabel = new JLabel(label);
-        lblLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblLabel.setFont(FONT_NORMAL2);
         lblLabel.setForeground(COLOR_TEXTO_SECUNDARIO);
         
         JLabel lblValor = new JLabel(valor);
-        lblValor.setFont(new Font("Arial", Font.BOLD, 14));
+        lblValor.setFont(FONT_SUBTITULO);
         lblValor.setForeground(getColorTextoPrincipal());
         
         panel.add(lblLabel, BorderLayout.NORTH);
@@ -305,17 +309,17 @@ public class PanelPerfil extends JPanel {
         ));
         
         JLabel lblIcono = new JLabel(icono);
-        lblIcono.setFont(new Font("Arial", Font.PLAIN, 24));
+        lblIcono.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         
         JPanel textPanel = new JPanel(new GridLayout(2, 1, 0, 2));
         textPanel.setBackground(getColorCard());
         
         JLabel lblLabel = new JLabel(label);
-        lblLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+        lblLabel.setFont(FONT_NORMAL2);
         lblLabel.setForeground(COLOR_TEXTO_SECUNDARIO);
         
         JLabel lblValor = new JLabel(valor);
-        lblValor.setFont(new Font("Arial", Font.BOLD, 16));
+        lblValor.setFont(FONT_SUBTITULO);
         lblValor.setForeground(getColorTextoPrincipal());
         
         textPanel.add(lblLabel);
@@ -339,19 +343,19 @@ public class PanelPerfil extends JPanel {
         JPanel panelActual = new JPanel(new BorderLayout(5, 5));
         panelActual.add(new JLabel("Contraseña Actual:"), BorderLayout.NORTH);
         JPasswordField txtActual = new JPasswordField();
-        txtActual.setFont(new Font("Arial", Font.PLAIN, 14));
+        txtActual.setFont(FONT_NORMAL1);
         panelActual.add(txtActual, BorderLayout.CENTER);
         mainPanel.add(panelActual);
         JPanel panelNueva = new JPanel(new BorderLayout(5, 5));
         panelNueva.add(new JLabel("Contraseña Nueva:"), BorderLayout.NORTH);
         JPasswordField txtNueva = new JPasswordField();
-        txtNueva.setFont(new Font("Arial", Font.PLAIN, 14));
+        txtNueva.setFont(FONT_NORMAL1);
         panelNueva.add(txtNueva, BorderLayout.CENTER);
         mainPanel.add(panelNueva);
         JPanel panelConfirmar = new JPanel(new BorderLayout(5, 5));
         panelConfirmar.add(new JLabel("Confirmar Contraseña:"), BorderLayout.NORTH);
         JPasswordField txtConfirmar = new JPasswordField();
-        txtConfirmar.setFont(new Font("Arial", Font.PLAIN, 14));
+        txtConfirmar.setFont(FONT_NORMAL1);
         panelConfirmar.add(txtConfirmar, BorderLayout.CENTER);
         mainPanel.add(panelConfirmar);
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
