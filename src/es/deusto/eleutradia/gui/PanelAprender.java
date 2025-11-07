@@ -28,6 +28,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -65,11 +66,12 @@ public class PanelAprender extends JPanel {
     private static final Color COLOR_FONDO_PRINCIPAL = Color.WHITE; // Gris claro
     private static final Color COLOR_BOTON_INACTIVO = new Color(223, 223, 222); // Gris medio
     private static final Color COLOR_TEXTO = new Color(169, 168, 162);// Gris oscuro
-    private static final Color COLOR_BOTON_TEXTO = Color.BLACK;// Gris oscuro
+    private static final Color COLOR_BOTON_TEXTO = Color.WHITE;// Gris oscuro
     private static final Color COLOR_TARJETA_COMPLETADA = new Color(220, 255, 220); // Verde claro
-    private static final Color COLOR_BOTON_CURSOS = new Color(208, 209, 210); // Verde claro
-    private static final Color COLOR_BOTON_VOLVER = new Color(129, 182, 76); // Verde medio
-    private static final Color COLOR_BOTON_APUNTAR = new Color(0, 140, 209); // Azul medio
+    private static final Color COLOR_BOTON_CURSOS = new Color(249, 249, 249); // Verde claro
+    private static final Color COLOR_BOTON_VOLVER = new Color(40, 167, 69); // Verde medio
+    private static final Color COLOR_BOTON_APUNTAR = new Color(0, 100, 255); // Azul medio
+    private static final Color COLOR_BORDE = new Color(222, 226, 230);
     
     private ArrayList<Curso> listaCursos;
 	
@@ -104,7 +106,9 @@ public class PanelAprender extends JPanel {
 		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
 		panelPrincipalPestanasCurso.setBackground(COLOR_FONDO_SECUNDARIO);
 		
+		
 		JPanel panelPestanasCursos = new JPanel(new BorderLayout());
+		panelPestanasCursos.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
 		JPanel panelPestanas = crearPanelPestanas();
 		panelPestanasCursos.add(panelPestanas, BorderLayout.NORTH);
 		
@@ -133,7 +137,7 @@ public class PanelAprender extends JPanel {
 		
 		JPanel panelDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
 		panelDerecho.setBackground(COLOR_FONDO_PRINCIPAL);
-		panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panelDerecho.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
 		panelDerecho.setPreferredSize(new Dimension(160, 0));
 		
 		JPanel panelProgreso = new JPanel();
@@ -223,6 +227,8 @@ public class PanelAprender extends JPanel {
 			
 			JButton botonCurso = new JButton(curso.getNombre());
 			botonCurso.setBackground(COLOR_BOTON_CURSOS);
+			botonCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
+			botonCurso.setFocusPainted(false);
 			botonCurso.setPreferredSize(new Dimension(220, 150));
 			botonCurso.setMaximumSize(new Dimension(220, 150));
 			
@@ -280,15 +286,18 @@ public class PanelAprender extends JPanel {
 		JPanel panelInfoCentro = mostrarInfoCursos(cursoInfo);
 		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
 		
-//		JPanel panelInfoCentro = new JPanel(new BorderLayout(20, 20));
-//		panelInfoCentro.setBackground(COLOR_FONDO_PRINCIPAL);
-//		panelInfoCentro.add(new JLabel("Informacion sobre el curso " + cursoInfo.getNombre()));
-//		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
-		
-		JPanel panelLateral = new JPanel(new GridLayout());
-		//panelLateral.setLayout(new BoxLayout(panelLateral, BoxLayout.Y_AXIS));
+
+		JPanel panelLateral = new JPanel(new BorderLayout());
 		panelLateral.setPreferredSize(new Dimension(160, 0));
 		panelLateral.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JPanel panelTexto = new JPanel();
+		panelTexto.setLayout(new BoxLayout(panelTexto, BoxLayout.Y_AXIS));
+		panelTexto.setPreferredSize(new Dimension(50, 50));
+		JLabel labelTitulo = new JLabel("¡Únete al curso!");
+		labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		labelTitulo.setForeground(COLOR_TEXTO);
+		panelTexto.add(labelTitulo);
 		
 		JButton botonApuntar = new JButton("Apuntarse");
 		botonApuntar.setMinimumSize(new Dimension(150, 50));
@@ -296,6 +305,7 @@ public class PanelAprender extends JPanel {
 		botonApuntar.setBackground(COLOR_BOTON_APUNTAR);
 		botonApuntar.setForeground(COLOR_BOTON_TEXTO);
 		botonApuntar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonApuntar.setFocusPainted(false);
 		
 		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
 			botonApuntar.setEnabled(false);
@@ -323,6 +333,7 @@ public class PanelAprender extends JPanel {
 		botonVolver.setBackground(COLOR_BOTON_VOLVER);
 		botonVolver.setForeground(COLOR_BOTON_TEXTO);
 		botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonVolver.setFocusPainted(false);
 		
 		botonVolver.addActionListener(new ActionListener() {
 			
@@ -333,17 +344,11 @@ public class PanelAprender extends JPanel {
 			}
 		});
 		
+		panelTexto.add(botonApuntar);
 		
-		JPanel panelBotones = new JPanel();
-		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
-		panelBotones.setMaximumSize(new Dimension(160, 50));
-		panelBotones.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelLateral.add(panelTexto, BorderLayout.CENTER);
 		
-		panelBotones.add(botonApuntar);
-		//panelBotones.add(Box.createRigidArea(new Dimension(0, 300)));
-		panelBotones.add(botonVolver);
-		
-		panelLateral.add(panelBotones);
+		panelLateral.add(botonVolver, BorderLayout.SOUTH);
 		
 		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
 		
