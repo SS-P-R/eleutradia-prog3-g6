@@ -1,5 +1,7 @@
 package es.deusto.eleutradia.domain;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Cartera {
-    private String nombre;
+    private  String nombre;
     private int num_nueva_cartera = 1;
     private double saldo;
     private PerfilRiesgo perfilRiesgo;
@@ -76,11 +78,46 @@ public class Cartera {
 	}
 	
 	public double calcularValorInversiones() {
-		double total = 0.0;
-		for (Operacion operacion : operaciones) {
-			total += operacion.getProdFinanciero().getValorUnitario() * operacion.getCantidad();
-		}
-		return total;
+	    double total = 0.0;
+	    List<Posicion> posiciones = obtenerPosicionesActuales();
+	    for (Posicion posicion : posiciones) {
+	        total += posicion.getValorTotal();
+	    }
+	    return total;
+	}
+	
+	public List<Posicion> obtenerPosicionesActuales() {
+	    Map<String, DatosPosicion> posicionesMap = new HashMap<>();
+	    
+	    for (Operacion op : operaciones) {
+	        String nombreProducto = op.getProdFinanciero().getNombre();
+	        
+	        if (!posicionesMap.containsKey(nombreProducto)) {
+	            posicionesMap.put(nombreProducto, new DatosPosicion(op.getProdFinanciero()));
+	        }
+	        
+	        DatosPosicion datos = posicionesMap.get(nombreProducto);
+	        
+	        if (op.getTipoOp()) { // COMPRA
+	            double costoTotal = datos.cantidadTotal * datos.precioMedioCompra;
+	            costoTotal += op.getCantidad() * op.getProdFinanciero().getValorUnitario();
+	            datos.cantidadTotal += op.getCantidad();
+	            if (datos.cantidadTotal > 0) {
+	                datos.precioMedioCompra = costoTotal / datos.cantidadTotal;
+	            }
+	        } else { // VENTA
+	            datos.cantidadTotal -= op.getCantidad();
+	        }
+	    }
+	    
+	    List<Posicion> posiciones = new ArrayList<>();
+	    for (DatosPosicion datos : posicionesMap.values()) {
+	        if (datos.cantidadTotal > 0) {
+	            posiciones.add(new Posicion(datos.producto, datos.cantidadTotal, datos.precioMedioCompra));
+	        }
+	    }
+	    
+	    return posiciones;
 	}
 	
 	public double calcularPatrimonio() {
@@ -150,6 +187,17 @@ public class Cartera {
 	            + ", perfilRiesgo=" + perfilRiesgo
 	            + ", divisa=" + divisa
 	            + ", operaciones=" + operaciones.size() + "]";
+	}
+	private class DatosPosicion {
+	    ProductoFinanciero producto;
+	    double cantidadTotal;
+	    double precioMedioCompra;
+	    
+	    DatosPosicion(ProductoFinanciero producto) {
+	        this.producto = producto;
+	        this.cantidadTotal = 0;
+	        this.precioMedioCompra = 0;
+	    }
 	}
     
 }
