@@ -124,7 +124,7 @@ public class PanelInicio extends JPanel{
 				recordatorio.add(completarPerfil);
 				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su dirección."));
 			}else {
-				recordatorio.add(new JLabel("Todo correcto."));
+//				recordatorio.add(new JLabel("Todo correcto.")); // Inecesario
 			}
 		}
 		return recordatorio;
@@ -263,16 +263,38 @@ public class PanelInicio extends JPanel{
 		return activosPanel;
 	};
 	
-	
+	int sel = 0;
 	private JPanel PanelGraficos() {
 		JPanel panelGraficos = new JPanel();
 		panelGraficos.setBackground(COLOR_CARD);
 		panelGraficos.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
+		if (MainEleutradia.listaProductos != null) {
+        	productos = new ArrayList<>(MainEleutradia.listaProductos);
+        }
+		
 		if (productoRandom.isEmpty()) {
 			productoRandom.add(RandomizadorProductos());
 		}
-		String productoRandomNombre = productoRandom.getLast().getNombre();
+		
+		int i = 0;
+		for (ProductoFinanciero producto: productos) {
+			if (productoRandom.getFirst()==producto) {
+				break;
+			}else {
+				i+=1;
+			}
+		}
+		while (productos.size()>productoRandom.size()) {
+			if (productos.size()>i+1) {
+			}else {
+				i=0;
+				productoRandom.add(productos.get(i));
+			}
+		}
+		
+	
+		String productoRandomNombre = productoRandom.get(sel).getNombre();
 		JLabel mensajeGraficos = new JLabel("Echele un vistazo a " + "'"+productoRandomNombre+"'");
 		panelGraficos.add(mensajeGraficos);
 		
@@ -324,21 +346,9 @@ public class PanelInicio extends JPanel{
         
         JButton siguiente = new JButton("Siguiente");
         siguiente.addActionListener(e->{
-        	productos = new ArrayList<ProductoFinanciero>();
-            if (MainEleutradia.listaProductos != null) {
-            	productos = new ArrayList<>(MainEleutradia.listaProductos);
-            }
-            int i = 1;
-        	for (ProductoFinanciero producto : productos) {
-        		i+=1;
-        		if (producto == productoRandom.getFirst()) {
-        			if (i<productos.size()) {
-        				productoRandom.add(producto);
-        			}else {
-        				productoRandom.add(productos.getFirst());
-        			}
-        		break;
-        		}
+        	sel += 1;
+        	if (sel>productos.size()) {
+        		sel=0;
         	}
         	PanelGraficos();
         });
