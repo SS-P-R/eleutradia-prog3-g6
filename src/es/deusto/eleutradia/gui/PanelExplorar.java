@@ -56,6 +56,8 @@ public class PanelExplorar extends JPanel {
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);
     private static final Color MY_GRIS = new Color(100, 100, 100);
+    private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
+    private static final Color COLOR_BORDE = new Color(222, 226, 230);
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 12);
@@ -64,7 +66,7 @@ public class PanelExplorar extends JPanel {
     	this.usuario = usuario;
     	
         this.setLayout(new BorderLayout(10, 10));
-        this.setBackground(Color.WHITE);
+        this.setBackground(COLOR_FONDO_PRINCIPAL);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         cargarProductos();
@@ -92,7 +94,10 @@ public class PanelExplorar extends JPanel {
     private JPanel construirPanelSuperior() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(Color.WHITE);
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+                BorderFactory.createEmptyBorder(5, 10, 10, 20)
+            ));
         
         // Título
         JLabel titulo = new JLabel("Descubra nuestra selección de productos de inversión", JLabel.CENTER);
@@ -143,7 +148,7 @@ public class PanelExplorar extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.BLACK, 2),
+            BorderFactory.createLineBorder(COLOR_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 10, 10, 20)
         ));
         mainPanel.setPreferredSize(new Dimension(200, 0));
@@ -222,8 +227,12 @@ public class PanelExplorar extends JPanel {
     }
     
     private JPanel construirPanelTabla() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+                BorderFactory.createEmptyBorder(20, 10, 10, 10)
+            ));
         
         // Crear modelo de tabla
         String[] columnas = {"Nombre", "Tipo", "Región", "Riesgo", "Precio", "Divisa", "Gestora"};
@@ -243,7 +252,7 @@ public class PanelExplorar extends JPanel {
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         
-        panel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
         
         // Panel inferior con botones de acción
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -264,13 +273,13 @@ public class PanelExplorar extends JPanel {
         panelAcciones.add(botonVerDetalle);
         panelAcciones.add(botonAñadirCartera);
         
-        panel.add(panelAcciones, BorderLayout.SOUTH);
+        mainPanel.add(panelAcciones, BorderLayout.SOUTH);
         
         // Action Listeners
         botonVerDetalle.addActionListener(e -> verDetalleProducto());
         botonAñadirCartera.addActionListener(e -> anadirACartera());
         
-        return panel;
+        return mainPanel;
     }
     
     private void aplicarFiltros() {
