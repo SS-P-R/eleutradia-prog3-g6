@@ -36,6 +36,7 @@ public class PanelPortfolio extends JPanel {
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
     private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
     private static final Color COLOR_ACENTO = new Color(0, 123, 255);
+    
     private static final Font FONT_TITULO1 = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_TITULO2 = new Font("Segoe UI", Font.BOLD, 16);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
