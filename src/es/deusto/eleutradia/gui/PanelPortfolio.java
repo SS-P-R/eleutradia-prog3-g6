@@ -286,7 +286,7 @@ public class PanelPortfolio extends JPanel {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panel.setBackground(COLOR_FONDO_PRINCIPAL);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        JButton btnActualizar = new JButton("🔄 Actualizar Datos");
+        JButton btnActualizar = new JButton("Actualizar Datos");
         btnActualizar.setFont(FONT_SUBTITULO);
         btnActualizar.setBackground(COLOR_ACENTO);
         btnActualizar.setForeground(Color.WHITE);
