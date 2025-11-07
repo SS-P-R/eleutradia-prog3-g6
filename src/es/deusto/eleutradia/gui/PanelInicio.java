@@ -132,6 +132,9 @@ public class PanelInicio extends JPanel{
 		proxLecJPanel.add(Box.createVerticalStrut(10));
 		proxLecJPanel.add(mensajeLecciones2);
 
+		JLabel leccion1 = new JLabel();
+//		leccion1.setText(usuario.);
+		
 		proxLecJPanel.setName("Aprender");
 		PanelFocus(proxLecJPanel);
 		return proxLecJPanel;

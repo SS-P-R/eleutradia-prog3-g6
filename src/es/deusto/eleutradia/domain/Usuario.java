@@ -12,6 +12,7 @@ public abstract class Usuario {
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
     private List<Cartera> carteras;
+    private List<Curso> cursosActivos;
     
 	public Usuario() {
 		this.nombre="usuario";
