@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -26,6 +27,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 
+import es.deusto.eleutradia.domain.Curso;
+import es.deusto.eleutradia.domain.Leccion;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.Usuario;
@@ -120,26 +123,59 @@ public class PanelInicio extends JPanel{
 		JPanel proxLecJPanel = new JPanel();
 		proxLecJPanel.setBackground(new Color(173, 216, 230));
 		proxLecJPanel.setBorder(BorderFactory.createLineBorder(Color.black,3));
-		proxLecJPanel.setLayout(new BoxLayout(proxLecJPanel, BoxLayout.Y_AXIS));
 		
 		JLabel mensajeLecciones = new JLabel();
 		mensajeLecciones.setText("¿Preparado para su próxima lección?");
 		mensajeLecciones.setFont(new Font("Segoe UI", Font.BOLD,16));
 		proxLecJPanel.add(mensajeLecciones);
 
+		
+		JPanel leccionesPanel = new JPanel();
+		leccionesPanel.setLayout(new BoxLayout(leccionesPanel, BoxLayout.Y_AXIS));
+		leccionesPanel.setBackground(proxLecJPanel.getBackground());
+		proxLecJPanel.add(leccionesPanel);
+
 		JLabel mensajeLecciones2 = new JLabel("Lecciones recomendadas para continuar aprendiendo:");
 		mensajeLecciones2.setFont(new Font("Segoe UI", Font.BOLD,12));
-		proxLecJPanel.add(Box.createVerticalStrut(10));
-		proxLecJPanel.add(mensajeLecciones2);
+		leccionesPanel.add(Box.createVerticalStrut(10));
+		leccionesPanel.add(mensajeLecciones2);
 
 		JLabel leccion1 = new JLabel();
-//		leccion1.setText(usuario.);
+		if (usuario instanceof Particular) {
+			Particular particular = (Particular) usuario;
+			List<Curso> listaCursosActivos = particular.getCursos();
+			List<Curso> todosCursos = MainEleutradia.listaCursos;
+			List<Leccion> listaLecciones = new ArrayList<Leccion>();
+			
+			for (Curso curso : todosCursos) {
+				if (!listaCursosActivos.contains(curso)){
+					listaLecciones.add(curso.getModulos().getFirst().getLecciones().getFirst());
+				}if(listaLecciones.getLast().getPosicion()==4) {
+					break;
+				}
+			}
+			for (Leccion leccion : listaLecciones) {
+				leccionesPanel.add(Box.createVerticalStrut(10));
+				leccionesPanel.add(new JLabel(leccion.getTitulo()));
+			}
+			if(listaCursosActivos.isEmpty()) {
+				leccionesPanel.add(Box.createVerticalStrut(10));
+				leccionesPanel.add(new JLabel("Asombroso, has terminado todos las lecciones."));
+				leccionesPanel.add(Box.createVerticalStrut(10));
+				//TODO Añadir imagen de un trofeo
+			}
+			
+			
+		}else {
+			leccion1.setText("Esta función no esta disponible");
+		}
 		
 		proxLecJPanel.setName("Aprender");
-		PanelFocus(proxLecJPanel);
+		PanelFocus(proxLecJPanel, leccionesPanel);
 		return proxLecJPanel;
 	}
 
+	
 	private JPanel PanelCursos() {
 		JPanel cursosPanel = new JPanel();
 		cursosPanel.setBackground(new Color(173, 216, 230));
@@ -150,11 +186,35 @@ public class PanelInicio extends JPanel{
 		mensajeCursos.setFont(new Font("Segoe UI", Font.BOLD,16));
 		cursosPanel.add(mensajeCursos);
 		
+		JPanel cursosProgreso = new JPanel();
+		cursosProgreso.setLayout(new BoxLayout(cursosProgreso, BoxLayout.Y_AXIS));
+		cursosProgreso.setBackground(cursosPanel.getBackground());
+		cursosPanel.add(cursosProgreso);
+
+		
+		if (usuario instanceof Particular) {
+			Particular particular = (Particular) usuario;
+			List<Curso> listaCursosActivos = particular.getCursos();
+			for (Curso curso : listaCursosActivos) {
+				cursosProgreso.add(Box.createVerticalStrut(10));
+				cursosProgreso.add(new JLabel(curso.getNombre()));
+			}
+			if (listaCursosActivos.isEmpty()) {
+				cursosProgreso.add(Box.createVerticalStrut(10));
+				cursosProgreso.add(new JLabel("Es hora de empezar un curso."));
+				cursosProgreso.add(Box.createVerticalStrut(10));
+				cursosProgreso.add(new JLabel("¿A que esperas?"));
+				cursosProgreso.add(Box.createVerticalStrut(10));
+				//TODO Añadir imagen de un reloj
+			}
+		}
+		
 		cursosPanel.setName("Aprender");
-		PanelFocus(cursosPanel);
+		PanelFocus(cursosPanel,cursosProgreso);
 		return cursosPanel;
 	}
 
+	
 	private JPanel PanelActivos() {
 		JPanel activosPanel = new JPanel();
 		activosPanel.setBackground(new Color(173, 216, 230));
@@ -174,12 +234,14 @@ public class PanelInicio extends JPanel{
 		tablaResumen.setFont(new Font("Segoe UI", Font.BOLD,12));
 		tablaResumen.setRowHeight(20);
 		tablaResumen.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD,12));		
+		//TODO Mejorar tabla
 		activosPanel.add(tablaResumen);
 
 		activosPanel.setName("Portfolio");
-		PanelFocus(activosPanel);
+		PanelFocus(activosPanel,null);
 		return activosPanel;
 	};
+	
 	
 	private JPanel PanelGraficos() {
 		JPanel panelGraficos = new JPanel();
@@ -202,10 +264,10 @@ public class PanelInicio extends JPanel{
         // Configuración del gráfico (codificada)
         String chartConfig = "{type:'line',data:"
         		+ "{labels:['Lun','Mar','Mie','Jue'],"
-        		+ "datasets:[{label:'',data:["+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+"],"
+        		+ "datasets:[{label:'"+productoRandom+"',data:["+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+"],"
         		+ "borderColor:'blue',fill:false}]},"
         	    + "options:{"
-        	    + "plugins:{legend:{display:false}},"
+        	    + "plugins:{legend:{display:false}}," //TODO no funciona
         	    + "scales:{"
         	    + "x:{ticks:{color:'black',font:{size:8}}},"
         	    + "y:{ticks:{color:'black',font:{size:1}}}"
@@ -237,7 +299,7 @@ public class PanelInicio extends JPanel{
 		}
         
 		panelGraficos.setName("Grafico");
-		PanelFocus(panelGraficos);
+		PanelFocus(panelGraficos,null);
 		return panelGraficos;
 	}
 	
@@ -259,17 +321,24 @@ public class PanelInicio extends JPanel{
 		return String.valueOf(random);
 	}
 	
-	private void PanelFocus(JPanel panel) {
+	
+	private void PanelFocus(JPanel panel, JPanel panelSecundario) {
 		Color colorOg = panel.getBackground();
 		panel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				panel.setBackground(colorOg);
+				if (panelSecundario!=null) {
+					panelSecundario.setBackground(colorOg);
+				}
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				panel.setBackground(new Color(150, 206, 240));
+				if (panelSecundario!=null){
+					panelSecundario.setBackground(new Color(150, 206, 240));
+				}
 			}
 
 			@Override
