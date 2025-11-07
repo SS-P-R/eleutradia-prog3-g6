@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -47,6 +51,10 @@ public class PanelExplorar extends JPanel {
     private JComboBox<String> selectGestora;
     private Dimension dimensionSelector = new Dimension(180, 30);
     
+    private JPanel mainPanelSuperior;
+    private JPanel mainPanelFiltros;
+    private JPanel mainPanelTabla;
+    
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     
@@ -56,6 +64,7 @@ public class PanelExplorar extends JPanel {
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);
     private static final Color MY_GRIS = new Color(100, 100, 100);
+    private static final Color MY_VERDE = new Color(40, 167, 69);
     private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
@@ -92,9 +101,9 @@ public class PanelExplorar extends JPanel {
     }
     
     private JPanel construirPanelSuperior() {
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+        mainPanelSuperior = new JPanel(new BorderLayout(10, 10));
+        mainPanelSuperior.setBackground(Color.WHITE);
+        mainPanelSuperior.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE, 1),
                 BorderFactory.createEmptyBorder(5, 10, 10, 20)
             ));
@@ -132,68 +141,68 @@ public class PanelExplorar extends JPanel {
         panelBusqueda.add(botonBuscar);
         panelBusqueda.add(botonLimpiar);
         
-        mainPanel.add(titulo, BorderLayout.NORTH);
-        mainPanel.add(panelBusqueda, BorderLayout.CENTER);
+        mainPanelSuperior.add(titulo, BorderLayout.NORTH);
+        mainPanelSuperior.add(panelBusqueda, BorderLayout.CENTER);
         
         // Action Listeners
         botonBuscar.addActionListener(e -> aplicarFiltros());
         campoBusqueda.addActionListener(e -> aplicarFiltros());
         botonLimpiar.addActionListener(e -> limpiarFiltros());
         
-        return mainPanel;
+        return mainPanelSuperior;
     }
     
     private JPanel construirPanelFiltros() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+        mainPanelFiltros = new JPanel();
+        mainPanelFiltros.setLayout(new BoxLayout(mainPanelFiltros, BoxLayout.Y_AXIS));
+        mainPanelFiltros.setBackground(Color.WHITE);
+        mainPanelFiltros.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(COLOR_BORDE, 1),
-            BorderFactory.createEmptyBorder(20, 10, 10, 20)
+            BorderFactory.createEmptyBorder(30, 10, 10, 20)
         ));
-        mainPanel.setPreferredSize(new Dimension(200, 0));
+        mainPanelFiltros.setPreferredSize(new Dimension(200, 0));
         
         JLabel tituloFiltros = new JLabel("- FILTROS -");
         tituloFiltros.setFont(FONT_SUBTITULO);
         tituloFiltros.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloFiltros.setHorizontalAlignment(JLabel.CENTER);
         tituloFiltros.setMaximumSize(new Dimension(Integer.MAX_VALUE, tituloFiltros.getPreferredSize().height));
-        mainPanel.add(tituloFiltros);
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanelFiltros.add(tituloFiltros);
+        mainPanelFiltros.add(Box.createVerticalStrut(15));
         
         // Filtro: Tipo de Producto
-        mainPanel.add(crearLabelFiltro("Tipo de Producto:"));
-        mainPanel.add(Box.createVerticalStrut(5));
+        mainPanelFiltros.add(crearLabelFiltro("Tipo de Producto:"));
+        mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectTipoProducto = new JComboBox<>(obtenerTiposProducto());
         selectTipoProducto.setMaximumSize(dimensionSelector);
         selectTipoProducto.setAlignmentX(LEFT_ALIGNMENT);
         selectTipoProducto.addActionListener(e -> aplicarFiltros());
-        mainPanel.add(selectTipoProducto);
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanelFiltros.add(selectTipoProducto);
+        mainPanelFiltros.add(Box.createVerticalStrut(15));
         
         // Filtro: Clase de Activo
-        mainPanel.add(crearLabelFiltro("Clase de Activo:"));
-        mainPanel.add(Box.createVerticalStrut(5));
+        mainPanelFiltros.add(crearLabelFiltro("Clase de Activo:"));
+        mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectClaseActivo = new JComboBox<>(obtenerClasesActivo());
         selectClaseActivo.setMaximumSize(dimensionSelector);
         selectClaseActivo.setAlignmentX(LEFT_ALIGNMENT);
         selectClaseActivo.addActionListener(e -> aplicarFiltros());
-        mainPanel.add(selectClaseActivo);
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanelFiltros.add(selectClaseActivo);
+        mainPanelFiltros.add(Box.createVerticalStrut(15));
         
         // Filtro: Región
-        mainPanel.add(crearLabelFiltro("Región:"));
-        mainPanel.add(Box.createVerticalStrut(5));
+        mainPanelFiltros.add(crearLabelFiltro("Región:"));
+        mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectRegion = new JComboBox<>(obtenerRegiones());
         selectRegion.setMaximumSize(dimensionSelector);
         selectRegion.setAlignmentX(LEFT_ALIGNMENT);
         selectRegion.addActionListener(e -> aplicarFiltros());
-        mainPanel.add(selectRegion);
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanelFiltros.add(selectRegion);
+        mainPanelFiltros.add(Box.createVerticalStrut(15));
         
         // Filtro: Nivel de Riesgo
-        mainPanel.add(crearLabelFiltro("Nivel de Riesgo:"));
-        mainPanel.add(Box.createVerticalStrut(5));
+        mainPanelFiltros.add(crearLabelFiltro("Nivel de Riesgo:"));
+        mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectRiesgo = new JComboBox<>(new String[]{
             "Todo", "1 - Muy Bajo", "2 - Bajo", "3 - Moderado-Bajo",
             "4 - Moderado", "5 - Moderado-Alto", "6 - Alto", "7 - Muy Alto"
@@ -201,21 +210,21 @@ public class PanelExplorar extends JPanel {
         selectRiesgo.setMaximumSize(dimensionSelector);
         selectRiesgo.setAlignmentX(LEFT_ALIGNMENT);
         selectRiesgo.addActionListener(e -> aplicarFiltros());
-        mainPanel.add(selectRiesgo);
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanelFiltros.add(selectRiesgo);
+        mainPanelFiltros.add(Box.createVerticalStrut(15));
         
         // Filtro: Gestora
-        mainPanel.add(crearLabelFiltro("Gestora:"));
-        mainPanel.add(Box.createVerticalStrut(5));
+        mainPanelFiltros.add(crearLabelFiltro("Gestora:"));
+        mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectGestora = new JComboBox<>(obtenerGestoras());
         selectGestora.setMaximumSize(dimensionSelector);
         selectGestora.setAlignmentX(LEFT_ALIGNMENT);
         selectGestora.addActionListener(e -> aplicarFiltros());
-        mainPanel.add(selectGestora);
+        mainPanelFiltros.add(selectGestora);
         
-        mainPanel.add(Box.createVerticalGlue());
+        mainPanelFiltros.add(Box.createVerticalGlue());
         
-        return mainPanel;
+        return mainPanelFiltros;
     }
     
     private JLabel crearLabelFiltro(String texto) {
@@ -227,9 +236,9 @@ public class PanelExplorar extends JPanel {
     }
     
     private JPanel construirPanelTabla() {
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+        mainPanelTabla = new JPanel(new BorderLayout());
+        mainPanelTabla.setBackground(Color.WHITE);
+        mainPanelTabla.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE, 1),
                 BorderFactory.createEmptyBorder(20, 10, 10, 10)
             ));
@@ -252,7 +261,7 @@ public class PanelExplorar extends JPanel {
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
         
         // Panel inferior con botones de acción
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -266,20 +275,20 @@ public class PanelExplorar extends JPanel {
         
         JButton botonAñadirCartera = new JButton("Añadir a cartera");
         botonAñadirCartera.setFont(FONT_NORMAL);
-        botonAñadirCartera.setBackground(new Color(40, 167, 69));
+        botonAñadirCartera.setBackground(MY_VERDE);
         botonAñadirCartera.setForeground(Color.WHITE);
         botonAñadirCartera.setFocusPainted(false);
         
         panelAcciones.add(botonVerDetalle);
         panelAcciones.add(botonAñadirCartera);
         
-        mainPanel.add(panelAcciones, BorderLayout.SOUTH);
+        mainPanelTabla.add(panelAcciones, BorderLayout.SOUTH);
         
         // Action Listeners
         botonVerDetalle.addActionListener(e -> verDetalleProducto());
         botonAñadirCartera.addActionListener(e -> anadirACartera());
         
-        return mainPanel;
+        return mainPanelTabla;
     }
     
     private void aplicarFiltros() {
@@ -437,4 +446,18 @@ public class PanelExplorar extends JPanel {
         }
         return gestoras.toArray(new String[0]);
     }
+    
+//    MouseAdapter listenerPanel = new MouseAdapter() {
+//		@Override
+//		public void mouseEntered(MouseEvent e) {
+//	        JPanel panel = (JPanel) e.getSource();
+//	        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+//		}
+//		
+//		@Override
+//		public void mouseExited(MouseEvent e) {
+//			JPanel panel = (JPanel) e.getSource();
+//	        panel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
+//		}
+//    };
 }
