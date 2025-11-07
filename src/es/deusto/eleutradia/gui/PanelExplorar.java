@@ -51,10 +51,6 @@ public class PanelExplorar extends JPanel {
     private JComboBox<String> selectGestora;
     private Dimension dimensionSelector = new Dimension(180, 30);
     
-    private JPanel mainPanelSuperior;
-    private JPanel mainPanelFiltros;
-    private JPanel mainPanelTabla;
-    
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     
@@ -101,7 +97,7 @@ public class PanelExplorar extends JPanel {
     }
     
     private JPanel construirPanelSuperior() {
-        mainPanelSuperior = new JPanel(new BorderLayout(10, 10));
+        JPanel mainPanelSuperior = new JPanel(new BorderLayout(10, 10));
         mainPanelSuperior.setBackground(Color.WHITE);
         mainPanelSuperior.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE, 1),
@@ -149,11 +145,32 @@ public class PanelExplorar extends JPanel {
         campoBusqueda.addActionListener(e -> aplicarFiltros());
         botonLimpiar.addActionListener(e -> limpiarFiltros());
         
+        // Mouse Listener visual para entrada en el panel
+        mainPanelSuperior.addMouseListener(new MouseAdapter() {
+    		@Override
+    		public void mouseEntered(MouseEvent e) {
+    	        JPanel panel = (JPanel) e.getSource();
+    	        panel.setBorder(BorderFactory.createCompoundBorder(
+    	                BorderFactory.createLineBorder(Color.BLACK, 1),
+    	                BorderFactory.createEmptyBorder(5, 10, 10, 20)
+    	            ));
+    		}
+    		
+    		@Override
+    		public void mouseExited(MouseEvent e) {
+    			JPanel panel = (JPanel) e.getSource();
+    	        panel.setBorder(BorderFactory.createCompoundBorder(
+    	                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+    	                BorderFactory.createEmptyBorder(5, 10, 10, 20)
+    	            ));
+    		}
+        });
+        
         return mainPanelSuperior;
     }
     
     private JPanel construirPanelFiltros() {
-        mainPanelFiltros = new JPanel();
+        JPanel mainPanelFiltros = new JPanel();
         mainPanelFiltros.setLayout(new BoxLayout(mainPanelFiltros, BoxLayout.Y_AXIS));
         mainPanelFiltros.setBackground(Color.WHITE);
         mainPanelFiltros.setBorder(BorderFactory.createCompoundBorder(
@@ -224,6 +241,27 @@ public class PanelExplorar extends JPanel {
         
         mainPanelFiltros.add(Box.createVerticalGlue());
         
+        // Mouse Listener visual para entrada en el panel
+        mainPanelFiltros.addMouseListener(new MouseAdapter() {
+    		@Override
+    		public void mouseEntered(MouseEvent e) {
+    	        JPanel panel = (JPanel) e.getSource();
+    	        panel.setBorder(BorderFactory.createCompoundBorder(
+    	                BorderFactory.createLineBorder(Color.BLACK, 1),
+    	                BorderFactory.createEmptyBorder(30, 10, 10, 20)
+    	            ));
+    		}
+    		
+    		@Override
+    		public void mouseExited(MouseEvent e) {
+    			JPanel panel = (JPanel) e.getSource();
+    	        panel.setBorder(BorderFactory.createCompoundBorder(
+    	                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+    	                BorderFactory.createEmptyBorder(30, 10, 10, 20)
+    	            ));
+    		}
+        });
+        
         return mainPanelFiltros;
     }
     
@@ -236,7 +274,7 @@ public class PanelExplorar extends JPanel {
     }
     
     private JPanel construirPanelTabla() {
-        mainPanelTabla = new JPanel(new BorderLayout());
+        JPanel mainPanelTabla = new JPanel(new BorderLayout());
         mainPanelTabla.setBackground(Color.WHITE);
         mainPanelTabla.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(COLOR_BORDE, 1),
@@ -287,6 +325,27 @@ public class PanelExplorar extends JPanel {
         // Action Listeners
         botonVerDetalle.addActionListener(e -> verDetalleProducto());
         botonAñadirCartera.addActionListener(e -> anadirACartera());
+        
+        // Mouse Listener visual para entrada en el panel
+        mainPanelTabla.addMouseListener(new MouseAdapter() {
+    		@Override
+    		public void mouseEntered(MouseEvent e) {
+    	        JPanel panel = (JPanel) e.getSource();
+    	        panel.setBorder(BorderFactory.createCompoundBorder(
+    	                BorderFactory.createLineBorder(Color.BLACK, 1),
+    	                BorderFactory.createEmptyBorder(20, 10, 10, 10)
+    	            ));
+    		}
+    		
+    		@Override
+    		public void mouseExited(MouseEvent e) {
+    			JPanel panel = (JPanel) e.getSource();
+    	        panel.setBorder(BorderFactory.createCompoundBorder(
+    	                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+    	                BorderFactory.createEmptyBorder(20, 10, 10, 10)
+    	            ));
+    		}
+        });
         
         return mainPanelTabla;
     }
@@ -446,18 +505,4 @@ public class PanelExplorar extends JPanel {
         }
         return gestoras.toArray(new String[0]);
     }
-    
-//  MouseAdapter listenerPanel = new MouseAdapter() {
-//		@Override
-//		public void mouseEntered(MouseEvent e) {
-//	        JPanel panel = (JPanel) e.getSource();
-//	        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-//		}
-//		
-//		@Override
-//		public void mouseExited(MouseEvent e) {
-//			JPanel panel = (JPanel) e.getSource();
-//	        panel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
-//		}
-//    };
 }
