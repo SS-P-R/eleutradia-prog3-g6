@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
 
@@ -43,7 +44,6 @@ public class PanelExplorar extends JPanel {
     
     private Usuario usuario;
     private JTextField campoBusqueda;
-    private JButton botonBuscar;
     private JComboBox<String> selectTipoProducto;
     private JComboBox<String> selectClaseActivo;
     private JComboBox<String> selectRegion;
@@ -51,6 +51,8 @@ public class PanelExplorar extends JPanel {
     private JComboBox<String> selectGestora;
     private Dimension dimensionSelector = new Dimension(180, 30);
     
+    private boolean verFiltros = false;
+    private JPanel panelFiltros;
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     
@@ -58,7 +60,8 @@ public class PanelExplorar extends JPanel {
     private List<ProductoFinanciero> productosFiltrados;
     
     // Estilos
-    private static final Color MY_AZUL = new Color(0, 100, 255);
+    private static final Color MY_AZUL1 = new Color(0, 120, 255);
+    private static final Color MY_AZUL2 = new Color(10, 60, 170);
     private static final Color MY_GRIS = new Color(100, 100, 100);
     private static final Color MY_VERDE = new Color(40, 167, 69);
     private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
@@ -77,7 +80,8 @@ public class PanelExplorar extends JPanel {
         cargarProductos();
         
         JPanel panelSuperior = construirPanelSuperior();
-        JPanel panelFiltros = construirPanelFiltros();
+        panelFiltros = construirPanelFiltros();
+        panelFiltros.setVisible(false);
         JPanel panelTabla = construirPanelTabla();
         
         this.add(panelSuperior, BorderLayout.NORTH);
@@ -107,35 +111,46 @@ public class PanelExplorar extends JPanel {
         // Título
         JLabel titulo = new JLabel("Descubra nuestra selección de productos de inversión", JLabel.CENTER);
         titulo.setFont(FONT_TITULO);
-        titulo.setForeground(MY_AZUL);
+        titulo.setForeground(MY_AZUL1);
         
         // Panel de búsqueda
-        JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         panelBusqueda.setBackground(Color.WHITE);
         
         JLabel labelBuscar = new JLabel("Buscar:");
         labelBuscar.setFont(FONT_SUBTITULO);
         
-        campoBusqueda = new JTextField(25);
+        campoBusqueda = new JTextField();
         campoBusqueda.setFont(FONT_NORMAL);
-        campoBusqueda.setPreferredSize(new Dimension(250, 30));
+        campoBusqueda.setPreferredSize(new Dimension(150, 30));
         
-        botonBuscar = new JButton("Buscar");
+        JButton botonBuscar = new JButton("Buscar");
         botonBuscar.setFont(FONT_NORMAL);
-        botonBuscar.setBackground(MY_AZUL);
+        botonBuscar.setBackground(MY_AZUL1);
         botonBuscar.setForeground(Color.WHITE);
+        botonBuscar.setBorderPainted(false);
         botonBuscar.setFocusPainted(false);
         
         JButton botonLimpiar = new JButton("Limpiar filtros");
         botonLimpiar.setFont(FONT_NORMAL);
         botonLimpiar.setBackground(MY_GRIS);
         botonLimpiar.setForeground(Color.WHITE);
+        botonLimpiar.setBorderPainted(false);
         botonLimpiar.setFocusPainted(false);
+        
+        JButton botonVerFiltros = new JButton((verFiltros ? "Ocultar" : "Mostrar") + " filtros");
+        botonVerFiltros.setFont(FONT_NORMAL);
+        botonVerFiltros.setBackground(MY_GRIS);
+        botonVerFiltros.setForeground(Color.WHITE);
+        botonVerFiltros.setPreferredSize(botonVerFiltros.getPreferredSize());
+        botonVerFiltros.setBorderPainted(false);
+        botonVerFiltros.setFocusPainted(false);
         
         panelBusqueda.add(labelBuscar);
         panelBusqueda.add(campoBusqueda);
         panelBusqueda.add(botonBuscar);
         panelBusqueda.add(botonLimpiar);
+        panelBusqueda.add(botonVerFiltros);
         
         mainPanelSuperior.add(titulo, BorderLayout.NORTH);
         mainPanelSuperior.add(panelBusqueda, BorderLayout.CENTER);
@@ -144,25 +159,23 @@ public class PanelExplorar extends JPanel {
         botonBuscar.addActionListener(e -> aplicarFiltros());
         campoBusqueda.addActionListener(e -> aplicarFiltros());
         botonLimpiar.addActionListener(e -> limpiarFiltros());
+        botonVerFiltros.addActionListener(e -> {
+        	verFiltros = !verFiltros;
+        	botonVerFiltros.setText((verFiltros ? "Ocultar" : "Mostrar") + " filtros");
+            panelFiltros.setVisible(!panelFiltros.isVisible());
+            revalidate();
+        });
         
         // Mouse Listener visual para entrada en el panel
-        mainPanelSuperior.addMouseListener(new MouseAdapter() {
+        botonBuscar.addMouseListener(new MouseAdapter() {
     		@Override
     		public void mouseEntered(MouseEvent e) {
-    	        JPanel panel = (JPanel) e.getSource();
-    	        panel.setBorder(BorderFactory.createCompoundBorder(
-    	                BorderFactory.createLineBorder(Color.BLACK, 1),
-    	                BorderFactory.createEmptyBorder(5, 10, 10, 20)
-    	            ));
+    	        botonBuscar.setBackground(MY_AZUL2);
     		}
     		
     		@Override
     		public void mouseExited(MouseEvent e) {
-    			JPanel panel = (JPanel) e.getSource();
-    	        panel.setBorder(BorderFactory.createCompoundBorder(
-    	                BorderFactory.createLineBorder(COLOR_BORDE, 1),
-    	                BorderFactory.createEmptyBorder(5, 10, 10, 20)
-    	            ));
+    			botonBuscar.setBackground(MY_AZUL1);
     		}
         });
         
@@ -175,9 +188,9 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.setBackground(Color.WHITE);
         mainPanelFiltros.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(COLOR_BORDE, 1),
-            BorderFactory.createEmptyBorder(30, 10, 10, 20)
+            BorderFactory.createEmptyBorder(30, 5, 5, 20)
         ));
-        mainPanelFiltros.setPreferredSize(new Dimension(200, 0));
+        mainPanelFiltros.setPreferredSize(new Dimension(150, 0));
         
         JLabel tituloFiltros = new JLabel("- FILTROS -");
         tituloFiltros.setFont(FONT_SUBTITULO);
@@ -248,7 +261,7 @@ public class PanelExplorar extends JPanel {
     	        JPanel panel = (JPanel) e.getSource();
     	        panel.setBorder(BorderFactory.createCompoundBorder(
     	                BorderFactory.createLineBorder(Color.BLACK, 1),
-    	                BorderFactory.createEmptyBorder(30, 10, 10, 20)
+    	                BorderFactory.createEmptyBorder(30, 5, 5, 20)
     	            ));
     		}
     		
@@ -257,7 +270,7 @@ public class PanelExplorar extends JPanel {
     			JPanel panel = (JPanel) e.getSource();
     	        panel.setBorder(BorderFactory.createCompoundBorder(
     	                BorderFactory.createLineBorder(COLOR_BORDE, 1),
-    	                BorderFactory.createEmptyBorder(30, 10, 10, 20)
+    	                BorderFactory.createEmptyBorder(30, 5, 5, 20)
     	            ));
     		}
         });
@@ -282,7 +295,7 @@ public class PanelExplorar extends JPanel {
             ));
         
         // Crear modelo de tabla
-        String[] columnas = {"Nombre", "Tipo", "Región", "Riesgo", "Precio", "Divisa", "Gestora"};
+        String[] columnas = {"Nombre", "Región", "Precio", "Divisa", "Gestora", "Riesgo"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -296,6 +309,19 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getTableHeader().setFont(FONT_SUBTITULO);
         tablaProductos.setSelectionBackground(new Color(200, 220, 255));
         
+        // Ajustar anchos de columna
+        tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre
+        tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100); // Región
+        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(80);  // Precio
+        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(40);  // Divisa
+        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(150); // Gestora
+        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(50);  // Riesgo
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tablaProductos.getColumnModel().getColumn(3).setCellRenderer(centerRenderer); // Divisa
+        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(centerRenderer); // Riesgo
+        
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         
@@ -307,7 +333,7 @@ public class PanelExplorar extends JPanel {
         
         JButton botonVerDetalle = new JButton("Ver detalle");
         botonVerDetalle.setFont(FONT_NORMAL);
-        botonVerDetalle.setBackground(MY_AZUL);
+        botonVerDetalle.setBackground(MY_AZUL1);
         botonVerDetalle.setForeground(Color.WHITE);
         botonVerDetalle.setFocusPainted(false);
         
@@ -355,8 +381,8 @@ public class PanelExplorar extends JPanel {
         String selectedTipo = (String) selectTipoProducto.getSelectedItem();
         String selectedClase = (String) selectClaseActivo.getSelectedItem();
         String selectedRegion = (String) selectRegion.getSelectedItem();
-        String selectedRiesgo = (String) selectRiesgo.getSelectedItem();
         String selectedGestora = (String) selectGestora.getSelectedItem();
+        String selectedRiesgo = (String) selectRiesgo.getSelectedItem();
         
         productosFiltrados = new ArrayList<>();
         
@@ -430,12 +456,11 @@ public class PanelExplorar extends JPanel {
         for (ProductoFinanciero p : productos) {
             Object[] fila = {
                 p.getNombre(),
-                p.getTipoProducto(),
-                p.getRegionGeografica(),
-                p.getTipoProducto().getRiesgo(),
+                p.getRegionGeografica().getNombre(),
                 String.format("%.2f", p.getValorUnitario()),
                 p.getDivisa(),
-                (p.getGestora() != null ? p.getGestora().getNombreCompleto() : "---")
+                (p.getGestora() != null ? p.getGestora().getNombreCompleto() : "---"),
+                p.getTipoProducto().getStringRiesgo(),
             };
             modeloTabla.addRow(fila);
         }

@@ -44,6 +44,10 @@ public enum TipoProducto {
 		return riesgo;
 	}
 	
+	public String getStringRiesgo() {
+		return riesgo + "/7";
+	}
+	
 	public double getImporteMin() {
 		return importeMin;
 	}
