@@ -82,8 +82,8 @@ public class PanelPerfil extends JPanel {
     private JPanel crearPanelCabecera() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(20, 10));
-        String inicialNombre = String.valueOf(usuarioActual.getNombre().charAt(0));
-        String inicialApellido = String.valueOf(usuarioActual.getNombre().split(" ")[1].charAt(0));
+        String inicialNombre = String.valueOf(usuarioActual.getNombre().charAt(0)).toUpperCase();
+        String inicialApellido = String.valueOf(usuarioActual.getNombre().split("\\s+")[1].charAt(0)).toUpperCase();
         JLabel lblAvatar = new JLabel(inicialNombre + inicialApellido);
         lblAvatar.setForeground(Color.LIGHT_GRAY);
         lblAvatar.setFont(new Font("Segoe UI", Font.BOLD, 56));

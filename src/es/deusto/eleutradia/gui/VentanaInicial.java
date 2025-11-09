@@ -61,6 +61,7 @@ public class VentanaInicial extends JFrame {
     //SIN MODIFICAR
     private static final String DNI_REGEX = "^[0-9]{8}[A-Za-z]$";
     private static final String NIF_REGEX = "^[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-Z]$";
+    private static final String NOMBRE_REGEX = "[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]+";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String TELEFONO_REGEX = "^\\d{9}$";
     //END IAG
@@ -541,6 +542,14 @@ public class VentanaInicial extends JFrame {
 
         if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!nombre.matches(NOMBRE_REGEX)) {
+            JOptionPane.showMessageDialog(this, "El nombre solo puede contener letras.", "Nombre inválido", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (esParticular && nombre.split("\\s+").length < 2) {
+        	JOptionPane.showMessageDialog(this, "Introduzca su nombre completo.", "Nombre incompleto", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (!email.matches(EMAIL_REGEX)) {
