@@ -13,6 +13,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class PanelAprender extends JPanel {
 	private static final int ALTURA_IMAGEN_DETALLE = 200;
 	private static final Font FONT_CURSO_TITULO = new Font("Segoe UI", Font.BOLD, 22);
 	private static final Font FONT_MODULO_TITULO = new Font("Segoe UI", Font.BOLD, 16);
-	private static final Font FONT_LECCION = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_LECCION = new Font("Segoe UI", Font.PLAIN, 14);
 	private static final Font FONT_ACCION_TITULO = new Font("Segoe UI", Font.BOLD, 16);
 	
 	private static final Color COLOR_BOTON_EXITO = new Color(40, 167, 69);
@@ -248,12 +250,11 @@ public class PanelAprender extends JPanel {
 		
 		for (Curso curso : listaCursos) {
 			
-			JButton botonCurso = new JButton(curso.getNombre());
-			botonCurso.setBackground(COLOR_BOTON_CURSOS);
-			botonCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
-			botonCurso.setFocusPainted(false);
-			botonCurso.setPreferredSize(new Dimension(220, 150));
-			botonCurso.setMaximumSize(new Dimension(220, 150));
+			JPanel panelCurso = crearPanelCurso(curso);
+			
+			JPanel panelEnvolver = new JPanel(new GridBagLayout());
+			panelEnvolver.setBackground(COLOR_FONDO_PRINCIPAL);
+			
 			int cantidadModulos = 0;
 			int cantidadLeciones = 0;
 			for (Modulo modulo : curso.getModulos()) {
@@ -262,22 +263,9 @@ public class PanelAprender extends JPanel {
 					cantidadLeciones++;
 				}
 			}
-			botonCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
+			panelCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
 			
-			botonCurso.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					cursoInfo = curso;
-					actualizarPanelInfoCurso();
-					layoutPanelAprender.show(panelAprender, "PANEL_CURSOS_INFO");
-				}
-			});
-			
-			JPanel panelEnvolver = new JPanel(new GridBagLayout());
-			panelEnvolver.setBackground(COLOR_FONDO_PRINCIPAL);
-			panelEnvolver.add(botonCurso);
+			panelEnvolver.add(panelCurso);
 			panelTodosLosCursos.add(panelEnvolver);
 		}
 		
@@ -294,25 +282,108 @@ public class PanelAprender extends JPanel {
 		
 		if (listaCursos.isEmpty()) {
 			
+			panelMisCursos.setLayout(new BorderLayout());
+			
+
+			
+			
 		} else {
-			panelMisCursos.setLayout(new GridLayout(0, 2, 10, 10));
+			panelMisCursos.setLayout(new GridLayout(0, 2, 20, 20));
+			
 			for (Curso curso : listaCursos) {
 				
-				JButton botonCurso = new JButton(curso.getNombre());
-				botonCurso.setBackground(COLOR_BOTON_CURSOS);
-				botonCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
-				botonCurso.setFocusPainted(false);
-				botonCurso.setPreferredSize(new Dimension(220, 150));
-				botonCurso.setMaximumSize(new Dimension(220, 150));
+				JPanel panelCurso = crearPanelCurso(curso);
 				
-				botonCurso.setEnabled(false);
-				panelMisCursos.add(botonCurso);
-			}	
+				JPanel panelEnvolver = new JPanel(new GridBagLayout());
+				panelEnvolver.setBackground(COLOR_FONDO_PRINCIPAL);
+				
+				int cantidadModulos = 0;
+				int cantidadLeciones = 0;
+				for (Modulo modulo : curso.getModulos()) {
+					cantidadModulos++;
+					for (Leccion leccion : modulo.getLecciones()) {
+						cantidadLeciones++;
+					}
+				}
+				panelCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
+				
+				panelEnvolver.add(panelCurso);
+				panelTodosLosCursos.add(panelEnvolver);
+			}
+			
 		}
 		
 		panelTodosLosCursos.revalidate();
 		panelTodosLosCursos.repaint();
 		
+	}
+	
+	private JPanel crearPanelCurso(Curso curso) {
+		
+		JPanel panelCurso = new JPanel(new BorderLayout());
+		panelCurso.setPreferredSize(TAMANO_TARJETA);
+		panelCurso.setMaximumSize(TAMANO_TARJETA);
+		panelCurso.setBackground(COLOR_BOTON_CURSOS);
+		panelCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
+		
+		try {
+			
+			ImageIcon icono = new ImageIcon(getClass().getResource(curso.getRutaImagen()));
+			Image imagen = icono.getImage().getScaledInstance(TAMANO_TARJETA.width, ALTURA_IMAGEN, Image.SCALE_SMOOTH);
+			JLabel labelImagen = new JLabel(new ImageIcon(imagen));
+
+			panelCurso.add(labelImagen, BorderLayout.NORTH);
+			
+		} catch (Exception e) {
+			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
+		}
+		
+		JPanel panelInfotexto = new JPanel();
+		panelInfotexto.setLayout(new BoxLayout(panelInfotexto, BoxLayout.Y_AXIS));
+		panelInfotexto.setBackground(COLOR_BOTON_CURSOS);
+		panelInfotexto.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8));
+		
+		JLabel labelTitulo = new JLabel(curso.getNombre());
+		labelTitulo.setFont(FONT_TITULO);
+		labelTitulo.setForeground(Color.BLACK);
+		
+		String textoNivel = "Nivel: No especificado";
+		if (curso.getNivelRecomendado() != null) {
+			textoNivel = "Nivel: " + curso.getNivelRecomendado().toString();
+		}
+		
+		JLabel labelNivel = new JLabel(textoNivel);
+		labelNivel.setFont(FONT_NIVEL);
+		labelNivel.setForeground(COLOR_TEXTO);
+		
+		panelInfotexto.add(labelTitulo);
+		panelInfotexto.add(Box.createRigidArea(new Dimension(0, 4)));
+		panelInfotexto.add(labelNivel);
+		
+		panelCurso.add(panelInfotexto, BorderLayout.CENTER);
+		
+		panelCurso.addMouseListener(new MouseAdapter() {
+		
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panelCurso.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_APUNTAR, 1));
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panelCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cursoInfo = curso;
+				actualizarPanelInfoCurso();
+				layoutPanelAprender.show(panelAprender, "PANEL_CURSOS_INFO");
+			}
+		
+		});
+		
+		return panelCurso;
 	}
 	
 	private void actualizarPanelInfoCurso() {
