@@ -6,9 +6,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -29,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -43,6 +47,21 @@ import es.deusto.eleutradia.main.MainEleutradia;
 public class PanelAprender extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Dimension TAMANO_TARJETA = new Dimension(180, 160);
+	private static final int ALTURA_IMAGEN = 90;
+	
+	private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_NIVEL = new Font("Segoe UI", Font.PLAIN, 12);
+	
+	private static final int ALTURA_IMAGEN_DETALLE = 200;
+	private static final Font FONT_CURSO_TITULO = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_MODULO_TITULO = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_LECCION = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_ACCION_TITULO = new Font("Segoe UI", Font.BOLD, 14);
+	
+	private static final Color COLOR_BOTON_EXITO = new Color(40, 167, 69);
+	
 	
 	private Particular usuarioLogeado;
 	
@@ -297,53 +316,95 @@ public class PanelAprender extends JPanel {
 		
 		panelCursosInfo.removeAll();
 		
-		JPanel panelInfoCentro = mostrarInfoCursos(cursoInfo);
+		JScrollPane panelInfoCentro = mostrarInfoCursos(cursoInfo);
 		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
 		
 
-		JPanel panelLateral = new JPanel(new BorderLayout());
+		JPanel panelLateral = crearPanelLateralAcciones();
+		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
+		
+		panelCursosInfo.revalidate();
+		panelCursosInfo.repaint();
+		
+	}
+	
+	private JPanel crearPanelLateralAcciones() {
+		
+		JPanel panelLateral = new JPanel(new BorderLayout(0, 10));
+		panelLateral.setBackground(COLOR_FONDO_SECUNDARIO);
 		panelLateral.setPreferredSize(new Dimension(160, 0));
-		panelLateral.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		JPanel panelTexto = new JPanel();
 		panelTexto.setLayout(new BoxLayout(panelTexto, BoxLayout.Y_AXIS));
-		panelTexto.setPreferredSize(new Dimension(50, 50));
-		JLabel labelTitulo = new JLabel("¡Únete al curso!");
-		labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		labelTitulo.setForeground(COLOR_TEXTO);
-		panelTexto.add(labelTitulo);
+		panelTexto.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelTexto.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(COLOR_BORDE),
+				BorderFactory.createEmptyBorder(15, 15, 15, 15)
+		));
+
 		
-		JButton botonApuntar = new JButton("Apuntarse");
-		botonApuntar.setMinimumSize(new Dimension(150, 50));
-		botonApuntar.setPreferredSize(new Dimension(150, 50));
-		botonApuntar.setBackground(COLOR_BOTON_APUNTAR);
-		botonApuntar.setForeground(COLOR_BOTON_TEXTO);
-		botonApuntar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		botonApuntar.setFocusPainted(false);
+
 		
 		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
-			botonApuntar.setEnabled(false);
-			botonApuntar.setText("Ya estás inscrito");
+			
+			JLabel labelInscrito = new JLabel("Inscrito", SwingConstants.CENTER);
+			labelInscrito.setFont(FONT_TITULO); 
+			labelInscrito.setMinimumSize(new Dimension(150, 45));
+			labelInscrito.setPreferredSize(new Dimension(150, 45));
+			labelInscrito.setMaximumSize(new Dimension(150, 45));
+			labelInscrito.setBackground(COLOR_BOTON_EXITO); // Verde éxito
+			labelInscrito.setForeground(Color.WHITE);
+			labelInscrito.setOpaque(true); 
+			
+			labelInscrito.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			panelTexto.add(labelInscrito);
+			
+		} else {
+			
+			JLabel labelTitulo = new JLabel("¡Únete al curso!");
+			labelTitulo.setFont(FONT_ACCION_TITULO);;
+			labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+			labelTitulo.setForeground(Color.BLACK);
+			
+			panelTexto.add(labelTitulo);
+			panelTexto.add(Box.createRigidArea(new Dimension(0, 15)));
+			
+			JButton botonApuntar = new JButton("Apuntarse");
+			botonApuntar.setMinimumSize(new Dimension(150, 45));
+			botonApuntar.setPreferredSize(new Dimension(150, 45));
+			botonApuntar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+			botonApuntar.setBackground(COLOR_BOTON_APUNTAR);
+			botonApuntar.setForeground(COLOR_BOTON_TEXTO);
+			botonApuntar.setAlignmentX(Component.CENTER_ALIGNMENT);
+			botonApuntar.setFocusPainted(false);
+			
+			botonApuntar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					usuarioLogeado.addCurso(cursoInfo);
+					JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
+					
+					botonApuntar.setEnabled(false);
+					botonApuntar.setText("Ya estás inscrito");
+					
+					actualizarProgressBar();
+				}
+			});
+			
+			panelTexto.add(botonApuntar);
+			
 		}
 		
-		botonApuntar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				usuarioLogeado.addCurso(cursoInfo);
-				JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
-				
-				botonApuntar.setEnabled(false);
-				botonApuntar.setText("Ya estás inscrito");
-				
-				actualizarProgressBar();
-			}
-		});
+
+		JPanel panelVolver = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		panelVolver.setBackground(COLOR_FONDO_SECUNDARIO);
 		
 		JButton botonVolver = new JButton("Volver");
-		botonVolver.setMinimumSize(new Dimension(150, 50));
-		botonVolver.setPreferredSize(new Dimension(150, 50));
+		botonVolver.setMinimumSize(new Dimension(150, 45));
+		botonVolver.setPreferredSize(new Dimension(150, 45));
 		botonVolver.setBackground(COLOR_BOTON_VOLVER);
 		botonVolver.setForeground(COLOR_BOTON_TEXTO);
 		botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -358,39 +419,71 @@ public class PanelAprender extends JPanel {
 			}
 		});
 		
-		panelTexto.add(botonApuntar);
+		panelVolver.add(botonVolver);
 		
-		panelLateral.add(panelTexto, BorderLayout.CENTER);
-		
+		panelLateral.add(panelTexto, BorderLayout.NORTH);
 		panelLateral.add(botonVolver, BorderLayout.SOUTH);
 		
-		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
-		
-		panelCursosInfo.revalidate();
-		panelCursosInfo.repaint();
-		
+		return panelLateral;
 	}
 	
-	private JPanel mostrarInfoCursos(Curso curso) {
+	private JScrollPane mostrarInfoCursos(Curso curso) {
 		
-		JPanel panelInfo = new JPanel();
-		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
+		JPanel panelContenido = new JPanel();
+		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+		panelContenido.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelContenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		
-		JLabel labelCurso = new JLabel("Información sobre el curso: " + curso.getNombre());
-		panelInfo.add(labelCurso);
+
+		try {
+			
+			ImageIcon icono = new ImageIcon(getClass().getResource(curso.getRutaImagen()));
+			Image imagen = icono.getImage().getScaledInstance(-1, ALTURA_IMAGEN_DETALLE, Image.SCALE_SMOOTH);
+			JLabel labelImagen = new JLabel(new ImageIcon(imagen));
+			labelImagen.setAlignmentX(Component.LEFT_ALIGNMENT);
+			labelImagen.setHorizontalAlignment(SwingConstants.CENTER); 
+			labelImagen.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0)); 
+
+			panelContenido.add(labelImagen);
+		} catch (Exception e) {
+
+			System.out.println("Error al cargar imagen de detalle: " + curso.getRutaImagen());
+		}
+		
+		JLabel labelCurso = new JLabel(curso.getNombre());
+		labelCurso.setFont(FONT_CURSO_TITULO);
+		labelCurso.setForeground(Color.BLACK);
+		labelCurso.setAlignmentX(Component.LEFT_ALIGNMENT);
+		labelCurso.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		panelContenido.add(labelCurso);
 		
 		for (Modulo modulo : curso.getModulos()) {
 			
 			JLabel labelModulo = new JLabel("   Módulo: " + modulo.getNombre());
-			panelInfo.add(labelModulo);
+			labelModulo.setFont(FONT_MODULO_TITULO);
+			labelModulo.setForeground(Color.BLACK);
+			labelModulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+			labelModulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
+			panelContenido.add(labelModulo);
 			
 			for (Leccion leccion : modulo.getLecciones()) {
-				JLabel labelLeccion = new JLabel("      Lección: " + leccion.getTitulo());
-				panelInfo.add(labelLeccion);
+				JLabel labelLeccion = new JLabel("Lección: " + leccion.getTitulo());
+				labelLeccion.setFont(FONT_LECCION);
+				labelLeccion.setForeground(COLOR_TEXTO);
+				labelLeccion.setAlignmentX(Component.LEFT_ALIGNMENT);
+				labelLeccion.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
+				panelContenido.add(labelLeccion);
 			}
 		}
 		
-		return panelInfo;
+		panelContenido.add(Box.createVerticalGlue());
+		
+		JScrollPane scrollPane = new JScrollPane(panelContenido);
+		scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		return scrollPane;
 	}
 	
 	private void actualizarProgressBar() {
