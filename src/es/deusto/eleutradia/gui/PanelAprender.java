@@ -529,8 +529,7 @@ public class PanelAprender extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(panelContenido);
 		scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
-		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		
 		return scrollPane;
 	}

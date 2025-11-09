@@ -123,7 +123,7 @@ public class MainEleutradia {
 	
 	public static void inicializarCursos() {
         
-        // --- 1. CURSO: 2 Módulos (2 Lecciones + 2 Lecciones) ---
+        // --- 1. CURSO: Introducción a la Inversión (Ya existente) ---
         Leccion l1_1 = new Leccion(101, "Renta Fija vs. Renta Variable", 1);
         Leccion l1_2 = new Leccion(102, "El papel de los Brokers", 2);
         List<Leccion> leccionesC1M1 = List.of(l1_1, l1_2);
@@ -133,20 +133,22 @@ public class MainEleutradia {
         Modulo m1_1 = new Modulo(10, "Conceptos Fundamentales", 1, leccionesC1M1);
         Modulo m1_2 = new Modulo(11, "Principales Activos", 2, leccionesC1M2);
         List<Modulo> modulosCurso1 = List.of(m1_1, m1_2);
-        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.AVANZADO, "/imagenes/curso1.png");
+        // NOTA: La imagen original era curso1.png, la cambio por una de las subidas
+        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.PRINCIPIANTE, "/imagenes/curso11.png");
         listaCursos.add(cursoIntro);
         
-        // --- 2. CURSO: 1 Módulo (3 Lecciones) ---
+        // --- 2. CURSO: Análisis Técnico Básico (Ya existente) ---
         Leccion l2_1 = new Leccion(201, "Interpretación de Gráficos de Velas", 1);
         Leccion l2_2 = new Leccion(202, "Medias Móviles (SMA/EMA)", 2);
         Leccion l2_3 = new Leccion(203, "Indicador RSI y MACD", 3);
         List<Leccion> leccionesC2M1 = List.of(l2_1, l2_2, l2_3);
         Modulo m2_1 = new Modulo(20, "Indicadores Técnicos", 1, leccionesC2M1);
         List<Modulo> modulosCurso2 = List.of(m2_1);
-        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.AVANZADO, "/imagenes/curso2.png");
+        // NOTA: La imagen original era curso2.png, la cambio a curso4.jpg (desk de trading)
+        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.INTERMEDIO, "/imagenes/curso4.png");
         listaCursos.add(cursoAnalisis);
 
-        // --- 3. CURSO: 3 Módulos (2 Lecciones + 2 Lecciones + 1 Lección) ---
+        // --- 3. CURSO: Gestión de Carteras y Derivados (Ya existente) ---
         Leccion l3_1 = new Leccion(301, "Diversificación y Riesgo", 1);
         Leccion l3_2 = new Leccion(302, "Asignación de Activos (Asset Allocation)", 2);
         List<Leccion> leccionesC3M1 = List.of(l3_1, l3_2);
@@ -159,9 +161,108 @@ public class MainEleutradia {
         Modulo m3_2 = new Modulo(31, "Instrumentos Derivados", 2, leccionesC3M2);
         Modulo m3_3 = new Modulo(32, "Estrategias Avanzadas", 3, leccionesC3M3);
         List<Modulo> modulosCurso3 = List.of(m3_1, m3_2, m3_3);
+        // NOTA: La imagen original era curso3.png, la cambio a curso3.jpg (night trading)
         Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO, "/imagenes/curso3.png");
         listaCursos.add(cursoAvanzado);
         
+        // --- 4. CURSO: Finanzas Personales y Ahorro ---
+        // (Relacionado con curso7.jpg, curso12.jpg)
+        Leccion l4_1 = new Leccion(401, "Creación de un Presupuesto", 1);
+        Leccion l4_2 = new Leccion(402, "El Fondo de Emergencia", 2);
+        List<Leccion> leccionesC4M1 = List.of(l4_1, l4_2);
+        Leccion l4_3 = new Leccion(403, "Del Ahorro a la Inversión", 1);
+        Leccion l4_4 = new Leccion(404, "Interés Compuesto: La Magia de Crecer", 2);
+        List<Leccion> leccionesC4M2 = List.of(l4_3, l4_4);
+        Modulo m4_1 = new Modulo(40, "Control de Finanzas", 1, leccionesC4M1);
+        Modulo m4_2 = new Modulo(41, "Primeros Pasos", 2, leccionesC4M2);
+        List<Modulo> modulosCurso4 = List.of(m4_1, m4_2);
+        Curso cursoFinanzasP = new Curso(4, "Gestión de Finanzas Personales", modulosCurso4, NivelConocimiento.PRINCIPIANTE, "/imagenes/curso12.png");
+        listaCursos.add(cursoFinanzasP);
+        
+        // --- 5. CURSO: Planificación para la Jubilación ---
+        // (Relacionado con curso9.jpg)
+        Leccion l5_1 = new Leccion(501, "¿Qué son los Planes de Pensiones?", 1);
+        Leccion l5_2 = new Leccion(502, "Planes de Pensiones de Renta Fija (PLAN_PENSIONES_RF)", 2);
+        List<Leccion> leccionesC5M1 = List.of(l5_1, l5_2);
+        Leccion l5_3 = new Leccion(503, "Planes de Pensiones de Renta Variable (PLAN_PENSIONES_RV)", 1);
+        Leccion l5_4 = new Leccion(504, "Estrategias de Aportación y Rescate", 2);
+        List<Leccion> leccionesC5M2 = List.of(l5_3, l5_4);
+        Modulo m5_1 = new Modulo(50, "Conceptos Básicos de Jubilación", 1, leccionesC5M1);
+        Modulo m5_2 = new Modulo(51, "Tipos de Planes", 2, leccionesC5M2);
+        List<Modulo> modulosCurso5 = List.of(m5_1, m5_2);
+        Curso cursoJubilacion = new Curso(5, "Planificación para la Jubilación", modulosCurso5, NivelConocimiento.PRINCIPIANTE, "/imagenes/curso9.png");
+        listaCursos.add(cursoJubilacion);
+        
+        // --- 6. CURSO: Inversión en Bienes Raíces ---
+        // (Relacionado con curso8.jpg)
+        Leccion l6_1 = new Leccion(601, "Inversión Inmobiliaria Tradicional", 1);
+        Leccion l6_2 = new Leccion(602, "Financiación: Hipotecas y Préstamos", 2);
+        List<Leccion> leccionesC6M1 = List.of(l6_1, l6_2);
+        Leccion l6_3 = new Leccion(603, "El Auge del Crowdfunding Inmobiliario (CROWDFUND_INM)", 1);
+        Leccion l6_4 = new Leccion(604, "Invertir en SOCIMIs (REITs)", 2);
+        List<Leccion> leccionesC6M2 = List.of(l6_3, l6_4);
+        Modulo m6_1 = new Modulo(60, "Fundamentos Inmobiliarios", 1, leccionesC6M1);
+        Modulo m6_2 = new Modulo(61, "Nuevas Modalidades", 2, leccionesC6M2);
+        List<Modulo> modulosCurso6 = List.of(m6_1, m6_2);
+        Curso cursoInmuebles = new Curso(6, "Inversión en Bienes Raíces", modulosCurso6, NivelConocimiento.INTERMEDIO, "/imagenes/curso8.png");
+        listaCursos.add(cursoInmuebles);
+
+        // --- 7. CURSO: Renta Fija (Bonos y Depósitos) ---
+        // (Relacionado con curso6.jpg - monedas/tesoro, y curso7.jpg - ahorro seguro)
+        Leccion l7_1 = new Leccion(701, "Depósitos a Plazo Fijo (DEPOSITO)", 1);
+        Leccion l7_2 = new Leccion(702, "Entendiendo los Bonos (BONO)", 2);
+        List<Leccion> leccionesC7M1 = List.of(l7_1, l7_2);
+        Leccion l7_3 = new Leccion(703, "Letras del Tesoro (LETRA_TESORO)", 1);
+        Leccion l7_4 = new Leccion(704, "ETFs de Renta Fija (ETF_RF)", 2);
+        List<Leccion> leccionesC7M2 = List.of(l7_3, l7_4);
+        Modulo m7_1 = new Modulo(70, "Productos de Ahorro", 1, leccionesC7M1);
+        Modulo m7_2 = new Modulo(71, "Deuda Pública y Corporativa", 2, leccionesC7M2);
+        List<Modulo> modulosCurso7 = List.of(m7_1, m7_2);
+        Curso cursoRentaFija = new Curso(7, "Explorando la Renta Fija", modulosCurso7, NivelConocimiento.PRINCIPIANTE, "/imagenes/curso6.png");
+        listaCursos.add(cursoRentaFija);
+
+        // --- 8. CURSO: Inversiones Alternativas (Cripto y Commodities) ---
+        // (Relacionado con curso3.jpg - trading, y curso6.jpg - oro/commodities)
+        Leccion l8_1 = new Leccion(801, "Introducción a las Criptomonedas (CRIPTOMONEDA)", 1);
+        Leccion l8_2 = new Leccion(802, "Blockchain y Wallets", 2);
+        List<Leccion> leccionesC8M1 = List.of(l8_1, l8_2);
+        Leccion l8_3 = new Leccion(803, "Invertir en Materias Primas (COMMODITY)", 1);
+        Leccion l8_4 = new Leccion(804, "Oro, Petróleo y más", 2);
+        List<Leccion> leccionesC8M2 = List.of(l8_3, l8_4);
+        Modulo m8_1 = new Modulo(80, "Activos Digitales", 1, leccionesC8M1);
+        Modulo m8_2 = new Modulo(81, "Activos Tangibles", 2, leccionesC8M2);
+        List<Modulo> modulosCurso8 = List.of(m8_1, m8_2);
+        // Re-uso curso3.jpg porque encaja perfecto con Criptomonedas
+        Curso cursoAlternativos = new Curso(8, "Nuevos Horizontes: Cripto y Materias Primas", modulosCurso8, NivelConocimiento.AVANZADO, "/imagenes/curso3.png");
+        listaCursos.add(cursoAlternativos);
+
+        // --- 9. CURSO: Valoración y Riesgo ---
+        // (Relacionado con curso2.jpg - balanza)
+        Leccion l9_1 = new Leccion(901, "El binomio Riesgo-Rentabilidad", 1);
+        Leccion l9_2 = new Leccion(902, "Qué es la Volatilidad", 2);
+        List<Leccion> leccionesC9M1 = List.of(l9_1, l9_2);
+        Leccion l9_3 = new Leccion(903, "Diversificación: No pongas todos los huevos en la misma cesta", 1);
+        Leccion l9_4 = new Leccion(904, "Análisis Fundamental vs. Técnico", 2);
+        List<Leccion> leccionesC9M2 = List.of(l9_3, l9_4);
+        Modulo m9_1 = new Modulo(90, "Midiendo el Riesgo", 1, leccionesC9M1);
+        Modulo m9_2 = new Modulo(91, "Estrategias de Valoración", 2, leccionesC9M2);
+        List<Modulo> modulosCurso9 = List.of(m9_1, m9_2);
+        Curso cursoValoracion = new Curso(9, "Valoración de Activos y Gestión del Riesgo", modulosCurso9, NivelConocimiento.INTERMEDIO, "/imagenes/curso2.png");
+        listaCursos.add(cursoValoracion);
+
+        // --- 10. CURSO: Capital Inversión (Private Equity) ---
+        // (Relacionado con curso10.jpg - apretón de manos, negocio)
+        Leccion l10_1 = new Leccion(1001, "¿Qué es el Capital Inversión (PRIVATE_EQUITY)?", 1);
+        Leccion l10_2 = new Leccion(1002, "Venture Capital vs. Buyouts", 2);
+        List<Leccion> leccionesC10M1 = List.of(l10_1, l10_2);
+        Leccion l10_3 = new Leccion(1003, "El proceso de 'Deal Making'", 1);
+        Leccion l10_4 = new Leccion(1004, "Riesgos y Oportunidades del Capital Privado", 2);
+        List<Leccion> leccionesC10M2 = List.of(l10_3, l10_4);
+        Modulo m10_1 = new Modulo(100, "Fundamentos del Private Equity", 1, leccionesC10M1);
+        Modulo m10_2 = new Modulo(101, "El Mercado", 2, leccionesC10M2);
+        List<Modulo> modulosCurso10 = List.of(m10_1, m10_2);
+        Curso cursoPrivateEquity = new Curso(10, "Inversión en Capital Privado", modulosCurso10, NivelConocimiento.AVANZADO, "/imagenes/curso10.png");
+        listaCursos.add(cursoPrivateEquity);
     }
 	
 	public static void inicializarProductos() {
