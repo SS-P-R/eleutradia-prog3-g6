@@ -55,10 +55,10 @@ public class PanelAprender extends JPanel {
 	private static final Font FONT_NIVEL = new Font("Segoe UI", Font.PLAIN, 12);
 	
 	private static final int ALTURA_IMAGEN_DETALLE = 200;
-	private static final Font FONT_CURSO_TITULO = new Font("Segoe UI", Font.BOLD, 14);
-	private static final Font FONT_MODULO_TITULO = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_CURSO_TITULO = new Font("Segoe UI", Font.BOLD, 22);
+	private static final Font FONT_MODULO_TITULO = new Font("Segoe UI", Font.BOLD, 16);
 	private static final Font FONT_LECCION = new Font("Segoe UI", Font.BOLD, 14);
-	private static final Font FONT_ACCION_TITULO = new Font("Segoe UI", Font.BOLD, 14);
+	private static final Font FONT_ACCION_TITULO = new Font("Segoe UI", Font.BOLD, 16);
 	
 	private static final Color COLOR_BOTON_EXITO = new Color(40, 167, 69);
 	
@@ -107,6 +107,7 @@ public class PanelAprender extends JPanel {
 		panelAprender = new JPanel(layoutPanelAprender);
 		
 		JPanel panelCursos = crearPanelCursos();
+		
 		panelCursosInfo = new JPanel(new BorderLayout(20, 20));
 		panelCursosInfo.setBackground(COLOR_FONDO_SECUNDARIO);
 		
@@ -138,12 +139,12 @@ public class PanelAprender extends JPanel {
 		panelContenedorCentro.setBackground(COLOR_FONDO_PRINCIPAL);
 		panelContenedorCentro.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		
-		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 0));
+		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelTodosLosCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
 		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
 		
-		panelMisCursos = new JPanel(new GridLayout(0, 2, 0, 20));
+		panelMisCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelMisCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
 		scrollMis.setBorder(BorderFactory.createEmptyBorder());
@@ -155,27 +156,29 @@ public class PanelAprender extends JPanel {
 		
 		panelPrincipalPestanasCurso.add(panelPestanasCursos, BorderLayout.CENTER);
 		
-		JPanel panelDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
+		JPanel panelDerecho = new JPanel(new BorderLayout());
 		panelDerecho.setBackground(COLOR_FONDO_PRINCIPAL);
 		panelDerecho.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
 		panelDerecho.setPreferredSize(new Dimension(160, 0));
 		
 		JPanel panelProgreso = new JPanel();
 		panelProgreso.setLayout(new BoxLayout(panelProgreso, BoxLayout.Y_AXIS));
-		panelProgreso.setMaximumSize(new Dimension(160, 50));
 		panelProgreso.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelProgreso.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
+		
 		JLabel labelProgreso = new JLabel("Progreso Cursos");
 		labelProgreso.setForeground(COLOR_TEXTO);
-		labelProgreso.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		labelProgreso.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		progressBarRacha = new JProgressBar(0, 100);
 		progressBarRacha.setStringPainted(true);
-		progressBarRacha.setMaximumSize(new Dimension(100, 30));
+		progressBarRacha.setMaximumSize(new Dimension(120, 30));
 		
 		panelProgreso.add(labelProgreso);
+		panelProgreso.add(Box.createRigidArea(new Dimension(0, 10)));
 		panelProgreso.add(progressBarRacha);
-		panelDerecho.add(panelProgreso);
+		
+		panelDerecho.add(panelProgreso, BorderLayout.NORTH);
 		
 		panelPrincipalPestanasCurso.add(panelDerecho, BorderLayout.EAST);
 		
@@ -342,9 +345,6 @@ public class PanelAprender extends JPanel {
 				BorderFactory.createEmptyBorder(15, 15, 15, 15)
 		));
 
-		
-
-		
 		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
 			
 			JLabel labelInscrito = new JLabel("Inscrito", SwingConstants.CENTER);
@@ -454,7 +454,7 @@ public class PanelAprender extends JPanel {
 		labelCurso.setFont(FONT_CURSO_TITULO);
 		labelCurso.setForeground(Color.BLACK);
 		labelCurso.setAlignmentX(Component.LEFT_ALIGNMENT);
-		labelCurso.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		labelCurso.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		panelContenido.add(labelCurso);
 		
 		for (Modulo modulo : curso.getModulos()) {
@@ -467,11 +467,11 @@ public class PanelAprender extends JPanel {
 			panelContenido.add(labelModulo);
 			
 			for (Leccion leccion : modulo.getLecciones()) {
-				JLabel labelLeccion = new JLabel("Lección: " + leccion.getTitulo());
+				JLabel labelLeccion = new JLabel("      Lección: " + leccion.getTitulo());
 				labelLeccion.setFont(FONT_LECCION);
 				labelLeccion.setForeground(COLOR_TEXTO);
 				labelLeccion.setAlignmentX(Component.LEFT_ALIGNMENT);
-				labelLeccion.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
+				labelLeccion.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 				panelContenido.add(labelLeccion);
 			}
 		}
