@@ -12,7 +12,7 @@ public class Curso {
 	private NivelConocimiento nivelRecomendado;
 	private String rutaImagen;
 	
-	public Curso(int codigo, String nombre, List<Modulo> modulos) {
+	public Curso(int codigo, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
 		if (codigo < 0) throw new IllegalArgumentException("El código no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
 		this.codigo = "C" + codigo;
@@ -22,6 +22,8 @@ public class Curso {
 		} else {
 			this.modulos = new ArrayList<>();
 		}
+		this.nivelRecomendado = nivelRecomendado;
+		this.rutaImagen = rutaImagen;
 	}
 
 	public String getNombre() {
