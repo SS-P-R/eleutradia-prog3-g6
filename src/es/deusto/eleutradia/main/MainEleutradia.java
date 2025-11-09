@@ -130,7 +130,7 @@ public class MainEleutradia {
         Modulo m1_1 = new Modulo(10, "Conceptos Fundamentales", 1, leccionesC1M1);
         Modulo m1_2 = new Modulo(11, "Principales Activos", 2, leccionesC1M2);
         List<Modulo> modulosCurso1 = List.of(m1_1, m1_2);
-        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.AVANZADO, "/imagenes/curso11.png");
+        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.AVANZADO, "/imagenes/curso1.png");
         listaCursos.add(cursoIntro);
         
         // --- 2. CURSO: 1 Módulo (3 Lecciones) ---
@@ -140,7 +140,7 @@ public class MainEleutradia {
         List<Leccion> leccionesC2M1 = List.of(l2_1, l2_2, l2_3);
         Modulo m2_1 = new Modulo(20, "Indicadores Técnicos", 1, leccionesC2M1);
         List<Modulo> modulosCurso2 = List.of(m2_1);
-        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.AVANZADO, "/imagenes/curso11.png");
+        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.AVANZADO, "/imagenes/curso2.png");
         listaCursos.add(cursoAnalisis);
 
         // --- 3. CURSO: 3 Módulos (2 Lecciones + 2 Lecciones + 1 Lección) ---
@@ -156,7 +156,7 @@ public class MainEleutradia {
         Modulo m3_2 = new Modulo(31, "Instrumentos Derivados", 2, leccionesC3M2);
         Modulo m3_3 = new Modulo(32, "Estrategias Avanzadas", 3, leccionesC3M3);
         List<Modulo> modulosCurso3 = List.of(m3_1, m3_2, m3_3);
-        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO, "/imagenes/curso11.png");
+        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO, "/imagenes/curso3.png");
         listaCursos.add(cursoAvanzado);
         
     }
