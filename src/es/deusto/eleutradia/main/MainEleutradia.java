@@ -252,14 +252,6 @@ public class MainEleutradia {
     	    new ArrayList<>()
     	);
         
-        Gestora rbc = new Gestora(
-    	    "RB Canada",
-    	    "Royal Bank of Canada Asset Management",
-    	    "155 Wellington St W, Toronto, Canadá",
-    	    canada,
-    	    new ArrayList<>()
-    	);
-        
         Gestora nomura = new Gestora(
     	    "Nomura",
     	    "Nomura Asset Management",
@@ -279,7 +271,7 @@ public class MainEleutradia {
         // === DEPÓSITOS ===
         listaProductos.addAll(List.of(
             new ProductoFinanciero("DEP001", "Depósito 12M", YearMonth.of(2025, 12), rentabConservadora, 1020.0,
-            		TipoProducto.DEPOSITO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.EUR, jpmorgan),
+            		TipoProducto.DEPOSITO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.USD, jpmorgan),
             new ProductoFinanciero("DEP002", "Depósito CapFrance", YearMonth.of(2026, 6), rentabModerada, 2100.0,
             		TipoProducto.DEPOSITO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.SEMESTRAL, Divisa.EUR, amundi)
         ));
@@ -321,7 +313,9 @@ public class MainEleutradia {
             new ProductoFinanciero("FON003", "S&P 500 Index", null, rentabModerada, 950.0,
             		TipoProducto.FONDO_INVERSION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.DIARIA, Divisa.USD, fidelity),
             new ProductoFinanciero("FON004", "Asia Growth Fund", null, rentabAgresiva, 1800.0,
-            		TipoProducto.FONDO_INVERSION, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.MENSUAL, Divisa.USD, blackrock)
+            		TipoProducto.FONDO_INVERSION, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.MENSUAL, Divisa.USD, blackrock),
+            new ProductoFinanciero("FON005", "UK Corporate Bond Fund", null, rentabConservadora, 1250.0,
+            		TipoProducto.FONDO_INVERSION, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.SEMESTRAL, Divisa.GBP, schroders)
         ));
 
         // === PLANES DE PENSIONES ===
@@ -339,7 +333,11 @@ public class MainEleutradia {
             new ProductoFinanciero("ETF002", "ETF R. Variable Global", null, rentabAgresiva, 280.0,
             		TipoProducto.ETF_RV, RegionGeografica.MUNDO, PeriodicidadPago.ANUAL, Divisa.USD, fidelity),
             new ProductoFinanciero("ETF003", "ETF Emergentes Asia", null, rentabAgresiva, 210.0,
-            		TipoProducto.ETF_RV, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.SEMESTRAL, Divisa.USD, blackrock)
+            		TipoProducto.ETF_RV, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.SEMESTRAL, Divisa.USD, blackrock),
+            new ProductoFinanciero("ETF004", "ETF Japan Equity Index", null, rentabModerada, 15000.0,
+            		TipoProducto.ETF_RV, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.ANUAL, Divisa.JPY, nomura),
+            new ProductoFinanciero("ETF005", "Asia Tech Leaders ETF", null, rentabAgresiva, 320.0,
+            		TipoProducto.ETF_RV, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.ANUAL, Divisa.HKD, hsbc)
         ));
 
         // === CRIPTOMONEDAS ===
