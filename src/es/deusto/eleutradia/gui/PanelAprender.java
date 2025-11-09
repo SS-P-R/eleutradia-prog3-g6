@@ -284,10 +284,16 @@ public class PanelAprender extends JPanel {
 			
 			panelMisCursos.setLayout(new BorderLayout());
 			
-
+			JLabel labelVacio = new JLabel("Aún no te ahs inscrito a ningun curso");
+			labelVacio.setHorizontalAlignment(SwingConstants.CENTER);
+			labelVacio.setForeground(COLOR_TEXTO);
+			labelVacio.setFont(FONT_NIVEL);
+			
+			panelMisCursos.add(labelVacio, BorderLayout.CENTER);
 			
 			
 		} else {
+			
 			panelMisCursos.setLayout(new GridLayout(0, 2, 20, 20));
 			
 			for (Curso curso : listaCursos) {
@@ -308,7 +314,7 @@ public class PanelAprender extends JPanel {
 				panelCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
 				
 				panelEnvolver.add(panelCurso);
-				panelTodosLosCursos.add(panelEnvolver);
+				panelMisCursos.add(panelEnvolver);
 			}
 			
 		}
