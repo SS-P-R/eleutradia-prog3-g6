@@ -11,14 +11,14 @@ public enum TipoProducto {
 	DEPOSITO("Depósitos", ClaseActivo.RENTA_FIJA, 1, 10000.0),
 	BONO("Bonos", ClaseActivo.RENTA_FIJA, 2, 1000.0),
 	LETRA_TESORO("Letras del tesoro", ClaseActivo.RENTA_FIJA, 1, 100.0),
-	PLAN_PENSIONES_RF("Planes de Pensiones: RF", ClaseActivo.RENTA_FIJA, 3, 100.0),
-	ETF_RF("ETFs: RF", ClaseActivo.RENTA_FIJA, 3, 1000.0),
+	PLAN_PENSIONES_RF("P. de Pensiones a RF", ClaseActivo.RENTA_FIJA, 3, 100.0),
+	ETF_RF("ETFs de RF", ClaseActivo.RENTA_FIJA, 3, 1000.0),
 	
 	// --- Activos de RV ---
 	ACCION("Acciones", ClaseActivo.RENTA_VARIABLE, 5, 10.0),
 	FONDO_INVERSION("Fondos de inversión", ClaseActivo.RENTA_VARIABLE, 4, 1.0),
-	PLAN_PENSIONES_RV("Planes de Pensiones: RV", ClaseActivo.RENTA_VARIABLE, 4, 100.0),
-	ETF_RV("ETFs: RV", ClaseActivo.RENTA_VARIABLE, 4, 10.0),
+	PLAN_PENSIONES_RV("P. de Pensiones a RV", ClaseActivo.RENTA_VARIABLE, 4, 100.0),
+	ETF_RV("ETFs de RV", ClaseActivo.RENTA_VARIABLE, 4, 10.0),
 	
 	// --- Activos alternativos ---
 	CRIPTOMONEDA("Criptomonedas", ClaseActivo.ALTERNATIVO, 7, 10.0),

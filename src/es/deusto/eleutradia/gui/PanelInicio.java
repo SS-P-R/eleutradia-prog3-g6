@@ -47,7 +47,6 @@ public class PanelInicio extends JPanel{
 
     private static final Font FONT_TITULO1 = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_TITULO2 = new Font("Segoe UI", Font.BOLD, 16);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
 	
@@ -62,8 +61,9 @@ public class PanelInicio extends JPanel{
 		this.ventanaPrincipal = ventanaPrincipal;
 		
 		//Fondo
-		setLayout(new BorderLayout(10,10));
-		setBackground(COLOR_FONDO_PRINCIPAL);
+		this.setLayout(new BorderLayout(10,10));
+		this.setBackground(COLOR_FONDO_PRINCIPAL);
+		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		//Cargar paneles
 		JPanel panelSaludo = PanelSaludo();

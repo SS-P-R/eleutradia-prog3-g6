@@ -52,9 +52,9 @@ public class PanelPerfil extends JPanel {
 	
     public PanelPerfil(Usuario usuario) {
         this.usuarioActual = usuario;
-        setLayout(new BorderLayout(15, 15));
-        actualizarColores();
-        setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        this.setLayout(new BorderLayout(15, 15));
+        this.actualizarColores();
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         initComponents();
     }

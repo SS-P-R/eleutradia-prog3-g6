@@ -299,11 +299,11 @@ public class PanelExplorar extends JPanel {
         tablaProductos.setSelectionBackground(new Color(200, 220, 255));
         
         // Ajustar anchos de columna
-        tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(130); // Nombre
+        tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre
         tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100); // Región
         tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(50);  // Precio
         tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(30);  // Divisa
-        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(45);  // YTD
+        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(55);  // YTD
         tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(45);  // Riesgo
         tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(100); // Gestora
         
