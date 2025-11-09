@@ -57,7 +57,7 @@ public class VentanaPrincipal extends JFrame {
 		this.construirPanelNavegacion();
 		this.addKeyListener(navegacionKeyListener);
 		this.setFocusable(true);
-		this.requestFocusInWindow();;
+		this.requestFocusInWindow();
 		this.setVisible(true);
 	}
 	

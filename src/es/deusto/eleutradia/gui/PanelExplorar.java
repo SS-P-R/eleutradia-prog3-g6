@@ -282,7 +282,7 @@ public class PanelExplorar extends JPanel {
         
         // Crear modelo de tabla
         String anoActual = String.valueOf(Year.now().getValue());
-        String[] columnas = {"Nombre", "Región", "Precio", "Div", anoActual, "1A", "3A", "5A", "Riesgo"};
+        String[] columnas = {"Nombre", "Región", "Precio", "Div", anoActual, "Riesgo", "Gestora"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -302,23 +302,18 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(50);  // Precio
         tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(30);  // Divisa
         tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(45);  // YTD
-        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(40);  // 1A
-        tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(40);  // 3A
-        tablaProductos.getColumnModel().getColumn(7).setPreferredWidth(40);  // 5A
-        tablaProductos.getColumnModel().getColumn(8).setPreferredWidth(45);  // Riesgo
+        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(45);  // Riesgo
+        tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(100); // Gestora
         
         DefaultTableCellRenderer rendererCentro = new DefaultTableCellRenderer();
         rendererCentro.setHorizontalAlignment(JLabel.CENTER);
-        tablaProductos.getColumnModel().getColumn(3).setCellRenderer(rendererCentro); // Divisa
-        tablaProductos.getColumnModel().getColumn(4).setCellRenderer(rendererCentro); // YTD
-        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(rendererCentro); // 1A
-        tablaProductos.getColumnModel().getColumn(6).setCellRenderer(rendererCentro); // 3A
-        tablaProductos.getColumnModel().getColumn(7).setCellRenderer(rendererCentro); // 5A
-        tablaProductos.getColumnModel().getColumn(8).setCellRenderer(rendererCentro); // Riesgo
+        tablaProductos.getColumnModel().getColumn(3).setCellRenderer(rendererCentro);  // Divisa
+        tablaProductos.getColumnModel().getColumn(4).setCellRenderer(rendererCentro);  // YTD
+        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(rendererCentro);  // Riesgo
         
         DefaultTableCellRenderer rendererDerecha = new DefaultTableCellRenderer();
         rendererDerecha.setHorizontalAlignment(JLabel.RIGHT);
-        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha);
+        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha); // Precio
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -478,10 +473,8 @@ public class PanelExplorar extends JPanel {
                 String.format("%.2f", p.getValorUnitario()),
                 p.getDivisa(),
                 formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.YTD)),
-                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.UN_ANO)),
-                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.TRES_ANOS)),
-                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.CINCO_ANOS)),
-                p.getTipoProducto().getStringRiesgo()
+                p.getTipoProducto().getStringRiesgo(),
+                (p.getGestora() != null) ? p.getGestora().getNombreComercial() : "---"
             };
             modeloTabla.addRow(fila);
         }

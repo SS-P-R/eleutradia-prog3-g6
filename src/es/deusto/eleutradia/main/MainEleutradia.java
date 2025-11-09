@@ -197,7 +197,7 @@ public class MainEleutradia {
         );
         
         Gestora blackrock = new Gestora(
-    		"iShares",
+    		"BlackRock",
     	    "BlackRock Inc.",
     	    "50 Hudson Yards, New York, NY, Estados Unidos",
     	    eeuu,
@@ -221,7 +221,7 @@ public class MainEleutradia {
     	);
 
         Gestora jpmorgan = new Gestora(
-    		"J.P. Morgan",
+    		"JPMorgan",
     	    "J.P. Morgan Asset Management",
     	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
     	    eeuu,
