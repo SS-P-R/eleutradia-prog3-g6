@@ -255,16 +255,6 @@ public class PanelAprender extends JPanel {
 			JPanel panelEnvolver = new JPanel(new GridBagLayout());
 			panelEnvolver.setBackground(COLOR_FONDO_PRINCIPAL);
 			
-			int cantidadModulos = 0;
-			int cantidadLeciones = 0;
-			for (Modulo modulo : curso.getModulos()) {
-				cantidadModulos++;
-				for (Leccion leccion : modulo.getLecciones()) {
-					cantidadLeciones++;
-				}
-			}
-			panelCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
-			
 			panelEnvolver.add(panelCurso);
 			panelTodosLosCursos.add(panelEnvolver);
 		}
@@ -303,15 +293,6 @@ public class PanelAprender extends JPanel {
 				JPanel panelEnvolver = new JPanel(new GridBagLayout());
 				panelEnvolver.setBackground(COLOR_FONDO_PRINCIPAL);
 				
-				int cantidadModulos = 0;
-				int cantidadLeciones = 0;
-				for (Modulo modulo : curso.getModulos()) {
-					cantidadModulos++;
-					for (Leccion leccion : modulo.getLecciones()) {
-						cantidadLeciones++;
-					}
-				}
-				panelCurso.setToolTipText("Cantidad de Módulos: " + cantidadModulos + " | Cantidad de Lecciones:" + cantidadLeciones);
 				
 				panelEnvolver.add(panelCurso);
 				panelMisCursos.add(panelEnvolver);
@@ -373,6 +354,17 @@ public class PanelAprender extends JPanel {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				panelCurso.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_APUNTAR, 1));
+				
+				int cantidadModulos = 0;
+				int cantidadLeciones = 0;
+				for (Modulo modulo : curso.getModulos()) {
+					cantidadModulos++;
+					for (Leccion leccion : modulo.getLecciones()) {
+						cantidadLeciones++;
+					}
+				}
+				panelCurso.setToolTipText("Módulos: " + cantidadModulos + " | Lecciones:" + cantidadLeciones);
+				
 			}
 			
 			@Override
