@@ -79,9 +79,6 @@ public class PanelAprender extends JPanel {
     private static final Color COLOR_BOTON_VOLVER = new Color(100, 100, 100); // Verde medio
     private static final Color COLOR_BOTON_APUNTAR = new Color(0, 100, 255); // Azul medio
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
-    
-    
-    private ArrayList<Curso> listaCursos;
 	
 	public PanelAprender(Particular usuario) {
 		
@@ -308,6 +305,7 @@ public class PanelAprender extends JPanel {
 			panelCurso.add(labelImagen, BorderLayout.NORTH);
 			
 		} catch (Exception e) {
+			// tengo que implementar una imagen en negro por si no se carga la imagen del curso
 			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
 		}
 		
@@ -407,7 +405,7 @@ public class PanelAprender extends JPanel {
 			labelInscrito.setMinimumSize(new Dimension(150, 45));
 			labelInscrito.setPreferredSize(new Dimension(150, 45));
 			labelInscrito.setMaximumSize(new Dimension(150, 45));
-			labelInscrito.setBackground(COLOR_BOTON_EXITO); // Verde éxito
+			labelInscrito.setBackground(COLOR_BOTON_EXITO);
 			labelInscrito.setForeground(Color.WHITE);
 			labelInscrito.setOpaque(true); 
 			
@@ -450,7 +448,6 @@ public class PanelAprender extends JPanel {
 			panelTexto.add(botonApuntar);
 			
 		}
-		
 
 		JPanel panelVolver = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		panelVolver.setBackground(COLOR_FONDO_SECUNDARIO);
@@ -486,7 +483,6 @@ public class PanelAprender extends JPanel {
 		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 		panelContenido.setBackground(COLOR_FONDO_PRINCIPAL);
 		panelContenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		
 
 		try {
 			
