@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -33,6 +36,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Gestora;
+import es.deusto.eleutradia.domain.PlazoRentabilidad;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
@@ -277,7 +281,8 @@ public class PanelExplorar extends JPanel {
             ));
         
         // Crear modelo de tabla
-        String[] columnas = {"Nombre", "Región", "Precio", "Divisa", "Gestora", "Riesgo"};
+        String anoActual = String.valueOf(Year.now().getValue());
+        String[] columnas = {"Nombre", "Región", "Precio", "Div", anoActual, "1A", "3A", "5A", "Riesgo"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -292,49 +297,60 @@ public class PanelExplorar extends JPanel {
         tablaProductos.setSelectionBackground(new Color(200, 220, 255));
         
         // Ajustar anchos de columna
-        tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre
+        tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(130); // Nombre
         tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100); // Región
-        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(80);  // Precio
+        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(50);  // Precio
         tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(40);  // Divisa
-        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(150); // Gestora
-        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(50);  // Riesgo
+        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(45);  // YTD
+        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(40);  // 1A
+        tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(40);  // 3A
+        tablaProductos.getColumnModel().getColumn(7).setPreferredWidth(40);  // 5A
+        tablaProductos.getColumnModel().getColumn(8).setPreferredWidth(45);  // Riesgo
         
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        tablaProductos.getColumnModel().getColumn(3).setCellRenderer(centerRenderer); // Divisa
-        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(centerRenderer); // Riesgo
+        DefaultTableCellRenderer rendererCentro = new DefaultTableCellRenderer();
+        rendererCentro.setHorizontalAlignment(JLabel.CENTER);
+        tablaProductos.getColumnModel().getColumn(3).setCellRenderer(rendererCentro); // Divisa
+        tablaProductos.getColumnModel().getColumn(4).setCellRenderer(rendererCentro); // YTD
+        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(rendererCentro); // 1A
+        tablaProductos.getColumnModel().getColumn(6).setCellRenderer(rendererCentro); // 3A
+        tablaProductos.getColumnModel().getColumn(7).setCellRenderer(rendererCentro); // 5A
+        tablaProductos.getColumnModel().getColumn(8).setCellRenderer(rendererCentro); // Riesgo
+        
+        DefaultTableCellRenderer rendererDerecha = new DefaultTableCellRenderer();
+        rendererDerecha.setHorizontalAlignment(JLabel.RIGHT);
+        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha);
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        scrollPane.getViewport().setBackground(MY_GRIS_CLARO);
+        JScrollBar barraVertical = scrollPane.getVerticalScrollBar();
         //IAG (ChatGPT)
         //ADAPTADO: Diseño personalizado
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-        	 @Override
-        	    protected void configureScrollBarColors() {
-        		 	Color grisBarra = new Color(180, 180, 180);
-        	        this.thumbColor = grisBarra;
-        	        this.thumbDarkShadowColor = grisBarra;
-        	        this.thumbHighlightColor = grisBarra;
-        	        this.trackColor = Color.WHITE; 
-        	    }
+        Color grisBarra = new Color(180, 180, 180);
+        barraVertical.setUI(new BasicScrollBarUI() {
+    		@Override
+    	    protected void configureScrollBarColors() {
+    	        this.thumbColor = grisBarra;
+    	        this.thumbDarkShadowColor = grisBarra;
+    	        this.thumbHighlightColor = grisBarra;
+    	        this.trackColor = Color.WHITE; 
+    	    }
 
-        	    @Override
-        	    protected JButton createDecreaseButton(int orientation) {
-        	        return createInvisibleButton();
-        	    }
+    	    @Override
+    	    protected JButton createDecreaseButton(int orientation) {
+    	        return createInvisibleButton();
+    	    }
 
-        	    @Override
-        	    protected JButton createIncreaseButton(int orientation) {
-        	        return createInvisibleButton();
-        	    }
+    	    @Override
+    	    protected JButton createIncreaseButton(int orientation) {
+    	        return createInvisibleButton();
+    	    }
 
-        	    private JButton createInvisibleButton() {
-        	        JButton button = new JButton();
-        	        button.setPreferredSize(new Dimension(0, 0));
-        	        button.setVisible(false);
-        	        return button;
-        	    }
+    	    private JButton createInvisibleButton() {
+    	        JButton button = new JButton();
+    	        button.setPreferredSize(new Dimension(0, 0));
+    	        button.setVisible(false);
+    	        return button;
+    	    }
         });
         //END IAG
         
@@ -401,21 +417,21 @@ public class PanelExplorar extends JPanel {
             
             // Filtro por tipo de producto
             if (!selectedTipo.equals("Todo") && cumpleFiltros) {
-                if (!producto.getTipoProducto().toString().equals(selectedTipo)) {
+                if (!producto.getTipoProducto().getNombre().equals(selectedTipo)) {
                     cumpleFiltros = false;
                 }
             }
             
             // Filtro por clase de activo
             if (!selectedClase.equals("Todo") && cumpleFiltros) {
-                if (!producto.getTipoProducto().getClaseActivo().toString().equals(selectedClase)) {
+                if (!producto.getTipoProducto().getClaseActivo().getNombre().equals(selectedClase)) {
                     cumpleFiltros = false;
                 }
             }
             
             // Filtro por región
             if (!selectedRegion.equals("Todo") && cumpleFiltros) {
-                if (!producto.getRegionGeografica().toString().equals(selectedRegion)) {
+                if (!producto.getRegionGeografica().getNombre().equals(selectedRegion)) {
                     cumpleFiltros = false;
                 }
             }
@@ -430,7 +446,7 @@ public class PanelExplorar extends JPanel {
             
             // Filtro por gestora
             if (!selectedGestora.equals("Todo") && cumpleFiltros) {
-            	String nombreGestora = (producto.getGestora() != null) ? producto.getGestora().getNombreCompleto() : "---";
+            	String nombreGestora = (producto.getGestora() != null) ? producto.getGestora().getNombreComercial() : "---";
                 if (!(nombreGestora.equals(selectedGestora))) {
                     cumpleFiltros = false;
                 }
@@ -457,15 +473,25 @@ public class PanelExplorar extends JPanel {
         modeloTabla.setRowCount(0);
         for (ProductoFinanciero p : productos) {
             Object[] fila = {
-                p.getNombre(),
+        		p.getNombre(),
                 p.getRegionGeografica().getNombre(),
                 String.format("%.2f", p.getValorUnitario()),
                 p.getDivisa(),
-                (p.getGestora() != null ? p.getGestora().getNombreCompleto() : "---"),
-                p.getTipoProducto().getStringRiesgo(),
+                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.YTD)),
+                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.UN_ANO)),
+                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.TRES_ANOS)),
+                formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.CINCO_ANOS)),
+                p.getTipoProducto().getStringRiesgo()
             };
             modeloTabla.addRow(fila);
         }
+    }
+    
+    private String formatearRentabilidad(BigDecimal rentabilidad) {
+        if (rentabilidad == null) {
+            return "---";
+        }
+        return String.format("%.2f%%", rentabilidad);
     }
     
     private void verDetalleProducto() {
@@ -501,7 +527,7 @@ public class PanelExplorar extends JPanel {
         List<String> tipos = new ArrayList<>();
         tipos.add("Todo");
         for (TipoProducto tipo : TipoProducto.values()) {
-            tipos.add(tipo.toString());
+            tipos.add(tipo.getNombre());
         }
         return tipos.toArray(new String[0]);
     }
@@ -510,7 +536,7 @@ public class PanelExplorar extends JPanel {
         List<String> clases = new ArrayList<>();
         clases.add("Todo");
         for (ClaseActivo clase : ClaseActivo.values()) {
-            clases.add(clase.toString());
+            clases.add(clase.getNombre());
         }
         return clases.toArray(new String[0]);
     }
@@ -519,7 +545,7 @@ public class PanelExplorar extends JPanel {
         List<String> regiones = new ArrayList<>();
         regiones.add("Todo");
         for (RegionGeografica region : RegionGeografica.values()) {
-            regiones.add(region.toString());
+            regiones.add(region.getNombre());
         }
         return regiones.toArray(new String[0]);
     }
@@ -530,7 +556,7 @@ public class PanelExplorar extends JPanel {
         for (ProductoFinanciero p : MainEleutradia.listaProductos) {
         	Gestora g = p.getGestora();
         	if (g != null) {
-        		gestoras.add(g.getNombreCompleto());
+        		gestoras.add(g.getNombreComercial());
         	}
         }
         return gestoras.toArray(new String[0]);

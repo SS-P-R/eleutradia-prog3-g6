@@ -423,6 +423,7 @@ public class VentanaInicial extends JFrame {
 			layout.show(contenedor, "bienvenida");
 			setTitle("EleuTradia: Inicio");
 		});
+		botonCancelar.addMouseListener(myAdapterGris);
         
         JButton botonReg = new JButton("Confirmar");
         botonReg.setFont(FONT_NORMAL);
@@ -436,6 +437,7 @@ public class VentanaInicial extends JFrame {
         panelBotones.add(botonReg);
         botonReg.addActionListener(e -> procesarRegistro(esParticular, campoRegId, campoRegNombre,
         		campoRegEmail, campoRegTlf, campoRegPassword, campoRegConfirmPassword));
+        botonReg.addMouseListener(myAdapterAzul);
         
         panelRegistro.add(panelBotones);
         

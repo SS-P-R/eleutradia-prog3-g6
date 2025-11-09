@@ -8,9 +8,9 @@ public enum TipoProducto {
 	//				importe mínimo en USD para contratarlo)
 	
 	// --- Activos de RF ---
+	DEPOSITO("Depósitos", ClaseActivo.RENTA_FIJA, 1, 10000.0),
 	BONO("Bonos", ClaseActivo.RENTA_FIJA, 2, 1000.0),
 	LETRA_TESORO("Letras del tesoro", ClaseActivo.RENTA_FIJA, 1, 100.0),
-	DEPOSITO("Depósitos", ClaseActivo.RENTA_FIJA, 1, 10000.0),
 	PLAN_PENSIONES_RF("Planes de Pensiones: RF", ClaseActivo.RENTA_FIJA, 3, 100.0),
 	ETF_RF("ETFs: RF", ClaseActivo.RENTA_FIJA, 3, 1000.0),
 	

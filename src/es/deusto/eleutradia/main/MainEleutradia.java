@@ -218,7 +218,7 @@ public class MainEleutradia {
     	);
 
         Gestora jpmorgan = new Gestora(
-    		"JPMAM",
+    		"J.P. Morgan",
     	    "J.P. Morgan Asset Management",
     	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
     	    reinounido,
@@ -241,234 +241,102 @@ public class MainEleutradia {
     		new ArrayList<>()
     	);
 	        
-	    // --- DEPÓSITOS ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "DEP001",
-	        "Depósito 12M",
-	        YearMonth.of(2025, 12),
-	        rentabConservadora,
-	        1020.0,
-	        TipoProducto.DEPOSITO,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
-	        PeriodicidadPago.ANUAL,
-	        Divisa.EUR,
-	        jpmorgan
-	    ));
+        // === DEPÓSITOS ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("DEP001", "Depósito 12M", YearMonth.of(2025, 12), rentabConservadora, 1020.0,
+            		TipoProducto.DEPOSITO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.EUR, jpmorgan),
+            new ProductoFinanciero("DEP002", "Depósito CapFrance", YearMonth.of(2026, 6), rentabModerada, 2100.0,
+            		TipoProducto.DEPOSITO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.SEMESTRAL, Divisa.EUR, amundi)
+        ));
 
-	    listaProductos.add(new ProductoFinanciero(
-	        "DEP002",
-	        "Depósito Capital France",
-	        YearMonth.of(2026, 6),
-	        rentabModerada,
-	        2100.0,
-	        TipoProducto.DEPOSITO,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
-	        PeriodicidadPago.SEMESTRAL,
-	        Divisa.EUR,
-	        amundi
-	    ));
-	    
-	    // --- BONOS ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "BON001",
-	        "Global Bond Index Fund",
-	        YearMonth.of(2026, 12),
-	        rentabConservadora,
-	        110.0,
-	        TipoProducto.BONO,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.ANUAL,
-	        Divisa.USD,
-	        vanguard
-		));
-	    
-	    listaProductos.add(new ProductoFinanciero(
-	        "BON002",
-	        "Global Short-Term Corporate Bond",
-	        YearMonth.of(2026, 12),
-	        rentabConservadora,
-	        155.0,
-	        TipoProducto.BONO,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.ANUAL,
-	        Divisa.EUR,
-	        blackrock
-		));
+        // === BONOS ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("BON001", "Global Bond Index Fund", YearMonth.of(2026, 12), rentabConservadora, 110.0,
+            		TipoProducto.BONO, RegionGeografica.MUNDO, PeriodicidadPago.ANUAL, Divisa.USD, vanguard),
+            new ProductoFinanciero("BON002", "Global S-T Corp. Bond", YearMonth.of(2026, 12), rentabConservadora, 155.0,
+            		TipoProducto.BONO, RegionGeografica.MUNDO, PeriodicidadPago.ANUAL, Divisa.EUR, blackrock)
+        ));
+        
+        // === LETRAS DEL TESORO ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("LDT001", "Deuda España 12M", YearMonth.of(2026, 3), rentabConservadora, 1000.0,
+            		TipoProducto.LETRA_TESORO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.SIN_PAGO, Divisa.EUR, bbva),
+            new ProductoFinanciero("LDT002", "Deuda USA 6M", YearMonth.of(2025, 8), rentabConservadora, 500.0,
+            		TipoProducto.LETRA_TESORO, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, jpmorgan)
+        ));
 
-	    // --- ACCIONES ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "ACC001",
-	        "NVIDIA",
-	        null,
-	        rentabAgresiva,
-	        175.0,
-	        TipoProducto.ACCION,
-	        RegionGeografica.AMERICA_NORTE,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.USD,
-	        null
-	    ));
+        // === ACCIONES ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("ACC001", "NVIDIA", null, rentabAgresiva, 175.0,
+            		TipoProducto.ACCION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, null),
+            new ProductoFinanciero("ACC002", "Xiaomi", null, rentabAgresiva, 4.78,
+            		TipoProducto.ACCION, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.SIN_PAGO, Divisa.CNY, null),
+            new ProductoFinanciero("ACC003", "Banco Santander", null, rentabModerada, 3.55,
+            		TipoProducto.ACCION, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.EUR, null),
+            new ProductoFinanciero("ACC004", "Tesla", null, rentabAgresiva, 250.0,
+            		TipoProducto.ACCION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, null)
+        ));
 
-	    listaProductos.add(new ProductoFinanciero(
-	        "ACC002",
-	        "Xiaomi",
-	        null,
-	        rentabAgresiva,
-	        4.78,
-	        TipoProducto.ACCION,
-	        RegionGeografica.ASIA_PACIFICO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.CNY,
-	        null
-	    ));
+        // === FONDOS DE INVERSIÓN ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("FON001", "Fondo CapFrance Global", null, rentabModerada, 1650.0,
+            		TipoProducto.FONDO_INVERSION, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.TRIMESTRAL, Divisa.EUR, amundi),
+            new ProductoFinanciero("FON002", "Fondo SwissBank", null, rentabModerada, 950.0,
+            		TipoProducto.FONDO_INVERSION, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.MENSUAL, Divisa.CHF, vanguard),
+            new ProductoFinanciero("FON003", "S&P 500 Index", null, rentabModerada, 950.0,
+            		TipoProducto.FONDO_INVERSION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.DIARIA, Divisa.USD, fidelity),
+            new ProductoFinanciero("FON004", "Asia Growth Fund", null, rentabAgresiva, 1800.0,
+            		TipoProducto.FONDO_INVERSION, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.MENSUAL, Divisa.USD, blackrock)
+        ));
 
-	    // --- FONDOS DE INVERSIÓN ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "FON001",
-	        "Fondo CapitalFrance Global",
-	        null,
-	        rentabModerada,
-	        1650.0,
-	        TipoProducto.FONDO_INVERSION,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
-	        PeriodicidadPago.TRIMESTRAL,
-	        Divisa.EUR,
-	        amundi
-	    ));
+        // === PLANES DE PENSIONES ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("PDP001", "Plan Jubilación RF", null, rentabConservadora, 2.0,
+            		TipoProducto.PLAN_PENSIONES_RF, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.MENSUAL, Divisa.EUR, bbva),
+            new ProductoFinanciero("PDP002", "Plan Jubilación RV", null, rentabModerada, 5.0,
+            		TipoProducto.PLAN_PENSIONES_RV, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.EUR, bbva)
+        ));
 
-	    listaProductos.add(new ProductoFinanciero(
-	        "FON002",
-	        "Fondo SwissBank",
-	        null,
-	        rentabModerada,
-	        950.0,
-	        TipoProducto.FONDO_INVERSION,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
-	        PeriodicidadPago.MENSUAL,
-	        Divisa.CHF,
-	        vanguard
-	    ));
-	    
-	    listaProductos.add(new ProductoFinanciero(
-	        "FON003",
-	        "S&P 500 Index",
-	        null,
-	        rentabModerada,
-	        950.0,
-	        TipoProducto.FONDO_INVERSION,
-	        RegionGeografica.AMERICA_NORTE,
-	        PeriodicidadPago.DIARIA,
-	        Divisa.USD,
-	        fidelity
-		));
-	    
-	    // --- PLANES DE PENSIONES ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "PDP001",
-	        "Plan Jubilación Renta Fija",
-	        null,
-	        rentabConservadora,
-	        2.0,
-	        TipoProducto.PLAN_PENSIONES_RF,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
-	        PeriodicidadPago.MENSUAL,
-	        Divisa.EUR,
-	        bbva
-		));
-	    
-	    listaProductos.add(new ProductoFinanciero(
-	        "PDP002",
-	        "Plan Jubilación Renta Variable",
-	        null,
-	        rentabModerada,
-	        5.0,
-	        TipoProducto.PLAN_PENSIONES_RV,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.EUR,
-	        bbva
-		));
+        // === ETFS ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("ETF001", "ETF R. Fija Europa", null, rentabConservadora, 120.0,
+            		TipoProducto.ETF_RF, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.EUR, vanguard),
+            new ProductoFinanciero("ETF002", "ETF R. Variable Global", null, rentabAgresiva, 280.0,
+            		TipoProducto.ETF_RV, RegionGeografica.MUNDO, PeriodicidadPago.ANUAL, Divisa.USD, fidelity),
+            new ProductoFinanciero("ETF003", "ETF Emergentes Asia", null, rentabAgresiva, 210.0,
+            		TipoProducto.ETF_RV, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.SEMESTRAL, Divisa.USD, blackrock)
+        ));
 
-	    // --- ETFS ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "ETF001",
-	        "ETF Renta Fija Europa",
-	        null,
-	        rentabConservadora,
-	        120.0,
-	        TipoProducto.ETF_RF,
-	        RegionGeografica.EUROPA_OCCIDENTAL,
-	        PeriodicidadPago.ANUAL,
-	        Divisa.EUR,
-	        vanguard
-	    ));
+        // === CRIPTOMONEDAS ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("CRP001", "Bitcoin", null, rentabAgresiva, 110_000,
+            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, null),
+            new ProductoFinanciero("CRP002", "XRP", null, rentabAgresiva, 2.5,
+            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, null),
+            new ProductoFinanciero("CRP003", "Ethereum", null, rentabAgresiva, 3100.0,
+            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, null)
+        ));
 
-	    listaProductos.add(new ProductoFinanciero(
-	        "ETF002",
-	        "ETF Renta Variable Global",
-	        null,
-	        rentabAgresiva,
-	        280.0,
-	        TipoProducto.ETF_RV,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.ANUAL,
-	        Divisa.USD,
-	        fidelity
-	    ));
-	    
-	    // --- CRIPTOMONEDAS ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "CRP001",
-	        "Bitcoin",
-	        null,
-	        rentabAgresiva,
-	        110_000,
-	        TipoProducto.CRIPTOMONEDA,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.USD,
-	        null
-	    ));
+        // === MATERIAS PRIMAS ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("CMD001", "Physical Gold", null, rentabModerada, 77.88,
+            		TipoProducto.COMMODITY, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, amundi),
+            new ProductoFinanciero("CMD002", "Physical Platinum", null, rentabAgresiva, 22.72,
+            		TipoProducto.COMMODITY, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, blackrock),
+            new ProductoFinanciero("CMD003", "Crude Oil WTI", null, rentabModerada, 83.45,
+            		TipoProducto.COMMODITY, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, fidelity)
+        ));
 
-	    listaProductos.add(new ProductoFinanciero(
-	        "CRP002",
-	        "XRP",
-	        null,
-	        rentabAgresiva,
-	        2.5,
-	        TipoProducto.CRIPTOMONEDA,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.USD,
-	        null
-	    ));
-	    
-	    // --- MATERIAS PRIMAS ---
-	    listaProductos.add(new ProductoFinanciero(
-	        "CMD001",
-	        "Physical Gold",
-	        null,
-	        rentabModerada,
-	        77.88,
-	        TipoProducto.COMMODITY,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.USD,
-	        amundi
-		));
-	    
-	    listaProductos.add(new ProductoFinanciero(
-	        "CMD002",
-	        "Physical Platinum",
-	        null,
-	        rentabAgresiva,
-	        22.72,
-	        TipoProducto.COMMODITY,
-	        RegionGeografica.MUNDO,
-	        PeriodicidadPago.SIN_PAGO,
-	        Divisa.USD,
-	        blackrock
-	    ));
+        // === PRIVATE EQUITY ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("PEQ001", "Global Venture Growth", null, rentabAgresiva, 25000.0, TipoProducto.PRIVATE_EQUITY, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, blackrock)
+        ));
+
+        // === CROWDFUNDING INMOBILIARIO ===
+        listaProductos.addAll(List.of(
+            new ProductoFinanciero("CRI001", "CrowdMadrid Plaza", null, rentabModerada, 3200.0, TipoProducto.CROWDFUND_INM, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.TRIMESTRAL, Divisa.EUR, amundi)
+        ));
+
 	}
 	
 	public static void main(String[] args) {
