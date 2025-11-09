@@ -284,7 +284,7 @@ public class PanelAprender extends JPanel {
 			
 			panelMisCursos.setLayout(new BorderLayout());
 			
-			JLabel labelVacio = new JLabel("Aún no te ahs inscrito a ningun curso");
+			JLabel labelVacio = new JLabel("Aún no te has inscrito a ningun curso");
 			labelVacio.setHorizontalAlignment(SwingConstants.CENTER);
 			labelVacio.setForeground(COLOR_TEXTO);
 			labelVacio.setFont(FONT_NIVEL);
@@ -464,9 +464,7 @@ public class PanelAprender extends JPanel {
 					usuarioLogeado.addCurso(cursoInfo);
 					JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
 					
-					botonApuntar.setEnabled(false);
-					botonApuntar.setText("Ya estás inscrito");
-					
+					actualizarPanelInfoCurso();					
 					actualizarProgressBar();
 				}
 			});
