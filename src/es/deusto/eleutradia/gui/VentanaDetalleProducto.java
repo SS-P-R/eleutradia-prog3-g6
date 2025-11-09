@@ -21,7 +21,7 @@ public class VentanaDetalleProducto extends JDialog {
 
 	public VentanaDetalleProducto(JFrame padre, ProductoFinanciero producto, boolean modal) {
         super(padre, "Detalles del producto", modal);
-        this.setSize(600, 450);
+        this.setSize(600, 250);
         this.setLocationRelativeTo(padre);
         this.setLayout(new BorderLayout());
         this.setResizable(false);

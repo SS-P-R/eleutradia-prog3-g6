@@ -297,6 +297,14 @@ public class MainEleutradia {
             PlazoRentabilidad.MAX, new BigDecimal("15.22")
         );
         
+        Gestora eleutradia = new Gestora(
+    		"EleuTradia",
+    	    "EleuTradia Asset Management",
+    	    "Universidad de Deusto, Bilbao, España",
+    	    espana,
+    	    new ArrayList<>()
+        );
+        
         Gestora blackrock = new Gestora(
     		"BlackRock",
     	    "BlackRock Inc.",
@@ -389,20 +397,20 @@ public class MainEleutradia {
         listaProductos.addAll(List.of(
             new ProductoFinanciero("LDT001", "Deuda España 12M", YearMonth.of(2026, 3), rentabConservadora, 1000.0,
             		TipoProducto.LETRA_TESORO, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.SIN_PAGO, Divisa.EUR, bbva),
-            new ProductoFinanciero("LDT002", "Deuda USA 6M", YearMonth.of(2025, 8), rentabConservadora, 500.0,
+            new ProductoFinanciero("LDT002", "US Debt 6M", YearMonth.of(2025, 8), rentabConservadora, 500.0,
             		TipoProducto.LETRA_TESORO, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, jpmorgan)
         ));
 
         // === ACCIONES ===
         listaProductos.addAll(List.of(
             new ProductoFinanciero("ACC001", "NVIDIA", null, rentabAgresiva, 175.0,
-            		TipoProducto.ACCION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, null),
+            		TipoProducto.ACCION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, eleutradia),
             new ProductoFinanciero("ACC002", "Xiaomi", null, rentabAgresiva, 4.78,
-            		TipoProducto.ACCION, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.SIN_PAGO, Divisa.CNY, null),
+            		TipoProducto.ACCION, RegionGeografica.ASIA_PACIFICO, PeriodicidadPago.SIN_PAGO, Divisa.CNY, eleutradia),
             new ProductoFinanciero("ACC003", "Banco Santander", null, rentabModerada, 3.55,
-            		TipoProducto.ACCION, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.EUR, null),
+            		TipoProducto.ACCION, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.ANUAL, Divisa.EUR, eleutradia),
             new ProductoFinanciero("ACC004", "Tesla", null, rentabAgresiva, 250.0,
-            		TipoProducto.ACCION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, null)
+            		TipoProducto.ACCION, RegionGeografica.AMERICA_NORTE, PeriodicidadPago.SIN_PAGO, Divisa.USD, eleutradia)
         ));
 
         // === FONDOS DE INVERSIÓN ===
@@ -444,11 +452,11 @@ public class MainEleutradia {
         // === CRIPTOMONEDAS ===
         listaProductos.addAll(List.of(
             new ProductoFinanciero("CRP001", "Bitcoin", null, rentabAgresiva, 110_000,
-            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, null),
+            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, eleutradia),
             new ProductoFinanciero("CRP002", "XRP", null, rentabAgresiva, 2.5,
-            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, null),
+            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, eleutradia),
             new ProductoFinanciero("CRP003", "Ethereum", null, rentabAgresiva, 3100.0,
-            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, null)
+            		TipoProducto.CRIPTOMONEDA, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, eleutradia)
         ));
 
         // === MATERIAS PRIMAS ===

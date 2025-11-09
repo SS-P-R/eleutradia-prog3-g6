@@ -43,7 +43,7 @@ public class VentanaAnadirACartera extends JDialog {
 	}
 
 	private void configurarVentana(JFrame padre) {
-		this.setSize(600, 450);
+		this.setSize(600, 250);
         this.setLocationRelativeTo(padre);
         this.setLayout(new BorderLayout(10, 10));
         this.setResizable(false);
