@@ -329,12 +329,14 @@ public class MainEleutradia {
 
         // === PRIVATE EQUITY ===
         listaProductos.addAll(List.of(
-            new ProductoFinanciero("PEQ001", "Global Venture Growth", null, rentabAgresiva, 25000.0, TipoProducto.PRIVATE_EQUITY, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, blackrock)
+            new ProductoFinanciero("PEQ001", "Global Venture Growth", null, rentabAgresiva, 25000.0,
+            		TipoProducto.PRIVATE_EQUITY, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.USD, blackrock)
         ));
 
         // === CROWDFUNDING INMOBILIARIO ===
         listaProductos.addAll(List.of(
-            new ProductoFinanciero("CRI001", "CrowdMadrid Plaza", null, rentabModerada, 3200.0, TipoProducto.CROWDFUND_INM, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.TRIMESTRAL, Divisa.EUR, amundi)
+            new ProductoFinanciero("CRI001", "CrowdMadrid Plaza", null, rentabModerada, 3200.0,
+            		TipoProducto.CROWDFUND_INM, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.TRIMESTRAL, Divisa.EUR, amundi)
         ));
 
 	}

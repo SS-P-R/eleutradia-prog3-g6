@@ -11,9 +11,6 @@ public enum Divisa {
     JPY("Yen japonés", new BigDecimal("153.77")),
     CAD("Dólar canadiense", new BigDecimal("1.39")),
     MXN("Peso mexicano", new BigDecimal("18.49")),
-    AUD("Dólar australiano", new BigDecimal("1.52")),
-    SEK("Corona sueca", new BigDecimal("9.40")),
-    NOK("Corona noruega", new BigDecimal("10.03")),
     HKD("Dólar de Hong Kong", new BigDecimal("7.77")),
     CNY("Yuan chino", new BigDecimal("7.11"));
 	

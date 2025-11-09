@@ -300,7 +300,7 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(130); // Nombre
         tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100); // Región
         tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(50);  // Precio
-        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(40);  // Divisa
+        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(30);  // Divisa
         tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(45);  // YTD
         tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(40);  // 1A
         tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(40);  // 3A
