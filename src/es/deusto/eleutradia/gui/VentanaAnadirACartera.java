@@ -30,8 +30,11 @@ public class VentanaAnadirACartera extends JDialog {
     private JComboBox<Double> comboCantidad;
     
     // Estilos
-    private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
-    private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
+    private static final Color MY_AZUL_CLARO = new Color(0, 100, 255);
+    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
+    private static final Color COLOR_FONDO_PRINCIPAL = new Color(250, 250, 250);
+    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
+    private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 12);
 	
 	public VentanaAnadirACartera(JFrame padre, Usuario usuario, ProductoFinanciero producto, boolean modal) {
 		super(padre, "Selección de cartera", modal);
@@ -44,6 +47,7 @@ public class VentanaAnadirACartera extends JDialog {
 
 	private void configurarVentana(JFrame padre) {
 		this.setSize(600, 250);
+		this.setBackground(COLOR_FONDO_PRINCIPAL);
         this.setLocationRelativeTo(padre);
         this.setLayout(new BorderLayout(10, 10));
         this.setResizable(false);
@@ -51,7 +55,7 @@ public class VentanaAnadirACartera extends JDialog {
 	
 	private void construirVentana() {
         JLabel titulo = new JLabel("Seleccione la cartera donde añadir el producto", JLabel.CENTER);
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        titulo.setFont(FONT_TITULO);
         titulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         this.add(titulo, BorderLayout.NORTH);
         
@@ -78,15 +82,21 @@ public class VentanaAnadirACartera extends JDialog {
         JPanel panelBotones = new JPanel(new FlowLayout());
         
         botonCancelar = new JButton("Cancelar");
-        botonCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        botonCancelar.setBackground(MY_GRIS);
+        botonCancelar.setFont(FONT_NORMAL);
+        botonCancelar.setBackground(MY_GRIS_CLARO);
         botonCancelar.setForeground(Color.WHITE);
+        botonCancelar.setBorderPainted(false);
+        botonCancelar.setContentAreaFilled(false);
+        botonCancelar.setOpaque(true);
         botonCancelar.setFocusPainted(false);
         
         botonConfirmar = new JButton("Añadir");
-        botonConfirmar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        botonConfirmar.setBackground(MY_AZUL);
+        botonConfirmar.setFont(FONT_NORMAL);
+        botonConfirmar.setBackground(MY_AZUL_CLARO);
         botonConfirmar.setForeground(Color.WHITE);
+        botonConfirmar.setBorderPainted(false);
+        botonConfirmar.setContentAreaFilled(false);
+        botonConfirmar.setOpaque(true);
         botonConfirmar.setFocusPainted(false);
         
         panelBotones.add(botonCancelar);
