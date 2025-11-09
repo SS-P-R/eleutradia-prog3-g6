@@ -484,17 +484,37 @@ public class PanelExplorar extends JPanel {
     private void actualizarTabla(List<ProductoFinanciero> productos) {
         modeloTabla.setRowCount(0);
         for (ProductoFinanciero p : productos) {
+        	String rutaImagen = null;
         	ImageIcon iconoGestora = null;
             if (p.getGestora() != null) {
-                String rutaImagen = "/imagenes/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
-                if (getClass().getResource(rutaImagen) != null) {
-                    iconoGestora = new ImageIcon(getClass().getResource(rutaImagen));
-                }
-                if (iconoGestora != null) {
-	                Image imagen = iconoGestora.getImage().getScaledInstance(80, 25, Image.SCALE_SMOOTH);
-	                iconoGestora = new ImageIcon(imagen);
-                }
+                rutaImagen = "/imagenes/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
+            } else {
+            	rutaImagen = "/imagenes/eleutradia.png";
             }
+            if (getClass().getResource(rutaImagen) != null) {
+                iconoGestora = new ImageIcon(getClass().getResource(rutaImagen));
+            }
+            if (iconoGestora != null) {
+                Image imagen = iconoGestora.getImage();
+                //IAG (ChatGPT)
+                //ADAPTADO: Calcular proporción de anchura deseada
+                int altoDeseado = 25;
+                int anchoOriginal = imagen.getWidth(null);
+                int altoOriginal = imagen.getHeight(null);
+                
+                int anchoDeseado = (int) ((double) altoDeseado / altoOriginal * anchoOriginal);
+                
+                int anchoMax = 80;
+                if (anchoDeseado > anchoMax) {
+                    double factor = (double) anchoMax / anchoDeseado;
+                    anchoDeseado = anchoMax;
+                    altoDeseado = (int) (altoDeseado * factor);
+                }
+                //END IAG
+                Image imagenEscalada = imagen.getScaledInstance(anchoDeseado, altoDeseado, Image.SCALE_SMOOTH);
+                iconoGestora = new ImageIcon(imagenEscalada);
+            }
+            
             Object[] fila = {
         		p.getNombre(),
                 p.getRegionGeografica().getNombre(),
