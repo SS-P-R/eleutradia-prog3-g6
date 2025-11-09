@@ -305,8 +305,7 @@ public class PanelAprender extends JPanel {
 			panelCurso.add(labelImagen, BorderLayout.NORTH);
 			
 		} catch (Exception e) {
-			// tengo que implementar una imagen en negro por si no se carga la imagen del curso
-			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
+
 		}
 		
 		JPanel panelInfotexto = new JPanel();
@@ -495,8 +494,7 @@ public class PanelAprender extends JPanel {
 
 			panelContenido.add(labelImagen);
 		} catch (Exception e) {
-
-			System.out.println("Error al cargar imagen de detalle: " + curso.getRutaImagen());
+			
 		}
 		
 		JLabel labelCurso = new JLabel(curso.getNombre());
@@ -529,7 +527,6 @@ public class PanelAprender extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(panelContenido);
 		scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
-		//scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		
 		return scrollPane;
 	}
