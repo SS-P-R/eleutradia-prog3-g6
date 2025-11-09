@@ -2,6 +2,7 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -19,7 +21,11 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
@@ -76,34 +82,55 @@ public class VentanaDetalleProducto extends JDialog {
 
         panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
 
-        // Panel central con información
-        JPanel panelInfo = new JPanel();
-        panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
-        panelInfo.setBackground(COLOR_FONDO_PRINCIPAL);
-        panelInfo.setBorder(new EmptyBorder(10, 0, 0, 0));
+        String[] columnas = {"Plazo / Info", "Rentabilidad / Detalle"};
+        DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-        panelInfo.add(new JLabel("Tipo: " + producto.getTipoProducto().getNombre()));
-        panelInfo.add(Box.createVerticalStrut(5));
-        panelInfo.add(new JLabel("Riesgo: " + producto.getTipoProducto().getStringRiesgo()));
-        panelInfo.add(Box.createVerticalStrut(5));
-        panelInfo.add(new JLabel("Importe mínimo: " + producto.getTipoProducto().getImporteMin() + " " + producto.getDivisa().getSimbolo()));
-        panelInfo.add(Box.createVerticalStrut(10));
+        JTable tablaInfo = new JTable(modeloTabla);
+        tablaInfo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 1),
+                BorderFactory.createEmptyBorder(5, 10, 10, 5)
+            ));
+        tablaInfo.setFont(FONT_NORMAL);
+        tablaInfo.setRowHeight(25);
 
-        JLabel rentabilidadesLabel = new JLabel("Rentabilidades históricas:");
-        rentabilidadesLabel.setFont(FONT_SUBTITULO);
-        panelInfo.add(rentabilidadesLabel);
-        panelInfo.add(Box.createVerticalStrut(5));
+        // Renderizado centrado y en negrita
+        DefaultTableCellRenderer rendererNegritaYCentro = new DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setFont(FONT_NORMAL.deriveFont(Font.BOLD));
+                setHorizontalAlignment(JLabel.CENTER);
+                return c;
+            }
+        };
+        tablaInfo.getColumnModel().getColumn(0).setCellRenderer(rendererNegritaYCentro);
+        tablaInfo.getColumnModel().getColumn(1).setCellRenderer(rendererNegritaYCentro);
 
-        // Rentabilidades
+        // Agregar filas de información general
+        modeloTabla.addRow(new Object[]{"Tipo de producto:", producto.getTipoProducto().getNombre()});
+        modeloTabla.addRow(new Object[]{"Riesgo:", producto.getTipoProducto().getStringRiesgo()});
+        modeloTabla.addRow(new Object[]{"Importe mínimo:", producto.getTipoProducto().getImporteMin() + " " + producto.getDivisa().getSimbolo()});
+        modeloTabla.addRow(new Object[]{"", ""});
+        modeloTabla.addRow(new Object[]{"- Periodo -", "- Rentabilidad histórica -"});
+
+        // Agregar rentabilidades
         for (Map.Entry<PlazoRentabilidad, BigDecimal> entry : producto.getRentabilidades().entrySet()) {
-            String plazo = entry.getKey().getDefinicion();
+            String plazo = entry.getKey().getDefinicion().toUpperCase();
             BigDecimal valor = entry.getValue();
-            JLabel lbl = new JLabel("  • " + plazo + ": " + (valor != null ? valor + "%" : "---"));
-            lbl.setFont(FONT_NORMAL);
-            panelInfo.add(lbl);
+            JLabel texto = new JLabel((valor != null) ? String.format("%.2f%%", valor) : "---");
+            if ((valor.compareTo(BigDecimal.ZERO) == 1)) {texto.setForeground(Color.GREEN);}
+            else if ((valor.compareTo(BigDecimal.ZERO) == 0)) {texto.setForeground(MY_GRIS_OSCURO);}
+            else {texto.setForeground(Color.RED);}
+            modeloTabla.addRow(new Object[]{plazo, texto.toString()});
         }
 
-        panelPrincipal.add(panelInfo, BorderLayout.CENTER);
+        panelPrincipal.add(tablaInfo, BorderLayout.CENTER);
 
         // Panel inferior con botón cerrar
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
