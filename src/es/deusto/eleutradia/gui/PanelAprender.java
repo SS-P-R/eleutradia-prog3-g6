@@ -73,6 +73,7 @@ public class PanelAprender extends JPanel {
     private static final Color COLOR_BOTON_APUNTAR = new Color(0, 100, 255); // Azul medio
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
     
+    
     private ArrayList<Curso> listaCursos;
 	
 	public PanelAprender(Particular usuario) {
