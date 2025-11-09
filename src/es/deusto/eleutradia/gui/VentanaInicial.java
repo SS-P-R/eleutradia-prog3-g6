@@ -47,6 +47,7 @@ public class VentanaInicial extends JFrame {
     private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
     private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
     private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
+    
     //IAG (ChatGPT)
     //ADAPTADO: tamaño reducido
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
