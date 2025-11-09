@@ -51,9 +51,6 @@ public class PanelAprender extends JPanel {
 	private static final Font FONT_LECCION = new Font("Segoe UI", Font.PLAIN, 14);
 	private static final Font FONT_ACCION_TITULO = new Font("Segoe UI", Font.BOLD, 16);
 	
-	private static final Color COLOR_BOTON_EXITO = new Color(40, 167, 69);
-	
-	
 	private Particular usuarioLogeado;
 	
 	private CardLayout layoutPanelAprender;
@@ -77,7 +74,7 @@ public class PanelAprender extends JPanel {
     private static final Color COLOR_BOTON_INACTIVO = new Color(223, 223, 222); // Gris medio
     private static final Color COLOR_TEXTO = new Color(169, 168, 162);// Gris oscuro
     private static final Color COLOR_BOTON_TEXTO = Color.WHITE;// Gris oscuro
-    private static final Color COLOR_TARJETA_COMPLETADA = new Color(220, 255, 220); // Verde claro
+	private static final Color COLOR_BOTON_EXITO = new Color(40, 167, 69);
     private static final Color COLOR_BOTON_CURSOS = new Color(249, 249, 249); // Verde claro
     private static final Color COLOR_BOTON_VOLVER = new Color(100, 100, 100); // Verde medio
     private static final Color COLOR_BOTON_APUNTAR = new Color(0, 100, 255); // Azul medio
