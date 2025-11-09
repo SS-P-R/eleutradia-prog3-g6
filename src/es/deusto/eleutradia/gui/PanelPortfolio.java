@@ -49,9 +49,9 @@ public class PanelPortfolio extends JPanel {
             this.carteraSeleccionada = usuario.getCarteras().get(0);
         }
         
-        setLayout(new BorderLayout(15, 15));
-        setBackground(COLOR_FONDO_PRINCIPAL);
-        setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        this.setLayout(new BorderLayout(15, 15));
+        this.setBackground(COLOR_FONDO_PRINCIPAL);
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         inicializarPaneles();
         cargarDatosPortfolio();

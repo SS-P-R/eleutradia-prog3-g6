@@ -53,7 +53,7 @@ public class PanelPerfil extends JPanel {
     public PanelPerfil(Usuario usuario) {
         this.usuarioActual = usuario;
         this.setLayout(new BorderLayout(15, 15));
-        this.actualizarColores();
+        this.setBackground(COLOR_FONDO_CLARO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         initComponents();
@@ -436,9 +436,7 @@ public class PanelPerfil extends JPanel {
         return card;
     }
     
-    private void actualizarColores() {
-        setBackground(getColorFondo());
-    }
+
     
     private void actualizarTema() {
         removeAll();

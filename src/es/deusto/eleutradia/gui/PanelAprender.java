@@ -86,7 +86,7 @@ public class PanelAprender extends JPanel {
 		
 		this.setLayout(new BorderLayout());
 		this.setBackground(COLOR_FONDO_SECUNDARIO);
-		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		layoutPanelAprender = new CardLayout();
 		panelAprender = new JPanel(layoutPanelAprender);
