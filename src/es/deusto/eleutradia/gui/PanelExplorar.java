@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,6 +20,7 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -315,6 +317,21 @@ public class PanelExplorar extends JPanel {
         rendererDerecha.setHorizontalAlignment(JLabel.RIGHT);
         tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha); // Precio
         
+        // Renderer de los logos de gestoras
+        tablaProductos.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public void setValue(Object value) {
+                if (value instanceof ImageIcon) {
+                    setIcon((ImageIcon) value);
+                    setText("");
+                } else {
+                    setIcon(null);
+                    setText(value != null ? value.toString() : "");
+                }
+                setHorizontalAlignment(JLabel.CENTER);
+            }
+        });
+        
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         JScrollBar barraVertical = scrollPane.getVerticalScrollBar();
@@ -467,6 +484,17 @@ public class PanelExplorar extends JPanel {
     private void actualizarTabla(List<ProductoFinanciero> productos) {
         modeloTabla.setRowCount(0);
         for (ProductoFinanciero p : productos) {
+        	ImageIcon iconoGestora = null;
+            if (p.getGestora() != null) {
+                String rutaImagen = "/imagenes/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
+                if (getClass().getResource(rutaImagen) != null) {
+                    iconoGestora = new ImageIcon(getClass().getResource(rutaImagen));
+                }
+                if (iconoGestora != null) {
+	                Image imagen = iconoGestora.getImage().getScaledInstance(80, 25, Image.SCALE_SMOOTH);
+	                iconoGestora = new ImageIcon(imagen);
+                }
+            }
             Object[] fila = {
         		p.getNombre(),
                 p.getRegionGeografica().getNombre(),
@@ -474,7 +502,7 @@ public class PanelExplorar extends JPanel {
                 p.getDivisa(),
                 formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.YTD)),
                 p.getTipoProducto().getStringRiesgo(),
-                (p.getGestora() != null) ? p.getGestora().getNombreComercial() : "---"
+                iconoGestora
             };
             modeloTabla.addRow(fila);
         }

@@ -173,27 +173,27 @@ public class MainEleutradia {
 
 	    	// --- Rentabilidades tipo ejemplo ---
     	Map<PlazoRentabilidad, BigDecimal> rentabConservadora = Map.of(
-            PlazoRentabilidad.YTD, new BigDecimal("0.01"),
-            PlazoRentabilidad.UN_ANO, new BigDecimal("0.02"),
-            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.03"),
-            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.035"),
-            PlazoRentabilidad.MAX, new BigDecimal("0.04")
+            PlazoRentabilidad.YTD, new BigDecimal("1.95"),
+            PlazoRentabilidad.UN_ANO, new BigDecimal("1.28"),
+            PlazoRentabilidad.TRES_ANOS, new BigDecimal("3.45"),
+            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("2.56"),
+            PlazoRentabilidad.MAX, new BigDecimal("3.09")
         );
 
         Map<PlazoRentabilidad, BigDecimal> rentabModerada = Map.of(
-            PlazoRentabilidad.YTD, new BigDecimal("0.03"),
-            PlazoRentabilidad.UN_ANO, new BigDecimal("0.05"),
-            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.07"),
-            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.09"),
-            PlazoRentabilidad.MAX, new BigDecimal("0.10")
+            PlazoRentabilidad.YTD, new BigDecimal("4.50"),
+            PlazoRentabilidad.UN_ANO, new BigDecimal("4.21"),
+            PlazoRentabilidad.TRES_ANOS, new BigDecimal("7.60"),
+            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("6.25"),
+            PlazoRentabilidad.MAX, new BigDecimal("6.10")
         );
 
         Map<PlazoRentabilidad, BigDecimal> rentabAgresiva = Map.of(
-            PlazoRentabilidad.YTD, new BigDecimal("0.06"),
-            PlazoRentabilidad.UN_ANO, new BigDecimal("0.10"),
-            PlazoRentabilidad.TRES_ANOS, new BigDecimal("0.15"),
-            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("0.20"),
-            PlazoRentabilidad.MAX, new BigDecimal("0.25")
+            PlazoRentabilidad.YTD, new BigDecimal("12.75"),
+            PlazoRentabilidad.UN_ANO, new BigDecimal("11.02"),
+            PlazoRentabilidad.TRES_ANOS, new BigDecimal("14.09"),
+            PlazoRentabilidad.CINCO_ANOS, new BigDecimal("18.51"),
+            PlazoRentabilidad.MAX, new BigDecimal("15.22")
         );
         
         Gestora blackrock = new Gestora(
