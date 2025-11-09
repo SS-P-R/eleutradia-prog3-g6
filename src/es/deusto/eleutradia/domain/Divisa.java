@@ -9,8 +9,6 @@ public enum Divisa {
     GBP("Libra esterlina", new BigDecimal("0.76")),
     CHF("Franco suizo", new BigDecimal("0.80")),
     JPY("Yen japonés", new BigDecimal("153.77")),
-    CAD("Dólar canadiense", new BigDecimal("1.39")),
-    MXN("Peso mexicano", new BigDecimal("18.49")),
     HKD("Dólar de Hong Kong", new BigDecimal("7.77")),
     CNY("Yuan chino", new BigDecimal("7.11"));
 	

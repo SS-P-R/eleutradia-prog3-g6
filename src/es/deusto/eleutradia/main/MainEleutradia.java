@@ -45,6 +45,9 @@ public class MainEleutradia {
     public static Pais eeuu = new Pais("Estados Unidos", RegionGeografica.AMERICA_NORTE);
     public static Pais alemania = new Pais("Alemania", RegionGeografica.EUROPA_OCCIDENTAL);
     public static Pais reinounido = new Pais("Reino Unido", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais canada = new Pais("Canadá", RegionGeografica.AMERICA_NORTE);
+    public static Pais japon = new Pais("Japón", RegionGeografica.ASIA_PACIFICO);
+    public static Pais hongkong = new Pais("Hong Kong", RegionGeografica.ASIA_PACIFICO);
 	
 	public static void inicializarUsuarios() {
 		//IAG (ChatGPT)
@@ -221,8 +224,16 @@ public class MainEleutradia {
     		"J.P. Morgan",
     	    "J.P. Morgan Asset Management",
     	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
-    	    reinounido,
+    	    eeuu,
     	    new ArrayList<>()
+    	);
+        
+        Gestora bbva = new Gestora(
+    		"BBVA",
+    		"BBVA Asset Management",
+    		"Paseo Castellana 81, Madrid, España",
+    		espana,
+    		new ArrayList<>()
     	);
 
         Gestora amundi = new Gestora(
@@ -233,12 +244,36 @@ public class MainEleutradia {
     	    new ArrayList<>()
     	);
         
-        Gestora bbva = new Gestora(
-    		"BBVA",
-    		"BBVA Asset Management",
-    		"Paseo Castellana 81, Madrid, España",
-    		espana,
-    		new ArrayList<>()
+        Gestora schroders = new Gestora(
+    	    "Schroders",
+    	    "Schroders PLC",
+    	    "1 London Wall Place, Londres, Reino Unido",
+    	    reinounido,
+    	    new ArrayList<>()
+    	);
+        
+        Gestora rbc = new Gestora(
+    	    "RB Canada",
+    	    "Royal Bank of Canada Asset Management",
+    	    "155 Wellington St W, Toronto, Canadá",
+    	    canada,
+    	    new ArrayList<>()
+    	);
+        
+        Gestora nomura = new Gestora(
+    	    "Nomura",
+    	    "Nomura Asset Management",
+    	    "1-12-1 Nihonbashi, Chuo-ku, Tokio, Japón",
+    	    japon,
+    	    new ArrayList<>()
+    	);
+        
+        Gestora hsbc = new Gestora(
+    	    "HSBC",
+    	    "HSBC Asset Management",
+    	    "1 Queen’s Road Central, Hong Kong",
+    	    hongkong,
+    	    new ArrayList<>()
     	);
 	        
         // === DEPÓSITOS ===
