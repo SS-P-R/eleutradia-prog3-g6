@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PerfilFinanciero {
 	private PerfilRiesgo perfilRiesgo;
-	private int horizonte; // Tiempo previsto de manteción del capital
+	private int horizonte; // Tiempo en años previsto de mantención del capital
 	private NivelConocimiento nivel;
 	private List<TipoProducto> tiposProducto;
 	

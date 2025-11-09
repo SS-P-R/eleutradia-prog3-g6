@@ -7,8 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -41,8 +43,10 @@ public class VentanaInicial extends JFrame {
     private ImageIcon originalIcon;
 	
     // Estilos
-    private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
-    private static final Color MY_GRIS = new Color(100, 100, 100); // Gris
+    private static final Color MY_AZUL_CLARO = new Color(0, 120, 255);
+    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
+    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
+    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
     //IAG (ChatGPT)
     //ADAPTADO: tamaño reducido
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
@@ -57,6 +61,8 @@ public class VentanaInicial extends JFrame {
     //SIN MODIFICAR
     private static final String DNI_REGEX = "^[0-9]{8}[A-Za-z]$";
     private static final String NIF_REGEX = "^[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-Z]$";
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String TELEFONO_REGEX = "^\\d{9}$";
     //END IAG
 	
 	public VentanaInicial() {
@@ -122,27 +128,35 @@ public class VentanaInicial extends JFrame {
 		JButton botonParticular = new JButton("Acceder como Particular");
 		botonParticular.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonParticular.setMaximumSize(new Dimension(220, 40));
-		botonParticular.setBackground(MY_AZUL);
+		botonParticular.setBackground(MY_AZUL_CLARO);
 		botonParticular.setForeground(Color.WHITE);
+        botonParticular.setBorderPainted(false);
+        botonParticular.setContentAreaFilled(false);
+        botonParticular.setOpaque(true);
 		botonParticular.setFocusPainted(false);
 		panelDcho.add(botonParticular);
 		botonParticular.addActionListener(e -> {
 			layout.show(contenedor, "loginParticular");
 			setTitle("EleuTradia: Iniciar sesión");
 		});
+		botonParticular.addMouseListener(myAdapterAzul);
 		panelDcho.add(Box.createVerticalStrut(20));
 		
 		JButton botonEmpresa = new JButton("Acceder como Empresa");
 		botonEmpresa.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonEmpresa.setMaximumSize(new Dimension(220, 40));
-		botonEmpresa.setBackground(MY_AZUL);
+		botonEmpresa.setBackground(MY_AZUL_CLARO);
 		botonEmpresa.setForeground(Color.WHITE);
+        botonEmpresa.setBorderPainted(false);
+        botonEmpresa.setContentAreaFilled(false);
+        botonEmpresa.setOpaque(true);
 		botonEmpresa.setFocusPainted(false);
 		panelDcho.add(botonEmpresa);
 		botonEmpresa.addActionListener(e -> {
 			layout.show(contenedor, "loginEmpresa");
 			setTitle("EleuTradia: Iniciar sesión");
 		});
+		botonEmpresa.addMouseListener(myAdapterAzul);
 		panelDcho.add(Box.createVerticalStrut(120));
 	    
         JPanel panelRegistro = new JPanel();
@@ -152,22 +166,25 @@ public class VentanaInicial extends JFrame {
         
         JLabel labelRegistro = new JLabel("¿No es cliente?");
         labelRegistro.setFont(FONT_NORMAL);
-        labelRegistro.setForeground(MY_AZUL);
+        labelRegistro.setForeground(MY_AZUL_CLARO);
         labelRegistro.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panelRegistro.add(labelRegistro);
         
         JButton botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
         botonRegistro.setFont(FONT_NORMAL);
         botonRegistro.setBackground(Color.WHITE);
-        botonRegistro.setForeground(MY_AZUL);
+        botonRegistro.setForeground(MY_AZUL_CLARO);
+        botonRegistro.setBorderPainted(false);
+        botonRegistro.setContentAreaFilled(false);
+        botonRegistro.setOpaque(true);
         botonRegistro.setFocusPainted(false);
-        botonRegistro.setBorder(null);
         botonRegistro.setAlignmentX(JButton.CENTER_ALIGNMENT);
         panelRegistro.add(botonRegistro);
         botonRegistro.addActionListener(e -> {
 			layout.show(contenedor, "registro");
 			setTitle("EleuTradia: Registro");
         });
+        botonRegistro.addMouseListener(myAdapterRegistro);
         
         panelDcho.add(panelRegistro);
 		
@@ -224,22 +241,15 @@ public class VentanaInicial extends JFrame {
         panelAcceso.add(Box.createVerticalStrut(40));
         
         // Key Listener
-    	KeyListener myKeyListener = new KeyListener() {
-    		@Override
-    		public void keyTyped(KeyEvent e) {
-    		}
-
+    	KeyAdapter myKeyListener = new KeyAdapter() {
     		@Override
     		public void keyPressed(KeyEvent e) {
     			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
     				procesarLogin(esParticular, campoId, campoPassword);
     			}
     		}
-
-    		@Override
-    		public void keyReleased(KeyEvent e) {
-    		}
     	};
+    	
     	campoId.addKeyListener(myKeyListener);
     	campoPassword.addKeyListener(myKeyListener);
         
@@ -252,22 +262,30 @@ public class VentanaInicial extends JFrame {
         
         JButton botonVolver = new JButton("Volver");
         botonVolver.setFont(FONT_NORMAL);
-        botonVolver.setBackground(MY_GRIS);
+        botonVolver.setBackground(MY_GRIS_CLARO);
         botonVolver.setForeground(Color.WHITE);
+        botonVolver.setBorderPainted(false);
+        botonVolver.setContentAreaFilled(false);
+        botonVolver.setOpaque(true);
         botonVolver.setFocusPainted(false);
         panelBotones.add(botonVolver);
         botonVolver.addActionListener(e -> {
             layout.show(contenedor, "bienvenida");
             setTitle("EleuTradia: Inicio");
         });
+        botonVolver.addMouseListener(myAdapterGris);
         
         JButton botonLogin = new JButton("Iniciar sesión");
         botonLogin.setFont(FONT_NORMAL);
-        botonLogin.setBackground(MY_AZUL);
+        botonLogin.setBackground(MY_AZUL_CLARO);
         botonLogin.setForeground(Color.WHITE);
+        botonLogin.setBorderPainted(false);
+        botonLogin.setContentAreaFilled(false);
+        botonLogin.setOpaque(true);
         botonLogin.setFocusPainted(false);
         panelBotones.add(botonLogin);
         botonLogin.addActionListener(e -> procesarLogin(esParticular, campoId, campoPassword));
+        botonLogin.addMouseListener(myAdapterAzul);
         
         panelAcceso.add(panelBotones);
         
@@ -391,8 +409,11 @@ public class VentanaInicial extends JFrame {
         
         JButton botonCancelar = new JButton("Cancelar");
         botonCancelar.setFont(FONT_NORMAL);
-        botonCancelar.setBackground(MY_GRIS);
+        botonCancelar.setBackground(MY_GRIS_CLARO);
         botonCancelar.setForeground(Color.WHITE);
+        botonCancelar.setBorderPainted(false);
+        botonCancelar.setContentAreaFilled(false);
+        botonCancelar.setOpaque(true);
         botonCancelar.setFocusPainted(false);
         botonCancelar.setAlignmentX(JButton.LEFT_ALIGNMENT);
         panelBotones.add(botonCancelar);
@@ -403,43 +424,16 @@ public class VentanaInicial extends JFrame {
         
         JButton botonReg = new JButton("Confirmar");
         botonReg.setFont(FONT_NORMAL);
-        botonReg.setBackground(MY_AZUL);
+        botonReg.setBackground(MY_AZUL_CLARO);
         botonReg.setForeground(Color.WHITE);
+        botonReg.setBorderPainted(false);
+        botonReg.setContentAreaFilled(false);
+        botonReg.setOpaque(true);
         botonReg.setFocusPainted(false);
         botonReg.setAlignmentX(JButton.LEFT_ALIGNMENT);
         panelBotones.add(botonReg);
-        botonReg.addActionListener(e -> {
-        	
-            String id = campoRegId.getText().trim();
-            String nombre = campoRegNombre.getText().trim();
-            String email = campoRegEmail.getText().trim();
-            String tlf = campoRegTlf.getText().trim();
-            String pass = new String(campoRegPassword.getPassword());
-            String conf = new String(campoRegConfirmPassword.getPassword());
-
-            if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (pass.length()<8) {
-            	JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (!pass.equals(conf)) {
-                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            if (esParticular) {
-                MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null, null, null));
-            } else {
-                MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null, null));
-            }
-            
-            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
-            layout.show(contenedor, "bienvenida");
-            setTitle("EleuTradia: Inicio");
-        });
+        botonReg.addActionListener(e -> procesarRegistro(esParticular, campoRegId, campoRegNombre,
+        		campoRegEmail, campoRegTlf, campoRegPassword, campoRegConfirmPassword));
         
         panelRegistro.add(panelBotones);
         
@@ -484,7 +478,7 @@ public class VentanaInicial extends JFrame {
 	
 	private JLabel crearLabel(JLabel myLabel) {
         myLabel.setFont(FONT_NORMAL);
-        myLabel.setForeground(MY_GRIS);
+        myLabel.setForeground(MY_GRIS_OSCURO);
         myLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         return myLabel;
 	}
@@ -535,4 +529,85 @@ public class VentanaInicial extends JFrame {
 	        JOptionPane.showMessageDialog(this, "NIF o contraseña incorrectos.", "Error de Login", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
+	
+	private void procesarRegistro(boolean esParticular, JTextField campoRegId, JTextField campoRegNombre, JTextField campoRegEmail,
+			JTextField campoRegTlf, JPasswordField campoRegPassword, JPasswordField campoRegConfirmPassword) {
+        String id = campoRegId.getText().trim();
+        String nombre = campoRegNombre.getText().trim();
+        String email = campoRegEmail.getText().trim();
+        String tlf = campoRegTlf.getText().trim();
+        String pass = new String(campoRegPassword.getPassword());
+        String conf = new String(campoRegConfirmPassword.getPassword());
+
+        if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!email.matches(EMAIL_REGEX)) {
+        	JOptionPane.showMessageDialog(this, "Formato de email inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!tlf.matches(TELEFONO_REGEX)) {
+        	JOptionPane.showMessageDialog(this, "Formato de teléfono inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (pass.length()<8) {
+        	JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!pass.equals(conf)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (esParticular) {
+        	if (!id.matches(DNI_REGEX)) {
+        		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    		return;
+        	}
+            MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null, null, null));
+        } else {
+        	if (!id.matches(NIF_REGEX)) {
+        		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    		return;
+        	}
+            MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null, null));
+        }
+        
+        JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+        layout.show(contenedor, "bienvenida");
+        setTitle("EleuTradia: Inicio");
+	}
+	
+    MouseAdapter myAdapterAzul = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
+    };
+    
+    MouseAdapter myAdapterGris = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+    };
+    
+    MouseAdapter myAdapterRegistro = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_CLARO);}
+    };
 }

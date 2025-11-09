@@ -166,21 +166,31 @@ public class PanelPerfil extends JPanel {
         PerfilFinanciero perfil = usuarioActual.getPerfilFinanciero();
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
         contentPanel.setBackground(getColorCard());
-        
-        contentPanel.add(crearCampoInfo("Perfil de Riesgo", perfil.getPerfilRiesgo().toString()));
-        contentPanel.add(crearCampoInfo("Horizonte Temporal", perfil.getHorizonte() + " años"));
-        contentPanel.add(crearCampoInfo("Nivel de Conocimiento", perfil.getNivel().toString()));
-        StringBuilder tiposProducto = new StringBuilder();
-        if (perfil.getTiposProducto().isEmpty()) {
-            tiposProducto.append("No especificado");
+        if (perfil != null) {
+        	contentPanel.add(crearCampoInfo("Perfil de Riesgo", perfil.getPerfilRiesgo().toString()));
+            contentPanel.add(crearCampoInfo("Horizonte Temporal", perfil.getHorizonte() + " años"));
+            contentPanel.add(crearCampoInfo("Nivel de Conocimiento", perfil.getNivel().toString()));
         } else {
-            for (int i = 0; i < perfil.getTiposProducto().size(); i++) {
-                tiposProducto.append(perfil.getTiposProducto().get(i).toString());
-                if (i < perfil.getTiposProducto().size() - 1) {
-                    tiposProducto.append(", ");
+        	contentPanel.add(crearCampoInfo("Perfil de Riesgo", "No disponible"));
+            contentPanel.add(crearCampoInfo("Horizonte Temporal", "No disponible"));
+            contentPanel.add(crearCampoInfo("Nivel de Conocimiento", "No disponible"));
+        }
+        StringBuilder tiposProducto = new StringBuilder();
+        if (perfil != null) {
+            if (perfil.getTiposProducto().isEmpty()) {
+                tiposProducto.append("No especificado");
+            } else {
+                for (int i = 0; i < perfil.getTiposProducto().size(); i++) {
+                    tiposProducto.append(perfil.getTiposProducto().get(i).toString());
+                    if (i < perfil.getTiposProducto().size() - 1) {
+                        tiposProducto.append(", ");
+                    }
                 }
             }
+        } else {
+        	tiposProducto.append("Perfil no configurado");
         }
+
         contentPanel.add(crearCampoInfo("Productos de Interés", tiposProducto.toString()));
         
         panel.add(contentPanel, BorderLayout.CENTER);

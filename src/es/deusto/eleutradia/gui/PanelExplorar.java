@@ -65,12 +65,12 @@ public class PanelExplorar extends JPanel {
     private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
     private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
     private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
-    private static final Color MY_VERDE_CLARO = new Color(40, 167, 69);
+    private static final Color MY_VERDE_CLARO = new Color(40, 170, 70);
     private static final Color MY_VERDE_OSCURO = new Color(25, 120, 50);
     private static final Color MY_ROSA_CLARO = new Color(220, 90, 130);
     private static final Color MY_ROSA_OSCURO = new Color(180, 50, 100);
-    private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
-    private static final Color COLOR_BORDE = new Color(222, 226, 230);
+    private static final Color COLOR_FONDO_PRINCIPAL = new Color(250, 250, 250);
+    private static final Color COLOR_BORDE = new Color(220, 220, 230);
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 12);
@@ -312,10 +312,11 @@ public class PanelExplorar extends JPanel {
         scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
         	 @Override
         	    protected void configureScrollBarColors() {
-        	        this.thumbColor = MY_GRIS_CLARO;
-        	        this.thumbDarkShadowColor = Color.BLACK;
-        	        this.thumbHighlightColor = MY_GRIS_CLARO;
-        	        this.trackColor = COLOR_FONDO_PRINCIPAL; 
+        		 	Color grisBarra = new Color(180, 180, 180);
+        	        this.thumbColor = grisBarra;
+        	        this.thumbDarkShadowColor = grisBarra;
+        	        this.thumbHighlightColor = grisBarra;
+        	        this.trackColor = Color.WHITE; 
         	    }
 
         	    @Override
@@ -471,15 +472,14 @@ public class PanelExplorar extends JPanel {
         int filaSeleccionada = tablaProductos.getSelectedRow();
         if (filaSeleccionada >= 0) {
             ProductoFinanciero producto = productosFiltrados.get(filaSeleccionada);
-            System.out.println("Viendo detalle de: " + producto.getNombre());
             //IAG (ChatGPT)
             //SIN CAMBIOS
             JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
             new VentanaDetalleProducto(framePadre, producto, true);
-            //END-IAG
+            //END IAG
         } else {
         	JOptionPane.showMessageDialog(this,
-        			"Por favor, seleccione un producto de la tabla para ver los detalles.",
+        			"Por favor, seleccione un producto para ver sus detalles.",
         			"Selección necesaria", JOptionPane.WARNING_MESSAGE);
         }
     }
@@ -490,6 +490,10 @@ public class PanelExplorar extends JPanel {
             ProductoFinanciero producto = productosFiltrados.get(filaSeleccionada);
             JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
             new VentanaAnadirACartera(framePadre, usuario, producto, true);
+        } else {
+        	JOptionPane.showMessageDialog(this,
+        			"Por favor, seleccione un producto para añadirlo a su cartera.",
+        			"Selección necesaria", JOptionPane.WARNING_MESSAGE);
         }
     }
     
