@@ -127,11 +127,11 @@ public class VentanaDetalleProducto extends JDialog {
             if ((valor.compareTo(BigDecimal.ZERO) == 1)) {texto.setForeground(Color.GREEN);}
             else if ((valor.compareTo(BigDecimal.ZERO) == 0)) {texto.setForeground(MY_GRIS_OSCURO);}
             else {texto.setForeground(Color.RED);}
-            modeloTabla.addRow(new Object[]{plazo, texto.toString()});
+            modeloTabla.addRow(new Object[]{plazo, texto.getText()});
         }
-
+        
         panelPrincipal.add(tablaInfo, BorderLayout.CENTER);
-
+        
         // Panel inferior con botón cerrar
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelInferior.setBackground(COLOR_FONDO_PRINCIPAL);

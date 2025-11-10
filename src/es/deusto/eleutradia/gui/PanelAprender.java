@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Leccion;
@@ -69,6 +70,11 @@ public class PanelAprender extends JPanel {
 	
 	private JProgressBar progressBarRacha;
 	
+	private static final Color MY_AZUL_CLARO = new Color(0, 120, 255);
+    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
+	private static final Color MY_GRIS_SCROLLBAR = new Color(180, 180, 180);
+    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
+    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
     private static final Color COLOR_FONDO_SECUNDARIO = new Color(248, 249, 250); // Blanco
     private static final Color COLOR_FONDO_PRINCIPAL = Color.WHITE; // Gris claro
     private static final Color COLOR_BOTON_INACTIVO = new Color(223, 223, 222); // Gris medio
@@ -77,7 +83,6 @@ public class PanelAprender extends JPanel {
 	private static final Color COLOR_BOTON_EXITO = new Color(40, 167, 69);
     private static final Color COLOR_BOTON_CURSOS = new Color(249, 249, 249); // Verde claro
     private static final Color COLOR_BOTON_VOLVER = new Color(100, 100, 100); // Verde medio
-    private static final Color COLOR_BOTON_APUNTAR = new Color(0, 100, 255); // Azul medio
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
 	
 	public PanelAprender(Particular usuario) {
@@ -127,11 +132,15 @@ public class PanelAprender extends JPanel {
 		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelTodosLosCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
+		scrollTodos.getVerticalScrollBar().setUI(crearScrollBarUI());
+		scrollTodos.getHorizontalScrollBar().setUI(crearScrollBarUI());
 		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
 		
 		panelMisCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelMisCursos.setBackground(COLOR_FONDO_PRINCIPAL);
 		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
+		scrollMis.getVerticalScrollBar().setUI(crearScrollBarUI());
+		scrollMis.getHorizontalScrollBar().setUI(crearScrollBarUI());
 		scrollMis.setBorder(BorderFactory.createEmptyBorder());
 		
 		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
@@ -337,7 +346,7 @@ public class PanelAprender extends JPanel {
 		
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panelCurso.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_APUNTAR, 1));
+				panelCurso.setBorder(BorderFactory.createLineBorder(MY_AZUL_CLARO, 1));
 				
 				int cantidadModulos = 0;
 				int cantidadLeciones = 0;
@@ -374,7 +383,6 @@ public class PanelAprender extends JPanel {
 		
 		JScrollPane panelInfoCentro = mostrarInfoCursos(cursoInfo);
 		panelCursosInfo.add(panelInfoCentro, BorderLayout.CENTER);
-		
 
 		JPanel panelLateral = crearPanelLateralAcciones();
 		panelCursosInfo.add(panelLateral, BorderLayout.EAST);
@@ -427,23 +435,21 @@ public class PanelAprender extends JPanel {
 			botonApuntar.setMinimumSize(new Dimension(150, 45));
 			botonApuntar.setPreferredSize(new Dimension(150, 45));
 			botonApuntar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-			botonApuntar.setBackground(COLOR_BOTON_APUNTAR);
+			botonApuntar.setBackground(MY_AZUL_CLARO);
 			botonApuntar.setForeground(COLOR_BOTON_TEXTO);
 			botonApuntar.setAlignmentX(Component.CENTER_ALIGNMENT);
+			botonApuntar.setBorderPainted(false);
+	        botonApuntar.setContentAreaFilled(false);
+	        botonApuntar.setOpaque(true);
 			botonApuntar.setFocusPainted(false);
-			
-			botonApuntar.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					usuarioLogeado.addCurso(cursoInfo);
-					JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
-					
-					actualizarPanelInfoCurso();					
-					actualizarProgressBar();
-				}
+			botonApuntar.addActionListener(e -> {
+				usuarioLogeado.addCurso(cursoInfo);
+				JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
+
+				actualizarPanelInfoCurso();					
+				actualizarProgressBar();
 			});
+			botonApuntar.addMouseListener(myAdapterAzul);
 			
 			panelTexto.add(botonApuntar);
 			
@@ -458,16 +464,12 @@ public class PanelAprender extends JPanel {
 		botonVolver.setBackground(COLOR_BOTON_VOLVER);
 		botonVolver.setForeground(COLOR_BOTON_TEXTO);
 		botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonVolver.setBorderPainted(false);
+        botonVolver.setContentAreaFilled(false);
+        botonVolver.setOpaque(true);
 		botonVolver.setFocusPainted(false);
-		
-		botonVolver.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				layoutPanelAprender.show(panelAprender, "PANEL_CURSOS");
-			}
-		});
+		botonVolver.addActionListener(e -> {layoutPanelAprender.show(panelAprender, "PANEL_CURSOS");});
+		botonVolver.addMouseListener(myAdapterGris);
 		
 		panelVolver.add(botonVolver);
 		
@@ -537,6 +539,9 @@ public class PanelAprender extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(panelContenido);
 		scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDE));
 		
+		scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+	    scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
+		
 		return scrollPane;
 	}
 	
@@ -557,5 +562,55 @@ public class PanelAprender extends JPanel {
 			progressBarRacha.setString(misCursos + "/" + totalCursos);
 		}
 	}
-
+	
+	private BasicScrollBarUI crearScrollBarUI() {
+		return new BasicScrollBarUI() {
+			@Override
+		    protected void configureScrollBarColors() {
+		        this.thumbColor = MY_GRIS_SCROLLBAR;
+		        this.thumbDarkShadowColor = MY_GRIS_SCROLLBAR;
+		        this.thumbHighlightColor = MY_GRIS_SCROLLBAR;
+		        this.trackColor = Color.WHITE; 
+		    }
+	
+		    @Override
+		    protected JButton createDecreaseButton(int orientation) {
+		        return createInvisibleButton();
+		    }
+	
+		    @Override
+		    protected JButton createIncreaseButton(int orientation) {
+		        return createInvisibleButton();
+		    }
+	
+		    private JButton createInvisibleButton() {
+		        JButton button = new JButton();
+		        button.setPreferredSize(new Dimension(0, 0));
+		        button.setVisible(false);
+		        return button;
+		    }
+		};
+    };
+	
+	MouseAdapter myAdapterAzul = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
+    };
+	
+	MouseAdapter myAdapterGris = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+    };
 }
