@@ -8,9 +8,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -326,27 +328,70 @@ public class PanelPerfil extends JPanel {
     private JPanel crearPanelEstadisticas() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
+
         JLabel lblTitulo = new JLabel("Estadísticas de Cuenta");
         lblTitulo.setFont(FONT_TITULO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
+
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
         contentPanel.setBackground(getColorVentana());
+
         int totalCarteras = usuarioActual.getCarteras().size();
         int totalOperaciones = 0;
         for (Cartera c : usuarioActual.getCarteras()) {
             totalOperaciones += c.getOperaciones().size();
         }
         double patrimonioTotal = usuarioActual.calcularPatrimonioTotal();
-        
-        contentPanel.add(crearEstadistica("Carteras Activas", String.valueOf(totalCarteras), "Icono"));
-        contentPanel.add(crearEstadistica("Operaciones Totales", String.valueOf(totalOperaciones), "Icono"));
-        contentPanel.add(crearEstadistica("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "Icono"));
-        contentPanel.add(crearEstadistica("Estado de Cuenta", "Verificada", "Icono"));
-        
+
+        // 👇 Use your actual image paths inside /resources/icons/
+        contentPanel.add(crearIcono("Carteras Activas", String.valueOf(totalCarteras), "/icons/wallet.png"));
+        contentPanel.add(crearIcono("Operaciones Totales", String.valueOf(totalOperaciones), "/icons/operations.png"));
+        contentPanel.add(crearIcono("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "/icons/money.png"));
+        contentPanel.add(crearIcono("Estado de Cuenta", "Verificada", "/icons/check.png"));
+
         panel.add(contentPanel, BorderLayout.CENTER);
-        
+
+        return panel;
+    }
+    
+    private JPanel crearIcono(String titulo, String valor, String iconPath) {
+        JPanel panel = new JPanel(new BorderLayout(10, 0));
+        panel.setOpaque(false);
+
+        // --- Icon label ---
+        JLabel lblIcono = new JLabel();
+        lblIcono.setHorizontalAlignment(SwingConstants.CENTER);
+        lblIcono.setPreferredSize(new Dimension(30, 30));
+
+        // Try to load icon
+        try {
+            ImageIcon icon = new ImageIcon(getClass().getResource(iconPath));
+            Image scaled = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            lblIcono.setIcon(new ImageIcon(scaled));
+        } catch (Exception e) {
+            System.err.println("Icon not found: " + iconPath);
+            lblIcono.setText("?"); // fallback if image missing
+        }
+
+        // --- Text labels ---
+        JLabel lblTitulo = new JLabel(titulo);
+        lblTitulo.setFont(FONT_NORMAL1);
+        lblTitulo.setForeground(getColorTextoPrincipal());
+
+        JLabel lblValor = new JLabel(valor);
+        lblValor.setFont(FONT_NORMAL1);
+        lblValor.setForeground(COLOR_TEXTO_SECUNDARIO);
+
+        JPanel textPanel = new JPanel(new GridLayout(2, 1));
+        textPanel.setOpaque(false);
+        textPanel.add(lblTitulo);
+        textPanel.add(lblValor);
+
+        panel.add(lblIcono, BorderLayout.WEST);
+        panel.add(textPanel, BorderLayout.CENTER);
+
         return panel;
     }
     
