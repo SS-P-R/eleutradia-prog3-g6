@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
@@ -31,11 +32,27 @@ public class PanelPerfil extends JPanel {
     private static final long serialVersionUID = 1L;
     
     private Usuario usuarioActual;
-
+    private VentanaPrincipal ventanaPrincipal;
+    private GestorTema gestorTema;
+    
     // Estilos
+    
+    private Color getColorFondo() {
+        return gestorTema.getColorFondo();
+    }
+    
+    private Color getColorVentana() {
+        return gestorTema.getColorVentana();
+    }
+    
+    private Color getColorTextoPrincipal() {
+        return gestorTema.getColorTextoPrincipal();
+    }
+    
     private boolean temaOscuro = false;
     private static final Color COLOR_FONDO_CLARO = new Color(248, 249, 250);
     private static final Color COLOR_CARD_CLARO = Color.WHITE;
+    private static final Color COLOR_SCROLLBAR = new Color(180, 180, 180);
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
     private static final Color COLOR_TEXTO_PRINCIPAL = new Color(33, 37, 41);
     private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
@@ -50,8 +67,10 @@ public class PanelPerfil extends JPanel {
     private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
 	
-    public PanelPerfil(Usuario usuario) {
+    public PanelPerfil(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
         this.usuarioActual = usuario;
+        this.ventanaPrincipal=ventanaPrincipal;
+        this.gestorTema = GestorTema.getInstancia();
         this.setLayout(new BorderLayout(15, 15));
         this.setBackground(COLOR_FONDO_CLARO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -76,6 +95,32 @@ public class PanelPerfil extends JPanel {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+		@Override
+	    protected void configureScrollBarColors() {
+	        this.thumbColor = COLOR_SCROLLBAR;
+	        this.thumbDarkShadowColor = COLOR_SCROLLBAR;
+	        this.thumbHighlightColor = COLOR_SCROLLBAR;
+	        this.trackColor = Color.WHITE; 
+	    }
+
+	    @Override
+	    protected JButton createDecreaseButton(int orientation) {
+	        return createInvisibleButton();
+	    }
+
+	    @Override
+	    protected JButton createIncreaseButton(int orientation) {
+	        return createInvisibleButton();
+	    }
+
+	    private JButton createInvisibleButton() {
+	        JButton button = new JButton();
+	        button.setPreferredSize(new Dimension(0, 0));
+	        button.setVisible(false);
+	        return button;
+	    }
+    });
         add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -91,7 +136,7 @@ public class PanelPerfil extends JPanel {
         lblAvatar.setPreferredSize(new Dimension(100, 100));
         panel.add(lblAvatar, BorderLayout.WEST);
         JPanel infoPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        infoPanel.setBackground(getColorCard());
+        infoPanel.setBackground(getColorVentana());
         
         JLabel lblNombre = new JLabel(usuarioActual.getNombre());
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 28));
@@ -125,7 +170,7 @@ public class PanelPerfil extends JPanel {
         
         // Content
         JPanel contentPanel = new JPanel(new GridLayout(5, 1, 0, 15));
-        contentPanel.setBackground(getColorCard());
+        contentPanel.setBackground(getColorVentana());
         
         contentPanel.add(crearCampoInfo("Nombre Completo", usuarioActual.getNombre()));
         contentPanel.add(crearCampoInfo("Email", usuarioActual.getEmail()));
@@ -148,7 +193,7 @@ public class PanelPerfil extends JPanel {
         btnEditar.setToolTipText("Funcionalidad próximamente disponible");
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setBackground(getColorCard());
+        buttonPanel.setBackground(getColorVentana());
         buttonPanel.add(btnEditar);
         panel.add(buttonPanel, BorderLayout.SOUTH);
         
@@ -165,7 +210,7 @@ public class PanelPerfil extends JPanel {
         panel.add(lblTitulo, BorderLayout.NORTH);
         PerfilFinanciero perfil = usuarioActual.getPerfilFinanciero();
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
-        contentPanel.setBackground(getColorCard());
+        contentPanel.setBackground(getColorVentana());
         if (perfil != null) {
         	contentPanel.add(crearCampoInfo("Perfil de Riesgo", perfil.getPerfilRiesgo().toString()));
             contentPanel.add(crearCampoInfo("Horizonte Temporal", perfil.getHorizonte() + " años"));
@@ -207,9 +252,9 @@ public class PanelPerfil extends JPanel {
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
         JPanel contentPanel = new JPanel(new GridLayout(3, 1, 0, 10));
-        contentPanel.setBackground(getColorCard());
+        contentPanel.setBackground(getColorVentana());
         JPanel panelPassword = new JPanel(new BorderLayout(10, 5));
-        panelPassword.setBackground(getColorCard());
+        panelPassword.setBackground(getColorVentana());
         JLabel lblPassword = new JLabel("Contraseña");
         lblPassword.setFont(FONT_SUBTITULO);
         lblPassword.setForeground(getColorTextoPrincipal());
@@ -222,14 +267,14 @@ public class PanelPerfil extends JPanel {
         btnCambiarPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCambiarPassword.addActionListener(e -> mostrarDialogoCambiarPassword());
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        panelBoton.setBackground(getColorCard());
+        panelBoton.setBackground(getColorVentana());
         panelBoton.add(Box.createVerticalStrut(90));
         panelBoton.add(btnCambiarPassword);
         panelPassword.add(lblPassword, BorderLayout.WEST);
         panelPassword.add(panelBoton, BorderLayout.EAST);
         contentPanel.add(panelPassword);
         JPanel panelTema = new JPanel(new BorderLayout(10, 5));
-        panelTema.setBackground(getColorCard());
+        panelTema.setBackground(getColorVentana());
         JLabel lblTema = new JLabel("Tema de Interfaz");
         lblTema.setFont(FONT_SUBTITULO);
         lblTema.setForeground(getColorTextoPrincipal());
@@ -237,24 +282,30 @@ public class PanelPerfil extends JPanel {
         toggleTema.setFont(FONT_NORMAL2);
         toggleTema.setSelected(temaOscuro);
         toggleTema.setFocusPainted(false);
+        
+        
         toggleTema.setCursor(new Cursor(Cursor.HAND_CURSOR));
         toggleTema.addActionListener(e -> {
-            temaOscuro = !temaOscuro;
-            toggleTema.setText(temaOscuro ? "Oscuro" : "Claro");
-            actualizarTema();
+            gestorTema.cambiarTema();
+            toggleTema.setText(gestorTema.getTema() ? "Oscuro" : "Claro");
+            if (ventanaPrincipal != null) {
+                ventanaPrincipal.actualizarTema();
+            }
         });
+        
+        
         panelTema.add(lblTema, BorderLayout.WEST);
         panelTema.add(toggleTema, BorderLayout.EAST);
         contentPanel.add(panelTema);
         JPanel panelNotif = new JPanel(new BorderLayout(10, 5));
-        panelNotif.setBackground(getColorCard());
+        panelNotif.setBackground(getColorVentana());
         JLabel lblNotif = new JLabel("Notificaciones por Email");
         lblNotif.setFont(FONT_SUBTITULO);
         lblNotif.setForeground(getColorTextoPrincipal());
         JCheckBox checkNotif = new JCheckBox("Activar");
         checkNotif.setFont(FONT_NORMAL2);
         checkNotif.setSelected(true);
-        checkNotif.setBackground(getColorCard());
+        checkNotif.setBackground(getColorVentana());
         checkNotif.setForeground(getColorTextoPrincipal());
         checkNotif.setFocusPainted(false);
         checkNotif.addActionListener(e -> {
@@ -281,7 +332,7 @@ public class PanelPerfil extends JPanel {
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
-        contentPanel.setBackground(getColorCard());
+        contentPanel.setBackground(getColorVentana());
         int totalCarteras = usuarioActual.getCarteras().size();
         int totalOperaciones = 0;
         for (Cartera c : usuarioActual.getCarteras()) {
@@ -301,7 +352,7 @@ public class PanelPerfil extends JPanel {
     
     private JPanel crearCampoInfo(String label, String valor) {
         JPanel panel = new JPanel(new BorderLayout(10, 5));
-        panel.setBackground(getColorCard());
+        panel.setBackground(getColorVentana());
         
         JLabel lblLabel = new JLabel(label);
         lblLabel.setFont(FONT_NORMAL2);
@@ -319,7 +370,7 @@ public class PanelPerfil extends JPanel {
     
     private JPanel crearEstadistica(String label, String valor, String icono) {
         JPanel panel = new JPanel(new BorderLayout(15, 5));
-        panel.setBackground(getColorCard());
+        panel.setBackground(getColorVentana());
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(COLOR_BORDE, 1),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
@@ -329,7 +380,7 @@ public class PanelPerfil extends JPanel {
         lblIcono.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         
         JPanel textPanel = new JPanel(new GridLayout(2, 1, 0, 2));
-        textPanel.setBackground(getColorCard());
+        textPanel.setBackground(getColorVentana());
         
         JLabel lblLabel = new JLabel(label);
         lblLabel.setFont(FONT_NORMAL2);
@@ -428,7 +479,7 @@ public class PanelPerfil extends JPanel {
     
     private JPanel crearCard() {
         JPanel card = new JPanel();
-        card.setBackground(getColorCard());
+        card.setBackground(getColorVentana());
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(COLOR_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
@@ -450,17 +501,6 @@ public class PanelPerfil extends JPanel {
             JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private Color getColorFondo() {
-        return temaOscuro ? COLOR_FONDO_OSCURO : COLOR_FONDO_CLARO;
-    }
-    
-    private Color getColorCard() {
-        return temaOscuro ? COLOR_CARD_OSCURO : COLOR_CARD_CLARO;
-    }
-    
-    private Color getColorTextoPrincipal() {
-        return temaOscuro ? COLOR_TEXTO_OSCURO : COLOR_TEXTO_PRINCIPAL;
-    }
     
     public void refrescarDatos() {
         removeAll();

@@ -2,10 +2,15 @@ package es.deusto.eleutradia.gui;
 
 import es.deusto.eleutradia.domain.*;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 //DISCLAIMER: ESTO ES UN BOCETO. Muchas cosas no funcionan y están mal configuradas. 
@@ -15,6 +20,8 @@ public class PanelPortfolio extends JPanel {
 
     private Usuario usuarioActual;
     private Cartera carteraSeleccionada;
+    private GestorTema gestorTema = GestorTema.getInstancia();
+    
     private JComboBox<String> comboCarteras;
     private JLabel lblPatrimonioTotalUsuario;
     private JLabel lblPatrimonioLiquido;
@@ -29,13 +36,14 @@ public class PanelPortfolio extends JPanel {
     private DefaultListModel<String> operationsListModel;
     
     // Estilos
-    private static final Color COLOR_GANANCIA = new Color(0, 153, 76);
-    private static final Color COLOR_PERDIDA = new Color(220, 53, 69);
-    private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
-    private static final Color COLOR_CARD = Color.WHITE;
-    private static final Color COLOR_BORDE = new Color(222, 226, 230);
-    private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
-    private static final Color COLOR_ACENTO = new Color(0, 123, 255);
+    private static final Color COLOR_SCROLLBAR = new Color(180, 180, 180);
+    private Color COLOR_GANANCIA = gestorTema.getColorGanancia();
+    private Color COLOR_PERDIDA = gestorTema.getColorPerdida();
+    private Color COLOR_FONDO_PRINCIPAL = gestorTema.getColorFondo();
+    private Color COLOR_VENTANA = gestorTema.getColorVentana();
+    private Color COLOR_BORDE = gestorTema.getColorBorde();
+    private Color COLOR_TEXTO_SECUNDARIO = gestorTema.getColorTextoSecundario();
+    private Color COLOR_ACENTO = gestorTema.getColorAcento();
     
     private static final Font FONT_TITULO1 = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font FONT_TITULO2 = new Font("Segoe UI", Font.BOLD, 16);
@@ -56,6 +64,7 @@ public class PanelPortfolio extends JPanel {
         inicializarPaneles();
         cargarDatosPortfolio();
     }
+
     
     private void inicializarPaneles() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
@@ -74,9 +83,59 @@ public class PanelPortfolio extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+    		@Override
+    	    protected void configureScrollBarColors() {
+    	        this.thumbColor = COLOR_SCROLLBAR;
+    	        this.thumbDarkShadowColor = COLOR_SCROLLBAR;
+    	        this.thumbHighlightColor = COLOR_SCROLLBAR;
+    	        this.trackColor = Color.WHITE; 
+    	    }
+
+    	    @Override
+    	    protected JButton createDecreaseButton(int orientation) {
+    	        return createInvisibleButton();
+    	    }
+
+    	    @Override
+    	    protected JButton createIncreaseButton(int orientation) {
+    	        return createInvisibleButton();
+    	    }
+
+    	    private JButton createInvisibleButton() {
+    	        JButton button = new JButton();
+    	        button.setPreferredSize(new Dimension(0, 0));
+    	        button.setVisible(false);
+    	        return button;
+    	    }
+        });
+        scrollPane.getHorizontalScrollBar().setUI(new BasicScrollBarUI() {
+    		@Override
+    	    protected void configureScrollBarColors() {
+    	        this.thumbColor = COLOR_SCROLLBAR;
+    	        this.thumbDarkShadowColor = COLOR_SCROLLBAR;
+    	        this.thumbHighlightColor = COLOR_SCROLLBAR;
+    	        this.trackColor = Color.WHITE; 
+    	    }
+
+    	    @Override
+    	    protected JButton createDecreaseButton(int orientation) {
+    	        return createInvisibleButton();
+    	    }
+
+    	    @Override
+    	    protected JButton createIncreaseButton(int orientation) {
+    	        return createInvisibleButton();
+    	    }
+
+    	    private JButton createInvisibleButton() {
+    	        JButton button = new JButton();
+    	        button.setPreferredSize(new Dimension(0, 0));
+    	        button.setVisible(false);
+    	        return button;
+    	    }
+        });
         add(scrollPane, BorderLayout.CENTER);
-        
         add(crearPanelBotones(), BorderLayout.SOUTH);
     }
     
@@ -202,7 +261,7 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearItemDesglose(String titulo) {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBackground(COLOR_CARD);
+        panel.setBackground(COLOR_VENTANA);
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(FONT_NORMAL2);
         lblTitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
@@ -301,7 +360,7 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearCard() {
         JPanel card = new JPanel();
-        card.setBackground(COLOR_CARD);
+        card.setBackground(COLOR_VENTANA);
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(COLOR_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
@@ -434,5 +493,10 @@ public class PanelPortfolio extends JPanel {
     
     public void refrescarDatos() {
         cargarDatosPortfolio();
+    }
+    
+    public void refrescarColores() {
+        this.setBackground(COLOR_FONDO_PRINCIPAL);
+        inicializarPaneles();
     }
 }

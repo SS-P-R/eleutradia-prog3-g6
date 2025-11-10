@@ -54,7 +54,7 @@ public class GestorTema {
         return temaOscuro ? FONDO_OSCURO : FONDO_CLARO;
     }
     
-    public Color getColorCard() {
+    public Color getColorVentana() {
         return temaOscuro ? CARD_OSCURO : CARD_CLARO;
     }
     

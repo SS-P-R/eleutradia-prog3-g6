@@ -25,6 +25,7 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private Usuario usuario;
+	private GestorTema gestorTema;
 	        
     private CardLayout layout;
     private JPanel contenedor;
@@ -46,12 +47,21 @@ public class VentanaPrincipal extends JFrame {
     private static final String ICONO_PERFIL_NEGRO = "/imagenes/perfilNegro.png";    
     private static final String ICONO_PERFIL_AZUL = "/imagenes/perfilAzul.png";
     
+    //Paneles
+    private PanelInicio panelInicio;
+    private PanelAprender panelAprender;
+    private PanelExplorar panelExplorar;
+    private PanelPerfil panelPerfil;
+    private PanelPortfolio panelPortfolio;
+
+    
     // Estilos
     private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
 	
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
 		this.usuario = usuario;
+		this.gestorTema = GestorTema.getInstancia();
 		this.configurarVentana();
 		this.inicializarPaneles();
 		this.construirPanelNavegacion();
@@ -76,16 +86,16 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void inicializarPaneles() {		
 		// Ejemplo de las 5 ventanas
-        PanelInicio panelInicio = new PanelInicio(usuario, this);
-        PanelExplorar panelExplorar = new PanelExplorar(usuario);
-        PanelPortfolio panelPortfolio = new PanelPortfolio(usuario);
-        JPanel panelAprender;
+		this.panelInicio = new PanelInicio(usuario, this);
+		this.panelExplorar = new PanelExplorar(usuario);
+		this.panelPortfolio = new PanelPortfolio(usuario);
+		this.panelPerfil = new PanelPerfil(usuario, this);
         if (usuario instanceof Particular) {
         	Particular pUsuario = (Particular) usuario;
-        	panelAprender = new PanelAprender(pUsuario);
+        	this.panelAprender = new PanelAprender(pUsuario);
         } else {
-        	panelAprender = new JPanel();
-        	panelAprender.add(new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares."), JLabel.CENTER);
+        	this.panelAprender = (PanelAprender) new JPanel();
+        	this.panelAprender.add(new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares."), JLabel.CENTER);
         	JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
         	botonCrearParticular.setBackground(Color.WHITE);
         	botonCrearParticular.setForeground(MY_AZUL);
@@ -98,15 +108,12 @@ public class VentanaPrincipal extends JFrame {
         	});
         	
         }
-
-        JPanel panelPerfil = new PanelPerfil(usuario);
         
-        contenedor.add(panelInicio, "Inicio");
-        contenedor.add(panelExplorar, "Explorar");
-        contenedor.add(panelPortfolio, "Portfolio");
-        contenedor.add(panelAprender,"Aprender");
-        contenedor.add(panelPerfil,"Perfil");
-        
+        contenedor.add(this.panelInicio, "Inicio");
+        contenedor.add(this.panelExplorar, "Explorar");
+        contenedor.add(this.panelPortfolio, "Portfolio");
+        contenedor.add(this.panelAprender,"Aprender");
+        contenedor.add(this.panelPerfil,"Perfil");
         layout.show(contenedor, "Inicio");
 	}
 	
@@ -149,7 +156,18 @@ public class VentanaPrincipal extends JFrame {
             return null; // El botón se mostrará sin icono si falla
         }
 	}
-
+	
+	public void actualizarTema() {
+		if (panelPerfil!=null) {
+			panelPortfolio.refrescarColores();
+		}
+	    if (panelPerfil != null) {
+	        panelPerfil.refrescarDatos();
+	    }
+	    revalidate();
+	    repaint();
+	}
+	
 	private JButton crearBotonNavegacion(String texto, ImageIcon icono) {
         JButton boton = new JButton(texto);
         if (icono != null) boton.setIcon(icono);
