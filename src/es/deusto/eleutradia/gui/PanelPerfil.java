@@ -37,8 +37,7 @@ public class PanelPerfil extends JPanel {
     private VentanaPrincipal ventanaPrincipal;
     private GestorTema gestorTema;
     
-    // Estilos
-    
+ 
     private Color getColorFondo() {
         return gestorTema.getColorFondo();
     }
@@ -191,8 +190,12 @@ public class PanelPerfil extends JPanel {
         btnEditar.setForeground(Color.WHITE);
         btnEditar.setFocusPainted(false);
         btnEditar.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        btnEditar.setEnabled(false);
-        btnEditar.setToolTipText("Funcionalidad próximamente disponible");
+        btnEditar.setEnabled(true);
+        btnEditar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnEditar.setBackground(COLOR_ACENTO);
+        btnEditar.setToolTipText("Editar información personal");
+
+        btnEditar.addActionListener(e -> mostrarEditarInformacion());
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setBackground(getColorVentana());
@@ -532,6 +535,89 @@ public class PanelPerfil extends JPanel {
         return card;
     }
     
+    private void mostrarEditarInformacion() {
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 
+                                     "Editar Información Personal", true);
+        dialog.setLayout(new BorderLayout(15, 15));
+        dialog.setSize(400, 400);
+        dialog.setLocationRelativeTo(this);
+
+        JPanel mainPanel = new JPanel(new GridLayout(5, 1, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JPanel panelNombre = new JPanel(new BorderLayout(5, 5));
+        panelNombre.add(new JLabel("Nombre Completo:"), BorderLayout.NORTH);
+        javax.swing.JTextField txtNombre = new javax.swing.JTextField(usuarioActual.getNombre());
+        txtNombre.setFont(FONT_NORMAL1);
+        panelNombre.add(txtNombre, BorderLayout.CENTER);
+        mainPanel.add(panelNombre);
+
+        JPanel panelEmail = new JPanel(new BorderLayout(5, 5));
+        panelEmail.add(new JLabel("Email:"), BorderLayout.NORTH);
+        javax.swing.JTextField txtEmail = new javax.swing.JTextField(usuarioActual.getEmail());
+        txtEmail.setFont(FONT_NORMAL1);
+        panelEmail.add(txtEmail, BorderLayout.CENTER);
+        mainPanel.add(panelEmail);
+
+        JPanel panelTelefono = new JPanel(new BorderLayout(5, 5));
+        panelTelefono.add(new JLabel("Teléfono:"), BorderLayout.NORTH);
+        javax.swing.JTextField txtTelefono = new javax.swing.JTextField(usuarioActual.getTelefono());
+        txtTelefono.setFont(FONT_NORMAL1);
+        panelTelefono.add(txtTelefono, BorderLayout.CENTER);
+        mainPanel.add(panelTelefono);
+
+        JPanel panelDireccion = new JPanel(new BorderLayout(5, 5));
+        panelDireccion.add(new JLabel("Dirección:"), BorderLayout.NORTH);
+        javax.swing.JTextField txtDireccion = new javax.swing.JTextField(usuarioActual.getDireccion());
+        txtDireccion.setFont(FONT_NORMAL1);
+        panelDireccion.add(txtDireccion, BorderLayout.CENTER);
+        mainPanel.add(panelDireccion);
+
+        JPanel panelFiscal = new JPanel(new BorderLayout(5, 5));
+        panelFiscal.add(new JLabel("Domicilio Fiscal:"), BorderLayout.NORTH);
+        javax.swing.JTextField txtFiscal = new javax.swing.JTextField(
+            usuarioActual.getDomicilioFiscal() != null ? usuarioActual.getDomicilioFiscal().getNombre() : ""
+        );
+        txtFiscal.setFont(FONT_NORMAL1);
+        panelFiscal.add(txtFiscal, BorderLayout.CENTER);
+        mainPanel.add(panelFiscal);
+       
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnCancelar = new JButton("Cancelar");
+        JButton btnGuardar = new JButton("Guardar");
+        btnGuardar.setBackground(COLOR_ACENTO);
+        btnGuardar.setForeground(Color.WHITE);
+        btnGuardar.setFocusPainted(false);
+
+        btnCancelar.addActionListener(e -> dialog.dispose());
+        btnGuardar.addActionListener(e -> {
+            usuarioActual.setNombre(txtNombre.getText());
+            usuarioActual.setEmail(txtEmail.getText());
+            usuarioActual.setTelefono(txtTelefono.getText());
+            usuarioActual.setDireccion(txtDireccion.getText());
+            if (usuarioActual.getDomicilioFiscal() != null) {
+                usuarioActual.getDomicilioFiscal().setNombre(txtFiscal.getText());
+            }
+            else if (!txtFiscal.getText().isEmpty()) {
+                usuarioActual.setDomicilioFiscal(usuarioActual.getDomicilioFiscal());
+            }
+
+            JOptionPane.showMessageDialog(dialog,
+                "Información actualizada correctamente.",
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE);
+
+            dialog.dispose();
+            refrescarDatos(); // refresh UI with new data
+        });
+
+        panelBotones.add(btnCancelar);
+        panelBotones.add(btnGuardar);
+
+        dialog.add(mainPanel, BorderLayout.CENTER);
+        dialog.add(panelBotones, BorderLayout.SOUTH);
+        dialog.setVisible(true);
+    }
 
     
     private void actualizarTema() {
