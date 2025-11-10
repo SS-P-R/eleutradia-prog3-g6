@@ -346,10 +346,10 @@ public class PanelPerfil extends JPanel {
         double patrimonioTotal = usuarioActual.calcularPatrimonioTotal();
 
         // 👇 Use your actual image paths inside /resources/icons/
-        contentPanel.add(crearIcono("Carteras Activas", String.valueOf(totalCarteras), "/icons/wallet.png"));
-        contentPanel.add(crearIcono("Operaciones Totales", String.valueOf(totalOperaciones), "/icons/operations.png"));
-        contentPanel.add(crearIcono("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "/icons/money.png"));
-        contentPanel.add(crearIcono("Estado de Cuenta", "Verificada", "/icons/check.png"));
+        contentPanel.add(crearIcono("Carteras Activas", String.valueOf(totalCarteras), "/imagenes/wallet.png"));
+        contentPanel.add(crearIcono("Operaciones Totales", String.valueOf(totalOperaciones), "/imagenes/pie-chart.png"));
+        contentPanel.add(crearIcono("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "/imagenes/money-bag.png"));
+        contentPanel.add(crearIcono("Estado de Cuenta", "Verificada", "/imagenes/setting.png"));
 
         panel.add(contentPanel, BorderLayout.CENTER);
 
