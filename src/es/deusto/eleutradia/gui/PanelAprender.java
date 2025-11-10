@@ -297,15 +297,16 @@ public class PanelAprender extends JPanel {
 		panelCurso.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
 		
 		try {
-			
+			//IAG (Gemini)
+			//SIN MODIFICAR
 			ImageIcon icono = new ImageIcon(getClass().getResource(curso.getRutaImagen()));
 			Image imagen = icono.getImage().getScaledInstance(TAMANO_TARJETA.width, ALTURA_IMAGEN, Image.SCALE_SMOOTH);
+			//END IAG
 			JLabel labelImagen = new JLabel(new ImageIcon(imagen));
-
 			panelCurso.add(labelImagen, BorderLayout.NORTH);
 			
 		} catch (Exception e) {
-
+			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
 		}
 		
 		JPanel panelInfotexto = new JPanel();
@@ -484,9 +485,10 @@ public class PanelAprender extends JPanel {
 		panelContenido.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
 		try {
-			
+
 			ImageIcon icono = new ImageIcon(getClass().getResource(curso.getRutaImagen()));
 			Image imagen = icono.getImage().getScaledInstance(-1, ALTURA_IMAGEN_DETALLE, Image.SCALE_SMOOTH);
+
 			JLabel labelImagen = new JLabel(new ImageIcon(imagen));
 			labelImagen.setAlignmentX(Component.LEFT_ALIGNMENT);
 			labelImagen.setHorizontalAlignment(SwingConstants.CENTER); 
@@ -494,7 +496,7 @@ public class PanelAprender extends JPanel {
 
 			panelContenido.add(labelImagen);
 		} catch (Exception e) {
-			
+			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
 		}
 		
 		JLabel labelCurso = new JLabel(curso.getNombre());

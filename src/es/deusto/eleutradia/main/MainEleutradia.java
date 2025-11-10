@@ -120,7 +120,8 @@ public class MainEleutradia {
 	    		);
 	    //END-IAG
 	}
-	
+	//IAG (GEMINI)
+	//NO MODIFICADO
 	public static void inicializarCursos() {
         
         // --- 1. CURSO: Introducción a la Inversión (Ya existente) ---
@@ -133,7 +134,6 @@ public class MainEleutradia {
         Modulo m1_1 = new Modulo(10, "Conceptos Fundamentales", 1, leccionesC1M1);
         Modulo m1_2 = new Modulo(11, "Principales Activos", 2, leccionesC1M2);
         List<Modulo> modulosCurso1 = List.of(m1_1, m1_2);
-        // NOTA: La imagen original era curso1.png, la cambio por una de las subidas
         Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.PRINCIPIANTE, "/imagenes/curso11.png");
         listaCursos.add(cursoIntro);
         
@@ -144,7 +144,6 @@ public class MainEleutradia {
         List<Leccion> leccionesC2M1 = List.of(l2_1, l2_2, l2_3);
         Modulo m2_1 = new Modulo(20, "Indicadores Técnicos", 1, leccionesC2M1);
         List<Modulo> modulosCurso2 = List.of(m2_1);
-        // NOTA: La imagen original era curso2.png, la cambio a curso4.jpg (desk de trading)
         Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.INTERMEDIO, "/imagenes/curso4.png");
         listaCursos.add(cursoAnalisis);
 
@@ -161,12 +160,11 @@ public class MainEleutradia {
         Modulo m3_2 = new Modulo(31, "Instrumentos Derivados", 2, leccionesC3M2);
         Modulo m3_3 = new Modulo(32, "Estrategias Avanzadas", 3, leccionesC3M3);
         List<Modulo> modulosCurso3 = List.of(m3_1, m3_2, m3_3);
-        // NOTA: La imagen original era curso3.png, la cambio a curso3.jpg (night trading)
         Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO, "/imagenes/curso3.png");
         listaCursos.add(cursoAvanzado);
         
         // --- 4. CURSO: Finanzas Personales y Ahorro ---
-        // (Relacionado con curso7.jpg, curso12.jpg)
+        // (Relacionado con curso7.jpg, curso12.png)
         Leccion l4_1 = new Leccion(401, "Creación de un Presupuesto", 1);
         Leccion l4_2 = new Leccion(402, "El Fondo de Emergencia", 2);
         List<Leccion> leccionesC4M1 = List.of(l4_1, l4_2);
@@ -180,7 +178,7 @@ public class MainEleutradia {
         listaCursos.add(cursoFinanzasP);
         
         // --- 5. CURSO: Planificación para la Jubilación ---
-        // (Relacionado con curso9.jpg)
+        // (Relacionado con curso9.png)
         Leccion l5_1 = new Leccion(501, "¿Qué son los Planes de Pensiones?", 1);
         Leccion l5_2 = new Leccion(502, "Planes de Pensiones de Renta Fija (PLAN_PENSIONES_RF)", 2);
         List<Leccion> leccionesC5M1 = List.of(l5_1, l5_2);
@@ -194,7 +192,7 @@ public class MainEleutradia {
         listaCursos.add(cursoJubilacion);
         
         // --- 6. CURSO: Inversión en Bienes Raíces ---
-        // (Relacionado con curso8.jpg)
+        // (Relacionado con curso8.png)
         Leccion l6_1 = new Leccion(601, "Inversión Inmobiliaria Tradicional", 1);
         Leccion l6_2 = new Leccion(602, "Financiación: Hipotecas y Préstamos", 2);
         List<Leccion> leccionesC6M1 = List.of(l6_1, l6_2);
@@ -208,7 +206,7 @@ public class MainEleutradia {
         listaCursos.add(cursoInmuebles);
 
         // --- 7. CURSO: Renta Fija (Bonos y Depósitos) ---
-        // (Relacionado con curso6.jpg - monedas/tesoro, y curso7.jpg - ahorro seguro)
+        // (Relacionado con curso6.png - monedas/tesoro, y curso7.png - ahorro seguro)
         Leccion l7_1 = new Leccion(701, "Depósitos a Plazo Fijo (DEPOSITO)", 1);
         Leccion l7_2 = new Leccion(702, "Entendiendo los Bonos (BONO)", 2);
         List<Leccion> leccionesC7M1 = List.of(l7_1, l7_2);
@@ -222,7 +220,7 @@ public class MainEleutradia {
         listaCursos.add(cursoRentaFija);
 
         // --- 8. CURSO: Inversiones Alternativas (Cripto y Commodities) ---
-        // (Relacionado con curso3.jpg - trading, y curso6.jpg - oro/commodities)
+        // (Relacionado con curso3.png - trading, y curso6.png - oro/commodities)
         Leccion l8_1 = new Leccion(801, "Introducción a las Criptomonedas (CRIPTOMONEDA)", 1);
         Leccion l8_2 = new Leccion(802, "Blockchain y Wallets", 2);
         List<Leccion> leccionesC8M1 = List.of(l8_1, l8_2);
@@ -232,12 +230,12 @@ public class MainEleutradia {
         Modulo m8_1 = new Modulo(80, "Activos Digitales", 1, leccionesC8M1);
         Modulo m8_2 = new Modulo(81, "Activos Tangibles", 2, leccionesC8M2);
         List<Modulo> modulosCurso8 = List.of(m8_1, m8_2);
-        // Re-uso curso3.jpg porque encaja perfecto con Criptomonedas
+        // Re-uso curso3.png porque encaja perfecto con Criptomonedas
         Curso cursoAlternativos = new Curso(8, "Nuevos Horizontes: Cripto y Materias Primas", modulosCurso8, NivelConocimiento.AVANZADO, "/imagenes/curso3.png");
         listaCursos.add(cursoAlternativos);
 
         // --- 9. CURSO: Valoración y Riesgo ---
-        // (Relacionado con curso2.jpg - balanza)
+        // (Relacionado con curso2.png - balanza)
         Leccion l9_1 = new Leccion(901, "El binomio Riesgo-Rentabilidad", 1);
         Leccion l9_2 = new Leccion(902, "Qué es la Volatilidad", 2);
         List<Leccion> leccionesC9M1 = List.of(l9_1, l9_2);
@@ -251,7 +249,7 @@ public class MainEleutradia {
         listaCursos.add(cursoValoracion);
 
         // --- 10. CURSO: Capital Inversión (Private Equity) ---
-        // (Relacionado con curso10.jpg - apretón de manos, negocio)
+        // (Relacionado con curso10.png - apretón de manos, negocio)
         Leccion l10_1 = new Leccion(1001, "¿Qué es el Capital Inversión (PRIVATE_EQUITY)?", 1);
         Leccion l10_2 = new Leccion(1002, "Venture Capital vs. Buyouts", 2);
         List<Leccion> leccionesC10M1 = List.of(l10_1, l10_2);
@@ -264,7 +262,7 @@ public class MainEleutradia {
         Curso cursoPrivateEquity = new Curso(10, "Inversión en Capital Privado", modulosCurso10, NivelConocimiento.AVANZADO, "/imagenes/curso10.png");
         listaCursos.add(cursoPrivateEquity);
     }
-	
+	//END IAG
 	public static void inicializarProductos() {
 		//IAG (herramienta: ChatGPT)
 		//ADAPTADO (Rentabilidades ajustadas para realismo y algunis productos añadidos
