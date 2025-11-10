@@ -504,23 +504,30 @@ public class PanelAprender extends JPanel {
 		labelCurso.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		panelContenido.add(labelCurso);
 		
+		int numeroModulo = 1;
+		int numeroLeccion = 1;
+		
 		for (Modulo modulo : curso.getModulos()) {
 			
-			JLabel labelModulo = new JLabel("   Módulo: " + modulo.getNombre());
+			JLabel labelModulo = new JLabel("   " + numeroModulo + ". Módulo: " + modulo.getNombre());
 			labelModulo.setFont(FONT_MODULO_TITULO);
 			labelModulo.setForeground(Color.BLACK);
 			labelModulo.setAlignmentX(Component.LEFT_ALIGNMENT);
 			labelModulo.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
 			panelContenido.add(labelModulo);
+			numeroLeccion = 1;
 			
 			for (Leccion leccion : modulo.getLecciones()) {
-				JLabel labelLeccion = new JLabel("      Lección: " + leccion.getTitulo());
+				JLabel labelLeccion = new JLabel("      " + numeroModulo + "." + numeroLeccion + ". Lección: " + leccion.getTitulo());
 				labelLeccion.setFont(FONT_LECCION);
 				labelLeccion.setForeground(COLOR_TEXTO);
 				labelLeccion.setAlignmentX(Component.LEFT_ALIGNMENT);
 				labelLeccion.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 				panelContenido.add(labelLeccion);
+				numeroLeccion++;
 			}
+			
+			numeroModulo++;
 		}
 		
 		panelContenido.add(Box.createVerticalGlue());
