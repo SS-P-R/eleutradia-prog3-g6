@@ -19,15 +19,18 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import es.deusto.eleutradia.domain.Empresa;
@@ -585,6 +588,8 @@ public class VentanaInicial extends JFrame {
             MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null, null));
         }
         
+        mostrarCarga();
+        
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
         layout.show(contenedor, "bienvenida");
         setTitle("EleuTradia: Inicio");
@@ -622,4 +627,57 @@ public class VentanaInicial extends JFrame {
 		@Override
 		public void mouseReleased(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_CLARO);}
     };
+    
+    private void mostrarCarga() {
+        // Diálogo modal que bloquea al usuario pero no al EDT
+        JDialog dialogoCarga = new JDialog(this, "Procesando registro...", true);
+        dialogoCarga.setSize(200, 120);
+        dialogoCarga.setLocationRelativeTo(this);
+        dialogoCarga.setResizable(false);
+        dialogoCarga.getContentPane().setBackground(Color.WHITE);
+        dialogoCarga.setUndecorated(true);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE); 
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel label = new JLabel("Creando cuenta, por favor espere...");
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        label.setForeground(new Color(30, 30, 30));
+        label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+
+        JProgressBar barra = new JProgressBar(0, 100);
+        barra.setAlignmentX(JProgressBar.CENTER_ALIGNMENT);
+        barra.setPreferredSize(new Dimension(300, 25));
+
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(barra);
+
+        dialogoCarga.add(panel);
+
+        // --- Thread en segundo plano ---
+        Thread hilo = new Thread(() -> {
+            try {
+                for (int i = 0; i <= 100; i += 5) {
+                    int progreso = i;
+
+                    // Como estamos fuera del EDT, actualizamos barra con invokeLater
+                    SwingUtilities.invokeLater(() -> barra.setValue(progreso));
+
+                    Thread.sleep(80); // Simula trabajo real
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Cerrar el diálogo cuando termine
+            SwingUtilities.invokeLater(dialogoCarga::dispose);
+        });
+
+        hilo.start();
+        dialogoCarga.setVisible(true); // Se muestra mientras el hilo trabaja
+    }
+
 }
