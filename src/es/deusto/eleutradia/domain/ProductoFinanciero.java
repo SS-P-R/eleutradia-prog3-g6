@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class ProductoFinanciero {
-	private final String codigo;
+	private int id;
 	private String nombre;
 	private YearMonth plazo; // En caso de que lo haya (bonos y depósitos)
 	private Map<PlazoRentabilidad, BigDecimal> rentabilidades;
@@ -19,7 +19,7 @@ public class ProductoFinanciero {
 	private Gestora gestora;
 	
 	public ProductoFinanciero() {
-		this.codigo = "";
+		this.id = 0;
 	    this.nombre = "";
 	    this.plazo = null;
 	    this.rentabilidades = new EnumMap<>(PlazoRentabilidad.class);
@@ -31,10 +31,10 @@ public class ProductoFinanciero {
 	    this.gestora = null;
 	}
 
-	public ProductoFinanciero(String codigo, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
+	public ProductoFinanciero(int id, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
 			double valorUnitario, TipoProducto tipoProducto, RegionGeografica regionGeografica,
 			PeriodicidadPago perPago, Divisa divisa, Gestora gestora) {
-		this.codigo = codigo;
+		this.id = id;
 		this.nombre = nombre;
 		this.plazo = plazo;
 		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
@@ -44,6 +44,14 @@ public class ProductoFinanciero {
 		this.perPago = perPago;
 		this.divisa = divisa;
 		this.gestora = gestora;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNombre() {
@@ -118,13 +126,9 @@ public class ProductoFinanciero {
 		this.gestora = gestora;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
 	@Override
 	public String toString() {
-		return "ProductoFinanciero [codigo=" + codigo + ", nombre=" + nombre + ", plazo=" + plazo
+		return "ProductoFinanciero [ID=" + id + ", nombre=" + nombre + ", plazo=" + plazo
 				+ ", rentabilidades=" + rentabilidades + ", valorUnitario=" + valorUnitario
 				+ ", tipoProducto=" + tipoProducto + ", regionGeografica=" + regionGeografica
 				+ ", perPago=" + perPago + ", divisa=" + divisa + ", gestora=" + gestora + "]";
