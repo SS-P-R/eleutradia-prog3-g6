@@ -143,7 +143,7 @@ public class VentanaAnadirACartera extends JDialog {
         }
 		
 		if (carteraSel != null) {
-			carteraSel.anadirProducto(producto, cantidad);
+			carteraSel.addProducto(producto, cantidad);
             dispose();
 		}
 	}

@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class ProductoFinanciero {
-	private int id;
+	private final int id;
 	private String nombre;
 	private YearMonth plazo; // En caso de que lo haya (bonos y depósitos)
 	private Map<PlazoRentabilidad, BigDecimal> rentabilidades;
@@ -51,10 +51,6 @@ public class ProductoFinanciero {
 	
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getNombre() {

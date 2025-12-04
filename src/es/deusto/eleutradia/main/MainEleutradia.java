@@ -16,7 +16,6 @@ import es.deusto.eleutradia.domain.Divisa;
 import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.NivelConocimiento;
-import es.deusto.eleutradia.domain.Operacion;
 import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
@@ -65,7 +64,7 @@ public class MainEleutradia {
 
     		// --- CARTERAS ---
 	    Cartera c1 = new Cartera();
-	    Cartera c2 = new Cartera("Cartera de Sergio", 15.0, PerfilRiesgo.MODERADO, Divisa.EUR, new ArrayList<Operacion>());
+	    Cartera c2 = new Cartera(1, "Cartera de Sergio", 15.0, PerfilRiesgo.MODERADO, Divisa.EUR);
 	    ArrayList<Cartera> carterasVacia = new ArrayList<>();
 	    ArrayList<Cartera> carterasEjemplo = new ArrayList<>(Arrays.asList(c1, c2));
 

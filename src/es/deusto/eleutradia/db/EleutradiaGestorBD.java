@@ -216,6 +216,20 @@ public class EleutradiaGestorBD {
 					);
 			""");
 			
+			// Tabla: Posición
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Posicion (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    prodFinanciero INTEGER NOT NULL,
+					    cantidadTotal REAL NOT NULL,
+					    precioMedio REAL NOT NULL,
+					    cartera INTEGER NOT NULL,
+					    
+					    FOREIGN KEY (prodFinanciero) REFERENCES ProductoFinanciero(id),
+					    FOREIGN KEY (cartera) REFERENCES Cartera(id),
+					);
+			""");
+			
 			// Tabla: Gestora
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS Gestora (

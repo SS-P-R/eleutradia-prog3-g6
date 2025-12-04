@@ -9,31 +9,37 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Cartera {
-    private int id = 1;
-    private  String nombre;
+    private final int id;
+    private String nombre;
     private double saldo;
     private PerfilRiesgo perfilRiesgo;
     private Divisa divisa;
     private List<Operacion> operaciones;
+    private List<Posicion> posiciones;
     
 	public Cartera() {
+		this.id = 0;
 		this.nombre = "Mi cartera - " + id;
-		id++;
 		this.saldo = 0.0;
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.divisa = Divisa.EUR;
 		this.operaciones = new ArrayList<Operacion>();
 	}
 
-	public Cartera(String nombre, double saldo, PerfilRiesgo perfilRiesgo,
-			Divisa divisa, List<Operacion> operaciones) {
+	public Cartera(int id, String nombre, double saldo, PerfilRiesgo perfilRiesgo, Divisa divisa) {
+		this.id = id;
 		this.nombre = nombre;
 		this.saldo = saldo;
 		this.perfilRiesgo = perfilRiesgo;
 		this.divisa = divisa;
-		this.operaciones = operaciones;
+		this.operaciones = new ArrayList<>();
+		this.posiciones = new ArrayList<>();
 	}
 	
+	public int getId() {
+		return id;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -70,13 +76,21 @@ public class Cartera {
 	}
 
 	public List<Operacion> getOperaciones() {
-		return operaciones;
+		return List.copyOf(operaciones);
 	}
 
-	public void setOperaciones(List<Operacion> operaciones) {
-		this.operaciones = operaciones;
-	}
+    public void addOperacion(Operacion op) {
+        operaciones.add(op);
+    }
 	
+	public List<Posicion> getPosiciones() {
+		return List.copyOf(posiciones);
+	}
+
+	public void setPosiciones(List<Posicion> posiciones) {
+		this.posiciones = posiciones;
+	}
+
 	public double calcularValorInversiones() {
 	    double total = 0.0;
 	    List<Posicion> posiciones = obtenerPosicionesActuales();
@@ -124,13 +138,13 @@ public class Cartera {
 	    return saldo + calcularValorInversiones();
 	}
 	
-	public boolean anadirProducto(ProductoFinanciero producto, double cantidad) {
+	public boolean addProducto(ProductoFinanciero producto, double cantidad) {
 	    if (producto == null || cantidad <= 0) {
 	        JOptionPane.showMessageDialog(null, "Cantidad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
 	        return false;
 	    };
 	    
-	    double coste = cantidad*producto.getValorUnitario();
+	    double coste = cantidad * producto.getValorUnitario();
 	    if (coste > saldo) {
 	        JOptionPane.showMessageDialog(null, "Saldo insuficiente.", "Error", JOptionPane.ERROR_MESSAGE);
 	        return false;

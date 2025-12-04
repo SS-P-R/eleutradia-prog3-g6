@@ -1,18 +1,18 @@
 package es.deusto.eleutradia.domain;
 
 public class Posicion {
-	private ProductoFinanciero producto;
+	private ProductoFinanciero prodFinanciero;
 	private double cantidadTotal;
-	private double precioMedioCompra;
+	private double precioMedio;
 	
 	public Posicion(ProductoFinanciero producto, double cantidadTotal, double precioMedioCompra) {
-		this.producto = producto;
+		this.prodFinanciero = producto;
 		this.cantidadTotal = cantidadTotal;
-		this.precioMedioCompra = precioMedioCompra;
+		this.precioMedio = precioMedioCompra;
 	}
 	
 	public ProductoFinanciero getProducto() {
-		return this.producto;
+		return this.prodFinanciero;
 	}
 	
 	public double getCantidadTotal() {
@@ -20,27 +20,27 @@ public class Posicion {
 	}
 	
 	public double getPrecioMedioCompra() {
-		return this.precioMedioCompra;
+		return this.precioMedio;
 	}
 	
 	public double getValorTotal() {
-		return cantidadTotal * producto.getValorUnitario();
+		return cantidadTotal * prodFinanciero.getValorUnitario();
 	}
 	
 	public double getGanancia() {
-		return (producto.getValorUnitario() - precioMedioCompra) * cantidadTotal;
+		return (prodFinanciero.getValorUnitario() - precioMedio) * cantidadTotal;
 	}
 	
 	public double getPorcentajeGanancia() {
-		if(precioMedioCompra == 0) return 0;
-		return ((producto.getValorUnitario() - precioMedioCompra)/precioMedioCompra)*100;
+		if(precioMedio == 0) return 0;
+		return ((prodFinanciero.getValorUnitario() - precioMedio)/precioMedio)*100;
 	}
 	
 	@Override
 	public String toString() {
-	    return "Posicion [producto=" + producto.getNombre() 
+	    return "Posicion [producto=" + prodFinanciero.getNombre() 
 	            + ", cantidad=" + cantidadTotal 
-	            + ", precioMedio=" + precioMedioCompra 
+	            + ", precioMedio=" + precioMedio 
 	            + ", valorTotal=" + getValorTotal() + "]";
 	}
 }
