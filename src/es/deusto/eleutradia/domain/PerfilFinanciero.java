@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class PerfilFinanciero {
-	private PerfilRiesgo perfilRiesgo;
 	private int horizonte; // Tiempo en años previsto de mantención del capital
+	private PerfilRiesgo perfilRiesgo;
 	private NivelConocimiento nivel;
 	private List<TipoProducto> tiposProducto;
 	
-	public PerfilFinanciero(PerfilRiesgo perfilRiesgo, int horizonte,
+	public PerfilFinanciero(int horizonte, PerfilRiesgo perfilRiesgo,
 							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
         this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
@@ -28,16 +28,7 @@ public class PerfilFinanciero {
 		this.nivel = NivelConocimiento.PRINCIPIANTE;
 		this.tiposProducto = new ArrayList<>();
 	}
-
-	public PerfilRiesgo getPerfilRiesgo() {
-		return perfilRiesgo;
-	}
-
-	public void setPerfilRiesgo(PerfilRiesgo perfilRiesgo) {
-
-		this.perfilRiesgo = perfilRiesgo;
-	}
-
+	
 	public int getHorizonte() {
 		return horizonte;
 	}
@@ -47,6 +38,15 @@ public class PerfilFinanciero {
             throw new IllegalArgumentException("El horizonte temporal no puede ser negativo");
         }
 		this.horizonte = horizonte;
+	}
+
+	public PerfilRiesgo getPerfilRiesgo() {
+		return perfilRiesgo;
+	}
+
+	public void setPerfilRiesgo(PerfilRiesgo perfilRiesgo) {
+
+		this.perfilRiesgo = perfilRiesgo;
 	}
 
 	public NivelConocimiento getNivel() {
@@ -73,7 +73,7 @@ public class PerfilFinanciero {
 	
 	@Override
 	public String toString() {
-		return "PerfilFinanciero [perfilRiesgo=" + perfilRiesgo + ", horizonte=" + horizonte
+		return "PerfilFinanciero [horizonte=" + horizonte + ", perfilRiesgo=" + perfilRiesgo
 				+ ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
 	}
 	

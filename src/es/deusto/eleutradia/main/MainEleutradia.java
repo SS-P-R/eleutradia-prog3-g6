@@ -55,11 +55,11 @@ public class MainEleutradia {
 		// === PARTICULARES ===
 
     		// --- PERFILES FINANCIEROS ---
-	    PerfilFinanciero pCons1 = new PerfilFinanciero(PerfilRiesgo.CONSERVADOR, 5,
+	    PerfilFinanciero pCons1 = new PerfilFinanciero(5, PerfilRiesgo.CONSERVADOR,
             NivelConocimiento.PRINCIPIANTE, List.of(TipoProducto.DEPOSITO, TipoProducto.ETF_RF));
-	    PerfilFinanciero pMddo1 = new PerfilFinanciero(PerfilRiesgo.MODERADO, 10,
+	    PerfilFinanciero pMddo1 = new PerfilFinanciero(10, PerfilRiesgo.MODERADO,
             NivelConocimiento.INTERMEDIO, List.of(TipoProducto.ACCION, TipoProducto.FONDO_INVERSION));
-	    PerfilFinanciero pAgvo1 = new PerfilFinanciero(PerfilRiesgo.AGRESIVO, 3,
+	    PerfilFinanciero pAgvo1 = new PerfilFinanciero(3, PerfilRiesgo.AGRESIVO,
             NivelConocimiento.AVANZADO, List.of(TipoProducto.CRIPTOMONEDA, TipoProducto.ETF_RV));
 
     		// --- CARTERAS ---

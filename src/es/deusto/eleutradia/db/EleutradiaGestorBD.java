@@ -14,7 +14,7 @@ public class EleutradiaGestorBD {
 		try {
 			Class.forName(DRIVER_NAME);
 		} catch (ClassNotFoundException ex) {
-			System.err.println(ex);
+			System.err.format("Error al cargar el driver: %s", ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
@@ -30,7 +30,7 @@ public class EleutradiaGestorBD {
 					CREATE TABLE IF NOT EXISTS TipoProducto (
 						id INTEGER PRIMARY KEY AUTOINCREMENT,
 						nombre TEXT NOT NULL UNIQUE,
-						claseActivo TEXT NOT NULL,
+						claseActivo INTEGER NOT NULL,
 						riesgo INTEGER NOT NULL,
 						importeMin REAL,
 						FOREIGN KEY (claseActivo) REFERENCES ClaseActivo(id)
@@ -102,8 +102,10 @@ public class EleutradiaGestorBD {
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS Pais (
 		                id INTEGER PRIMARY KEY AUTOINCREMENT,
-						nombre TEXT NOT NULL,
-						regionGeografica TEXT NOT NULL
+						nombre TEXT NOT NULL UNIQUE,
+						regionGeografica INTEGER NOT NULL,
+						
+						FOREIGN KEY (regionGeografica) REFERENCES RegionGeografica(id)
 					);
 			""");
 			
@@ -111,9 +113,9 @@ public class EleutradiaGestorBD {
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS PerfilFinanciero (
 		                id INTEGER PRIMARY KEY AUTOINCREMENT,
-						perfilRiesgo TEXT NOT NULL,
+						perfilRiesgo INTEGER NOT NULL,
 						horizonte INTEGER NOT NULL,
-						nivelConocimiento TEXT NOT NULL,
+						nivelConocimiento INTEGER NOT NULL,
 						
 						FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
 						FOREIGN KEY (nivelConocimiento) REFERENCES NivelConocimiento(id)
@@ -127,7 +129,7 @@ public class EleutradiaGestorBD {
 		                nombre TEXT NOT NULL,
 		                email TEXT NOT NULL UNIQUE,
 		                password TEXT NOT NULL,
-		                telefono TEXT NOT NULL,
+		                telefono TEXT NOT NULL UNIQUE,
 		                direccion TEXT NOT NULL,
 		                fechaNacimiento TEXT NOT NULL,
 		                paisResidencia INTEGER,
@@ -145,9 +147,9 @@ public class EleutradiaGestorBD {
 					CREATE TABLE IF NOT EXISTS Empresa (
 		                nif TEXT PRIMARY KEY,
 		                nombre TEXT NOT NULL,
-		                email TEXT NOT NULL,
+		                email TEXT NOT NULL UNIQUE,
 		                password TEXT NOT NULL,
-		                telefono TEXT NOT NULL,
+		                telefono TEXT NOT NULL UNIQUE,
 		                direccion TEXT NOT NULL,
 		                domicilioFiscal INTEGER,
 		                perfilFinanciero INTEGER,
@@ -155,6 +157,19 @@ public class EleutradiaGestorBD {
 		                FOREIGN KEY (domicilioFiscal) REFERENCES Pais(id),
 		                FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id)
 	                );
+			""");
+			
+			// Tabla: Gestora
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Gestora (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    nombreComercial TEXT NOT NULL UNIQUE,
+					    nombreCompleto TEXT NOT NULL UNIQUE,
+					    direccion TEXT NOT NULL,
+					    sede INTEGER NOT NULL,
+
+					    FOREIGN KEY (sede) REFERENCES Pais(id)
+					);
 			""");
 			
 			// Tabla: Producto Financiero
@@ -165,7 +180,7 @@ public class EleutradiaGestorBD {
 						plazo_year INTEGER,
 						plazo_month INTEGER,
 						valorUnitario REAL NOT NULL,
-						tipoProducto TEXT NOT NULL,
+						tipoProducto INTEGER NOT NULL,
 						regionGeografica INTEGER NOT NULL,
 						perPago INTEGER NOT NULL,
 						divisa INTEGER NOT NULL,
@@ -226,20 +241,7 @@ public class EleutradiaGestorBD {
 					    cartera INTEGER NOT NULL,
 					    
 					    FOREIGN KEY (prodFinanciero) REFERENCES ProductoFinanciero(id),
-					    FOREIGN KEY (cartera) REFERENCES Cartera(id),
-					);
-			""");
-			
-			// Tabla: Gestora
-			stmt.execute("""
-					CREATE TABLE IF NOT EXISTS Gestora (
-					    id INTEGER PRIMARY KEY AUTOINCREMENT,
-					    nombreComercial TEXT NOT NULL,
-					    nombreCompleto TEXT NOT NULL,
-					    direccion TEXT NOT NULL,
-					    sede INTEGER NOT NULL,
-
-					    FOREIGN KEY (sede) REFERENCES Pais(id)
+					    FOREIGN KEY (cartera) REFERENCES Cartera(id)
 					);
 			""");
 			
@@ -280,7 +282,7 @@ public class EleutradiaGestorBD {
 			""");
 			
 		} catch (Exception ex) {
-			System.err.println("No se pudo crear la BD");
+			System.err.format("Error al crear las tablas: %s", ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
