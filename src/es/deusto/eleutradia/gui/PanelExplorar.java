@@ -467,7 +467,7 @@ public class PanelExplorar extends JPanel {
             // Filtro de búsqueda por texto
             if (!textoBusqueda.isEmpty()) {
                 if (!producto.getNombre().toLowerCase().contains(textoBusqueda) &&
-                    !String.valueOf(producto.getCodigo()).contains(textoBusqueda)) {
+                    !String.valueOf(producto.getId()).contains(textoBusqueda)) {
                     cumpleFiltros = false;
                 }
             }

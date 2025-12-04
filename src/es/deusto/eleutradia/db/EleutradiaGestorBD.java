@@ -23,6 +23,28 @@ public class EleutradiaGestorBD {
 		try (Connection conn = DriverManager.getConnection(CONNECTION_STRING);
 			 Statement stmt = conn.createStatement()) {
 			
+			// ENUMERACIONES
+			
+			// Tabla: Región Geográfica
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS RegionGeografica (
+		                id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL
+					);
+			""");
+			
+			// Tabla: Tipo Producto
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS TipoProducto (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL,
+						claseActivo TEXT NOT NULL,
+						riesgo INTEGER NOT NULL,
+						importeMin REAL
+						FOREIGN KEY (claseActivo) REFERENCES ClaseActivo(id)
+					);
+			""");
+			
 	        // Tabla: Particular
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS Particular (
@@ -67,21 +89,19 @@ public class EleutradiaGestorBD {
 					);
 			""");
 			
-			// Tabla: Región Geográfica
-			stmt.execute("""
-					CREATE TABLE IF NOT EXISTS RegionGeografica (
-		                id INTEGER PRIMARY KEY AUTOINCREMENT,
-						nombre TEXT NOT NULL
-					);
-			""");
-			
 			// Tabla: Producto Financiero
 			stmt.execute("""
-					CREATE TABLE ProductoFinanciero (
-						id INTEGER PRIMARY KEY,
+					CREATE TABLE IF NOT EXISTS ProductoFinanciero (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
 						nombre TEXT NOT NULL,
-						tipo TEXT NOT NULL, -- Aquí se guarda el enum
-						riesgo INTEGER,
+						plazo_year INTEGER,
+						plazo_month INTEGER,
+						valorUnitario REAL NOT NULL,
+						tipoProducto TEXT NOT NULL,
+						regionGeografica INTEGER NOT NULL,
+						perPago INTEGER NOT NULL,
+						divisa INTEGER NOT NULL,
+						gestora INTEGER,
 						importeMin REAL
 					);
 			""");
