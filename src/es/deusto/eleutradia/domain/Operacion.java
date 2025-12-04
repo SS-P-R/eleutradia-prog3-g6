@@ -6,7 +6,7 @@ public class Operacion {
 	private ProductoFinanciero prodFinanciero;
 	private double cantidad;
 	private LocalDate fechaOp;
-	private boolean tipoOp; // true = Compra, false = Venta
+	private boolean tipoOp; // true = compra, false = venta
 	
 	public Operacion() {
 		this.cantidad = 0.0;

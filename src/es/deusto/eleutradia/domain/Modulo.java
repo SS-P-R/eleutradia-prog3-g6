@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Modulo implements Comparable<Modulo> {
-	private final String codigo;
+	private final int id;
 	private String nombre;
 	private int posicion;
 	private List<Leccion> lecciones;
 	
-	public Modulo(int codigo, String nombre, int posicion, List<Leccion> lecciones) {
-		if (codigo < 0) throw new IllegalArgumentException("El código no puede ser negativo");
+	public Modulo(int id, String nombre, int posicion, List<Leccion> lecciones) {
+		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El módulo debe tener un nombre");
-		this.codigo = "M" + codigo;
+		this.id = id;
 		this.nombre = nombre;
 		this.posicion = posicion;
 		if (lecciones != null) {
@@ -20,6 +20,14 @@ public class Modulo implements Comparable<Modulo> {
 		} else {
 			this.lecciones = new ArrayList<>();
 		}
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public String getCodigo() {
+		return String.format("M%03d", id);
 	}
 
 	public String getNombre() {
@@ -45,10 +53,6 @@ public class Modulo implements Comparable<Modulo> {
 	public void setLecciones(List<Leccion> lecciones) {
 		this.lecciones = lecciones;
 	}
-
-	public String getCodigo() {
-		return codigo;
-	}
 	
 	@Override
 	public int compareTo(Modulo o) {
@@ -57,7 +61,7 @@ public class Modulo implements Comparable<Modulo> {
 
 	@Override
 	public String toString() {
-		return "Modulo [codigo=" + codigo + ", nombre=" + nombre
+		return "Modulo [ID=" + id + ", nombre=" + nombre
 				+ ", posicion=" + posicion + ", lecciones=" + lecciones + "]";
 	}
 	

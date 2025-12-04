@@ -3,19 +3,18 @@ package es.deusto.eleutradia.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 public class Curso {
-	private final String codigo;
+	private final int id;
 	private String nombre;
 	private List<Modulo> modulos;
 	private NivelConocimiento nivelRecomendado;
 	private String rutaImagen;
 	
-	public Curso(int codigo, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
-		if (codigo < 0) throw new IllegalArgumentException("El código no puede ser negativo");
+	public Curso(int id, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
+		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
-		this.codigo = "C" + codigo;
+        
+		this.id = id;
 		this.nombre = nombre;
 		if (modulos != null) {
 			this.modulos = new ArrayList<>(modulos);
@@ -25,6 +24,14 @@ public class Curso {
 		this.nivelRecomendado = nivelRecomendado;
 		this.rutaImagen = rutaImagen;
 	}
+	
+	public int getId() {
+        return id;
+    }
+
+    public String getCodigo() {
+        return String.format("C%03d", id);
+    }
 
 	public String getNombre() {
 		return nombre;
@@ -41,10 +48,6 @@ public class Curso {
 	public void setModulos(List<Modulo> modulos) {
 		this.modulos = modulos;
 	}
-
-	public String getCodigo() {
-		return codigo;
-	}
 	
 	public NivelConocimiento getNivelRecomendado() {
 		return nivelRecomendado;
@@ -58,9 +61,13 @@ public class Curso {
 		return rutaImagen;
 	}
 
+	public void setRutaImagen(String rutaImagen) {
+		this.rutaImagen = rutaImagen;
+	}
+
 	@Override
 	public String toString() {
-		return "Curso [codigo=" + codigo + ", nombre=" + nombre + ", modulos=" + modulos + "]";
+		return "Curso [ID=" + id + ", nombre=" + nombre + ", modulos=" + modulos + "]";
 	}
 	
 }

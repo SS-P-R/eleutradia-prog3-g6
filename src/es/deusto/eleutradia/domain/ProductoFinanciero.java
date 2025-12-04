@@ -37,7 +37,10 @@ public class ProductoFinanciero {
 		this.id = id;
 		this.nombre = nombre;
 		this.plazo = plazo;
+		//IAG (ChatGPT)
+		//SIN MODIFICAR
 		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
+		//END IAG
 		this.valorUnitario = valorUnitario;
 		this.tipoProducto = tipoProducto;
 		this.regionGeografica = regionGeografica;

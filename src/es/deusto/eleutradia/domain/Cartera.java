@@ -9,16 +9,16 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Cartera {
+    private int id = 1;
     private  String nombre;
-    private int num_nueva_cartera = 1;
     private double saldo;
     private PerfilRiesgo perfilRiesgo;
     private Divisa divisa;
     private List<Operacion> operaciones;
     
 	public Cartera() {
-		this.nombre = "Mi cartera - " + num_nueva_cartera;
-		num_nueva_cartera++;
+		this.nombre = "Mi cartera - " + id;
+		id++;
 		this.saldo = 0.0;
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.divisa = Divisa.EUR;

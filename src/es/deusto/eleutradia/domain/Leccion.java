@@ -1,16 +1,24 @@
 package es.deusto.eleutradia.domain;
 
 public class Leccion implements Comparable<Leccion> {
-	private final String codigo;
+	private final int id;
 	private String titulo;
 	private int posicion;
 
-	public Leccion(int codigo, String titulo, int posicion) {
-		if (codigo < 0) throw new IllegalArgumentException("El código no puede ser negativo");
+	public Leccion(int id, String titulo, int posicion) {
+		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (titulo == null || titulo.isBlank()) throw new IllegalArgumentException("La lección debe tener un título");
-		this.codigo = "L" + codigo;
+		this.id = id;
 		this.titulo = titulo;
 		this.posicion = posicion;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getCodigo() {
+		return String.format("L%03d", id);
 	}
 
 	public String getTitulo() {
@@ -29,10 +37,6 @@ public class Leccion implements Comparable<Leccion> {
 		this.posicion = posicion;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
 	@Override
 	public int compareTo(Leccion o) {
 		return Integer.compare(this.posicion, o.posicion);
@@ -40,7 +44,7 @@ public class Leccion implements Comparable<Leccion> {
 	
 	@Override
 	public String toString() {
-		return "Leccion [codigo=" + codigo + ", titulo=" + titulo + ", posicion=" + posicion + "]";
+		return "Leccion [ID=" + id + ", titulo=" + titulo + ", posicion=" + posicion + "]";
 	}
 	
 }

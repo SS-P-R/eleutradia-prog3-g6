@@ -114,6 +114,7 @@ public class EleutradiaGestorBD {
 						perfilRiesgo TEXT NOT NULL,
 						horizonte INTEGER NOT NULL,
 						nivelConocimiento TEXT NOT NULL,
+						
 						FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
 						FOREIGN KEY (nivelConocimiento) REFERENCES NivelConocimiento(id)
 					);
@@ -129,9 +130,10 @@ public class EleutradiaGestorBD {
 		                telefono TEXT NOT NULL,
 		                direccion TEXT NOT NULL,
 		                fechaNacimiento TEXT NOT NULL,
-		                paisResidencia INTEGER NOT NULL,
+		                paisResidencia INTEGER,
 		                domicilioFiscal INTEGER,
 		                perfilFinanciero INTEGER,
+		                
 		                FOREIGN KEY (paisResidencia) REFERENCES Pais(id),
 		                FOREIGN KEY (domicilioFiscal) REFERENCES Pais(id),
 		                FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id)
@@ -149,6 +151,7 @@ public class EleutradiaGestorBD {
 		                direccion TEXT NOT NULL,
 		                domicilioFiscal INTEGER,
 		                perfilFinanciero INTEGER,
+		                
 		                FOREIGN KEY (domicilioFiscal) REFERENCES Pais(id),
 		                FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id)
 	                );
@@ -167,11 +170,100 @@ public class EleutradiaGestorBD {
 						perPago INTEGER NOT NULL,
 						divisa INTEGER NOT NULL,
 						gestora INTEGER,
-						importeMin REAL
+						
+						FOREIGN KEY (tipoProducto) REFERENCES TipoProducto(id),
+						FOREIGN KEY (regionGeografica) REFERENCES RegionGeografica(id),
+						FOREIGN KEY (perPago) REFERENCES PeriodicidadPago(id),
+						FOREIGN KEY (divisa) REFERENCES Divisa(id),
+						FOREIGN KEY (gestora) REFERENCES Gestora(id)
 					);
 			""");
 			
+			// Tabla: Cartera
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Cartera (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL,
+						saldo REAL NOT NULL,
+						perfilRiesgo INTEGER NOT NULL,
+						divisa INTEGER NOT NULL,
+						idParticular TEXT,
+						idEmpresa TEXT,
+						
+						FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
+						FOREIGN KEY (divisa) REFERENCES Divisa(id),
+						FOREIGN KEY (idParticular) REFERENCES Particular(dni),
+						FOREIGN KEY (idEmpresa) REFERENCES Empresa(nif),
+						CHECK (
+							(idParticular IS NOT NULL AND idEmpresa IS NULL) OR
+							(idParticular IS NULL AND idEmpresa IS NOT NULL)
+						)
+					);
+			""");
 			
+			// Tabla: Operacion
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Operacion (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    prodFinanciero INTEGER NOT NULL,
+					    cantidad REAL NOT NULL,
+					    fechaOp TEXT NOT NULL,
+					    tipoOp INTEGER NOT NULL, -- 1 = compra, 0 = venta
+					    cartera INTEGER NOT NULL,
+
+					    FOREIGN KEY (prodFinanciero) REFERENCES ProductoFinanciero(id),
+						FOREIGN KEY (cartera) REFERENCES Cartera(id)
+					);
+			""");
+			
+			// Tabla: Gestora
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Gestora (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    nombreComercial TEXT NOT NULL,
+					    nombreCompleto TEXT NOT NULL,
+					    direccion TEXT NOT NULL,
+					    sede INTEGER NOT NULL,
+
+					    FOREIGN KEY (sede) REFERENCES Pais(id)
+					);
+			""");
+			
+			// Tabla: Curso
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Curso (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    nombre TEXT NOT NULL,
+					    nivelRecomendado INTEGER NOT NULL,
+					    rutaImagen TEXT,
+
+					    FOREIGN KEY (nivelRecomendado) REFERENCES NivelConocimiento(id)
+					);
+			""");
+			
+			// Tabla: Módulo
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Modulo (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    nombre TEXT NOT NULL,
+					    posicion INTEGER NOT NULL,
+					    curso INTEGER NOT NULL,
+
+					    FOREIGN KEY (curso) REFERENCES Curso(id)
+					);
+			""");
+			
+			// Tabla: Lección
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Leccion (
+					    id INTEGER PRIMARY KEY AUTOINCREMENT,
+					    titulo TEXT NOT NULL,
+					    posicion INTEGER NOT NULL,
+					    modulo INTEGER NOT NULL,
+
+					    FOREIGN KEY (modulo) REFERENCES Modulo(id)
+					);
+			""");
 			
 		} catch (Exception ex) {
 			System.err.println("No se pudo crear la BD");
