@@ -1,9 +1,9 @@
 package es.deusto.eleutradia.domain;
 
 public enum ClaseActivo {
-	RENTA_FIJA("Renta Fija"),
-	RENTA_VARIABLE("Renta Variable"),
-	ALTERNATIVO("Alternativos");
+	RF("Renta Fija"),
+	RV("Renta Variable"),
+	ALT("Alternativos");
 	
 	private final String nombre;
 	

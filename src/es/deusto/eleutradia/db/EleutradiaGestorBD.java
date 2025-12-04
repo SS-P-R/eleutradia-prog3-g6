@@ -23,25 +23,99 @@ public class EleutradiaGestorBD {
 		try (Connection conn = DriverManager.getConnection(CONNECTION_STRING);
 			 Statement stmt = conn.createStatement()) {
 			
-			// ENUMERACIONES
-			
-			// Tabla: Región Geográfica
-			stmt.execute("""
-					CREATE TABLE IF NOT EXISTS RegionGeografica (
-		                id INTEGER PRIMARY KEY AUTOINCREMENT,
-						nombre TEXT NOT NULL
-					);
-			""");
+			// ===== ENUMERACIONES =====
 			
 			// Tabla: Tipo Producto
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS TipoProducto (
 						id INTEGER PRIMARY KEY AUTOINCREMENT,
-						nombre TEXT NOT NULL,
+						nombre TEXT NOT NULL UNIQUE,
 						claseActivo TEXT NOT NULL,
 						riesgo INTEGER NOT NULL,
-						importeMin REAL
+						importeMin REAL,
 						FOREIGN KEY (claseActivo) REFERENCES ClaseActivo(id)
+					);
+			""");
+			
+			// Tabla: Región Geográfica
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS RegionGeografica (
+		                id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE
+					);
+			""");
+			
+			// Tabla: Clase Activo
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS ClaseActivo (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE
+					);
+			""");
+			
+			// Tabla: Nivel Conocimiento
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS NivelConocimiento (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE
+					);
+			""");
+			
+			// Tabla: Perfil Riesgo
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS PerfilRiesgo (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE
+					);
+			""");
+			
+			// Tabla: Plazo Rentabilidad
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS PlazoRentabilidad (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE
+					);
+			""");
+			
+			// Tabla: Periodicidad Pago
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS PeriodicidadPago (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE,
+						dias INTEGER NOT NULL UNIQUE
+					);
+			""");
+			
+			// Tabla: Divisa
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Divisa (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE,
+						tasaCambioUSD REAL NOT NULL,
+						simbolo TEXT NOT NULL
+					);
+			""");
+			
+			// ===== ENTIDADES =====
+			
+			// Tabla: País
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS Pais (
+		                id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL,
+						regionGeografica TEXT NOT NULL
+					);
+			""");
+			
+			// Tabla: Perfil Financiero
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS PerfilFinanciero (
+		                id INTEGER PRIMARY KEY AUTOINCREMENT,
+						perfilRiesgo TEXT NOT NULL,
+						horizonte INTEGER NOT NULL,
+						nivelConocimiento TEXT NOT NULL,
+						FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
+						FOREIGN KEY (nivelConocimiento) REFERENCES NivelConocimiento(id)
 					);
 			""");
 			
@@ -80,15 +154,6 @@ public class EleutradiaGestorBD {
 	                );
 			""");
 			
-			// Tabla: País
-			stmt.execute("""
-					CREATE TABLE IF NOT EXISTS Pais (
-		                id INTEGER PRIMARY KEY AUTOINCREMENT,
-						nombre TEXT NOT NULL,
-						regionGeografica TEXT NOT NULL
-					);
-			""");
-			
 			// Tabla: Producto Financiero
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS ProductoFinanciero (
@@ -105,6 +170,8 @@ public class EleutradiaGestorBD {
 						importeMin REAL
 					);
 			""");
+			
+			
 			
 		} catch (Exception ex) {
 			System.err.println("No se pudo crear la BD");
