@@ -11,9 +11,9 @@ public class EleutradiaGestorBD {
 	private final String PROPERTIES_FILE = "resources/config/app.properties";
 	
 	private Properties properties;
-	private String driverName;
-	private String databaseFile;
-	private String connectionString;
+	private String driver;
+	private String dbPath;
+	private String connectionUrl;
 	
 	public EleutradiaGestorBD() {
 		try {
@@ -21,11 +21,11 @@ public class EleutradiaGestorBD {
 			properties = new Properties();
 			properties.load(new FileReader(PROPERTIES_FILE));
 			
-			driverName = properties.getProperty("driver");
-			databaseFile = properties.getProperty("file");
-			connectionString = properties.getProperty("connection");
+			driver = properties.getProperty("driver");
+			dbPath = properties.getProperty("file");
+			connectionUrl = properties.getProperty("connection");
 			
-			Class.forName(driverName);
+			Class.forName(driver);
 		} catch (Exception ex) {
 			System.err.format("Error al cargar el driver: %s", ex.getMessage());
 			ex.printStackTrace();
@@ -34,7 +34,7 @@ public class EleutradiaGestorBD {
 	
 	public void crearBBDD() {
 		if (properties.get("db.create").equals("true")) {
-			try (Connection conn = DriverManager.getConnection(connectionString);
+			try (Connection conn = DriverManager.getConnection(connectionUrl);
 				 Statement stmt = conn.createStatement()) {
 				
 				// ===== ENUMERACIONES =====
@@ -329,7 +329,7 @@ public class EleutradiaGestorBD {
 	}
 	
 	public void borrarBBDD() {
-	    java.io.File db = new java.io.File(databaseFile);
+	    java.io.File db = new java.io.File(dbPath);
 	    if (db.exists()) {
 	        if (db.delete()) {
 	            System.out.println("Base de datos eliminada correctamente.");
