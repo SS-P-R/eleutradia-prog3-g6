@@ -4,13 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Divisa;
 import es.deusto.eleutradia.domain.Empresa;
@@ -62,60 +60,50 @@ public class MainEleutradia {
 	    PerfilFinanciero pAgvo1 = new PerfilFinanciero(3, PerfilRiesgo.AGRESIVO,
             NivelConocimiento.AVANZADO, List.of(TipoProducto.CRIPTOMONEDA, TipoProducto.ETF_RV));
 
-    		// --- CARTERAS ---
-	    Cartera c1 = new Cartera();
-	    Cartera c2 = new Cartera(1, "Cartera de Sergio", 15.0, PerfilRiesgo.MODERADO, Divisa.EUR);
-	    ArrayList<Cartera> carterasVacia = new ArrayList<>();
-	    ArrayList<Cartera> carterasEjemplo = new ArrayList<>(Arrays.asList(c1, c2));
-
-    		// --- CURSOS ---
-	    ArrayList<Curso> cursosBasicos = new ArrayList<>();
-	    ArrayList<Curso> cursosAvanzados = new ArrayList<>();
-
 	    listaParticulares.add(new Particular("12345678A", "Unai Molinuevo", LocalDate.of(2006, 12, 26), null,
 	                "unai.moli@email.com", "12345678", "600500401", "P/ Deusto 25, Bilbao",
-	                espana, pMddo1, carterasVacia, cursosBasicos)
+	                espana, pMddo1)
 	    		);
 	    listaParticulares.add(new Particular("01234567A", "Sergio Pena", LocalDate.of(2006, 12, 26), espana,
 	                "sergio.pena@email.com", "01234567", "600500400", "P/ Deusto 25, Bilbao",
-	                espana, pMddo1, carterasEjemplo, cursosBasicos)
+	                espana, pMddo1)
 	    		);
 	    listaParticulares.add(new Particular("12345679X", "Carlos Ruiz", LocalDate.of(1988, 3, 15), espana,
 	                "carlos.ruiz@email.com", "carlos2025", "600123456", "Calle Mayor 10, Madrid",
-	                espana, pMddo1, carterasVacia, cursosBasicos)
+	                espana, pMddo1)
 	    		);
 	    listaParticulares.add(new Particular("87654321B", "Lucía Gómez", LocalDate.of(1995, 7, 10), mexico,
 	                "lucia.gomez@email.com", "lucia1995", "5556789123", "Av. Insurgentes 123, CDMX",
-	                mexico, pCons1, carterasVacia, cursosBasicos)
+	                mexico, pCons1)
 	    		);
 	    listaParticulares.add(new Particular("11223344C", "David Martín", LocalDate.of(1979, 1, 20), francia,
 	                "david.martin@email.com", "martin79", "0623456789", "Rue Lafayette 33, Paris",
-	                francia, pAgvo1, carterasVacia, cursosAvanzados)
+	                francia, pAgvo1)
 	    		);
 	    listaParticulares.add(new Particular("44332211D", "Sofía López", LocalDate.of(1992, 11, 5), argentina,
 	                "sofia.lopez@email.com", "sofia2024", "+54 911 456789", "Calle Florida 22, Buenos Aires",
-	                argentina, pMddo1, carterasVacia, cursosAvanzados)
+	                argentina, pMddo1)
 	    		);
 	    listaParticulares.add(new Particular("55667788E", "Marcos Torres", LocalDate.of(1985, 9, 22), alemania,
 	                "marcos.torres@email.com", "marcos85", "611445566", "Gran Vía 18, Madrid",
-	                espana, pAgvo1, carterasVacia, cursosBasicos)
+	                espana, pAgvo1)
 	    		);
 
     	// === EMPRESAS ===
 	    listaEmpresas.add(new Empresa("A1234567B", "IberInvest S.A.", "contacto@iberinvest.com", "1234", "914445566",
-	                "Calle Alcalá 55, Madrid", espana, pMddo1, carterasVacia)
+	                "Calle Alcalá 55, Madrid", espana, pMddo1)
 	    		);
 	    listaEmpresas.add(new Empresa("C1234567D", "FinTech México", "info@fintechmx.com", "finmex2024", "5589654321",
-	                "Av. Reforma 100, CDMX", mexico, pAgvo1, carterasVacia)
+	                "Av. Reforma 100, CDMX", mexico, pAgvo1)
 	    		);
 	    listaEmpresas.add(new Empresa("E1234567F", "CapitalFrance", "admin@capitalfr.fr", "capfr2025", "0145678901",
-	                "Boulevard Haussmann 12, Paris", francia, pCons1, carterasVacia)
+	                "Boulevard Haussmann 12, Paris", francia, pCons1)
 	    		);
 	    listaEmpresas.add(new Empresa("G1234567H", "InvestUS LLC", "support@investus.com", "investus2024", "+1 202 555 0198",
-	                "Wall Street 45, New York", eeuu, pAgvo1, carterasVacia)
+	                "Wall Street 45, New York", eeuu, pAgvo1)
 	    		);
 	    listaEmpresas.add(new Empresa("I1234567J", "ArgentBank", "info@argentbank.com", "argent2025", "1134567890",
-	                "Av. Corrientes 200, Buenos Aires", argentina, pMddo1, carterasVacia)
+	                "Av. Corrientes 200, Buenos Aires", argentina, pMddo1)
 	    		);
 	    //END-IAG
 	}

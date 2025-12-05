@@ -579,13 +579,13 @@ public class VentanaInicial extends JFrame {
         		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
         	}
-            MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null, null, null));
+            MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null));
         } else {
         	if (!id.matches(NIF_REGEX)) {
         		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
         	}
-            MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null, null));
+            MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null));
         }
         
         mostrarCarga();
