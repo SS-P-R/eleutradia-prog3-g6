@@ -25,6 +25,14 @@ public class EleutradiaGestorBD {
 			
 			// ===== ENUMERACIONES =====
 			
+			// Tabla: Clase Activo
+			stmt.execute("""
+					CREATE TABLE IF NOT EXISTS ClaseActivo (
+						id INTEGER PRIMARY KEY AUTOINCREMENT,
+						nombre TEXT NOT NULL UNIQUE
+					);
+			""");
+			
 			// Tabla: Tipo Producto
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS TipoProducto (
@@ -33,6 +41,7 @@ public class EleutradiaGestorBD {
 						claseActivo INTEGER NOT NULL,
 						riesgo INTEGER NOT NULL,
 						importeMin REAL,
+						
 						FOREIGN KEY (claseActivo) REFERENCES ClaseActivo(id)
 					);
 			""");
@@ -41,14 +50,6 @@ public class EleutradiaGestorBD {
 			stmt.execute("""
 					CREATE TABLE IF NOT EXISTS RegionGeografica (
 		                id INTEGER PRIMARY KEY AUTOINCREMENT,
-						nombre TEXT NOT NULL UNIQUE
-					);
-			""");
-			
-			// Tabla: Clase Activo
-			stmt.execute("""
-					CREATE TABLE IF NOT EXISTS ClaseActivo (
-						id INTEGER PRIMARY KEY AUTOINCREMENT,
 						nombre TEXT NOT NULL UNIQUE
 					);
 			""");
@@ -288,8 +289,8 @@ public class EleutradiaGestorBD {
 			            idCurso INTEGER NOT NULL,
 						PRIMARY KEY (dniParticular, idCurso),
 						
-			            FOREIGN KEY (dniParticular) REFERENCES Particular(dni),
-			            FOREIGN KEY (idCurso) REFERENCES Curso(id),
+			            FOREIGN KEY (dniParticular) REFERENCES Particular(dni) ON DELETE CASCADE,
+			            FOREIGN KEY (idCurso) REFERENCES Curso(id) ON DELETE CASCADE
 			        );
 			""");
 			
@@ -301,8 +302,8 @@ public class EleutradiaGestorBD {
 
 			            PRIMARY KEY (perfilFinanciero, tipoProducto),
 
-			            FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id),
-			            FOREIGN KEY (tipoProducto) REFERENCES TipoProducto(id)
+			            FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id) ON DELETE CASCADE,
+			            FOREIGN KEY (tipoProducto) REFERENCES TipoProducto(id) ON DELETE CASCADE
 			        );
 			""");
 			
@@ -310,6 +311,17 @@ public class EleutradiaGestorBD {
 			System.err.format("Error al crear las tablas: %s", ex.getMessage());
 			ex.printStackTrace();
 		}
+	}
+	
+	public void borrarBBDD() {
+	    java.io.File db = new java.io.File(DATABASE_FILE);
+	    if (db.exists()) {
+	        if (db.delete()) {
+	            System.out.println("Base de datos eliminada correctamente.");
+	        } else {
+	            System.err.println("No se pudo eliminar la base de datos.");
+	        }
+	    }
 	}
 	
 }
