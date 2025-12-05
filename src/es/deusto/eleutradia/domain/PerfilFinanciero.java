@@ -7,21 +7,21 @@ import java.util.Set;
 public class PerfilFinanciero {
 	private int horizonte; // Tiempo en años previsto de mantención del capital
 	private PerfilRiesgo perfilRiesgo;
-	private NivelConocimiento nivel;
+	private NivelConocimiento nivelConocimiento;
 	private Set<TipoProducto> tiposProducto = new HashSet<>();
 	
 	public PerfilFinanciero(int horizonte, PerfilRiesgo perfilRiesgo,
 							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
         this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
-        this.nivel = nivel;
+        this.nivelConocimiento = nivel;
         this.tiposProducto = new HashSet<>(tiposProducto);
     }
 
 	public PerfilFinanciero() {
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.horizonte = 0;
-		this.nivel = NivelConocimiento.PRINCIPIANTE;
+		this.nivelConocimiento = NivelConocimiento.PRINCIPIANTE;
 	}
 	
 	public int getHorizonte() {
@@ -45,11 +45,11 @@ public class PerfilFinanciero {
 	}
 
 	public NivelConocimiento getNivel() {
-		return nivel;
+		return nivelConocimiento;
 	}
 
 	public void setNivel(NivelConocimiento nivel) {
-		this.nivel = nivel;
+		this.nivelConocimiento = nivel;
 	}
 
 	public Set<TipoProducto> getTiposProducto() {
@@ -67,7 +67,7 @@ public class PerfilFinanciero {
 	@Override
 	public String toString() {
 		return "PerfilFinanciero [horizonte=" + horizonte + ", perfilRiesgo=" + perfilRiesgo
-				+ ", nivel=" + nivel + ", tiposProducto=" + tiposProducto + "]";
+				+ ", nivel=" + nivelConocimiento + ", tiposProducto=" + tiposProducto + "]";
 	}
 	
 }

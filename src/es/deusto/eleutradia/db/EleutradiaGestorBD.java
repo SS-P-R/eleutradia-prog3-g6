@@ -128,8 +128,8 @@ public class EleutradiaGestorBD {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS PerfilFinanciero (
 			                id INTEGER PRIMARY KEY AUTOINCREMENT,
-							perfilRiesgo INTEGER NOT NULL,
 							horizonte INTEGER NOT NULL,
+							perfilRiesgo INTEGER NOT NULL,
 							nivelConocimiento INTEGER NOT NULL,
 							
 							FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
