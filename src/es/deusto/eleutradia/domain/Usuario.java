@@ -12,7 +12,7 @@ public abstract class Usuario {
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
     private List<Cartera> carteras;
-    private List<Curso> cursosActivos;
+    private List<Curso> cursos;
     
 	public Usuario() {
 		this.nombre="usuario";
@@ -23,10 +23,11 @@ public abstract class Usuario {
 		this.domicilioFiscal = new Pais();
 		this.perfilFinanciero = new PerfilFinanciero();
 		this.carteras = new ArrayList<Cartera>();
+		this.cursos = new ArrayList<Curso>();
 	}
 
 	public Usuario(String nombre, String email, String password, String telefono, String direccion,
-			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
+			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero) {
 		this.nombre= nombre;
 		this.email = email;
 		this.password = password;
@@ -34,11 +35,6 @@ public abstract class Usuario {
 		this.direccion = direccion;
 		this.domicilioFiscal = domicilioFiscal;
 		this.perfilFinanciero = perfilFinanciero;
-		if (carteras != null) {
-			this.carteras = new ArrayList<>(carteras);
-		} else {
-			this.carteras = new ArrayList<>();
-		}
 	}
 
 	public String getNombre() {
@@ -100,11 +96,19 @@ public abstract class Usuario {
 	public List<Cartera> getCarteras() {
 		return carteras;
 	}
-
-	public void setCarteras(ArrayList<Cartera> carteras) {
+	
+	public void setCarteras(List<Cartera> carteras) {
 		this.carteras = carteras;
 	}
 	
+	public List<Curso> getCursos() {
+		return cursos;
+	}
+
+	public void setCursos(List<Curso> cursos) {
+		this.cursos = cursos;
+	}
+
 	public double calcularPatrimonioLiquido() {
 	    double total = 0.0;
 	    for (Cartera cartera : this.getCarteras()) {

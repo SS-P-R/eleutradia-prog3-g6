@@ -18,7 +18,7 @@ public class Particular extends Usuario {
 		this.cursos = new ArrayList<Curso>();
 	}
 
-	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia, List<Curso> cursos) {
+	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia) {
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.paisResidencia = paisResidencia;
@@ -31,8 +31,8 @@ public class Particular extends Usuario {
 
 	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia,
 			String email, String password, String telefono, String direccion, Pais domicilioFiscal,
-			PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras, ArrayList<Curso> cursos) {
-		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
+			PerfilFinanciero perfilFinanciero) {
+		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero);
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.paisResidencia = paisResidencia;

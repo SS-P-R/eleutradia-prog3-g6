@@ -14,8 +14,8 @@ public class Empresa extends Usuario {
 	}
 
 	public Empresa(String nif, String nombre, String email, String password, String telefono, String direccion,
-				Pais domicilioFiscal, PerfilFinanciero perfilFinanciero, ArrayList<Cartera> carteras) {
-		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero, carteras);
+				Pais domicilioFiscal, PerfilFinanciero perfilFinanciero) {
+		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero);
 		this.nif = nif;
 	}
 
