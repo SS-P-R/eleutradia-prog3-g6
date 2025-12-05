@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -349,11 +350,10 @@ public class PanelPerfil extends JPanel {
         }
         double patrimonioTotal = usuarioActual.calcularPatrimonioTotal();
 
-        // 👇 Use your actual image paths inside /resources/icons/
-        contentPanel.add(crearIcono("Carteras Activas", String.valueOf(totalCarteras), "/imagenes/wallet.png"));
-        contentPanel.add(crearIcono("Operaciones Totales", String.valueOf(totalOperaciones), "/imagenes/pie-chart.png"));
-        contentPanel.add(crearIcono("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "/imagenes/money-bag.png"));
-        contentPanel.add(crearIcono("Estado de Cuenta", "Verificada", "/imagenes/setting.png"));
+        contentPanel.add(crearIcono("Carteras Activas", String.valueOf(totalCarteras), "/images/wallet.png"));
+        contentPanel.add(crearIcono("Operaciones Totales", String.valueOf(totalOperaciones), "/images/pie-chart.png"));
+        contentPanel.add(crearIcono("Patrimonio Total", String.format("%.2f €", patrimonioTotal), "/images/money-bag.png"));
+        contentPanel.add(crearIcono("Estado de Cuenta", "Verificada", "/images/setting.png"));
 
         panel.add(contentPanel, BorderLayout.CENTER);
 
@@ -369,14 +369,13 @@ public class PanelPerfil extends JPanel {
         lblIcono.setHorizontalAlignment(SwingConstants.CENTER);
         lblIcono.setPreferredSize(new Dimension(30, 30));
 
-        // Try to load icon
         try {
             ImageIcon icon = new ImageIcon(getClass().getResource(iconPath));
             Image scaled = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
             lblIcono.setIcon(new ImageIcon(scaled));
         } catch (Exception e) {
             System.err.println("Icon not found: " + iconPath);
-            lblIcono.setText("?"); // fallback if image missing
+            lblIcono.setText("?");
         }
 
         // --- Text labels ---
@@ -548,35 +547,35 @@ public class PanelPerfil extends JPanel {
 
         JPanel panelNombre = new JPanel(new BorderLayout(5, 5));
         panelNombre.add(new JLabel("Nombre Completo:"), BorderLayout.NORTH);
-        javax.swing.JTextField txtNombre = new javax.swing.JTextField(usuarioActual.getNombre());
+        JTextField txtNombre = new javax.swing.JTextField(usuarioActual.getNombre());
         txtNombre.setFont(FONT_NORMAL1);
         panelNombre.add(txtNombre, BorderLayout.CENTER);
         mainPanel.add(panelNombre);
 
         JPanel panelEmail = new JPanel(new BorderLayout(5, 5));
         panelEmail.add(new JLabel("Email:"), BorderLayout.NORTH);
-        javax.swing.JTextField txtEmail = new javax.swing.JTextField(usuarioActual.getEmail());
+        JTextField txtEmail = new javax.swing.JTextField(usuarioActual.getEmail());
         txtEmail.setFont(FONT_NORMAL1);
         panelEmail.add(txtEmail, BorderLayout.CENTER);
         mainPanel.add(panelEmail);
 
         JPanel panelTelefono = new JPanel(new BorderLayout(5, 5));
         panelTelefono.add(new JLabel("Teléfono:"), BorderLayout.NORTH);
-        javax.swing.JTextField txtTelefono = new javax.swing.JTextField(usuarioActual.getTelefono());
+        JTextField txtTelefono = new javax.swing.JTextField(usuarioActual.getTelefono());
         txtTelefono.setFont(FONT_NORMAL1);
         panelTelefono.add(txtTelefono, BorderLayout.CENTER);
         mainPanel.add(panelTelefono);
 
         JPanel panelDireccion = new JPanel(new BorderLayout(5, 5));
         panelDireccion.add(new JLabel("Dirección:"), BorderLayout.NORTH);
-        javax.swing.JTextField txtDireccion = new javax.swing.JTextField(usuarioActual.getDireccion());
+        JTextField txtDireccion = new javax.swing.JTextField(usuarioActual.getDireccion());
         txtDireccion.setFont(FONT_NORMAL1);
         panelDireccion.add(txtDireccion, BorderLayout.CENTER);
         mainPanel.add(panelDireccion);
 
         JPanel panelFiscal = new JPanel(new BorderLayout(5, 5));
         panelFiscal.add(new JLabel("Domicilio Fiscal:"), BorderLayout.NORTH);
-        javax.swing.JTextField txtFiscal = new javax.swing.JTextField(
+        JTextField txtFiscal = new javax.swing.JTextField(
             usuarioActual.getDomicilioFiscal() != null ? usuarioActual.getDomicilioFiscal().getNombre() : ""
         );
         txtFiscal.setFont(FONT_NORMAL1);

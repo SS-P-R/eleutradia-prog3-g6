@@ -11,8 +11,8 @@ public abstract class Usuario {
     private String direccion;
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
-    private List<Cartera> carteras;
-    private List<Curso> cursos;
+    private List<Cartera> carteras = new ArrayList<Cartera>();
+    private List<Curso> cursos = new ArrayList<Curso>();
     
 	public Usuario() {
 		this.nombre="usuario";
@@ -22,8 +22,6 @@ public abstract class Usuario {
 		this.direccion = "";
 		this.domicilioFiscal = new Pais();
 		this.perfilFinanciero = new PerfilFinanciero();
-		this.carteras = new ArrayList<Cartera>();
-		this.cursos = new ArrayList<Curso>();
 	}
 
 	public Usuario(String nombre, String email, String password, String telefono, String direccion,

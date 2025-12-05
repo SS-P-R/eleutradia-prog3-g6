@@ -36,16 +36,16 @@ public class VentanaPrincipal extends JFrame {
     private int indicePanelActual = 0;
     
     // Rutas de los iconos de pestaña
-    private static final String ICONO_INICIO_NEGRO = "/imagenes/inicioNegro.png";
-    private static final String ICONO_INICIO_AZUL = "/imagenes/inicioAzul.png";
-    private static final String ICONO_EXPLORAR_NEGRO = "/imagenes/explorarNegro.png";
-    private static final String ICONO_EXPLORAR_AZUL = "/imagenes/explorarAzul.png";
-    private static final String ICONO_PORTFOLIO_NEGRO = "/imagenes/portfolioNegro.png";
-    private static final String ICONO_PORTFOLIO_AZUL = "/imagenes/portfolioAzul.png";
-    private static final String ICONO_APRENDER_NEGRO = "/imagenes/aprenderNegro.png";  
-    private static final String ICONO_APRENDER_AZUL = "/imagenes/aprenderAzul.png";    
-    private static final String ICONO_PERFIL_NEGRO = "/imagenes/perfilNegro.png";    
-    private static final String ICONO_PERFIL_AZUL = "/imagenes/perfilAzul.png";
+    private static final String ICONO_INICIO_NEGRO = "/images/inicioNegro.png";
+    private static final String ICONO_INICIO_AZUL = "/images/inicioAzul.png";
+    private static final String ICONO_EXPLORAR_NEGRO = "/images/explorarNegro.png";
+    private static final String ICONO_EXPLORAR_AZUL = "/images/explorarAzul.png";
+    private static final String ICONO_PORTFOLIO_NEGRO = "/images/portfolioNegro.png";
+    private static final String ICONO_PORTFOLIO_AZUL = "/images/portfolioAzul.png";
+    private static final String ICONO_APRENDER_NEGRO = "/images/aprenderNegro.png";  
+    private static final String ICONO_APRENDER_AZUL = "/images/aprenderAzul.png";    
+    private static final String ICONO_PERFIL_NEGRO = "/images/perfilNegro.png";    
+    private static final String ICONO_PERFIL_AZUL = "/images/perfilAzul.png";
     
     //Paneles
     private PanelInicio panelInicio;
