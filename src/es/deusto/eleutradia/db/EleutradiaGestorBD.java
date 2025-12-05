@@ -281,6 +281,31 @@ public class EleutradiaGestorBD {
 					);
 			""");
 			
+			// Tabla intermedia: Particular y Curso
+			stmt.execute("""
+			        CREATE TABLE IF NOT EXISTS ParticularCurso (
+			            dniParticular TEXT NOT NULL,
+			            idCurso INTEGER NOT NULL,
+						PRIMARY KEY (dniParticular, idCurso),
+						
+			            FOREIGN KEY (dniParticular) REFERENCES Particular(dni),
+			            FOREIGN KEY (idCurso) REFERENCES Curso(id),
+			        );
+			""");
+			
+			// Tabla intermedia: 
+			stmt.execute("""
+			        CREATE TABLE IF NOT EXISTS PerfilFinancieroTipoProducto (
+			            perfilFinanciero INTEGER NOT NULL,
+			            tipoProducto INTEGER NOT NULL,
+
+			            PRIMARY KEY (perfilFinanciero, tipoProducto),
+
+			            FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id),
+			            FOREIGN KEY (tipoProducto) REFERENCES TipoProducto(id)
+			        );
+			""");
+			
 		} catch (Exception ex) {
 			System.err.format("Error al crear las tablas: %s", ex.getMessage());
 			ex.printStackTrace();

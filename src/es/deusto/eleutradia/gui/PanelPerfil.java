@@ -28,6 +28,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
+import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
 
 public class PanelPerfil extends JPanel {
@@ -230,11 +231,11 @@ public class PanelPerfil extends JPanel {
             if (perfil.getTiposProducto().isEmpty()) {
                 tiposProducto.append("No especificado");
             } else {
-                for (int i = 0; i < perfil.getTiposProducto().size(); i++) {
-                    tiposProducto.append(perfil.getTiposProducto().get(i).toString());
-                    if (i < perfil.getTiposProducto().size() - 1) {
+                for (TipoProducto tp : perfil.getTiposProducto()) {
+                    if (!tiposProducto.isEmpty()) {
                         tiposProducto.append(", ");
                     }
+                    tiposProducto.append(tp.getNombre());
                 }
             }
         } else {

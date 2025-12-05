@@ -1,32 +1,27 @@
 package es.deusto.eleutradia.domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PerfilFinanciero {
 	private int horizonte; // Tiempo en años previsto de mantención del capital
 	private PerfilRiesgo perfilRiesgo;
 	private NivelConocimiento nivel;
-	private List<TipoProducto> tiposProducto;
+	private Set<TipoProducto> tiposProducto = new HashSet<>();
 	
 	public PerfilFinanciero(int horizonte, PerfilRiesgo perfilRiesgo,
 							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
         this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
         this.nivel = nivel;
-        if (tiposProducto != null) {
-        	this.tiposProducto = new ArrayList<>(tiposProducto);
-        } else {
-        	this.tiposProducto = new ArrayList<>();
-        }
+        this.tiposProducto = new HashSet<>(tiposProducto);
     }
 
 	public PerfilFinanciero() {
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.horizonte = 0;
 		this.nivel = NivelConocimiento.PRINCIPIANTE;
-		this.tiposProducto = new ArrayList<>();
 	}
 	
 	public int getHorizonte() {
@@ -57,17 +52,15 @@ public class PerfilFinanciero {
 		this.nivel = nivel;
 	}
 
-	public List<TipoProducto> getTiposProducto() {
-		return Collections.unmodifiableList(tiposProducto);
+	public Set<TipoProducto> getTiposProducto() {
+		return tiposProducto;
 	}
 
-	public void agregarTipoProducto(TipoProducto tipo) {
-	    if (tipo != null && !tiposProducto.contains(tipo)) {
-	        tiposProducto.add(tipo);
-	    }
+	public void addTipoProducto(TipoProducto tipo) {
+	    tiposProducto.add(tipo);
 	}
 
-	public void eliminarTipoProducto(TipoProducto tipo) {
+	public void removeTipoProducto(TipoProducto tipo) {
 	    tiposProducto.remove(tipo);
 	}
 	
