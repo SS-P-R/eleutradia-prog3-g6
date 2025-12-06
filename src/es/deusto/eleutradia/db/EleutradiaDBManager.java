@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class EleutradiaGestorBD {
+public class EleutradiaDBManager {
 	
 	private final String PROPERTIES_FILE = "resources/config/app.properties";
 	
@@ -15,9 +15,8 @@ public class EleutradiaGestorBD {
 	private String dbPath;
 	private String connectionUrl;
 	
-	public EleutradiaGestorBD() {
+	public EleutradiaDBManager() {
 		try {
-			
 			properties = new Properties();
 			properties.load(new FileReader(PROPERTIES_FILE));
 			
@@ -32,7 +31,7 @@ public class EleutradiaGestorBD {
 		}
 	}
 	
-	public void crearBBDD() {
+	public void createDB() {
 		if (properties.get("db.create").equals("true")) {
 			try (Connection conn = DriverManager.getConnection(connectionUrl);
 				 Statement stmt = conn.createStatement()) {
