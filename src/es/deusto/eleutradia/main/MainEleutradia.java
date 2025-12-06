@@ -90,7 +90,7 @@ public class MainEleutradia {
 	    		);
 
     	// === EMPRESAS ===
-	    listaEmpresas.add(new Empresa("A1234567B", "IberInvest S.A.", "contacto@iberinvest.com", "1234", "914445566",
+	    listaEmpresas.add(new Empresa("A1234567B", "IberInvest S.A.", "contacto@iberinvest.com", "iberinvest2023", "914445566",
 	                "Calle Alcalá 55, Madrid", espana, pMddo1)
 	    		);
 	    listaEmpresas.add(new Empresa("C1234567D", "FinTech México", "info@fintechmx.com", "finmex2024", "5589654321",

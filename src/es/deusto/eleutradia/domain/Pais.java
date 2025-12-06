@@ -29,6 +29,19 @@ public class Pais {
 	public void setRegion(RegionGeografica region) {
 		this.region = region;
 	}
+	
+	public static Pais parseCSV(String linea) {
+	    if (linea == null || linea.isBlank()) return null;
+
+	    String[] campos = linea.split(";");
+
+	    String nombre = campos[0];
+	    int regionNum = Integer.parseInt(campos[1]);
+
+	    RegionGeografica region = RegionGeografica.values()[regionNum - 1];
+
+	    return new Pais(nombre, region);
+	}
 
 	@Override
 	public String toString() {

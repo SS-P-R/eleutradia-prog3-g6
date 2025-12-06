@@ -1,33 +1,32 @@
-nombre;regionGeografica
-Estados Unidos;1
-Canadá;1
-México;1
-Brasil;2
-Argentina;2
-Chile;2
-Reino Unido;3
-Francia;3
-Alemania;3
-España;3
-Italia;3
-Países Bajos;3
-Suiza;3
-Noruega;3
-Suecia;3
-Rusia;4
-Polonia;4
-Ucrania;4
-China;5
-Japón;5
-Corea del Sur;5
-Hong Kong;5
-India;5
-Australia;5
-Arabia Saudí;6
-Emiratos Árabes Unidos;6
-Israel;6
-Turquía;6
-Sudáfrica;7
-Nigeria;7
-Egipto;7
-Mundo;8
+id;nombre;regionGeografica
+1;Estados Unidos;1
+2;Canadá;1
+3;México;1
+4;Brasil;2
+5;Argentina;2
+6;Chile;2
+7;Reino Unido;3
+8;Francia;3
+9;Alemania;3
+10;España;3
+11;Italia;3
+12;Países Bajos;3
+13;Suiza;3
+14;Noruega;3
+15;Suecia;3
+16;Rusia;4
+17;Polonia;4
+18;Ucrania;4
+19;China;5
+20;Japón;5
+21;Corea del Sur;5
+22;Hong Kong;5
+23;India;5
+24;Australia;5
+25;Arabia Saudí;6
+26;Emiratos Árabes Unidos;6
+27;Israel;6
+28;Turquía;6
+29;Sudáfrica;7
+30;Nigeria;7
+31;Egipto;7

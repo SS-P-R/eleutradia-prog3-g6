@@ -1,5 +1,6 @@
 package es.deusto.eleutradia.db;
 
+import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,7 +33,7 @@ public class EleutradiaDBManager {
 	}
 	
 	public void createDB() {
-		if (properties.get("db.create").equals("true")) {
+		if (properties.getProperty("db.create").equals("true")) {
 			try (Connection conn = DriverManager.getConnection(connectionUrl);
 				 Statement stmt = conn.createStatement()) {
 				
@@ -327,15 +328,25 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	public void borrarBBDD() {
-	    java.io.File db = new java.io.File(dbPath);
-	    if (db.exists()) {
-	        if (db.delete()) {
-	            System.out.println("Base de datos eliminada correctamente.");
-	        } else {
-	            System.err.println("No se pudo eliminar la base de datos.");
-	        }
-	    }
+	public void deleteDB() {
+		if (properties.getProperty("db.delete").equals("true")) {
+		    File db = new File(dbPath).getAbsoluteFile();
+		    if (db.exists()) {
+		        if (db.delete()) {
+		            System.out.println("Base de datos eliminada correctamente.");
+		        } else {
+		            System.err.println("No se pudo eliminar la base de datos.");
+		        }
+		    }
+		}
+	}
+	
+	public void cleanDB() {
+		if (properties.getProperty("db.clean").equals("true")) {
+			deleteDB();
+			createDB();
+			System.out.println("Base de datos limpiada correctamente.");
+		}
 	}
 	
 }
