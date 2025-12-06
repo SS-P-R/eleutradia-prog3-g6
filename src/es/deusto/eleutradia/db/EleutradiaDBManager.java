@@ -32,6 +32,13 @@ public class EleutradiaDBManager {
 		}
 	}
 	
+	public void loadFromCSV() {
+		if (properties.getProperty("db.loadCSV").equals("true")) {
+			cleanDB();
+			
+		}
+	}
+	
 	public void createDB() {
 		if (properties.getProperty("db.create").equals("true")) {
 			try (Connection conn = DriverManager.getConnection(connectionUrl);

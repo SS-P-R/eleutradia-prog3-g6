@@ -60,7 +60,7 @@ public class MainEleutradia {
 	    PerfilFinanciero pAgvo1 = new PerfilFinanciero(3, PerfilRiesgo.AGRESIVO,
             NivelConocimiento.AVANZADO, List.of(TipoProducto.CRIPTOMONEDA, TipoProducto.ETF_RV));
 
-	    listaParticulares.add(new Particular("12345678A", "Unai Molinuevo", LocalDate.of(2006, 12, 26), null,
+	    listaParticulares.add(new Particular("12345678A", "Unai Molinuevo", LocalDate.of(2006, 12, 26), espana,
 	                "unai.moli@email.com", "12345678", "600500401", "P/ Deusto 25, Bilbao",
 	                espana, pMddo1)
 	    		);
