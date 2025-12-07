@@ -22,8 +22,6 @@ public class EleutradiaDBManager {
 	private final String PROPERTIES_FILE = "resources/config/app.properties";
 	
 	private static final String CSV_PAISES = "resources/data/paises.csv";
-	private static final String CSV_PERFILES = "resources/data/perfilesFinancieros.csv";
-	private static final String CSV_USUARIOS = "resources/data/usuarios.csv";
 	private static final String CSV_GESTORAS = "resources/data/gestoras.csv";
 	private static final String CSV_PRODUCTOS = "resources/data/productos.csv";
 	
@@ -206,7 +204,7 @@ public class EleutradiaDBManager {
 						    nombreComercial TEXT NOT NULL UNIQUE,
 						    nombreCompleto TEXT NOT NULL UNIQUE,
 						    direccion TEXT NOT NULL,
-						    sede INTEGER NOT NULL,
+						    paisSede INTEGER NOT NULL,
 	
 						    FOREIGN KEY (sede) REFERENCES Pais(id)
 						);
@@ -217,8 +215,7 @@ public class EleutradiaDBManager {
 						CREATE TABLE IF NOT EXISTS ProductoFinanciero (
 							id INTEGER PRIMARY KEY AUTOINCREMENT,
 							nombre TEXT NOT NULL,
-							plazoYear INTEGER,
-							plazoMonth INTEGER,
+							plazo TEXT,
 							valorUnitario REAL NOT NULL,
 							tipoProducto INTEGER NOT NULL,
 							regionGeografica INTEGER NOT NULL,
