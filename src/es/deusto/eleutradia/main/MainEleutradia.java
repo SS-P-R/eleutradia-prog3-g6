@@ -415,9 +415,9 @@ public class MainEleutradia {
         // === PLANES DE PENSIONES ===
         listaProductos.addAll(List.of(
             new ProductoFinanciero(16, "Plan Jubilación RF", null, rentabConservadora, 2.0,
-            		TipoProducto.PLAN_PENSIONES_RF, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.MENSUAL, Divisa.EUR, bbva),
+            		TipoProducto.PP_RF, RegionGeografica.EUROPA_OCCIDENTAL, PeriodicidadPago.MENSUAL, Divisa.EUR, bbva),
             new ProductoFinanciero(17, "Plan Jubilación RV", null, rentabModerada, 5.0,
-            		TipoProducto.PLAN_PENSIONES_RV, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.EUR, bbva)
+            		TipoProducto.PP_RV, RegionGeografica.MUNDO, PeriodicidadPago.SIN_PAGO, Divisa.EUR, bbva)
         ));
 
         // === ETFS ===

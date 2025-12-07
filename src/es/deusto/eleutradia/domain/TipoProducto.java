@@ -11,13 +11,13 @@ public enum TipoProducto {
 	DEPOSITO("Depósitos", ClaseActivo.RF, 1, 10000.0),
 	BONO("Bonos", ClaseActivo.RF, 2, 1000.0),
 	LETRA_TESORO("Letras del tesoro", ClaseActivo.RF, 1, 100.0),
-	PLAN_PENSIONES_RF("P. de Pensiones a RF", ClaseActivo.RF, 3, 100.0),
+	PP_RF("P. de Pensiones a RF", ClaseActivo.RF, 3, 100.0),
 	ETF_RF("ETFs de RF", ClaseActivo.RF, 3, 1000.0),
 	
 	// --- Activos de RV ---
 	ACCION("Acciones", ClaseActivo.RV, 5, 10.0),
 	FONDO_INVERSION("Fondos de inversión", ClaseActivo.RV, 4, 1.0),
-	PLAN_PENSIONES_RV("P. de Pensiones a RV", ClaseActivo.RV, 4, 100.0),
+	PP_RV("P. de Pensiones a RV", ClaseActivo.RV, 4, 100.0),
 	ETF_RV("ETFs de RV", ClaseActivo.RV, 4, 10.0),
 	
 	// --- Activos alternativos ---

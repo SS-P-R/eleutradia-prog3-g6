@@ -4,12 +4,28 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Properties;
+
+import es.deusto.eleutradia.domain.ClaseActivo;
+import es.deusto.eleutradia.domain.Divisa;
+import es.deusto.eleutradia.domain.NivelConocimiento;
+import es.deusto.eleutradia.domain.PerfilRiesgo;
+import es.deusto.eleutradia.domain.PeriodicidadPago;
+import es.deusto.eleutradia.domain.PlazoRentabilidad;
+import es.deusto.eleutradia.domain.RegionGeografica;
+import es.deusto.eleutradia.domain.TipoProducto;
 
 public class EleutradiaDBManager {
 	
 	private final String PROPERTIES_FILE = "resources/config/app.properties";
+	
+	private static final String CSV_PAISES = "resources/data/paises.csv";
+	private static final String CSV_PERFILES = "resources/data/perfilesFinancieros.csv";
+	private static final String CSV_USUARIOS = "resources/data/usuarios.csv";
+	private static final String CSV_GESTORAS = "resources/data/gestoras.csv";
+	private static final String CSV_PRODUCTOS = "resources/data/productos.csv";
 	
 	private Properties properties;
 	private String driver;
@@ -27,20 +43,21 @@ public class EleutradiaDBManager {
 			
 			Class.forName(driver);
 		} catch (Exception ex) {
-			System.err.format("Error al cargar el driver: %s", ex.getMessage());
+			System.err.format("Error al cargar el driver: %s%n", ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
 	
-	public void loadFromCSV() {
-		if (properties.getProperty("db.loadCSV").equals("true")) {
-			this.cleanDB();
-			
+	public void initializeDB() {
+		createDB();
+		insertEnumData();
+		if (properties.getProperty("db.loadCSV", "false").equals("true")) {
+			// Todos los metodos cargar desde CSV
 		}
 	}
 	
 	public void createDB() {
-		if (properties.getProperty("db.create").equals("true")) {
+		if (properties.getProperty("db.create", "false").equals("true")) {
 			try (Connection conn = DriverManager.getConnection(connectionUrl);
 				 Statement stmt = conn.createStatement()) {
 				
@@ -49,7 +66,7 @@ public class EleutradiaDBManager {
 				// Tabla: Clase Activo
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS ClaseActivo (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE
 						);
 				""");
@@ -57,10 +74,10 @@ public class EleutradiaDBManager {
 				// Tabla: Tipo Producto
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS TipoProducto (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE,
 							claseActivo INTEGER NOT NULL,
-							riesgo INTEGER NOT NULL,
+							riesgo INTEGER NOT NULL CHECK(riesgo BETWEEN 1 AND 7),
 							importeMin REAL,
 							
 							FOREIGN KEY (claseActivo) REFERENCES ClaseActivo(id)
@@ -70,7 +87,7 @@ public class EleutradiaDBManager {
 				// Tabla: Región Geográfica
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS RegionGeografica (
-			                id INTEGER PRIMARY KEY AUTOINCREMENT,
+			                id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE
 						);
 				""");
@@ -78,7 +95,7 @@ public class EleutradiaDBManager {
 				// Tabla: Nivel Conocimiento
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS NivelConocimiento (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE
 						);
 				""");
@@ -86,7 +103,7 @@ public class EleutradiaDBManager {
 				// Tabla: Perfil Riesgo
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS PerfilRiesgo (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE
 						);
 				""");
@@ -94,15 +111,16 @@ public class EleutradiaDBManager {
 				// Tabla: Plazo Rentabilidad
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS PlazoRentabilidad (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
-							nombre TEXT NOT NULL UNIQUE
+							id INTEGER PRIMARY KEY,
+							nombre TEXT NOT NULL UNIQUE,
+							definicion TEXT NOT NULL UNIQUE
 						);
 				""");
 				
 				// Tabla: Periodicidad Pago
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS PeriodicidadPago (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE,
 							dias INTEGER NOT NULL UNIQUE
 						);
@@ -111,7 +129,7 @@ public class EleutradiaDBManager {
 				// Tabla: Divisa
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS Divisa (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							id INTEGER PRIMARY KEY,
 							nombre TEXT NOT NULL UNIQUE,
 							tasaCambioUSD REAL NOT NULL,
 							simbolo TEXT NOT NULL
@@ -199,8 +217,8 @@ public class EleutradiaDBManager {
 						CREATE TABLE IF NOT EXISTS ProductoFinanciero (
 							id INTEGER PRIMARY KEY AUTOINCREMENT,
 							nombre TEXT NOT NULL,
-							plazo_year INTEGER,
-							plazo_month INTEGER,
+							plazoYear INTEGER,
+							plazoMonth INTEGER,
 							valorUnitario REAL NOT NULL,
 							tipoProducto INTEGER NOT NULL,
 							regionGeografica INTEGER NOT NULL,
@@ -329,14 +347,129 @@ public class EleutradiaDBManager {
 				""");
 				
 			} catch (Exception ex) {
-				System.err.format("Error al crear las tablas: %s", ex.getMessage());
+				System.err.format("Error al crear las tablas: %s%n", ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
 	}
 	
+	private void insertEnumData() {
+		try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+			insertClaseActivo(conn);
+			insertTipoProducto(conn);
+			insertRegionGeografica(conn);
+			insertNivelConocimiento(conn);
+			insertPerfilRiesgo(conn);
+			insertPlazoRentabilidad(conn);
+			insertPeriodicidadPago(conn);
+			insertDivisa(conn);
+			
+			System.out.println("Datos de enumeraciones insertados correctamente.");
+			
+		} catch (Exception ex) {
+			System.err.format("Error al insertar datos de enumeraciones: %s%n", ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
+	
+	private void insertClaseActivo(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO ClaseActivo (id, nombre) VALUES (?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (ClaseActivo ca : ClaseActivo.values()) {
+				pstmt.setInt(1, ca.ordinal());
+				pstmt.setString(2, ca.name());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertTipoProducto(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO TipoProducto (id, nombre, claseActivo, riesgo, importeMin) VALUES (?, ?, ?, ?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (TipoProducto tp : TipoProducto.values()) {
+				pstmt.setInt(1, tp.ordinal());
+				pstmt.setString(2, tp.getNombre());
+				pstmt.setInt(3, tp.getClaseActivo().ordinal());
+				pstmt.setInt(4, tp.getRiesgo());
+				pstmt.setDouble(5, tp.getImporteMin());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertRegionGeografica(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO RegionGeografica (id, nombre) VALUES (?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (RegionGeografica rg : RegionGeografica.values()) {
+				pstmt.setInt(1, rg.ordinal());
+				pstmt.setString(2, rg.getNombre());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertNivelConocimiento(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO NivelConocimiento (id, nombre) VALUES (?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (NivelConocimiento nc : NivelConocimiento.values()) {
+				pstmt.setInt(1, nc.ordinal());
+				pstmt.setString(2, nc.name());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertPerfilRiesgo(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO PerfilRiesgo (id, nombre) VALUES (?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (PerfilRiesgo pr : PerfilRiesgo.values()) {
+				pstmt.setInt(1, pr.ordinal());
+				pstmt.setString(2, pr.name());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertPlazoRentabilidad(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO PlazoRentabilidad (id, nombre, definicion) VALUES (?, ?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (PlazoRentabilidad plr : PlazoRentabilidad.values()) {
+				pstmt.setInt(1, plr.ordinal());
+				pstmt.setString(2, plr.name());
+				pstmt.setString(3, plr.getDefinicion());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertPeriodicidadPago(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO PeriodicidadPago (id, nombre, dias) VALUES (?, ?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (PeriodicidadPago pp : PeriodicidadPago.values()) {
+				pstmt.setInt(1, pp.ordinal());
+				pstmt.setString(2, pp.name());
+				pstmt.setInt(3, pp.getDias());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
+	private void insertDivisa(Connection conn) throws Exception {
+		String sql = "INSERT OR IGNORE INTO Divisa (id, codigo, nombre, tasaCambioUSD, simbolo) VALUES (?, ?, ?, ?, ?);";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			for (Divisa div : Divisa.values()) {
+				pstmt.setInt(1, div.ordinal());
+				pstmt.setString(2, div.name());
+				pstmt.setString(3, div.getNombre());
+				pstmt.setDouble(4, div.getTasaCambioUSD().doubleValue());
+				pstmt.setString(5, div.getSimbolo());
+				pstmt.executeUpdate();
+			}
+		}
+	}
+	
 	public void deleteDB() {
-		if (properties.getProperty("db.delete").equals("true")) {
+		if (properties.getProperty("db.delete", "false").equals("true")) {
 		    File db = new File(dbPath).getAbsoluteFile();
 		    if (db.exists()) {
 		        if (db.delete()) {
@@ -344,12 +477,14 @@ public class EleutradiaDBManager {
 		        } else {
 		            System.err.println("No se pudo eliminar la base de datos.");
 		        }
+		    } else {
+		    	System.err.println("La base de datos no existe.");
 		    }
 		}
 	}
 	
 	public void cleanDB() {
-		if (properties.getProperty("db.clean").equals("true")) {
+		if (properties.getProperty("db.clean", "false").equals("true")) {
 			deleteDB();
 			createDB();
 			System.out.println("Base de datos limpiada correctamente.");

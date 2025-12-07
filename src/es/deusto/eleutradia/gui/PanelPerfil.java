@@ -54,16 +54,11 @@ public class PanelPerfil extends JPanel {
     
     private boolean temaOscuro = false;
     private static final Color COLOR_FONDO_CLARO = new Color(248, 249, 250);
-    private static final Color COLOR_CARD_CLARO = Color.WHITE;
     private static final Color COLOR_SCROLLBAR = new Color(180, 180, 180);
     private static final Color COLOR_BORDE = new Color(222, 226, 230);
-    private static final Color COLOR_TEXTO_PRINCIPAL = new Color(33, 37, 41);
     private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
     private static final Color COLOR_ACENTO = new Color(0, 123, 255);
     private static final Color COLOR_EXITO = new Color(40, 167, 69);
-    private static final Color COLOR_FONDO_OSCURO = new Color(33, 37, 41);
-    private static final Color COLOR_CARD_OSCURO = new Color(52, 58, 64);
-    private static final Color COLOR_TEXTO_OSCURO = new Color(248, 249, 250);
     
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
@@ -221,7 +216,7 @@ public class PanelPerfil extends JPanel {
         if (perfil != null) {
         	contentPanel.add(crearCampoInfo("Perfil de Riesgo", perfil.getPerfilRiesgo().toString()));
             contentPanel.add(crearCampoInfo("Horizonte Temporal", perfil.getHorizonte() + " años"));
-            contentPanel.add(crearCampoInfo("Nivel de Conocimiento", perfil.getNivel().toString()));
+            contentPanel.add(crearCampoInfo("Nivel de Conocimiento", perfil.getNivelConocimiento().toString()));
         } else {
         	contentPanel.add(crearCampoInfo("Perfil de Riesgo", "No disponible"));
             contentPanel.add(crearCampoInfo("Horizonte Temporal", "No disponible"));

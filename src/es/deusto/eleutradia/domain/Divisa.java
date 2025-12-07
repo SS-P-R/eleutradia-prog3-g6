@@ -3,7 +3,7 @@ import java.math.BigDecimal;
 
 public enum Divisa {
 	
-	// Divisa(Nombre de la moneda, Tipo de cambio relativo al USD)
+	// Divisa(Nombre de la moneda, Tipo de cambio relativo al USD, Símbolo)
     EUR("Euro", new BigDecimal("0.86"), "€"),
     USD("Dólar estadounidense", BigDecimal.ONE, "$"),
     GBP("Libra esterlina", new BigDecimal("0.76"), "£"),
