@@ -1,13 +1,13 @@
 tipo;id;nombre;email;password;telefono;direccion;fechaNacimiento;paisResidenciaId;domicilioFiscalId;perfilFinancieroId
-PARTICULAR;12345678A;Unai Molinuevo;unai.moli@example.com;12345678;600500401;P/ Deusto 25, Bilbao;2006-12-26;espana;espana;pMddo1
-PARTICULAR;01234567A;Sergio Pena;sergio.pena@example.com;01234567;600500400;P/ Deusto 25, Bilbao;2006-12-26;espana;espana;pMddo1
-PARTICULAR;12345679X;Carlos Ruiz;carlos.ruiz@example.com;carlos2025;600123456;Calle Mayor 10, Madrid;1988-03-15;espana;espana;pMddo1
-PARTICULAR;87654321B;Lucía Gómez;lucia.gomez@example.com;lucia1995;5556789123;Av. Insurgentes 123, CDMX;1995-07-10;mexico;mexico;pCons1
-PARTICULAR;11223344C;David Martín;david.martin@example.com;martin79;0623456789;Rue Lafayette 33, Paris;1979-01-20;francia;francia;pAgvo1
-PARTICULAR;44332211D;Sofía López;sofia.lopez@example.com;sofia2024;+54 911 456789;Calle Florida 22, Buenos Aires;1992-11-05;argentina;argentina;pMddo1
-PARTICULAR;55667788E;Marcos Torres;marcos.torres@example.com;marcos85;611445566;Gran Vía 18, Madrid;1985-09-22;alemania;espana;pAgvo1
-EMPRESA;A1234567B;IberInvest S.A.;contacto@iberinvest.com;iberinvest2023;914445566;Calle Alcalá 55, Madrid;;;espana;pMddo1
-EMPRESA;C1234567D;FinTech México;info@fintechmx.com;finmex2024;5589654321;Av. Reforma 100, CDMX;;;mexico;pAgvo1
-EMPRESA;E1234567F;CapitalFrance;admin@capitalfr.fr;capfr2025;0145678901;Boulevard Haussmann 12, Paris;;;francia;pCons1
-EMPRESA;G1234567H;InvestUS LLC;support@investus.com;investus2024;+1 202 555 0198;Wall Street 45, New York;;;eeuu;pAgvo1
-EMPRESA;I1234567J;ArgentBank;info@argentbank.com;argent2025;1134567890;Av. Corrientes 200, Buenos Aires;;;argentina;pMddo1
+PARTICULAR;12345678A;Unai Molinuevo;unai.moli@example.com;12345678;600500401;P/ Deusto 25, Bilbao;2006-12-26;10;10;pMddo1
+PARTICULAR;01234567A;Sergio Pena;sergio.pena@example.com;01234567;600500400;P/ Deusto 25, Bilbao;2006-12-26;10;10;pMddo1
+PARTICULAR;12345679X;Carlos Ruiz;carlos.ruiz@example.com;carlos2025;600123456;Calle Mayor 10, Madrid;1988-03-15;10;10;pMddo1
+PARTICULAR;87654321B;Lucía Gómez;lucia.gomez@example.com;lucia1995;5556789123;Av. Insurgentes 123, CDMX;1995-07-10;3;3;pCons1
+PARTICULAR;11223344C;David Martín;david.martin@example.com;martin79;0623456789;Rue Lafayette 33, Paris;1979-01-20;8;8;pAgvo1
+PARTICULAR;44332211D;Sofía López;sofia.lopez@example.com;sofia2024;+54 911 456789;Calle Florida 22, Buenos Aires;1992-11-05;5;5;pMddo1
+PARTICULAR;55667788E;Marcos Torres;marcos.torres@example.com;marcos85;611445566;Gran Vía 18, Madrid;1985-09-22;9;10;pAgvo1
+EMPRESA;A1234567B;IberInvest S.A.;contacto@iberinvest.com;iberinvest2023;914445566;Calle Alcalá 55, Madrid;;;10;pMddo1
+EMPRESA;C1234567D;FinTech México;info@fintechmx.com;finmex2024;5589654321;Av. Reforma 100, CDMX;;;3;pAgvo1
+EMPRESA;E1234567F;CapitalFrance;admin@capitalfr.fr;capfr2025;0145678901;Boulevard Haussmann 12, Paris;;;8;pCons1
+EMPRESA;G1234567H;InvestUS LLC;support@investus.com;investus2024;+1 202 555 0198;Wall Street 45, New York;;;1;pAgvo1
+EMPRESA;I1234567J;ArgentBank;info@argentbank.com;argent2025;1134567890;Av. Corrientes 200, Buenos Aires;;;5;pMddo1

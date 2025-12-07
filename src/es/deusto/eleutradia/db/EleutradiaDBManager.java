@@ -34,7 +34,7 @@ public class EleutradiaDBManager {
 	
 	public void loadFromCSV() {
 		if (properties.getProperty("db.loadCSV").equals("true")) {
-			cleanDB();
+			this.cleanDB();
 			
 		}
 	}
