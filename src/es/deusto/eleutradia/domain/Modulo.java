@@ -9,15 +9,6 @@ public class Modulo implements Comparable<Modulo> {
 	private int posicion;
 	private List<Leccion> lecciones;
 	
-	public Modulo(String nombre, int posicion, List<Leccion> lecciones) {
-        if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El módulo debe tener un nombre");
-		
-        this.id = 0;
-		this.nombre = nombre;
-		this.posicion = posicion;
-		this.lecciones = (lecciones != null) ? new ArrayList<>(lecciones) : new ArrayList<>();
-	}
-	
 	public Modulo(int id, String nombre, int posicion, List<Leccion> lecciones) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El módulo debe tener un nombre");

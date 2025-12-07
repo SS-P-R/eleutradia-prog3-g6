@@ -4,13 +4,6 @@ public class Leccion implements Comparable<Leccion> {
 	private final int id;
 	private String titulo;
 	private int posicion;
-	
-	public Leccion(String titulo, int posicion) {
-        if (titulo == null || titulo.isBlank()) throw new IllegalArgumentException("La lección debe tener un título");
-		this.id = 0;
-		this.titulo = titulo;
-		this.posicion = posicion;
-	}
 
 	public Leccion(int id, String titulo, int posicion) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");

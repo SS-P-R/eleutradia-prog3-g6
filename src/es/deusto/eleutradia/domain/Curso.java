@@ -8,19 +8,8 @@ public class Curso {
 	private String nombre;
 	private List<Modulo> modulos;
 	private NivelConocimiento nivelRecomendado;
-	private String rutaImagen;
 	
-	public Curso(String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
-		if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
-
-        this.id = 0;
-        this.nombre = nombre;
-        this.modulos = (modulos != null) ? new ArrayList<>(modulos) : new ArrayList<>();
-        this.nivelRecomendado = nivelRecomendado;
-        this.rutaImagen = rutaImagen;
-    }
-	
-	public Curso(int id, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
+	public Curso(int id, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
         
@@ -28,7 +17,6 @@ public class Curso {
 		this.nombre = nombre;
 		this.modulos = (modulos != null) ? new ArrayList<>(modulos) : new ArrayList<>();
 		this.nivelRecomendado = nivelRecomendado;
-		this.rutaImagen = rutaImagen;
 	}
 	
 	public int getId() {
@@ -73,17 +61,13 @@ public class Curso {
 	}
 
 	public String getRutaImagen() {
-		return rutaImagen;
-	}
-
-	public void setRutaImagen(String rutaImagen) {
-		this.rutaImagen = rutaImagen;
+		return String.format("/images/curso%d.png", id);
 	}
 
 	@Override
 	public String toString() {
-		return "Curso [id=" + id + ", nombre=" + nombre + ", modulos=" + modulos + ", nivelRecomendado="
-				+ nivelRecomendado + ", rutaImagen=" + rutaImagen + "]";
+		return "Curso [id=" + id + ", nombre=" + nombre + ", modulos=" + modulos
+				+ ", nivelRecomendado=" + nivelRecomendado + "]";
 	}
 	
 }
