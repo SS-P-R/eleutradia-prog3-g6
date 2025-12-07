@@ -38,11 +38,9 @@ public class Pais {
 	    String[] campos = linea.split(";");
 
 	    String nombre = campos[0];
-	    int regionNum = Integer.parseInt(campos[1]);
+	    RegionGeografica region = RegionGeografica.valueOf(campos[1]);
 
-	    RegionGeografica region = RegionGeografica.values()[regionNum - 1];
-
-	    return new Pais(0, nombre, region);
+	    return new Pais(-1, nombre, region);
 	}
 
 	@Override

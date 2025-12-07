@@ -18,7 +18,7 @@ public class Gestora {
 		this.nombreCompleto = nombre;
 		this.direccion = direccion;
 		this.sede = sede;
-		this.ofertaProductos = new ArrayList<>(ofertaProductos);
+		this.ofertaProductos = (ofertaProductos != null) ? new ArrayList<>(ofertaProductos) : new ArrayList<>();
 	}
 	
 	public int getId() {
@@ -64,7 +64,12 @@ public class Gestora {
 	public void setOfertaProductos(List<ProductoFinanciero> ofertaProductos) {
         this.ofertaProductos = new ArrayList<>(ofertaProductos);
     }
-
+	
+	public static String[] parseCSV(String linea) {
+	    if (linea == null || linea.isBlank()) return null;
+	    return linea.split(";");
+	}
+	
 	@Override
 	public String toString() {
 		return "Gestora [ID=" + id + ", nombreComercial=" + nombreComercial + ", nombreCompleto=" + nombreCompleto +

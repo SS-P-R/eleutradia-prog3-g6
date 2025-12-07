@@ -1,19 +1,26 @@
 package es.deusto.eleutradia.db;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Divisa;
+import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.NivelConocimiento;
+import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.PerfilRiesgo;
 import es.deusto.eleutradia.domain.PeriodicidadPago;
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
+import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
 
@@ -24,6 +31,9 @@ public class EleutradiaDBManager {
 	private static final String CSV_PAISES = "resources/data/paises.csv";
 	private static final String CSV_GESTORAS = "resources/data/gestoras.csv";
 	private static final String CSV_PRODUCTOS = "resources/data/productos.csv";
+	private static final String CSV_CURSOS = "resources/data/cursos.csv";
+	private static final String CSV_MODULOS = "resources/data/modulos.csv";
+	private static final String CSV_LECCIONES = "resources/data/lecciones.csv";
 	
 	private Properties properties;
 	private String driver;
@@ -47,10 +57,23 @@ public class EleutradiaDBManager {
 	}
 	
 	public void initializeDB() {
-		createDB();
-		insertEnumData();
+		this.createDB();
+		
 		if (properties.getProperty("db.loadCSV", "false").equals("true")) {
-			// Todos los metodos cargar desde CSV
+			if (properties.getProperty("db.clean", "false").equals("true")) {
+	            this.cleanDB();
+	        }
+			
+			insertEnumData();
+			
+			List<Pais> paises = this.loadCSV(CSV_PAISES, Pais::parseCSV);
+			this.insertPaises(paises.toArray(new Pais[0]));
+			
+			List<String[]> gestorasData = this.loadCSV(CSV_GESTORAS, Gestora::parseCSV);
+			this.insertGestoras(gestorasData);
+			
+			List<String[]> productosData = this.loadCSV(CSV_PRODUCTOS, ProductoFinanciero::parseCSV);
+	        this.insertProductos(productosData);
 		}
 	}
 	
@@ -128,6 +151,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS Divisa (
 							id INTEGER PRIMARY KEY,
+							codigo TEXT NOT NULL UNIQUE,
 							nombre TEXT NOT NULL UNIQUE,
 							tasaCambioUSD REAL NOT NULL,
 							simbolo TEXT NOT NULL
@@ -206,7 +230,7 @@ public class EleutradiaDBManager {
 						    direccion TEXT NOT NULL,
 						    paisSede INTEGER NOT NULL,
 	
-						    FOREIGN KEY (sede) REFERENCES Pais(id)
+						    FOREIGN KEY (paisSede) REFERENCES Pais(id)
 						);
 				""");
 				
@@ -343,12 +367,51 @@ public class EleutradiaDBManager {
 				        );
 				""");
 				
+				// Tabla: Rentabilidad (Mapa ProductoFinanciero-PlazoRentabilidad)
+				stmt.execute("""
+				        CREATE TABLE IF NOT EXISTS Rentabilidad (
+				            id INTEGER PRIMARY KEY AUTOINCREMENT,
+				            productoFinanciero INTEGER NOT NULL,
+				            plazoRentabilidad INTEGER NOT NULL,
+				            porcentaje REAL NOT NULL,
+				            
+				            FOREIGN KEY (productoFinanciero) REFERENCES ProductoFinanciero(id),
+				            FOREIGN KEY (plazoRentabilidad) REFERENCES PlazoRentabilidad(id),
+				            UNIQUE(productoFinanciero, plazoRentabilidad)
+				        );
+				""");
+				
 			} catch (Exception ex) {
 				System.err.format("Error al crear las tablas: %s%n", ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
 	}
+	
+	public void deleteDB() {
+		if (properties.getProperty("db.delete", "false").equals("true")) {
+		    File db = new File(dbPath).getAbsoluteFile();
+		    if (db.exists()) {
+		        if (db.delete()) {
+		            System.out.println("Base de datos eliminada correctamente.");
+		        } else {
+		            System.err.println("No se pudo eliminar la base de datos.");
+		        }
+		    } else {
+		    	System.err.println("La base de datos no existe.");
+		    }
+		}
+	}
+	
+	public void cleanDB() {
+		if (properties.getProperty("db.clean", "false").equals("true")) {
+			deleteDB();
+			createDB();
+			System.out.println("Base de datos limpiada correctamente.");
+		}
+	}
+	
+	// INSERCIÓN DE DATOS EN TABLAS DE ENUMS
 	
 	private void insertEnumData() {
 		try (Connection conn = DriverManager.getConnection(connectionUrl)) {
@@ -360,9 +423,7 @@ public class EleutradiaDBManager {
 			insertPlazoRentabilidad(conn);
 			insertPeriodicidadPago(conn);
 			insertDivisa(conn);
-			
-			System.out.println("Datos de enumeraciones insertados correctamente.");
-			
+						
 		} catch (Exception ex) {
 			System.err.format("Error al insertar datos de enumeraciones: %s%n", ex.getMessage());
 			ex.printStackTrace();
@@ -465,27 +526,202 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	public void deleteDB() {
-		if (properties.getProperty("db.delete", "false").equals("true")) {
-		    File db = new File(dbPath).getAbsoluteFile();
-		    if (db.exists()) {
-		        if (db.delete()) {
-		            System.out.println("Base de datos eliminada correctamente.");
-		        } else {
-		            System.err.println("No se pudo eliminar la base de datos.");
-		        }
-		    } else {
-		    	System.err.println("La base de datos no existe.");
-		    }
+	// INSERCIÓN DE DATOS EN TABLAS DE CLASES
+	
+	private void insertPaises(Pais... paises) {
+		String sql = "INSERT OR IGNORE INTO Pais (id, nombre, regionGeografica) VALUES (?, ?, ?);";
+		
+		try (Connection conn = DriverManager.getConnection(connectionUrl);
+			 PreparedStatement pStmt = conn.prepareStatement(sql)) {
+			
+			for (Pais p : paises) {
+				pStmt.setInt(1, p.getId());
+				pStmt.setString(2, p.getNombre());
+				pStmt.setInt(3, p.getRegion().ordinal());
+				pStmt.executeUpdate();
+			}
+			
+		} catch (Exception ex) {
+			System.err.format("Error insertando países de la lista: %s%n", ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 	
-	public void cleanDB() {
-		if (properties.getProperty("db.clean", "false").equals("true")) {
-			deleteDB();
-			createDB();
-			System.out.println("Base de datos limpiada correctamente.");
+	private void insertGestoras(List<String[]> gestorasData) {
+	    String sql = "INSERT OR IGNORE INTO Gestora (nombreComercial, nombreCompleto, direccion, paisSede) VALUES (?, ?, ?, ?);";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        for (String[] data : gestorasData) {
+	        	if (data == null) continue;
+	        	
+	        	String nombreComercial = data[0];
+	            String nombreCompleto = data[1];
+	            String direccion = data[2];
+	            String nombrePaisSede = data[3];
+	        	
+	        	 int paisId = getPaisIdByNombre(conn, nombrePaisSede);
+	             
+	             if (paisId == -1) {
+	                 System.err.println("País no encontrado para gestora: " + nombreComercial);
+	                 continue;
+	             }
+	            
+	            pStmt.setString(1, nombreComercial);
+	            pStmt.setString(2, nombreCompleto);
+	            pStmt.setString(3, direccion);
+	            pStmt.setInt(4, paisId);
+	            pStmt.executeUpdate();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando gestoras: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	}
+	
+	private void insertProductos(List<String[]> productosData) {
+	    String sql1 = "INSERT OR IGNORE INTO ProductoFinanciero (nombre, plazo, valorUnitario, tipoProducto, regionGeografica, perPago, divisa, gestora) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+	    String sql2 = "INSERT OR IGNORE INTO Rentabilidad (productoFinanciero, plazoRentabilidad, porcentaje) VALUES (?, ?, ?);";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt1 = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+	    	 PreparedStatement pStmt2 = conn.prepareStatement(sql2)) {
+	        
+	        for (String[] data : productosData) {
+	            if (data == null) continue;
+	            
+	            String nombre = data[0];
+	            String plazoStr = data[1];
+	            String rentabilidadesStr = data[2];
+	            double valorUnitario = Double.parseDouble(data[3]);
+	            String tipoProductoStr = data[4];
+	            String regionGeograficaStr = data[5];
+	            String periodicidadPagoStr = data[6];
+	            String divisaStr = data[7];
+	            String gestoraNombre = data[8];
+	            
+	            String plazo = (plazoStr.isEmpty()) ? null : plazoStr;
+	            
+	            int tipoProductoId = TipoProducto.valueOf(tipoProductoStr).ordinal();
+	            int regionGeograficaId = RegionGeografica.valueOf(regionGeograficaStr).ordinal();
+	            int periodicidadPagoId = PeriodicidadPago.valueOf(periodicidadPagoStr).ordinal();
+	            int divisaId = Divisa.valueOf(divisaStr).ordinal();
+	            
+	            int gestoraId = getGestoraIdByNombre(conn, gestoraNombre);
+	            
+	            if (gestoraId == -1) {
+	                System.err.println("Gestora no encontrada para producto: " + nombre);
+	                continue;
+	            }
+	            
+	            pStmt1.setString(1, nombre);
+	            pStmt1.setString(2, plazo);
+	            pStmt1.setDouble(3, valorUnitario);
+	            pStmt1.setInt(4, tipoProductoId);
+	            pStmt1.setInt(5, regionGeograficaId);
+	            pStmt1.setInt(6, periodicidadPagoId);
+	            pStmt1.setInt(7, divisaId);
+	            pStmt1.setInt(8, gestoraId);
+	            pStmt1.executeUpdate();
+	            
+	            ResultSet rs = pStmt1.getGeneratedKeys();
+	            if (rs.next()) {
+	                int productoId = rs.getInt(1);
+	                
+	                if (!rentabilidadesStr.isEmpty()) {
+	                    String[] rentabilidades = rentabilidadesStr.split(",");
+	                    PlazoRentabilidad[] plazos = PlazoRentabilidad.values();
+	                    
+	                    // YTD, 1año, 3años, 5años, MAX
+	                    for (int i = 0; i < rentabilidades.length; i++) {
+	                        double porcentaje = Double.parseDouble(rentabilidades[i]);
+	                        
+	                        pStmt2.setInt(1, productoId);
+	                        pStmt2.setInt(2, plazos[i].ordinal());
+	                        pStmt2.setDouble(3, porcentaje);
+	                        pStmt2.executeUpdate();
+	                    }
+	                }
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando productos financieros: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	}
+	
+	// MÉTODOS AUXILIARES PARA INSERCIÓN
+	
+	private int getPaisIdByNombre(Connection conn, String nombrePais) {
+	    String sql = "SELECT id FROM Pais WHERE nombre = ?;";
+	    
+	    try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        pStmt.setString(1, nombrePais);
+	        ResultSet rs = pStmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("id");
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error buscando país '%s': %s%n", nombrePais, ex.getMessage());
+	    }
+	    
+	    return -1;
+	}
+	
+	private int getGestoraIdByNombre(Connection conn, String nombreComercial) {
+	    String sql = "SELECT id FROM Gestora WHERE nombreComercial = ?;";
+	    
+	    try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        pStmt.setString(1, nombreComercial);
+	        ResultSet rs = pStmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("id");
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error buscando gestora '%s': %s%n", nombreComercial, ex.getMessage());
+	    }
+	    
+	    return -1;
+	}
+	
+	//IAG (Claude)
+	//SIN MODIFICAR
+	@FunctionalInterface
+    private interface CSVParser<T> {
+        T parse(String line);
+    }
+	//END IAG
+	
+	// CARGA DE DATOS DESDE CSV
+	
+	private <T> List<T> loadCSV(String rutaCSV, CSVParser<T> parser) {
+		List<T> elementos = new ArrayList<>();
+		
+		File fileCSV = new File(rutaCSV);
+        if (!fileCSV.exists()) {
+            System.err.println("Archivo CSV no encontrado: " + rutaCSV);
+            return elementos;
+        }
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(rutaCSV))) {
+			br.readLine(); // Saltar cabecera
+			String linea;
+			while ((linea = br.readLine()) != null) {
+				T elem = parser.parse(linea);
+				if (elem != null) elementos.add(elem);
+			}			
+			
+		} catch (Exception ex) {
+			System.err.format("Error leyendo elementos del CSV: %s%n", ex.getMessage());
+			ex.printStackTrace();
 		}
+		
+		return elementos;
 	}
 	
 }

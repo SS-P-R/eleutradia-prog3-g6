@@ -111,6 +111,11 @@ public class ProductoFinanciero {
 	public void setGestora(Gestora gestora) {
 		this.gestora = gestora;
 	}
+	
+	public static String[] parseCSV(String linea) {
+	    if (linea == null || linea.isBlank()) return null;
+	    return linea.split(";", -1); // -1 para mantener campos vacíos
+	}
 
 	@Override
 	public String toString() {
