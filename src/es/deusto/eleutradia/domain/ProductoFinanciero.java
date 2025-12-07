@@ -17,24 +17,6 @@ public class ProductoFinanciero {
 	private PeriodicidadPago perPago;
 	private Divisa divisa;
 	private Gestora gestora;
-	
-	public ProductoFinanciero(String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
-			double valorUnitario, TipoProducto tipoProducto, RegionGeografica regionGeografica,
-			PeriodicidadPago perPago, Divisa divisa, Gestora gestora) {
-		this.id = 0;
-		this.nombre = nombre;
-		this.plazo = plazo;
-		//IAG (ChatGPT)
-		//SIN MODIFICAR
-		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
-		//END IAG
-		this.valorUnitario = valorUnitario;
-		this.tipoProducto = tipoProducto;
-		this.regionGeografica = regionGeografica;
-		this.perPago = perPago;
-		this.divisa = divisa;
-		this.gestora = gestora;
-	}
 
 	public ProductoFinanciero(int id, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
 			double valorUnitario, TipoProducto tipoProducto, RegionGeografica regionGeografica,

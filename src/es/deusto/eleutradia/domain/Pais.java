@@ -4,12 +4,6 @@ public class Pais {
 	private final int id;
 	private String nombre;
 	private RegionGeografica region;
-
-	public Pais(String nombre, RegionGeografica region) {
-		this.id = 0;
-		this.nombre = nombre;
-		this.region = region;
-	}
 	
 	public Pais(int id, String nombre, RegionGeografica region) {
         if (id < 0) throw new IllegalArgumentException("ID no puede ser negativo");
@@ -48,7 +42,7 @@ public class Pais {
 
 	    RegionGeografica region = RegionGeografica.values()[regionNum - 1];
 
-	    return new Pais(nombre, region);
+	    return new Pais(0, nombre, region);
 	}
 
 	@Override

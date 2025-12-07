@@ -11,15 +11,6 @@ public class Gestora {
 	private String direccion;
 	private Pais sede;
 	private List<ProductoFinanciero> ofertaProductos;
-
-	public Gestora(String nombreComercial, String nombre, String direccion, Pais sede, List<ProductoFinanciero> ofertaProductos) {
-		this.id = 0;
-		this.nombreComercial = nombreComercial;
-		this.nombreCompleto = nombre;
-		this.direccion = direccion;
-		this.sede = sede;
-		this.ofertaProductos = new ArrayList<>(ofertaProductos);
-	}
 	
 	public Gestora(int id, String nombreComercial, String nombre, String direccion, Pais sede, List<ProductoFinanciero> ofertaProductos) {
 		this.id = id;
