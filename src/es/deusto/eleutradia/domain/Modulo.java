@@ -9,17 +9,22 @@ public class Modulo implements Comparable<Modulo> {
 	private int posicion;
 	private List<Leccion> lecciones;
 	
+	public Modulo(String nombre, int posicion, List<Leccion> lecciones) {
+        if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El módulo debe tener un nombre");
+		
+        this.id = 0;
+		this.nombre = nombre;
+		this.posicion = posicion;
+		this.lecciones = (lecciones != null) ? new ArrayList<>(lecciones) : new ArrayList<>();
+	}
+	
 	public Modulo(int id, String nombre, int posicion, List<Leccion> lecciones) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El módulo debe tener un nombre");
 		this.id = id;
 		this.nombre = nombre;
 		this.posicion = posicion;
-		if (lecciones != null) {
-			this.lecciones = new ArrayList<>(lecciones);
-		} else {
-			this.lecciones = new ArrayList<>();
-		}
+		this.lecciones = (lecciones != null) ? new ArrayList<>(lecciones) : new ArrayList<>();
 	}
 	
 	public int getId() {
@@ -47,12 +52,18 @@ public class Modulo implements Comparable<Modulo> {
 	}
 
 	public List<Leccion> getLecciones() {
-		return lecciones;
+		return List.copyOf(lecciones);
 	}
 
-	public void setLecciones(List<Leccion> lecciones) {
-		this.lecciones = lecciones;
-	}
+	public void addLeccion(Leccion leccion) {
+        if (leccion != null) {
+            lecciones.add(leccion);
+        }
+    }
+
+    public void removeLeccion(Leccion leccion) {
+        lecciones.remove(leccion);
+    }
 	
 	@Override
 	public int compareTo(Modulo o) {

@@ -1,30 +1,38 @@
 package es.deusto.eleutradia.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Gestora {
+	private final int id;
 	private String nombreComercial;
 	private String nombreCompleto;
 	private String direccion;
 	private Pais sede;
 	private List<ProductoFinanciero> ofertaProductos;
-	
-	public Gestora() {
-		this.nombreComercial = "";
-		this.nombreCompleto = "";
-		this.direccion = "";
-		this.sede = null;
-		this.ofertaProductos = new ArrayList<ProductoFinanciero>();
-	}
 
 	public Gestora(String nombreComercial, String nombre, String direccion, Pais sede, List<ProductoFinanciero> ofertaProductos) {
+		this.id = 0;
 		this.nombreComercial = nombreComercial;
 		this.nombreCompleto = nombre;
 		this.direccion = direccion;
 		this.sede = sede;
-		this.ofertaProductos = ofertaProductos;
+		this.ofertaProductos = new ArrayList<>(ofertaProductos);
 	}
+	
+	public Gestora(int id, String nombreComercial, String nombre, String direccion, Pais sede, List<ProductoFinanciero> ofertaProductos) {
+		this.id = id;
+		this.nombreComercial = nombreComercial;
+		this.nombreCompleto = nombre;
+		this.direccion = direccion;
+		this.sede = sede;
+		this.ofertaProductos = new ArrayList<>(ofertaProductos);
+	}
+	
+	public int getId() {
+        return id;
+    }
 
 	public String getNombreComercial() {
 		return nombreComercial;
@@ -59,17 +67,17 @@ public class Gestora {
 	}
 
 	public List<ProductoFinanciero> getOfertaProductos() {
-		return ofertaProductos;
+		return Collections.unmodifiableList(ofertaProductos);
 	}
 
 	public void setOfertaProductos(List<ProductoFinanciero> ofertaProductos) {
-		this.ofertaProductos = ofertaProductos;
-	}
+        this.ofertaProductos = new ArrayList<>(ofertaProductos);
+    }
 
 	@Override
 	public String toString() {
-		return "Gestora [nombre=" + nombreCompleto + ", direccion=" + direccion + ", sede=" + sede + ", ofertaProductos="
-				+ ofertaProductos + "]";
+		return "Gestora [ID=" + id + ", nombreComercial=" + nombreComercial + ", nombreCompleto=" + nombreCompleto +
+				", direccion=" + direccion + ", sede=" + sede + ", ofertaProductos=" + ofertaProductos + "]";
 	}
 	
 }

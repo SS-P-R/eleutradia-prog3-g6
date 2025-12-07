@@ -18,17 +18,22 @@ public class ProductoFinanciero {
 	private Divisa divisa;
 	private Gestora gestora;
 	
-	public ProductoFinanciero() {
+	public ProductoFinanciero(String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
+			double valorUnitario, TipoProducto tipoProducto, RegionGeografica regionGeografica,
+			PeriodicidadPago perPago, Divisa divisa, Gestora gestora) {
 		this.id = 0;
-	    this.nombre = "";
-	    this.plazo = null;
-	    this.rentabilidades = new EnumMap<>(PlazoRentabilidad.class);
-	    this.valorUnitario = 0.0;
-	    this.tipoProducto = TipoProducto.ACCION;
-	    this.regionGeografica = RegionGeografica.MUNDO;
-	    this.perPago = PeriodicidadPago.MENSUAL;
-	    this.divisa = Divisa.USD;
-	    this.gestora = null;
+		this.nombre = nombre;
+		this.plazo = plazo;
+		//IAG (ChatGPT)
+		//SIN MODIFICAR
+		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
+		//END IAG
+		this.valorUnitario = valorUnitario;
+		this.tipoProducto = tipoProducto;
+		this.regionGeografica = regionGeografica;
+		this.perPago = perPago;
+		this.divisa = divisa;
+		this.gestora = gestora;
 	}
 
 	public ProductoFinanciero(int id, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
@@ -74,7 +79,7 @@ public class ProductoFinanciero {
 	}
 
 	public void setRentabilidades(Map<PlazoRentabilidad, BigDecimal> rentabilidades) {
-		this.rentabilidades = rentabilidades;
+	    this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
 	}
 
 	public double getValorUnitario() {

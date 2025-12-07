@@ -12,17 +12,6 @@ public abstract class Usuario {
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
     private List<Cartera> carteras = new ArrayList<Cartera>();
-    private List<Curso> cursos = new ArrayList<Curso>();
-    
-	public Usuario() {
-		this.nombre="usuario";
-		this.email = "";
-		this.password = "";
-		this.telefono = "";
-		this.direccion = "";
-		this.domicilioFiscal = new Pais();
-		this.perfilFinanciero = new PerfilFinanciero();
-	}
 
 	public Usuario(String nombre, String email, String password, String telefono, String direccion,
 			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero) {
@@ -97,14 +86,6 @@ public abstract class Usuario {
 	
 	public void setCarteras(List<Cartera> carteras) {
 		this.carteras = carteras;
-	}
-	
-	public List<Curso> getCursos() {
-		return cursos;
-	}
-
-	public void setCursos(List<Curso> cursos) {
-		this.cursos = cursos;
 	}
 
 	public double calcularPatrimonioLiquido() {

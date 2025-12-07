@@ -10,17 +10,23 @@ public class Curso {
 	private NivelConocimiento nivelRecomendado;
 	private String rutaImagen;
 	
+	public Curso(String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
+		if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
+
+        this.id = 0;
+        this.nombre = nombre;
+        this.modulos = (modulos != null) ? new ArrayList<>(modulos) : new ArrayList<>();
+        this.nivelRecomendado = nivelRecomendado;
+        this.rutaImagen = rutaImagen;
+    }
+	
 	public Curso(int id, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado, String rutaImagen) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
         
 		this.id = id;
 		this.nombre = nombre;
-		if (modulos != null) {
-			this.modulos = new ArrayList<>(modulos);
-		} else {
-			this.modulos = new ArrayList<>();
-		}
+		this.modulos = (modulos != null) ? new ArrayList<>(modulos) : new ArrayList<>();
 		this.nivelRecomendado = nivelRecomendado;
 		this.rutaImagen = rutaImagen;
 	}
@@ -38,16 +44,25 @@ public class Curso {
 	}
 
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("El curso debe tener un nombre");
+        }
+        this.nombre = nombre;
+    }
 
 	public List<Modulo> getModulos() {
-		return modulos;
+		return List.copyOf(modulos);
 	}
 
-	public void setModulos(List<Modulo> modulos) {
-		this.modulos = modulos;
-	}
+	public void addModulo(Modulo modulo) {
+        if (modulo != null) {
+            modulos.add(modulo);
+        }
+    }
+	
+	public void removeModulo(Modulo modulo) {
+        modulos.remove(modulo);
+    }
 	
 	public NivelConocimiento getNivelRecomendado() {
 		return nivelRecomendado;
@@ -67,7 +82,8 @@ public class Curso {
 
 	@Override
 	public String toString() {
-		return "Curso [ID=" + id + ", nombre=" + nombre + ", modulos=" + modulos + "]";
+		return "Curso [id=" + id + ", nombre=" + nombre + ", modulos=" + modulos + ", nivelRecomendado="
+				+ nivelRecomendado + ", rutaImagen=" + rutaImagen + "]";
 	}
 	
 }

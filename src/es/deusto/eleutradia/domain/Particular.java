@@ -6,41 +6,29 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Particular extends Usuario {
-	private final String dni;
+	private String dni;
     private LocalDate fechaNacimiento;
     private Pais paisResidencia;
     private List<Curso> cursos;
-    
-	public Particular() {
-		this.dni = "";
-		this.fechaNacimiento = null;
-		this.paisResidencia = null;
-		this.cursos = new ArrayList<Curso>();
-	}
 
 	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia) {
+		super("", "", "", "", "", null, null);
+		if (dni == null || dni.isBlank()) throw new IllegalArgumentException("El DNI no puede estar vacío");
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.paisResidencia = paisResidencia;
-		if (cursos != null) {
-			this.cursos = new ArrayList<>(cursos);
-		} else {
-			this.cursos = new ArrayList<>();
-		}
+		this.cursos = new ArrayList<>();
 	}
 
 	public Particular(String dni, String nombre, LocalDate fechaNacimiento, Pais paisResidencia,
 			String email, String password, String telefono, String direccion, Pais domicilioFiscal,
 			PerfilFinanciero perfilFinanciero) {
 		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero);
+		if (dni == null || dni.isBlank()) throw new IllegalArgumentException("El DNI no puede estar vacío");
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.paisResidencia = paisResidencia;
-		if (cursos != null) {
-			this.cursos = new ArrayList<>(cursos);
-		} else {
-			this.cursos = new ArrayList<>();
-		}
+		this.cursos = new ArrayList<>();
 	}
 
 	public Pais getPaisResidencia() {
@@ -52,15 +40,15 @@ public class Particular extends Usuario {
 	}
 
 	public List<Curso> getCursos() {
-		return cursos;
-	}
-
-	public void setCursos(List<Curso> cursos) {
-		this.cursos = cursos;
+		return List.copyOf(cursos);
 	}
 	
 	public void addCurso(Curso curso) {
-		this.cursos.add(curso);
+		cursos.add(curso);
+	}
+	
+	public void removeCurso(Curso curso) {
+		cursos.remove(curso);
 	}
 
 	public String getDni() {

@@ -1,17 +1,25 @@
 package es.deusto.eleutradia.domain;
 
 public class Pais {
+	private final int id;
 	private String nombre;
 	private RegionGeografica region;
-	
-	public Pais() {
-		this.nombre = "";
-		this.region = null;
-	}
 
 	public Pais(String nombre, RegionGeografica region) {
+		this.id = 0;
 		this.nombre = nombre;
 		this.region = region;
+	}
+	
+	public Pais(int id, String nombre, RegionGeografica region) {
+        if (id < 0) throw new IllegalArgumentException("ID no puede ser negativo");
+        this.id = id;
+        this.nombre = nombre;
+        this.region = region;
+    }
+
+	public int getId() {
+		return id;
 	}
 
 	public String getNombre() {
@@ -45,7 +53,7 @@ public class Pais {
 
 	@Override
 	public String toString() {
-		return "Pais [nombre=" + nombre + ", region=" + region + "]";
+		return "Pais [ID=" + id + ", nombre=" + nombre + ", region=" + region + "]";
 	}
 	
 }

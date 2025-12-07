@@ -5,33 +5,43 @@ import java.util.List;
 import java.util.Set;
 
 public class PerfilFinanciero {
+	private final int id;
 	private int horizonte; // Tiempo en años previsto de mantención del capital
 	private PerfilRiesgo perfilRiesgo;
 	private NivelConocimiento nivelConocimiento;
 	private Set<TipoProducto> tiposProducto = new HashSet<>();
 	
 	public PerfilFinanciero(int horizonte, PerfilRiesgo perfilRiesgo,
-							NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
+			NivelConocimiento nivel, List<TipoProducto> tiposProducto) {
+		if (horizonte < 0) throw new IllegalArgumentException("El horizonte temporal no puede ser negativo");
+		if (perfilRiesgo == null) throw new IllegalArgumentException("Perfil de riesgo obligatorio");
+		if (nivel == null) throw new IllegalArgumentException("Nivel de conocimiento obligatorio");
+		this.id = 0;
         this.perfilRiesgo = perfilRiesgo;
         this.horizonte = horizonte;
         this.nivelConocimiento = nivel;
-        this.tiposProducto = new HashSet<>(tiposProducto);
+        if (tiposProducto != null) {
+        	this.tiposProducto = new HashSet<>(tiposProducto);
+        }
     }
 
 	public PerfilFinanciero() {
+		this.id = 0;
 		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
 		this.horizonte = 0;
 		this.nivelConocimiento = NivelConocimiento.PRINCIPIANTE;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
 	public int getHorizonte() {
 		return horizonte;
 	}
 
 	public void setHorizonte(int horizonte) {
-		if (horizonte < 0) {
-            throw new IllegalArgumentException("El horizonte temporal no puede ser negativo");
-        }
+		if (horizonte < 0) throw new IllegalArgumentException("El horizonte temporal no puede ser negativo");
 		this.horizonte = horizonte;
 	}
 
@@ -44,11 +54,11 @@ public class PerfilFinanciero {
 		this.perfilRiesgo = perfilRiesgo;
 	}
 
-	public NivelConocimiento getNivel() {
+	public NivelConocimiento getNivelConocimiento() {
 		return nivelConocimiento;
 	}
 
-	public void setNivel(NivelConocimiento nivel) {
+	public void setNivelConocimiento(NivelConocimiento nivel) {
 		this.nivelConocimiento = nivel;
 	}
 

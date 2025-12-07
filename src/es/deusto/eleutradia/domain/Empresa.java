@@ -1,21 +1,18 @@
 package es.deusto.eleutradia.domain;
 
-import java.util.ArrayList;
-
 public class Empresa extends Usuario {
 	private String nif;
-	
-	public Empresa() {
-		this.nif = "";
-	}
 
 	public Empresa(String nif) {
+		super("", "", "", "", "", null, null);
+		if (nif == null || nif.isBlank()) throw new IllegalArgumentException("El NIF no puede estar vacío");
 		this.nif = nif;
 	}
 
 	public Empresa(String nif, String nombre, String email, String password, String telefono, String direccion,
 				Pais domicilioFiscal, PerfilFinanciero perfilFinanciero) {
 		super(nombre, email, password, telefono, direccion, domicilioFiscal, perfilFinanciero);
+		if (nif == null || nif.isBlank()) throw new IllegalArgumentException("El NIF no puede estar vacío");
 		this.nif = nif;
 	}
 

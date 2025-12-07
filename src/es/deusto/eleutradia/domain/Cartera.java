@@ -17,13 +17,14 @@ public class Cartera {
     private List<Operacion> operaciones;
     private List<Posicion> posiciones;
     
-	public Cartera() {
+    public Cartera(String nombre, double saldo, PerfilRiesgo perfilRiesgo, Divisa divisa) {
 		this.id = 0;
-		this.nombre = "Mi cartera - " + id;
-		this.saldo = 0.0;
-		this.perfilRiesgo = PerfilRiesgo.CONSERVADOR;
-		this.divisa = Divisa.EUR;
-		this.operaciones = new ArrayList<Operacion>();
+		this.nombre = nombre;
+		this.saldo = saldo;
+		this.perfilRiesgo = perfilRiesgo;
+		this.divisa = divisa;
+		this.operaciones = new ArrayList<>();
+		this.posiciones = new ArrayList<>();
 	}
 
 	public Cartera(int id, String nombre, double saldo, PerfilRiesgo perfilRiesgo, Divisa divisa) {
