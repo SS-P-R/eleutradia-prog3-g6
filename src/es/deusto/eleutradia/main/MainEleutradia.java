@@ -35,16 +35,16 @@ public class MainEleutradia {
 	public static List<Curso> listaCursos = new ArrayList<Curso>();
 	
 	// --- PAÍSES ---
-    public static Pais espana = new Pais("España", RegionGeografica.EUROPA_OCCIDENTAL);
-    public static Pais francia = new Pais("Francia", RegionGeografica.EUROPA_OCCIDENTAL);
-    public static Pais mexico = new Pais("México", RegionGeografica.AMERICA_NORTE);
-    public static Pais argentina = new Pais("Argentina", RegionGeografica.AMERICA_SUR);
-    public static Pais eeuu = new Pais("Estados Unidos", RegionGeografica.AMERICA_NORTE);
-    public static Pais alemania = new Pais("Alemania", RegionGeografica.EUROPA_OCCIDENTAL);
-    public static Pais reinounido = new Pais("Reino Unido", RegionGeografica.EUROPA_OCCIDENTAL);
-    public static Pais canada = new Pais("Canadá", RegionGeografica.AMERICA_NORTE);
-    public static Pais japon = new Pais("Japón", RegionGeografica.ASIA_PACIFICO);
-    public static Pais hongkong = new Pais("Hong Kong", RegionGeografica.ASIA_PACIFICO);
+    public static Pais espana = new Pais(10, "España", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais francia = new Pais(8, "Francia", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais mexico = new Pais(3, "México", RegionGeografica.AMERICA_NORTE);
+    public static Pais argentina = new Pais(5, "Argentina", RegionGeografica.AMERICA_SUR);
+    public static Pais eeuu = new Pais(1, "Estados Unidos", RegionGeografica.AMERICA_NORTE);
+    public static Pais alemania = new Pais(9, "Alemania", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais reinounido = new Pais(7, "Reino Unido", RegionGeografica.EUROPA_OCCIDENTAL);
+    public static Pais canada = new Pais(2, "Canadá", RegionGeografica.AMERICA_NORTE);
+    public static Pais japon = new Pais(20, "Japón", RegionGeografica.ASIA_PACIFICO);
+    public static Pais hongkong = new Pais(22, "Hong Kong", RegionGeografica.ASIA_PACIFICO);
 	
 	public static void inicializarUsuarios() {
 		//IAG (ChatGPT)
@@ -121,7 +121,7 @@ public class MainEleutradia {
         Modulo m1_1 = new Modulo(10, "Conceptos Fundamentales", 1, leccionesC1M1);
         Modulo m1_2 = new Modulo(11, "Principales Activos", 2, leccionesC1M2);
         List<Modulo> modulosCurso1 = List.of(m1_1, m1_2);
-        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.PRINCIPIANTE, "/images/curso11.png");
+        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.PRINCIPIANTE);
         listaCursos.add(cursoIntro);
         
         // --- 2. CURSO: Análisis Técnico Básico (Ya existente) ---
@@ -131,7 +131,7 @@ public class MainEleutradia {
         List<Leccion> leccionesC2M1 = List.of(l2_1, l2_2, l2_3);
         Modulo m2_1 = new Modulo(20, "Indicadores Técnicos", 1, leccionesC2M1);
         List<Modulo> modulosCurso2 = List.of(m2_1);
-        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.INTERMEDIO, "/images/curso4.png");
+        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.INTERMEDIO);
         listaCursos.add(cursoAnalisis);
 
         // --- 3. CURSO: Gestión de Carteras y Derivados (Ya existente) ---
@@ -147,7 +147,7 @@ public class MainEleutradia {
         Modulo m3_2 = new Modulo(31, "Instrumentos Derivados", 2, leccionesC3M2);
         Modulo m3_3 = new Modulo(32, "Estrategias Avanzadas", 3, leccionesC3M3);
         List<Modulo> modulosCurso3 = List.of(m3_1, m3_2, m3_3);
-        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO, "/images/curso3.png");
+        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO);
         listaCursos.add(cursoAvanzado);
         
         // --- 4. CURSO: Finanzas Personales y Ahorro ---
@@ -161,7 +161,7 @@ public class MainEleutradia {
         Modulo m4_1 = new Modulo(40, "Control de Finanzas", 1, leccionesC4M1);
         Modulo m4_2 = new Modulo(41, "Primeros Pasos", 2, leccionesC4M2);
         List<Modulo> modulosCurso4 = List.of(m4_1, m4_2);
-        Curso cursoFinanzasP = new Curso(4, "Gestión de Finanzas Personales", modulosCurso4, NivelConocimiento.PRINCIPIANTE, "/images/curso12.png");
+        Curso cursoFinanzasP = new Curso(4, "Gestión de Finanzas Personales", modulosCurso4, NivelConocimiento.PRINCIPIANTE);
         listaCursos.add(cursoFinanzasP);
         
         // --- 5. CURSO: Planificación para la Jubilación ---
@@ -175,7 +175,7 @@ public class MainEleutradia {
         Modulo m5_1 = new Modulo(50, "Conceptos Básicos de Jubilación", 1, leccionesC5M1);
         Modulo m5_2 = new Modulo(51, "Tipos de Planes", 2, leccionesC5M2);
         List<Modulo> modulosCurso5 = List.of(m5_1, m5_2);
-        Curso cursoJubilacion = new Curso(5, "Planificación para la Jubilación", modulosCurso5, NivelConocimiento.PRINCIPIANTE, "/images/curso9.png");
+        Curso cursoJubilacion = new Curso(5, "Planificación para la Jubilación", modulosCurso5, NivelConocimiento.PRINCIPIANTE);
         listaCursos.add(cursoJubilacion);
         
         // --- 6. CURSO: Inversión en Bienes Raíces ---
@@ -189,7 +189,7 @@ public class MainEleutradia {
         Modulo m6_1 = new Modulo(60, "Fundamentos Inmobiliarios", 1, leccionesC6M1);
         Modulo m6_2 = new Modulo(61, "Nuevas Modalidades", 2, leccionesC6M2);
         List<Modulo> modulosCurso6 = List.of(m6_1, m6_2);
-        Curso cursoInmuebles = new Curso(6, "Inversión en Bienes Raíces", modulosCurso6, NivelConocimiento.INTERMEDIO, "/images/curso8.png");
+        Curso cursoInmuebles = new Curso(6, "Inversión en Bienes Raíces", modulosCurso6, NivelConocimiento.INTERMEDIO);
         listaCursos.add(cursoInmuebles);
 
         // --- 7. CURSO: Renta Fija (Bonos y Depósitos) ---
@@ -203,7 +203,7 @@ public class MainEleutradia {
         Modulo m7_1 = new Modulo(70, "Productos de Ahorro", 1, leccionesC7M1);
         Modulo m7_2 = new Modulo(71, "Deuda Pública y Corporativa", 2, leccionesC7M2);
         List<Modulo> modulosCurso7 = List.of(m7_1, m7_2);
-        Curso cursoRentaFija = new Curso(7, "Explorando la Renta Fija", modulosCurso7, NivelConocimiento.PRINCIPIANTE, "/images/curso6.png");
+        Curso cursoRentaFija = new Curso(7, "Explorando la Renta Fija", modulosCurso7, NivelConocimiento.PRINCIPIANTE);
         listaCursos.add(cursoRentaFija);
 
         // --- 8. CURSO: Inversiones Alternativas (Cripto y Commodities) ---
@@ -218,7 +218,7 @@ public class MainEleutradia {
         Modulo m8_2 = new Modulo(81, "Activos Tangibles", 2, leccionesC8M2);
         List<Modulo> modulosCurso8 = List.of(m8_1, m8_2);
         // Re-uso curso3.png porque encaja perfecto con Criptomonedas
-        Curso cursoAlternativos = new Curso(8, "Nuevos Horizontes: Cripto y Materias Primas", modulosCurso8, NivelConocimiento.AVANZADO, "/images/curso3.png");
+        Curso cursoAlternativos = new Curso(8, "Nuevos Horizontes: Cripto y Materias Primas", modulosCurso8, NivelConocimiento.AVANZADO);
         listaCursos.add(cursoAlternativos);
 
         // --- 9. CURSO: Valoración y Riesgo ---
@@ -232,7 +232,7 @@ public class MainEleutradia {
         Modulo m9_1 = new Modulo(90, "Midiendo el Riesgo", 1, leccionesC9M1);
         Modulo m9_2 = new Modulo(91, "Estrategias de Valoración", 2, leccionesC9M2);
         List<Modulo> modulosCurso9 = List.of(m9_1, m9_2);
-        Curso cursoValoracion = new Curso(9, "Valoración de Activos y Gestión del Riesgo", modulosCurso9, NivelConocimiento.INTERMEDIO, "/images/curso2.png");
+        Curso cursoValoracion = new Curso(9, "Valoración de Activos y Gestión del Riesgo", modulosCurso9, NivelConocimiento.INTERMEDIO);
         listaCursos.add(cursoValoracion);
 
         // --- 10. CURSO: Capital Inversión (Private Equity) ---
@@ -246,7 +246,7 @@ public class MainEleutradia {
         Modulo m10_1 = new Modulo(100, "Fundamentos del Private Equity", 1, leccionesC10M1);
         Modulo m10_2 = new Modulo(101, "El Mercado", 2, leccionesC10M2);
         List<Modulo> modulosCurso10 = List.of(m10_1, m10_2);
-        Curso cursoPrivateEquity = new Curso(10, "Inversión en Capital Privado", modulosCurso10, NivelConocimiento.AVANZADO, "/images/curso10.png");
+        Curso cursoPrivateEquity = new Curso(10, "Inversión en Capital Privado", modulosCurso10, NivelConocimiento.AVANZADO);
         listaCursos.add(cursoPrivateEquity);
     }
 	//END IAG
@@ -283,6 +283,7 @@ public class MainEleutradia {
         );
         
         Gestora eleutradia = new Gestora(
+        	1,
     		"EleuTradia",
     	    "EleuTradia Asset Management",
     	    "Universidad de Deusto, Bilbao, España",
@@ -291,6 +292,7 @@ public class MainEleutradia {
         );
         
         Gestora blackrock = new Gestora(
+        	2,
     		"BlackRock",
     	    "BlackRock Inc.",
     	    "50 Hudson Yards, New York, NY, Estados Unidos",
@@ -299,6 +301,7 @@ public class MainEleutradia {
     	);
 
         Gestora vanguard = new Gestora(
+        	3,
     		"Vanguard",
     	    "Vanguard Group",
     	    "100 Vanguard Blvd, Malvern, PA, Estados Unidos",
@@ -307,6 +310,7 @@ public class MainEleutradia {
     	);
 
         Gestora fidelity = new Gestora(
+        	4,
     		"Fidelity",
     	    "Fidelity Investments",
     	    "245 Summer Street, Boston, MA, Estados Unidos",
@@ -315,6 +319,7 @@ public class MainEleutradia {
     	);
 
         Gestora jpmorgan = new Gestora(
+        	5,
     		"JPMorgan",
     	    "J.P. Morgan Asset Management",
     	    "25 Bank Street, Canary Wharf, Londres, Reino Unido",
@@ -323,6 +328,7 @@ public class MainEleutradia {
     	);
         
         Gestora bbva = new Gestora(
+        	6,
     		"BBVA",
     		"BBVA Asset Management",
     		"Paseo Castellana 81, Madrid, España",
@@ -331,6 +337,7 @@ public class MainEleutradia {
     	);
 
         Gestora amundi = new Gestora(
+        	7,
     		"Amundi",
     	    "Amundi Asset Management",
     	    "90 Boulevard Pasteur, París, Francia",
@@ -339,6 +346,7 @@ public class MainEleutradia {
     	);
         
         Gestora schroders = new Gestora(
+        	8,
     	    "Schroders",
     	    "Schroders PLC",
     	    "1 London Wall Place, Londres, Reino Unido",
@@ -347,6 +355,7 @@ public class MainEleutradia {
     	);
         
         Gestora nomura = new Gestora(
+        	9,
     	    "Nomura",
     	    "Nomura Asset Management",
     	    "1-12-1 Nihonbashi, Chuo-ku, Tokio, Japón",
@@ -355,6 +364,7 @@ public class MainEleutradia {
     	);
         
         Gestora hsbc = new Gestora(
+        	10,
     	    "HSBC",
     	    "HSBC Asset Management",
     	    "1 Queen’s Road Central, Hong Kong",

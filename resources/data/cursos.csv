@@ -1,11 +1,11 @@
-id;nombre;nivelRecomendado;rutaImagen
-1;Introducción a la Inversión;0;/images/curso11.png
-2;Análisis Técnico Básico;1;/images/curso4.png
-3;Gestión de Carteras y Derivados;3;/images/curso3.png
-4;Gestión de Finanzas Personales;0;/images/curso12.png
-5;Planificación para la Jubilación;0;/images/curso9.png
-6;Inversión en Bienes Raíces;1;/images/curso8.png
-7;Explorando la Renta Fija;0;/images/curso6.png
-8;Nuevos Horizontes: Cripto y Materias Primas;3;/images/curso3.png
-9;Valoración de Activos y Gestión del Riesgo;1;/images/curso2.png
-10;Inversión en Capital Privado;3;/images/curso10.png
+id;nombre;nivelRecomendado
+1;Introducción a la Inversión;0
+2;Análisis Técnico Básico;1
+3;Gestión de Carteras y Derivados;3
+4;Gestión de Finanzas Personales;0
+5;Planificación para la Jubilación;1
+6;Inversión en Bienes Raíces;1
+7;Explorando la Renta Fija;0
+8;Nuevos Horizontes: Cripto y Materias Primas;2
+9;Valoración de Activos y Gestión del Riesgo;2
+10;Inversión en Capital Privado;3
