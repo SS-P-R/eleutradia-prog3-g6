@@ -120,8 +120,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC1M2 = List.of(l1_3, l1_4);
         Modulo m1_1 = new Modulo(10, "Conceptos Fundamentales", 1, leccionesC1M1);
         Modulo m1_2 = new Modulo(11, "Principales Activos", 2, leccionesC1M2);
-        List<Modulo> modulosCurso1 = List.of(m1_1, m1_2);
-        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", modulosCurso1, NivelConocimiento.PRINCIPIANTE);
+        Curso cursoIntro = new Curso(1, "Introducción a la Inversión", NivelConocimiento.PRINCIPIANTE);
+        cursoIntro.addModulo(m1_1);
+        cursoIntro.addModulo(m1_2);
         listaCursos.add(cursoIntro);
         
         // --- 2. CURSO: Análisis Técnico Básico (Ya existente) ---
@@ -130,8 +131,8 @@ public class MainEleutradia {
         Leccion l2_3 = new Leccion(203, "Indicador RSI y MACD", 3);
         List<Leccion> leccionesC2M1 = List.of(l2_1, l2_2, l2_3);
         Modulo m2_1 = new Modulo(20, "Indicadores Técnicos", 1, leccionesC2M1);
-        List<Modulo> modulosCurso2 = List.of(m2_1);
-        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", modulosCurso2, NivelConocimiento.INTERMEDIO);
+        Curso cursoAnalisis = new Curso(2, "Análisis Técnico Básico", NivelConocimiento.INTERMEDIO);
+        cursoAnalisis.addModulo(m2_1);
         listaCursos.add(cursoAnalisis);
 
         // --- 3. CURSO: Gestión de Carteras y Derivados (Ya existente) ---
@@ -146,8 +147,10 @@ public class MainEleutradia {
         Modulo m3_1 = new Modulo(30, "Gestión del Riesgo", 1, leccionesC3M1);
         Modulo m3_2 = new Modulo(31, "Instrumentos Derivados", 2, leccionesC3M2);
         Modulo m3_3 = new Modulo(32, "Estrategias Avanzadas", 3, leccionesC3M3);
-        List<Modulo> modulosCurso3 = List.of(m3_1, m3_2, m3_3);
-        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", modulosCurso3, NivelConocimiento.AVANZADO);
+        Curso cursoAvanzado = new Curso(3, "Gestión de Carteras y Derivados", NivelConocimiento.AVANZADO);
+        cursoAvanzado.addModulo(m3_1);
+        cursoAvanzado.addModulo(m3_2);
+        cursoAvanzado.addModulo(m3_3);
         listaCursos.add(cursoAvanzado);
         
         // --- 4. CURSO: Finanzas Personales y Ahorro ---
@@ -160,8 +163,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC4M2 = List.of(l4_3, l4_4);
         Modulo m4_1 = new Modulo(40, "Control de Finanzas", 1, leccionesC4M1);
         Modulo m4_2 = new Modulo(41, "Primeros Pasos", 2, leccionesC4M2);
-        List<Modulo> modulosCurso4 = List.of(m4_1, m4_2);
-        Curso cursoFinanzasP = new Curso(4, "Gestión de Finanzas Personales", modulosCurso4, NivelConocimiento.PRINCIPIANTE);
+        Curso cursoFinanzasP = new Curso(4, "Gestión de Finanzas Personales", NivelConocimiento.PRINCIPIANTE);
+        cursoFinanzasP.addModulo(m4_1);
+        cursoFinanzasP.addModulo(m4_2);
         listaCursos.add(cursoFinanzasP);
         
         // --- 5. CURSO: Planificación para la Jubilación ---
@@ -174,8 +178,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC5M2 = List.of(l5_3, l5_4);
         Modulo m5_1 = new Modulo(50, "Conceptos Básicos de Jubilación", 1, leccionesC5M1);
         Modulo m5_2 = new Modulo(51, "Tipos de Planes", 2, leccionesC5M2);
-        List<Modulo> modulosCurso5 = List.of(m5_1, m5_2);
-        Curso cursoJubilacion = new Curso(5, "Planificación para la Jubilación", modulosCurso5, NivelConocimiento.PRINCIPIANTE);
+        Curso cursoJubilacion = new Curso(5, "Planificación para la Jubilación", NivelConocimiento.PRINCIPIANTE);
+        cursoJubilacion.addModulo(m5_1);
+        cursoJubilacion.addModulo(m5_2);
         listaCursos.add(cursoJubilacion);
         
         // --- 6. CURSO: Inversión en Bienes Raíces ---
@@ -188,8 +193,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC6M2 = List.of(l6_3, l6_4);
         Modulo m6_1 = new Modulo(60, "Fundamentos Inmobiliarios", 1, leccionesC6M1);
         Modulo m6_2 = new Modulo(61, "Nuevas Modalidades", 2, leccionesC6M2);
-        List<Modulo> modulosCurso6 = List.of(m6_1, m6_2);
-        Curso cursoInmuebles = new Curso(6, "Inversión en Bienes Raíces", modulosCurso6, NivelConocimiento.INTERMEDIO);
+        Curso cursoInmuebles = new Curso(6, "Inversión en Bienes Raíces", NivelConocimiento.INTERMEDIO);
+        cursoInmuebles.addModulo(m6_1);
+        cursoInmuebles.addModulo(m6_2);
         listaCursos.add(cursoInmuebles);
 
         // --- 7. CURSO: Renta Fija (Bonos y Depósitos) ---
@@ -202,8 +208,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC7M2 = List.of(l7_3, l7_4);
         Modulo m7_1 = new Modulo(70, "Productos de Ahorro", 1, leccionesC7M1);
         Modulo m7_2 = new Modulo(71, "Deuda Pública y Corporativa", 2, leccionesC7M2);
-        List<Modulo> modulosCurso7 = List.of(m7_1, m7_2);
-        Curso cursoRentaFija = new Curso(7, "Explorando la Renta Fija", modulosCurso7, NivelConocimiento.PRINCIPIANTE);
+        Curso cursoRentaFija = new Curso(7, "Explorando la Renta Fija", NivelConocimiento.PRINCIPIANTE);
+        cursoRentaFija.addModulo(m7_1);
+        cursoRentaFija.addModulo(m7_2);
         listaCursos.add(cursoRentaFija);
 
         // --- 8. CURSO: Inversiones Alternativas (Cripto y Commodities) ---
@@ -216,9 +223,10 @@ public class MainEleutradia {
         List<Leccion> leccionesC8M2 = List.of(l8_3, l8_4);
         Modulo m8_1 = new Modulo(80, "Activos Digitales", 1, leccionesC8M1);
         Modulo m8_2 = new Modulo(81, "Activos Tangibles", 2, leccionesC8M2);
-        List<Modulo> modulosCurso8 = List.of(m8_1, m8_2);
         // Re-uso curso3.png porque encaja perfecto con Criptomonedas
-        Curso cursoAlternativos = new Curso(8, "Nuevos Horizontes: Cripto y Materias Primas", modulosCurso8, NivelConocimiento.AVANZADO);
+        Curso cursoAlternativos = new Curso(8, "Nuevos Horizontes: Cripto y Materias Primas", NivelConocimiento.AVANZADO);
+        cursoAlternativos.addModulo(m8_1);
+        cursoAlternativos.addModulo(m8_2);
         listaCursos.add(cursoAlternativos);
 
         // --- 9. CURSO: Valoración y Riesgo ---
@@ -231,8 +239,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC9M2 = List.of(l9_3, l9_4);
         Modulo m9_1 = new Modulo(90, "Midiendo el Riesgo", 1, leccionesC9M1);
         Modulo m9_2 = new Modulo(91, "Estrategias de Valoración", 2, leccionesC9M2);
-        List<Modulo> modulosCurso9 = List.of(m9_1, m9_2);
-        Curso cursoValoracion = new Curso(9, "Valoración de Activos y Gestión del Riesgo", modulosCurso9, NivelConocimiento.INTERMEDIO);
+        Curso cursoValoracion = new Curso(9, "Valoración de Activos y Gestión del Riesgo", NivelConocimiento.INTERMEDIO);
+        cursoValoracion.addModulo(m9_1);
+        cursoValoracion.addModulo(m9_2);
         listaCursos.add(cursoValoracion);
 
         // --- 10. CURSO: Capital Inversión (Private Equity) ---
@@ -245,8 +254,9 @@ public class MainEleutradia {
         List<Leccion> leccionesC10M2 = List.of(l10_3, l10_4);
         Modulo m10_1 = new Modulo(100, "Fundamentos del Private Equity", 1, leccionesC10M1);
         Modulo m10_2 = new Modulo(101, "El Mercado", 2, leccionesC10M2);
-        List<Modulo> modulosCurso10 = List.of(m10_1, m10_2);
-        Curso cursoPrivateEquity = new Curso(10, "Inversión en Capital Privado", modulosCurso10, NivelConocimiento.AVANZADO);
+        Curso cursoPrivateEquity = new Curso(10, "Inversión en Capital Privado", NivelConocimiento.AVANZADO);
+        cursoPrivateEquity.addModulo(m10_1);
+        cursoPrivateEquity.addModulo(m10_2);
         listaCursos.add(cursoPrivateEquity);
     }
 	//END IAG

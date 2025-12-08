@@ -1,21 +1,21 @@
-id;nombre;curso;posicion
-1;Conceptos Fundamentales;1;1
-2;Principales Activos;1;2
-3;Indicadores Técnicos;2;1
-4;Gestión del Riesgo;3;1
-5;Instrumentos Derivados;3;2
-6;Estrategias Avanzadas;3;3
-7;Control de Finanzas;4;1
-8;Primeros Pasos;4;2
-9;Conceptos Básicos de Jubilación;5;1
-10;Tipos de Planes;5;2
-11;Fundamentos Inmobiliarios;6;1
-12;Nuevas Modalidades;6;2
-13;Productos de Ahorro;7;1
-14;Deuda Pública y Corporativa;7;2
-15;Activos Digitales;8;1
-16;Activos Tangibles;8;2
-17;Midiendo el Riesgo;9;1
-18;Estrategias de Valoración;9;2
-19;Fundamentos del Private Equity;10;1
-20;El Mercado;10;2
+nombre;nombreCurso;posicion
+Conceptos Fundamentales;Introducción a la Inversión;1
+Principales Activos;Introducción a la Inversión;2
+Indicadores Técnicos;Análisis Técnico Básico;1
+Gestión del Riesgo;Gestión de Carteras y Derivados;1
+Instrumentos Derivados;Gestión de Carteras y Derivados;2
+Estrategias Avanzadas;Gestión de Carteras y Derivados;3
+Control de Finanzas;Gestión de Finanzas Personales;1
+Primeros Pasos;Gestión de Finanzas Personales;2
+Conceptos Básicos de Jubilación;Planificación para la Jubilación;1
+Tipos de Planes;Planificación para la Jubilación;2
+Fundamentos Inmobiliarios;Inversión en Bienes Raíces;1
+Nuevas Modalidades;Inversión en Bienes Raíces;2
+Productos de Ahorro;Explorando la Renta Fija;1
+Deuda Pública y Corporativa;Explorando la Renta Fija;2
+Activos Digitales;Nuevos Horizontes: Cripto y Materias Primas;1
+Activos Tangibles;Nuevos Horizontes: Cripto y Materias Primas;2
+Midiendo el Riesgo;Valoración de Activos y Gestión del Riesgo;1
+Estrategias de Valoración;Valoración de Activos y Gestión del Riesgo;2
+Fundamentos del Private Equity;Inversión en Capital Privado;1
+El Mercado;Inversión en Capital Privado;2

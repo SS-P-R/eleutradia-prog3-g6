@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.Properties;
 
 import es.deusto.eleutradia.domain.ClaseActivo;
+import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Divisa;
 import es.deusto.eleutradia.domain.Gestora;
+import es.deusto.eleutradia.domain.Leccion;
+import es.deusto.eleutradia.domain.Modulo;
 import es.deusto.eleutradia.domain.NivelConocimiento;
 import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.PerfilRiesgo;
@@ -74,6 +77,15 @@ public class EleutradiaDBManager {
 			
 			List<String[]> productosData = this.loadCSV(CSV_PRODUCTOS, ProductoFinanciero::parseCSV);
 	        this.insertProductos(productosData);
+	        
+	        List<Curso> cursos = this.loadCSV(CSV_CURSOS, Curso::parseCSV);
+	        this.insertCursos(cursos.toArray(new Curso[0]));
+	        
+	        List<String[]> modulosData = this.loadCSV(CSV_MODULOS, Modulo::parseCSV);
+	        this.insertModulos(modulosData);
+	        
+	        List<String[]> leccionesData = this.loadCSV(CSV_LECCIONES, Leccion::parseCSV);
+	        this.insertLecciones(leccionesData);
 		}
 	}
 	
@@ -312,7 +324,6 @@ public class EleutradiaDBManager {
 						    id INTEGER PRIMARY KEY AUTOINCREMENT,
 						    nombre TEXT NOT NULL,
 						    nivelRecomendado INTEGER NOT NULL,
-						    rutaImagen TEXT,
 	
 						    FOREIGN KEY (nivelRecomendado) REFERENCES NivelConocimiento(id)
 						);
@@ -529,15 +540,14 @@ public class EleutradiaDBManager {
 	// INSERCIÓN DE DATOS EN TABLAS DE CLASES
 	
 	private void insertPaises(Pais... paises) {
-		String sql = "INSERT OR IGNORE INTO Pais (id, nombre, regionGeografica) VALUES (?, ?, ?);";
+		String sql = "INSERT OR IGNORE INTO Pais (nombre, regionGeografica) VALUES (?, ?);";
 		
 		try (Connection conn = DriverManager.getConnection(connectionUrl);
 			 PreparedStatement pStmt = conn.prepareStatement(sql)) {
 			
 			for (Pais p : paises) {
-				pStmt.setInt(1, p.getId());
-				pStmt.setString(2, p.getNombre());
-				pStmt.setInt(3, p.getRegion().ordinal());
+				pStmt.setString(1, p.getNombre());
+				pStmt.setInt(2, p.getRegion().ordinal());
 				pStmt.executeUpdate();
 			}
 			
@@ -645,10 +655,93 @@ public class EleutradiaDBManager {
 	                    }
 	                }
 	            }
+	            rs.close();
 	        }
 	        
 	    } catch (Exception ex) {
 	        System.err.format("Error insertando productos financieros: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	}
+	
+	private void insertCursos(Curso... cursos) {
+		String sql = "INSERT OR IGNORE INTO Curso (nombre, nivelRecomendado) VALUES (?, ?);";
+		
+		try (Connection conn = DriverManager.getConnection(connectionUrl);
+			 PreparedStatement pStmt = conn.prepareStatement(sql)) {
+			
+			for (Curso c : cursos) {
+				pStmt.setString(1, c.getNombre());
+				pStmt.setInt(2, c.getNivelRecomendado().ordinal());
+				pStmt.executeUpdate();
+			}
+			
+		} catch (Exception ex) {
+			System.err.format("Error insertando cursos de la lista: %s%n", ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
+	
+	private void insertModulos(List<String[]> modulosData) {
+	    String sql = "INSERT OR IGNORE INTO Modulo (nombre, posicion, curso) VALUES (?, ?, ?);";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        for (String[] data : modulosData) {
+	            if (data == null) continue;
+	            
+	            String nombre = data[0];
+	            String nombreCurso = data[1];
+	            int posicion = Integer.parseInt(data[2]);
+	            
+	            int cursoId = getCursoIdByNombre(conn, nombreCurso);
+	            
+	            if (cursoId == -1) {
+	                System.err.println("Curso no encontrado para módulo: " + nombre);
+	                continue;
+	            }
+	            
+	            pStmt.setString(1, nombre);
+	            pStmt.setInt(2, posicion);
+	            pStmt.setInt(3, cursoId);
+	            pStmt.executeUpdate();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando módulos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	}
+	
+	private void insertLecciones(List<String[]> leccionesData) {
+	    String sql = "INSERT OR IGNORE INTO Leccion (titulo, posicion, modulo) VALUES (?, ?, ?);";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        for (String[] data : leccionesData) {
+	            if (data == null) continue;
+	            
+	            String titulo = data[0];
+	            String nombreModulo = data[1];
+	            int posicion = Integer.parseInt(data[2]);
+	            
+	            int moduloId = getModuloIdByNombre(conn, nombreModulo);
+	            
+	            if (moduloId == -1) {
+	                System.err.println("Módulo no encontrado para lección: " + titulo);
+	                continue;
+	            }
+	            
+	            pStmt.setString(1, titulo);
+	            pStmt.setInt(2, posicion);
+	            pStmt.setInt(3, moduloId);
+	            pStmt.executeUpdate();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando lecciones: %s%n", ex.getMessage());
 	        ex.printStackTrace();
 	    }
 	}
@@ -664,6 +757,7 @@ public class EleutradiaDBManager {
 	        if (rs.next()) {
 	            return rs.getInt("id");
 	        }
+	        rs.close();
 	        
 	    } catch (Exception ex) {
 	        System.err.format("Error buscando país '%s': %s%n", nombrePais, ex.getMessage());
@@ -681,9 +775,46 @@ public class EleutradiaDBManager {
 	        if (rs.next()) {
 	            return rs.getInt("id");
 	        }
+	        rs.close();
 	        
 	    } catch (Exception ex) {
 	        System.err.format("Error buscando gestora '%s': %s%n", nombreComercial, ex.getMessage());
+	    }
+	    
+	    return -1;
+	}
+	
+	private int getCursoIdByNombre(Connection conn, String nombreCurso) {
+	    String sql = "SELECT id FROM Curso WHERE nombre = ?;";
+	    
+	    try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        pStmt.setString(1, nombreCurso);
+	        ResultSet rs = pStmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("id");
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error buscando curso '%s': %s%n", nombreCurso, ex.getMessage());
+	    }
+	    
+	    return -1;
+	}
+
+	private int getModuloIdByNombre(Connection conn, String nombreModulo) {
+	    String sql = "SELECT id FROM Modulo WHERE nombre = ?;";
+	    
+	    try (PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        pStmt.setString(1, nombreModulo);
+	        ResultSet rs = pStmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("id");
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error buscando módulo '%s': %s%n", nombreModulo, ex.getMessage());
 	    }
 	    
 	    return -1;

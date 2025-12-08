@@ -55,6 +55,11 @@ public class Modulo implements Comparable<Modulo> {
     public void removeLeccion(Leccion leccion) {
         lecciones.remove(leccion);
     }
+    
+    public static String[] parseCSV(String linea) {
+        if (linea == null || linea.isBlank()) return null;
+        return linea.split(";");
+    }
 	
 	@Override
 	public int compareTo(Modulo o) {

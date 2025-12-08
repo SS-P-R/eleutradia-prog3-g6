@@ -36,6 +36,11 @@ public class Leccion implements Comparable<Leccion> {
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
+	
+	public static String[] parseCSV(String linea) {
+	    if (linea == null || linea.isBlank()) return null;
+	    return linea.split(";");
+	}
 
 	@Override
 	public int compareTo(Leccion o) {

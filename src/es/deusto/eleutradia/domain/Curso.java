@@ -9,13 +9,13 @@ public class Curso {
 	private List<Modulo> modulos;
 	private NivelConocimiento nivelRecomendado;
 	
-	public Curso(int id, String nombre, List<Modulo> modulos, NivelConocimiento nivelRecomendado) {
+	public Curso(int id, String nombre, NivelConocimiento nivelRecomendado) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         if (nombre == null || nombre.isBlank()) throw new IllegalArgumentException("El curso debe tener un nombre");
         
 		this.id = id;
 		this.nombre = nombre;
-		this.modulos = (modulos != null) ? new ArrayList<>(modulos) : new ArrayList<>();
+		this.modulos = new ArrayList<>();
 		this.nivelRecomendado = nivelRecomendado;
 	}
 	
@@ -62,6 +62,18 @@ public class Curso {
 
 	public String getRutaImagen() {
 		return String.format("/images/curso%d.png", id);
+	}
+	
+	public static Curso parseCSV(String linea) {
+		if (linea == null || linea.isBlank()) return null;
+		
+		String[] campos = linea.split(";");
+		
+		String nombre = campos[0];
+		int nivelIndex = Integer.parseInt(campos[1]);
+		NivelConocimiento nivelRecomendado = NivelConocimiento.values()[nivelIndex];
+		
+		return new Curso(-1, nombre, nivelRecomendado);
 	}
 
 	@Override

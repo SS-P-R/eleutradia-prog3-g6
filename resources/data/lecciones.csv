@@ -1,41 +1,41 @@
-id;titulo;modulo;posicion
-1;Renta Fija vs. Renta Variable;1;1
-2;El papel de los Brokers;1;2
-3;Introducción a las Acciones;2;1
-4;Introducción a los ETFs;2;2
-5;Interpretación de Gráficos de Velas;3;1
-6;Medias Móviles (SMA/EMA);3;2
-7;Indicador RSI y MACD;3;3
-8;Diversificación y Riesgo;4;1
-9;Asignación de Activos (Asset Allocation);4;2
-10;Introducción a Opciones (Call/Put);5;1
-11;Introducción a Futuros;5;2
-12;Estrategias de Cobertura (Hedging);6;1
-13;Creación de un Presupuesto;7;1
-14;El Fondo de Emergencia;7;2
-15;Del Ahorro a la Inversión;8;1
-16;Interés Compuesto: La Magia de Crecer;8;2
-17;¿Qué son los Planes de Pensiones?;9;1
-18;Planes de Pensiones de Renta Fija (PLAN_PENSIONES_RF);9;2
-19;Planes de Pensiones de Renta Variable (PLAN_PENSIONES_RV);10;1
-20;Estrategias de Aportación y Rescate;10;2
-21;Inversión Inmobiliaria Tradicional;11;1
-22;Financiación: Hipotecas y Préstamos;11;2
-23;El Auge del Crowdfunding Inmobiliario (CROWDFUND_INM);12;1
-24;Invertir en SOCIMIs (REITs);12;2
-25;Depósitos a Plazo Fijo (DEPOSITO);13;1
-26;Entendiendo los Bonos (BONO);13;2
-27;Letras del Tesoro (LETRA_TESORO);14;1
-28;ETFs de Renta Fija (ETF_RF);14;2
-29;Introducción a las Criptomonedas (CRIPTOMONEDA);15;1
-30;Blockchain y Wallets;15;2
-31;Invertir en Materias Primas (COMMODITY);16;1
-32;Oro, Petróleo y más;16;2
-33;El binomio Riesgo-Rentabilidad;17;1
-34;Qué es la Volatilidad;17;2
-35;Diversificación: No pongas todos los huevos en la misma cesta;18;1
-36;Análisis Fundamental vs. Técnico;18;2
-37;¿Qué es el Capital Inversión (PRIVATE_EQUITY)?;19;1
-38;Venture Capital vs. Buyouts;19;2
-39;El proceso de 'Deal Making';20;1
-40;Riesgos y Oportunidades del Capital Privado;20;2
+titulo;nombreModulo;posicion
+Renta Fija vs. Renta Variable;Conceptos Fundamentales;1
+El papel de los Brokers;Conceptos Fundamentales;2
+Introducción a las Acciones;Principales Activos;1
+Introducción a los ETFs;Principales Activos;2
+Interpretación de Gráficos de Velas;Indicadores Técnicos;1
+Medias Móviles (SMA/EMA);Indicadores Técnicos;2
+Indicador RSI y MACD;Indicadores Técnicos;3
+Diversificación y Riesgo;Gestión del Riesgo;1
+Asignación de Activos (Asset Allocation);Gestión del Riesgo;2
+Introducción a Opciones (Call/Put);Instrumentos Derivados;1
+Introducción a Futuros;Instrumentos Derivados;2
+Estrategias de Cobertura (Hedging);Estrategias Avanzadas;1
+Creación de un Presupuesto;Control de Finanzas;1
+El Fondo de Emergencia;Control de Finanzas;2
+Del Ahorro a la Inversión;Primeros Pasos;1
+Interés Compuesto: La Magia de Crecer;Primeros Pasos;2
+¿Qué son los Planes de Pensiones?;Conceptos Básicos de Jubilación;1
+Planes de Pensiones de Renta Fija (PLAN_PENSIONES_RF);Conceptos Básicos de Jubilación;2
+Planes de Pensiones de Renta Variable (PLAN_PENSIONES_RV);Tipos de Planes;1
+Estrategias de Aportación y Rescate;Tipos de Planes;2
+Inversión Inmobiliaria Tradicional;Fundamentos Inmobiliarios;1
+Financiación: Hipotecas y Préstamos;Fundamentos Inmobiliarios;2
+El Auge del Crowdfunding Inmobiliario (CROWDFUND_INM);Nuevas Modalidades;1
+Invertir en SOCIMIs (REITs);Nuevas Modalidades;2
+Depósitos a Plazo Fijo (DEPOSITO);Productos de Ahorro;1
+Entendiendo los Bonos (BONO);Productos de Ahorro;2
+Letras del Tesoro (LETRA_TESORO);Deuda Pública y Corporativa;1
+ETFs de Renta Fija (ETF_RF);Deuda Pública y Corporativa;2
+Introducción a las Criptomonedas (CRIPTOMONEDA);Activos Digitales;1
+Blockchain y Wallets;Activos Digitales;2
+Invertir en Materias Primas (COMMODITY);Activos Tangibles;1
+Oro, Petróleo y más;Activos Tangibles;2
+El binomio Riesgo-Rentabilidad;Midiendo el Riesgo;1
+Qué es la Volatilidad;Midiendo el Riesgo;2
+Diversificación: No pongas todos los huevos en la misma cesta;Estrategias de Valoración;1
+Análisis Fundamental vs. Técnico;Estrategias de Valoración;2
+¿Qué es el Capital Inversión (PRIVATE_EQUITY)?;Fundamentos del Private Equity;1
+Venture Capital vs. Buyouts;Fundamentos del Private Equity;2
+El proceso de 'Deal Making';El Mercado;1
+Riesgos y Oportunidades del Capital Privado;El Mercado;2
