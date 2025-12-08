@@ -73,7 +73,7 @@ public class Curso {
 		int nivelIndex = Integer.parseInt(campos[1]);
 		NivelConocimiento nivelRecomendado = NivelConocimiento.values()[nivelIndex];
 		
-		return new Curso(-1, nombre, nivelRecomendado);
+		return new Curso(0, nombre, nivelRecomendado);
 	}
 
 	@Override

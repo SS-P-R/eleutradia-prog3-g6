@@ -40,7 +40,7 @@ public class Pais {
 	    String nombre = campos[0];
 	    RegionGeografica region = RegionGeografica.valueOf(campos[1]);
 
-	    return new Pais(-1, nombre, region);
+	    return new Pais(0, nombre, region);
 	}
 
 	@Override
