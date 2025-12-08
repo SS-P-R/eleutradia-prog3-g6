@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Divisa;
 import es.deusto.eleutradia.domain.Empresa;
@@ -28,6 +29,8 @@ import es.deusto.eleutradia.domain.Leccion;
 import es.deusto.eleutradia.domain.Modulo;
 
 public class MainEleutradia {
+	
+	private static EleutradiaDBManager dbManager;
 	
 	public static List<Particular> listaParticulares = new ArrayList<Particular>();
 	public static List<Empresa> listaEmpresas = new ArrayList<Empresa>();
@@ -493,8 +496,11 @@ public class MainEleutradia {
 		MainEleutradia.inicializarProductos();
 		MainEleutradia.inicializarCursos();
 		
-		// ---Ejecutar la creacion de la GUI---
-		SwingUtilities.invokeLater(() -> new VentanaInicial().setVisible(true));
+		// Ejecutar la creacion de la GUI
+		SwingUtilities.invokeLater(() -> new VentanaInicial());
 	}
 	
+	public static EleutradiaDBManager getDBManager() {
+		return dbManager;
+	}
 }

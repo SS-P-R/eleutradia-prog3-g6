@@ -370,7 +370,6 @@ public class EleutradiaDBManager {
 				        CREATE TABLE IF NOT EXISTS PerfilFinancieroTipoProducto (
 				            perfilFinanciero INTEGER NOT NULL,
 				            tipoProducto INTEGER NOT NULL,
-	
 				            PRIMARY KEY (perfilFinanciero, tipoProducto),
 	
 				            FOREIGN KEY (perfilFinanciero) REFERENCES PerfilFinanciero(id) ON DELETE CASCADE,
@@ -819,6 +818,10 @@ public class EleutradiaDBManager {
 	    
 	    return -1;
 	}
+	
+	// OBTENER DATOS DE TABLAS
+	
+	
 	
 	//IAG (Claude)
 	//SIN MODIFICAR

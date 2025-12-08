@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -33,6 +34,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
@@ -40,6 +42,11 @@ import es.deusto.eleutradia.main.MainEleutradia;
 public class VentanaInicial extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	private EleutradiaDBManager dbManager;
+	
+	private List<Particular> listaParticulares;
+	private List<Empresa> listaEmpresas;
 	
 	private CardLayout layout;
 	private JPanel contenedor;
@@ -72,6 +79,7 @@ public class VentanaInicial extends JFrame {
 	
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
+		this.dbManager = MainEleutradia.getDBManager();
 		this.configurarVentana();
 		this.generarImagenRandom();
         this.inicializarPaneles();
@@ -513,7 +521,7 @@ public class VentanaInicial extends JFrame {
 	    		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
 	    	}
-	        for (Particular p : MainEleutradia.listaParticulares) {
+	        for (Particular p : listaParticulares) {
 	            if (p.getDni().equalsIgnoreCase(id) && p.getPassword().equals(password)) {
 	                new VentanaPrincipal(p);
 	                dispose();
@@ -526,7 +534,7 @@ public class VentanaInicial extends JFrame {
 	    		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
 	    	}
-	        for (Empresa e : MainEleutradia.listaEmpresas) {
+	        for (Empresa e : listaEmpresas) {
 	            if (e.getNif().equalsIgnoreCase(id) && e.getPassword().equals(password)) {
 	                new VentanaPrincipal(e);
 	                dispose();
@@ -579,13 +587,13 @@ public class VentanaInicial extends JFrame {
         		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
         	}
-            MainEleutradia.listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null));
+            listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null));
         } else {
         	if (!id.matches(NIF_REGEX)) {
         		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
         	}
-            MainEleutradia.listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null));
+            listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null));
         }
         
         mostrarCarga();
