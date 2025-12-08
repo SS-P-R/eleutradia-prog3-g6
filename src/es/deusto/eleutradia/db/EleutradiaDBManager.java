@@ -1065,6 +1065,88 @@ public class EleutradiaDBManager {
 	    return cursos;
 	}
 	
+	// MÉTODOS DE INSCRIPCIÓN A CURSOS
+	
+	public boolean inscribirParticularACurso(String dni, int idCurso) {
+	    String sql = "INSERT OR IGNORE INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, dni);
+	        pstmt.setInt(2, idCurso);
+	        int rows = pstmt.executeUpdate();
+	        
+	        return rows > 0;
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al inscribir particular a curso: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+
+	public boolean desinscribirParticularDeCurso(String dni, int idCurso) {
+	    String sql = "DELETE FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, dni);
+	        pstmt.setInt(2, idCurso);
+	        int rows = pstmt.executeUpdate();
+	        
+	        return rows > 0;
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al desinscribir particular de curso: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+
+	public List<Curso> getCursosPorParticular(String dni) {
+	    List<Curso> cursos = new ArrayList<>();
+	    String sql = """
+	        SELECT c.* FROM Curso c
+	        INNER JOIN ParticularCurso pc ON c.id = pc.idCurso
+	        WHERE pc.dniParticular = ?
+	    """;
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, dni);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            int cursoId = rs.getInt("id");
+	            Curso curso = new Curso(
+	                cursoId,
+	                rs.getString("nombre"),
+	                NivelConocimiento.values()[rs.getInt("nivelRecomendado")]
+	            );
+	            
+	            // Cargar módulos del curso
+	            List<Modulo> modulos = getModulosByCursoId(cursoId, conn);
+	            for (Modulo m : modulos) {
+	                curso.addModulo(m);
+	            }
+	            
+	            cursos.add(curso);
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al obtener cursos del particular: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return cursos;
+	}
+	
 	// MÉTODOS PRIVADOS AUXILIARES
 	
 	private int getPaisIdByNombre(Connection conn, String nombrePais) {
@@ -1148,8 +1230,10 @@ public class EleutradiaDBManager {
 	    int domFiscalId = rs.getInt("domicilioFiscal");
 	    int perfilId = rs.getInt("perfilFinanciero");
 	    
-	    return new Particular(
-	        rs.getString("dni"),
+	    String dni = rs.getString("dni");
+	    
+	    Particular p = new Particular(
+	        dni,
 	        rs.getString("nombre"),
 	        fechaNac,
 	        (paisResId > 0) ? getPaisById(paisResId, conn) : null,
@@ -1160,6 +1244,13 @@ public class EleutradiaDBManager {
 	        (domFiscalId > 0) ? getPaisById(domFiscalId, conn) : null,
 	        (perfilId > 0) ? getPerfilFinancieroById(perfilId, conn) : null
 	    );
+	    
+	    List<Curso> cursos = getCursosPorParticular(dni);
+	    for (Curso curso : cursos) {
+	        p.addCurso(curso);
+	    }
+	    
+	    return p;
 	}
 
 	private Empresa getEmpresaFromRS(ResultSet rs, Connection conn) throws Exception {

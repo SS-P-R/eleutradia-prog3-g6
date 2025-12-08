@@ -412,16 +412,52 @@ public class PanelAprender extends JPanel {
 			labelInscrito.setBackground(COLOR_BOTON_EXITO);
 			labelInscrito.setForeground(Color.WHITE);
 			labelInscrito.setOpaque(true); 
-			
-			labelInscrito.setAlignmentX(Component.CENTER_ALIGNMENT);
+			labelInscrito.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 			
 			panelTexto.add(labelInscrito);
+			panelTexto.add(Box.createRigidArea(new Dimension(0, 15)));
+			
+			JButton botonDesinscribir = new JButton("Desinscribirse");
+		    botonDesinscribir.setMinimumSize(new Dimension(150, 45));
+		    botonDesinscribir.setPreferredSize(new Dimension(150, 45));
+		    botonDesinscribir.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+		    botonDesinscribir.setBackground(MY_GRIS_CLARO);
+		    botonDesinscribir.setForeground(COLOR_BOTON_TEXTO);
+		    botonDesinscribir.setAlignmentX(Component.CENTER_ALIGNMENT);
+		    botonDesinscribir.setBorderPainted(false);
+		    botonDesinscribir.setContentAreaFilled(false);
+		    botonDesinscribir.setOpaque(true);
+		    botonDesinscribir.setFocusPainted(false);
+		    botonDesinscribir.addActionListener(e -> {
+		        int respuesta = JOptionPane.showConfirmDialog(panelCursosInfo,
+		            "¿Estás seguro de que quieres desinscribirte de " + cursoInfo.getNombre() + "?",
+		            "Confirmar desinscripción",
+		            JOptionPane.YES_NO_OPTION);
+		        
+		        if (respuesta == JOptionPane.YES_OPTION) {
+		            usuarioLogeado.removeCurso(cursoInfo);
+		            
+		            boolean exito = MainEleutradia.getDBManager()
+		                .desinscribirParticularDeCurso(usuarioLogeado.getDni(), cursoInfo.getId());
+		            
+		            if (exito) {
+		                JOptionPane.showMessageDialog(panelCursosInfo, 
+		                    "Te has desinscrito de " + cursoInfo.getNombre());
+		            }
+		            
+		            actualizarPanelInfoCurso();
+		            actualizarProgressBar();
+		        }
+		    });
+		    botonDesinscribir.addMouseListener(myAdapterGris);
+		    
+		    panelTexto.add(botonDesinscribir);
 			
 		} else {
 			
 			JLabel labelTitulo = new JLabel("¡Únete al curso!");
 			labelTitulo.setFont(FONT_ACCION_TITULO);;
-			labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+			labelTitulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 			labelTitulo.setForeground(Color.BLACK);
 			
 			panelTexto.add(labelTitulo);
@@ -440,7 +476,19 @@ public class PanelAprender extends JPanel {
 			botonApuntar.setFocusPainted(false);
 			botonApuntar.addActionListener(e -> {
 				usuarioLogeado.addCurso(cursoInfo);
-				JOptionPane.showMessageDialog(panelCursosInfo, "Te has inscrito a " + cursoInfo.getNombre() + "!");
+				
+				boolean exito = MainEleutradia.getDBManager()
+				        .inscribirParticularACurso(usuarioLogeado.getDni(), cursoInfo.getId());
+				
+				if (exito) {
+			        JOptionPane.showMessageDialog(panelCursosInfo, 
+			            "¡Te has inscrito a " + cursoInfo.getNombre() + "!");
+			    } else {
+			        JOptionPane.showMessageDialog(panelCursosInfo, 
+			            "Error al inscribirte al curso. Inténtalo de nuevo.", 
+			            "Error", 
+			            JOptionPane.ERROR_MESSAGE);
+			    }
 
 				actualizarPanelInfoCurso();					
 				actualizarProgressBar();
