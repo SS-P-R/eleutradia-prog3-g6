@@ -69,22 +69,31 @@ public class EleutradiaDBManager {
 	// MÉTODOS PRINCIPALES DE LA BASE DE DATOS
 	
 	public void initializeDB() {
-		this.createDB();
-		
-		if (properties.getProperty("db.loadCSV", "false").equals("true")) {
-			if (properties.getProperty("db.clean", "false").equals("true")) {
-	            this.cleanDB();
+	    if (properties.getProperty("db.clean", "false").equals("true") 
+	            && properties.getProperty("db.loadCSV", "false").equals("true")) {
+	        System.out.println("Limpiando base de datos...");
+	        File db = new File(dbPath).getAbsoluteFile();
+	        if (db.exists()) {
+	            if (db.delete()) {
+	                System.out.println("Base de datos eliminada correctamente.");
+	            } else {
+	                System.err.println("No se pudo eliminar la base de datos.");
+	            }
 	        }
-			
-			insertEnumData();
-			
-			List<Pais> paises = this.loadCSV(CSV_PAISES, Pais::parseCSV);
-			this.insertPaises(paises.toArray(new Pais[0]));
-			
-			List<String[]> gestorasData = this.loadCSV(CSV_GESTORAS, Gestora::parseCSV);
-			this.insertGestoras(gestorasData);
-			
-			List<String[]> productosData = this.loadCSV(CSV_PRODUCTOS, ProductoFinanciero::parseCSV);
+	    }
+	    
+	    this.createDB();
+	    
+	    if (properties.getProperty("db.loadCSV", "false").equals("true")) {
+	        insertEnumData();
+	        
+	        List<Pais> paises = this.loadCSV(CSV_PAISES, Pais::parseCSV);
+	        this.insertPaises(paises.toArray(new Pais[0]));
+	        
+	        List<String[]> gestorasData = this.loadCSV(CSV_GESTORAS, Gestora::parseCSV);
+	        this.insertGestoras(gestorasData);
+	        
+	        List<String[]> productosData = this.loadCSV(CSV_PRODUCTOS, ProductoFinanciero::parseCSV);
 	        this.insertProductos(productosData);
 	        
 	        List<Curso> cursos = this.loadCSV(CSV_CURSOS, Curso::parseCSV);
@@ -95,7 +104,9 @@ public class EleutradiaDBManager {
 	        
 	        List<String[]> leccionesData = this.loadCSV(CSV_LECCIONES, Leccion::parseCSV);
 	        this.insertLecciones(leccionesData);
-		}
+	        
+	        System.out.println("Datos cargados desde CSV correctamente.");
+	    }
 	}
 	
 	public void createDB() {
