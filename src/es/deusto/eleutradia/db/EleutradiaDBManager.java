@@ -66,6 +66,8 @@ public class EleutradiaDBManager {
 		}
 	}
 	
+	// MÉTODOS PRINCIPALES DE LA BASE DE DATOS
+	
 	public void initializeDB() {
 		this.createDB();
 		
@@ -428,7 +430,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	// INSERCIÓN DE DATOS EN TABLAS DE ENUMS
+	// MÉTODOS DE INSERCIÓN DE DATOS EN TABLAS DE ENUMERACIONES
 	
 	public void insertEnumData() {
 		try (Connection conn = DriverManager.getConnection(connectionUrl)) {
@@ -543,7 +545,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	// INSERCIÓN DE DATOS EN TABLAS DE CLASES
+	// MÉTODOS DE INSERCIÓN DE DATOS EN TABLAS DE ENTIDADES
 	
 	public void insertPaises(Pais... paises) {
 		String sql = "INSERT OR IGNORE INTO Pais (nombre, regionGeografica) VALUES (?, ?);";
@@ -948,7 +950,7 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
-	// MÉTODOS DE CONSULTA COMPLETA
+	// MÉTODOS DE CONSULTA
 	
 	public List<Particular> getParticulares() {
 	    List<Particular> particulares = new ArrayList<>();
@@ -1052,7 +1054,7 @@ public class EleutradiaDBManager {
 	    return cursos;
 	}
 	
-	// MÉTODOS AUXILIARES PRIVADOS
+	// MÉTODOS PRIVADOS AUXILIARES
 	
 	private int getPaisIdByNombre(Connection conn, String nombrePais) {
 	    String sql = "SELECT id FROM Pais WHERE nombre = ?;";
@@ -1343,6 +1345,8 @@ public class EleutradiaDBManager {
 	    return lecciones;
 	}
 	
+	// CARGA DE DATOS DESDE CSV
+	
 	//IAG (Claude)
 	//SIN MODIFICAR
 	@FunctionalInterface
@@ -1350,9 +1354,7 @@ public class EleutradiaDBManager {
         T parse(String line);
     }
 	//END IAG
-	
-	// CARGA DE DATOS DESDE CSV
-	
+		
 	private <T> List<T> loadCSV(String rutaCSV, CSVParser<T> parser) {
 		List<T> elementos = new ArrayList<>();
 		
