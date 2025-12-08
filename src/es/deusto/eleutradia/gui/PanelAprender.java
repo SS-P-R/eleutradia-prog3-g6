@@ -402,7 +402,8 @@ public class PanelAprender extends JPanel {
 				BorderFactory.createEmptyBorder(15, 15, 15, 15)
 		));
 
-		if (usuarioLogeado.getCursos().contains(cursoInfo)) {
+		if (usuarioLogeado.getCursos().stream()
+		        .anyMatch(c -> c.getId() == cursoInfo.getId())) {
 			
 			JLabel labelInscrito = new JLabel("Inscrito", SwingConstants.CENTER);
 			labelInscrito.setFont(FONT_TITULO); 
@@ -475,7 +476,18 @@ public class PanelAprender extends JPanel {
 	        botonApuntar.setOpaque(true);
 			botonApuntar.setFocusPainted(false);
 			botonApuntar.addActionListener(e -> {
-				usuarioLogeado.addCurso(cursoInfo);
+				
+				boolean yaInscrito = usuarioLogeado.getCursos().stream()
+		                .anyMatch(c -> c.getId() == cursoInfo.getId());
+		            
+	            if (yaInscrito) {
+	                JOptionPane.showMessageDialog(panelCursosInfo, 
+	                    "Ya estás inscrito a este curso.", 
+	                    "Información", 
+	                    JOptionPane.INFORMATION_MESSAGE);
+	                actualizarPanelInfoCurso();
+	                return;
+	            }
 				
 				boolean exito = MainEleutradia.getDBManager()
 				        .inscribirParticularACurso(usuarioLogeado.getDni(), cursoInfo.getId());

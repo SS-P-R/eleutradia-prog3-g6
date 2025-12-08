@@ -44,7 +44,12 @@ public class Particular extends Usuario {
 	}
 	
 	public void addCurso(Curso curso) {
-		cursos.add(curso);
+	    boolean yaExiste = this.cursos.stream()
+	        .anyMatch(c -> c.getId() == curso.getId());
+	    
+	    if (!yaExiste) {
+	        this.cursos.add(curso);
+	    }
 	}
 	
 	public void removeCurso(Curso curso) {

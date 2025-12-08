@@ -1068,7 +1068,30 @@ public class EleutradiaDBManager {
 	// MÉTODOS DE INSCRIPCIÓN A CURSOS
 	
 	public boolean inscribirParticularACurso(String dni, int idCurso) {
-	    String sql = "INSERT OR IGNORE INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
+	    // Verificar si ya está inscrito
+	    String sqlCheck = "SELECT COUNT(*) FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmtCheck = conn.prepareStatement(sqlCheck)) {
+	        
+	        pstmtCheck.setString(1, dni);
+	        pstmtCheck.setInt(2, idCurso);
+	        ResultSet rs = pstmtCheck.executeQuery();
+	        
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            System.out.println("El usuario ya está inscrito a este curso");
+	            rs.close();
+	            return false; // Ya inscrito
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al verificar inscripción: %s%n", ex.getMessage());
+	        return false;
+	    }
+	    
+	    // Si no está inscrito, inscribir
+	    String sql = "INSERT INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -1077,6 +1100,7 @@ public class EleutradiaDBManager {
 	        pstmt.setInt(2, idCurso);
 	        int rows = pstmt.executeUpdate();
 	        
+	        System.out.println("Usuario inscrito correctamente al curso");
 	        return rows > 0;
 	        
 	    } catch (Exception ex) {
