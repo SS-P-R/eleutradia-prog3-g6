@@ -331,7 +331,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS Curso (
 						    id INTEGER PRIMARY KEY AUTOINCREMENT,
-						    nombre TEXT NOT NULL,
+						    nombre TEXT NOT NULL UNIQUE,
 						    nivelRecomendado INTEGER NOT NULL,
 	
 						    FOREIGN KEY (nivelRecomendado) REFERENCES NivelConocimiento(id)
@@ -342,7 +342,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS Modulo (
 						    id INTEGER PRIMARY KEY AUTOINCREMENT,
-						    nombre TEXT NOT NULL,
+						    nombre TEXT NOT NULL UNIQUE,
 						    posicion INTEGER NOT NULL,
 						    curso INTEGER NOT NULL,
 	
@@ -354,7 +354,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS Leccion (
 						    id INTEGER PRIMARY KEY AUTOINCREMENT,
-						    titulo TEXT NOT NULL,
+						    titulo TEXT NOT NULL UNIQUE,
 						    posicion INTEGER NOT NULL,
 						    modulo INTEGER NOT NULL,
 	
