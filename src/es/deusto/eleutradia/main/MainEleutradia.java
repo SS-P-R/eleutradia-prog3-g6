@@ -495,10 +495,15 @@ public class MainEleutradia {
 		
 		dbManager = new EleutradiaDBManager();
 	    dbManager.initializeDB();
+	    
+	    listaParticulares = dbManager.getParticulares();
+	    listaEmpresas = dbManager.getEmpresas();
+	    listaProductos = dbManager.getProductos();
+	    listaCursos = dbManager.getCursos();
 				
-		MainEleutradia.inicializarUsuarios();
-		MainEleutradia.inicializarProductos();
-		MainEleutradia.inicializarCursos();
+//		MainEleutradia.inicializarUsuarios();
+//		MainEleutradia.inicializarProductos();
+//		MainEleutradia.inicializarCursos();
 		
 		// Ejecutar la creacion de la GUI
 		SwingUtilities.invokeLater(() -> new VentanaInicial());

@@ -122,75 +122,104 @@ public class PanelInicio extends JPanel{
 			if (particular.getPaisResidencia()==null) {
 				recordatorio.add(completarPerfil);
 				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su país."));
-			}else if (particular.getDireccion()==null) {
+			} else if (particular.getDireccion()==null) {
 				recordatorio.add(completarPerfil);
 				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su dirección."));
-			}else {
-//				recordatorio.add(new JLabel("Todo correcto.")); // Inecesario
+			} else {
+//				recordatorio.add(new JLabel("Todo correcto.")); // Innecesario
 			}
 		}
 		return recordatorio;
 	}
 
-	
 	private JPanel PanelLecciones() {
-		JPanel proxLecJPanel = new JPanel();
-		proxLecJPanel.setBackground(COLOR_CARD);
-		proxLecJPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
-		
-		JLabel mensajeLecciones = new JLabel();
-		mensajeLecciones.setText("¿Preparado para su próxima lección?");
-		mensajeLecciones.setFont(FONT_TITULO2);
-		proxLecJPanel.add(mensajeLecciones);
+	    JPanel proxLecJPanel = new JPanel();
+	    proxLecJPanel.setBackground(COLOR_CARD);
+	    proxLecJPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
+	    
+	    JLabel mensajeLecciones = new JLabel();
+	    mensajeLecciones.setText("¿Preparado para su próxima lección?");
+	    mensajeLecciones.setFont(FONT_TITULO2);
+	    proxLecJPanel.add(mensajeLecciones);
 
-		
-		JPanel leccionesPanel = new JPanel();
-		leccionesPanel.setLayout(new BoxLayout(leccionesPanel, BoxLayout.Y_AXIS));
-		leccionesPanel.setBackground(proxLecJPanel.getBackground());
-		proxLecJPanel.add(leccionesPanel);
+	    JPanel leccionesPanel = new JPanel();
+	    leccionesPanel.setLayout(new BoxLayout(leccionesPanel, BoxLayout.Y_AXIS));
+	    leccionesPanel.setBackground(proxLecJPanel.getBackground());
+	    proxLecJPanel.add(leccionesPanel);
 
-		JLabel mensajeLecciones2 = new JLabel("Lecciones recomendadas para continuar aprendiendo:");
-		mensajeLecciones2.setFont(FONT_NORMAL2);
-		leccionesPanel.add(Box.createVerticalStrut(10));
-		leccionesPanel.add(mensajeLecciones2);
+	    JLabel mensajeLecciones2 = new JLabel("Lecciones recomendadas para continuar aprendiendo:");
+	    mensajeLecciones2.setFont(FONT_NORMAL2);
+	    leccionesPanel.add(Box.createVerticalStrut(10));
+	    leccionesPanel.add(mensajeLecciones2);
 
-		JLabel leccion1 = new JLabel();
-		if (usuario instanceof Particular) {
-			Particular particular = (Particular) usuario;
-			List<Curso> listaCursosActivos = particular.getCursos();
-			List<Curso> todosCursos = MainEleutradia.listaCursos;
-			List<Leccion> listaLecciones = new ArrayList<Leccion>();
-			
-			for (Curso curso : todosCursos) {
-				if (!listaCursosActivos.contains(curso)){
-					listaLecciones.add(curso.getModulos().getFirst().getLecciones().getFirst());
-				}if(listaLecciones.getLast().getPosicion()==4) {
-					break;
-				}
-			}
-			for (Leccion leccion : listaLecciones) {
-				leccionesPanel.add(Box.createVerticalStrut(10));
-				JLabel leccionSumada  = new JLabel(leccion.getTitulo());
-				leccionSumada.setFont(FONT_NORMAL1);
-				leccionesPanel.add(leccionSumada);
-			}
-			if(listaCursosActivos.size()==todosCursos.size()) {
-				leccionesPanel.add(Box.createVerticalStrut(10));
-				leccionesPanel.add(new JLabel("Asombroso, no hay lecciones nuevas que recomendar."));
-				leccionesPanel.add(Box.createVerticalStrut(10));
-				//TODO Añadir imagen de un trofeo
-			}
-			
-			
-		}else {
-			leccion1.setText("Esta función no está disponible");
-		}
-		
-		proxLecJPanel.setName("Aprender");
-		PanelFocus(proxLecJPanel, leccionesPanel);
-		return proxLecJPanel;
+	    if (usuario instanceof Particular) {
+	        Particular particular = (Particular) usuario;
+	        List<Curso> listaCursosActivos = particular.getCursos();
+	        List<Curso> todosCursos = MainEleutradia.listaCursos;
+	        
+	        if (todosCursos == null || todosCursos.isEmpty()) {
+	            leccionesPanel.add(Box.createVerticalStrut(10));
+	            JLabel mensajeError = new JLabel("No hay cursos disponibles en este momento.");
+	            mensajeError.setFont(FONT_NORMAL1);
+	            leccionesPanel.add(mensajeError);
+	            
+	            proxLecJPanel.setName("Aprender");
+	            PanelFocus(proxLecJPanel, leccionesPanel);
+	            return proxLecJPanel;
+	        }
+	        
+	        List<Leccion> listaLecciones = new ArrayList<Leccion>();
+	        
+	        for (Curso curso : todosCursos) {
+	            if (!listaCursosActivos.contains(curso)) {
+	                if (curso.getModulos() != null && !curso.getModulos().isEmpty()) {
+	                    if (curso.getModulos().get(0).getLecciones() != null 
+	                            && !curso.getModulos().get(0).getLecciones().isEmpty()) {
+	                        
+	                        listaLecciones.add(curso.getModulos().get(0).getLecciones().get(0));
+	                        
+	                        if (listaLecciones.size() >= 4) {
+	                            break;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        
+	        if (!listaLecciones.isEmpty()) {
+	            for (Leccion leccion : listaLecciones) {
+	                leccionesPanel.add(Box.createVerticalStrut(10));
+	                JLabel leccionSumada = new JLabel("• " + leccion.getTitulo());
+	                leccionSumada.setFont(FONT_NORMAL1);
+	                leccionesPanel.add(leccionSumada);
+	            }
+	        }
+	        
+	        if (listaCursosActivos.size() == todosCursos.size()) {
+	            leccionesPanel.add(Box.createVerticalStrut(10));
+	            JLabel mensajeFelicitacion = new JLabel("¡Asombroso! No hay lecciones nuevas que recomendar.");
+	            mensajeFelicitacion.setFont(FONT_NORMAL1);
+	            leccionesPanel.add(mensajeFelicitacion);
+	            leccionesPanel.add(Box.createVerticalStrut(10));
+	            //TODO Añadir imagen de un trofeo
+	        } else if (listaLecciones.isEmpty()) {
+	            leccionesPanel.add(Box.createVerticalStrut(10));
+	            JLabel mensajeVacio = new JLabel("No hay lecciones disponibles en este momento.");
+	            mensajeVacio.setFont(FONT_NORMAL1);
+	            leccionesPanel.add(mensajeVacio);
+	        }
+	        
+	    } else {
+	        leccionesPanel.add(Box.createVerticalStrut(10));
+	        JLabel mensajeNoDisponible = new JLabel("Esta función no está disponible para empresas.");
+	        mensajeNoDisponible.setFont(FONT_NORMAL1);
+	        leccionesPanel.add(mensajeNoDisponible);
+	    }
+	    
+	    proxLecJPanel.setName("Aprender");
+	    PanelFocus(proxLecJPanel, leccionesPanel);
+	    return proxLecJPanel;
 	}
-
 	
 	private JPanel PanelCursos() {
 		JPanel cursosPanel = new JPanel();
