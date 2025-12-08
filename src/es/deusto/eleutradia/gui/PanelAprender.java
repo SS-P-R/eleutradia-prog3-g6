@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -348,16 +347,13 @@ public class PanelAprender extends JPanel {
 			public void mouseEntered(MouseEvent e) {
 				panelCurso.setBorder(BorderFactory.createLineBorder(MY_AZUL_CLARO, 1));
 				
-				int cantidadModulos = 0;
+				int cantidadModulos = curso.getModulos().size();
 				int cantidadLeciones = 0;
 				for (Modulo modulo : curso.getModulos()) {
-					cantidadModulos++;
-					for (Leccion leccion : modulo.getLecciones()) {
-						cantidadLeciones++;
-					}
+					cantidadLeciones += modulo.getLecciones().size();
 				}
-				panelCurso.setToolTipText("Módulos: " + cantidadModulos + " | Lecciones:" + cantidadLeciones);
 				
+				panelCurso.setToolTipText("Módulos: " + cantidadModulos + " | Lecciones:" + cantidadLeciones);
 			}
 			
 			@Override

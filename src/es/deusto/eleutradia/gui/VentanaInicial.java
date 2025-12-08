@@ -45,9 +45,6 @@ public class VentanaInicial extends JFrame {
 	
 	private EleutradiaDBManager dbManager;
 	
-	private List<Particular> listaParticulares;
-	private List<Empresa> listaEmpresas;
-	
 	private CardLayout layout;
 	private JPanel contenedor;
     private ImageIcon originalIcon;
