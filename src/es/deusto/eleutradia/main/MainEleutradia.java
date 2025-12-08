@@ -492,6 +492,10 @@ public class MainEleutradia {
 	}
 	
 	public static void main(String[] args) {
+		
+		dbManager = new EleutradiaDBManager();
+	    dbManager.initializeDB();
+				
 		MainEleutradia.inicializarUsuarios();
 		MainEleutradia.inicializarProductos();
 		MainEleutradia.inicializarCursos();
