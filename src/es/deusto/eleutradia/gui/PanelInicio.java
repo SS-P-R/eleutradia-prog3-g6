@@ -258,30 +258,61 @@ public class PanelInicio extends JPanel{
 			}
 		};
 		
-		
 		List<Cartera> carteras = usuario.getCarteras();
+		
+		if (carteras == null || carteras.isEmpty()) {
+			// Sin carteras - mostrar mensaje amigable
+			modelo.addRow(new Object[]{"Sin carteras", "---", "0.00 €"});
+			modelo.addRow(new Object[]{"", "Cree una cartera", "para empezar"});
+			
+			JTable tablaResumen = new JTable(modelo);
+			tablaResumen.setFont(FONT_NORMAL2);
+			tablaResumen.setRowHeight(20);
+			tablaResumen.getTableHeader().setFont(FONT_NORMAL2);
+			
+			JScrollPane scroll = new JScrollPane(tablaResumen);
+			scroll.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+			activosPanel.add(scroll, BorderLayout.CENTER);
+			
+			// Botón para crear cartera
+			JButton btnCrearCartera = new JButton("Crear nueva cartera");
+			btnCrearCartera.addActionListener(e -> {
+				ventanaPrincipal.mostrarPanel("Portfolio");
+			});
+			activosPanel.add(btnCrearCartera, BorderLayout.SOUTH);
+			
+			activosPanel.setName("Portfolio");
+			PanelFocus(activosPanel, null);
+			return activosPanel;
+		}
+		
 		double valorTotal = 0;
 		Cartera mayor = null;
 		Cartera menor = null;
-		if (carteras!=null) {
-			double max = 0;
-			double min = Double.POSITIVE_INFINITY;
-			for (Cartera c : carteras) {
-				if (max<c.getSaldo()) {
-					max=c.getSaldo();
-					mayor = c;
-				}
-				if (min>c.getSaldo()) {
-					min=c.getSaldo();
-					menor = c;
-				}
-				valorTotal+=c.getSaldo();
+		double max = 0;
+		double min = Double.POSITIVE_INFINITY;
+		
+		for (Cartera c : carteras) {
+			double saldo = c.getSaldo();
+			
+			if (mayor == null || saldo > max) {
+				max = saldo;
+				mayor = c;
 			}
+			if (menor == null || saldo < min) {
+				min = saldo;
+				menor = c;
+			}
+			valorTotal += saldo;
 		}
 		
-		modelo.addRow(new Object[]{"Total", carteras.size() + " carteras", String.format("%.2f €", valorTotal)});
-		modelo.addRow(new Object[]{"Mayor valor", mayor.getNombre(), mayor.getSaldo() + "€"});
-		modelo.addRow(new Object[]{"Menor valor", menor.getNombre(), menor.getSaldo() + "€"});
+		modelo.addRow(new Object[]{"Total", carteras.size() + " cartera(s)", String.format("%.2f €", valorTotal)});
+		if (mayor != null) {
+			modelo.addRow(new Object[]{"Mayor valor", mayor.getNombre(), String.format("%.2f €", mayor.getSaldo())});
+		}
+		if (menor != null && carteras.size() > 1) {
+			modelo.addRow(new Object[]{"Menor valor", menor.getNombre(), menor.getSaldo() + "€"});
+		}
 
 		JTable tablaResumen = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tablaResumen);
