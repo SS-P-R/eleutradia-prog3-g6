@@ -80,8 +80,6 @@ public class VentanaInicial extends JFrame {
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
 		this.dbManager = MainEleutradia.getDBManager();
-		this.listaParticulares = dbManager.getParticulares();
-		this.listaEmpresas = dbManager.getEmpresas();
 		this.configurarVentana();
 		this.generarImagenRandom();
         this.inicializarPaneles();
@@ -590,20 +588,50 @@ public class VentanaInicial extends JFrame {
         		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
         	}
-            listaParticulares.add(new Particular(id, nombre, null, null, email, pass, tlf, "", null, null));
         } else {
         	if (!id.matches(NIF_REGEX)) {
         		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
 	    		return;
         	}
-            listaEmpresas.add(new Empresa(id, nombre, email, pass, tlf, "", null, null));
         }
         
-        mostrarCarga();
+        if (dbManager.existeUsuario(id, esParticular)) {
+            JOptionPane.showMessageDialog(this, 
+                "Ya existe un usuario con ese " + (esParticular ? "DNI" : "NIF"), 
+                "Usuario duplicado", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
-        JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
-        layout.show(contenedor, "bienvenida");
-        setTitle("EleuTradia: Inicio");
+        if (dbManager.existeEmail(email)) {
+            JOptionPane.showMessageDialog(this, 
+                "Ya existe un usuario con ese email", 
+                "Email duplicado", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (dbManager.existeTelefono(tlf)) {
+            JOptionPane.showMessageDialog(this, 
+                "Ya existe un usuario con ese teléfono", 
+                "Teléfono duplicado", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        boolean registrado = dbManager.insertarUsuario(id, nombre, email, tlf, pass, esParticular);
+        
+        if (registrado) {
+            mostrarCarga();
+            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+            layout.show(contenedor, "bienvenida");
+            setTitle("EleuTradia: Inicio");
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Error al registrar el usuario. Inténtelo de nuevo.", 
+                "Error de registro", 
+                JOptionPane.ERROR_MESSAGE);
+        }
 	}
 	
     MouseAdapter myAdapterAzul = new MouseAdapter() {

@@ -876,6 +876,78 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
+	public boolean existeEmail(String email) {
+	    String sql1 = "SELECT COUNT(*) FROM Particular WHERE email = ?";
+	    String sql2 = "SELECT COUNT(*) FROM Empresa WHERE email = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+	        
+	        // Verificar en Particular
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql1)) {
+	            pstmt.setString(1, email);
+	            ResultSet rs = pstmt.executeQuery();
+	            if (rs.next() && rs.getInt(1) > 0) {
+	                rs.close();
+	                return true;
+	            }
+	            rs.close();
+	        }
+	        
+	        // Verificar en Empresa
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+	            pstmt.setString(1, email);
+	            ResultSet rs = pstmt.executeQuery();
+	            if (rs.next() && rs.getInt(1) > 0) {
+	                rs.close();
+	                return true;
+	            }
+	            rs.close();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al verificar email: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	public boolean existeTelefono(String telefono) {
+	    String sql1 = "SELECT COUNT(*) FROM Particular WHERE telefono = ?";
+	    String sql2 = "SELECT COUNT(*) FROM Empresa WHERE telefono = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+	        
+	        // Verificar en Particular
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql1)) {
+	            pstmt.setString(1, telefono);
+	            ResultSet rs = pstmt.executeQuery();
+	            if (rs.next() && rs.getInt(1) > 0) {
+	                rs.close();
+	                return true;
+	            }
+	            rs.close();
+	        }
+	        
+	        // Verificar en Empresa
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+	            pstmt.setString(1, telefono);
+	            ResultSet rs = pstmt.executeQuery();
+	            if (rs.next() && rs.getInt(1) > 0) {
+	                rs.close();
+	                return true;
+	            }
+	            rs.close();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al verificar teléfono: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
 	// MÉTODOS DE CONSULTA COMPLETA
 	
 	public List<Particular> getParticulares() {
