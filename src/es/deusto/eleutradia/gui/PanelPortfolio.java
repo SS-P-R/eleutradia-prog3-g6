@@ -13,8 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-//DISCLAIMER: ESTO ES UN BOCETO. Muchas cosas no funcionan y están mal configuradas. 
-
 public class PanelPortfolio extends JPanel {
 	private static final long serialVersionUID = 1L;
 
