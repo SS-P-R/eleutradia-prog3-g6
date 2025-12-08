@@ -66,7 +66,7 @@ public class VentanaDetalleProducto extends JDialog {
         panelSuperior.add(labelNombre, BorderLayout.WEST);
 
         if (producto.getGestora() != null) {
-            String rutaImagen = "/images/gestora" + producto.getGestora().getNombreComercial().toLowerCase() + ".png";
+            String rutaImagen = "/imagenes/gestora" + producto.getGestora().getNombreComercial().toLowerCase() + ".png";
             ImageIcon iconoGestora = null;
             if (getClass().getResource(rutaImagen) != null) {
                 iconoGestora = new ImageIcon(getClass().getResource(rutaImagen));

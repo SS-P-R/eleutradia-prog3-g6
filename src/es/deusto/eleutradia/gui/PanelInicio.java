@@ -26,7 +26,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
+import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Leccion;
 import es.deusto.eleutradia.domain.Particular;
@@ -240,17 +242,51 @@ public class PanelInicio extends JPanel{
 		JPanel activosPanel = new JPanel();
 		activosPanel.setBackground(Color.WHITE);
 		activosPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
+
 		
 		JLabel mensajeActivos = new JLabel();
 		mensajeActivos.setText("Resumen de sus activos: ");
 		mensajeActivos.setFont(FONT_TITULO2);
-		activosPanel.add(mensajeActivos);
+		mensajeActivos.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		activosPanel.add(mensajeActivos, BorderLayout.NORTH);
 		
-		String[] columnas = {"Nombre","Varianza", "Valor total (€)"};
-		Object[][] datos = {{"Nombre","Varianza", "Valor total (€)"},{"Total","X%","x€"},{"Hoy","X%","x€"}};
-		JTable tablaResumen = new JTable(datos, columnas);
+		String[] columnas = {"Concepto","Cartera", "Valor (€)"};
+		DefaultTableModel modelo = new DefaultTableModel(columnas,0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		
+		List<Cartera> carteras = usuario.getCarteras();
+		double valorTotal = 0;
+		Cartera mayor = null;
+		Cartera menor = null;
+		if (carteras!=null) {
+			double max = 0;
+			double min = Double.POSITIVE_INFINITY;
+			for (Cartera c : carteras) {
+				if (max<c.getSaldo()) {
+					max=c.getSaldo();
+					mayor = c;
+				}
+				if (min>c.getSaldo()) {
+					min=c.getSaldo();
+					menor = c;
+				}
+				valorTotal+=c.getSaldo();
+			}
+		}
+		
+		modelo.addRow(new Object[]{"Total", carteras.size() + " carteras", String.format("%.2f €", valorTotal)});
+		modelo.addRow(new Object[]{"Mayor valor", mayor.getNombre(), mayor.getSaldo() + "€"});
+		modelo.addRow(new Object[]{"Menor valor", menor.getNombre(), menor.getSaldo() + "€"});
+
+		JTable tablaResumen = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tablaResumen);
-		activosPanel.add(scroll);
+	    scroll.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		activosPanel.add(scroll, BorderLayout.CENTER);
 		
 		tablaResumen.setFont(FONT_NORMAL2);
 		tablaResumen.setRowHeight(20);
@@ -259,8 +295,8 @@ public class PanelInicio extends JPanel{
 		activosPanel.add(tablaResumen);
 
 		activosPanel.setName("Portfolio");
-		PanelFocus(activosPanel,null);
-		return activosPanel;
+		PanelFocus(activosPanel, null);
+		return activosPanel;	
 	};
 	
 	int sel = 0;
