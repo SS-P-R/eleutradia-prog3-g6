@@ -3,23 +3,30 @@ package es.deusto.eleutradia.db;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Divisa;
+import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.Leccion;
 import es.deusto.eleutradia.domain.Modulo;
 import es.deusto.eleutradia.domain.NivelConocimiento;
 import es.deusto.eleutradia.domain.Pais;
+import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.PerfilRiesgo;
 import es.deusto.eleutradia.domain.PeriodicidadPago;
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
@@ -423,7 +430,7 @@ public class EleutradiaDBManager {
 	
 	// INSERCIÓN DE DATOS EN TABLAS DE ENUMS
 	
-	private void insertEnumData() {
+	public void insertEnumData() {
 		try (Connection conn = DriverManager.getConnection(connectionUrl)) {
 			insertClaseActivo(conn);
 			insertTipoProducto(conn);
@@ -440,7 +447,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertClaseActivo(Connection conn) throws Exception {
+	public void insertClaseActivo(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO ClaseActivo (id, nombre) VALUES (?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (ClaseActivo ca : ClaseActivo.values()) {
@@ -451,7 +458,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertTipoProducto(Connection conn) throws Exception {
+	public void insertTipoProducto(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO TipoProducto (id, nombre, claseActivo, riesgo, importeMin) VALUES (?, ?, ?, ?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (TipoProducto tp : TipoProducto.values()) {
@@ -465,7 +472,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertRegionGeografica(Connection conn) throws Exception {
+	public void insertRegionGeografica(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO RegionGeografica (id, nombre) VALUES (?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (RegionGeografica rg : RegionGeografica.values()) {
@@ -476,7 +483,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertNivelConocimiento(Connection conn) throws Exception {
+	public void insertNivelConocimiento(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO NivelConocimiento (id, nombre) VALUES (?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (NivelConocimiento nc : NivelConocimiento.values()) {
@@ -487,7 +494,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertPerfilRiesgo(Connection conn) throws Exception {
+	public void insertPerfilRiesgo(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO PerfilRiesgo (id, nombre) VALUES (?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (PerfilRiesgo pr : PerfilRiesgo.values()) {
@@ -498,7 +505,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertPlazoRentabilidad(Connection conn) throws Exception {
+	public void insertPlazoRentabilidad(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO PlazoRentabilidad (id, nombre, definicion) VALUES (?, ?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (PlazoRentabilidad plr : PlazoRentabilidad.values()) {
@@ -510,7 +517,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertPeriodicidadPago(Connection conn) throws Exception {
+	public void insertPeriodicidadPago(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO PeriodicidadPago (id, nombre, dias) VALUES (?, ?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (PeriodicidadPago pp : PeriodicidadPago.values()) {
@@ -522,7 +529,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertDivisa(Connection conn) throws Exception {
+	public void insertDivisa(Connection conn) throws Exception {
 		String sql = "INSERT OR IGNORE INTO Divisa (id, codigo, nombre, tasaCambioUSD, simbolo) VALUES (?, ?, ?, ?, ?);";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			for (Divisa div : Divisa.values()) {
@@ -538,7 +545,7 @@ public class EleutradiaDBManager {
 	
 	// INSERCIÓN DE DATOS EN TABLAS DE CLASES
 	
-	private void insertPaises(Pais... paises) {
+	public void insertPaises(Pais... paises) {
 		String sql = "INSERT OR IGNORE INTO Pais (nombre, regionGeografica) VALUES (?, ?);";
 		
 		try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -556,7 +563,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertGestoras(List<String[]> gestorasData) {
+	public void insertGestoras(List<String[]> gestorasData) {
 	    String sql = "INSERT OR IGNORE INTO Gestora (nombreComercial, nombreCompleto, direccion, paisSede) VALUES (?, ?, ?, ?);";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -590,7 +597,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	private void insertProductos(List<String[]> productosData) {
+	public void insertProductos(List<String[]> productosData) {
 	    String sql1 = "INSERT OR IGNORE INTO ProductoFinanciero (nombre, plazo, valorUnitario, tipoProducto, regionGeografica, perPago, divisa, gestora) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 	    String sql2 = "INSERT OR IGNORE INTO Rentabilidad (productoFinanciero, plazoRentabilidad, porcentaje) VALUES (?, ?, ?);";
 	    
@@ -663,7 +670,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	private void insertCursos(Curso... cursos) {
+	public void insertCursos(Curso... cursos) {
 		String sql = "INSERT OR IGNORE INTO Curso (nombre, nivelRecomendado) VALUES (?, ?);";
 		
 		try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -681,7 +688,7 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	private void insertModulos(List<String[]> modulosData) {
+	public void insertModulos(List<String[]> modulosData) {
 	    String sql = "INSERT OR IGNORE INTO Modulo (nombre, posicion, curso) VALUES (?, ?, ?);";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -713,7 +720,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	private void insertLecciones(List<String[]> leccionesData) {
+	public void insertLecciones(List<String[]> leccionesData) {
 	    String sql = "INSERT OR IGNORE INTO Leccion (titulo, posicion, modulo) VALUES (?, ?, ?);";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -745,7 +752,235 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	// MÉTODOS AUXILIARES PARA INSERCIÓN
+	public boolean insertarUsuario(String id, String nombre, String email, String telefono, 
+            String password, boolean esParticular) {
+		if (esParticular) {
+			String sql = "INSERT INTO Particular (dni, nombre, email, password, telefono, direccion, fechaNacimiento) " + 
+						 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+			try (Connection conn = DriverManager.getConnection(connectionUrl);
+				 PreparedStatement pStmt = conn.prepareStatement(sql)) {
+				pStmt.setString(1, id);
+				pStmt.setString(2, nombre);
+				pStmt.setString(3, email);
+				pStmt.setString(4, password);
+				pStmt.setString(5, telefono);
+				pStmt.setString(6, "");
+				pStmt.setString(7, LocalDate.now().toString());
+				pStmt.executeUpdate();
+				return true;
+
+			} catch (Exception ex) {
+				System.err.format("Error al insertar particular: %s%n", ex.getMessage());
+				ex.printStackTrace();
+			}
+		} else {
+			String sql = "INSERT INTO Empresa (nif, nombre, email, password, telefono, direccion) " +
+						 "VALUES (?, ?, ?, ?, ?, ?)";
+
+			try (Connection conn = DriverManager.getConnection(connectionUrl);
+				 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setString(1, id);
+				pstmt.setString(2, nombre);
+				pstmt.setString(3, email);
+				pstmt.setString(4, password);
+				pstmt.setString(5, telefono);
+				pstmt.setString(6, "");
+				pstmt.executeUpdate();
+				return true;
+
+			} catch (Exception ex) {
+				System.err.format("Error al insertar empresa: %s%n", ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+	
+	// MÉTODOS DE AUTENTICACIÓN Y REGISTRO
+	
+	public Particular buscarParticular(String dni, String password) {
+	    String sql = "SELECT * FROM Particular WHERE dni = ? AND password = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, dni);
+	        pstmt.setString(2, password);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            Particular p = getParticularFromRS(rs, conn);
+	            rs.close();
+	            return p;
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al buscar particular: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return null;
+	}
+	
+	public Empresa buscarEmpresa(String nif, String password) {
+	    String sql = "SELECT * FROM Empresa WHERE nif = ? AND password = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, nif);
+	        pstmt.setString(2, password);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            Empresa e = getEmpresaFromRS(rs, conn);
+	            rs.close();
+	            return e;
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al buscar empresa: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return null;
+	}
+	
+	public boolean existeUsuario(String id, boolean esParticular) {
+	    String tabla = esParticular ? "Particular" : "Empresa";
+	    String campo = esParticular ? "dni" : "nif";
+	    String sql = "SELECT COUNT(*) FROM " + tabla + " WHERE " + campo + " = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, id);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            boolean existe = rs.getInt(1) > 0;
+	            rs.close();
+	            return existe;
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al verificar usuario: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	// MÉTODOS DE CONSULTA COMPLETA
+	
+	public List<Particular> getParticulares() {
+	    List<Particular> particulares = new ArrayList<>();
+	    String sql = "SELECT * FROM Particular";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            Particular p = getParticularFromRS(rs, conn);
+	            if (p != null) {
+	                particulares.add(p);
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al obtener particulares: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return particulares;
+	}
+	
+	public List<Empresa> getEmpresas() {
+	    List<Empresa> empresas = new ArrayList<>();
+	    String sql = "SELECT * FROM Empresa";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            Empresa e = getEmpresaFromRS(rs, conn);
+	            if (e != null) {
+	                empresas.add(e);
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al obtener empresas: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return empresas;
+	}
+	
+	public List<ProductoFinanciero> getProductos() {
+	    List<ProductoFinanciero> productos = new ArrayList<>();
+	    String sql = "SELECT * FROM ProductoFinanciero";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            ProductoFinanciero p = getProductoFromRS(rs, conn);
+	            if (p != null) {
+	                productos.add(p);
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al obtener productos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return productos;
+	}
+	
+	public List<Curso> getCursos() {
+	    List<Curso> cursos = new ArrayList<>();
+	    String sql = "SELECT * FROM Curso";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            int cursoId = rs.getInt("id");
+	            Curso curso = new Curso(
+	                cursoId,
+	                rs.getString("nombre"),
+	                NivelConocimiento.values()[rs.getInt("nivelRecomendado")]
+	            );
+	            
+	            // Cargar módulos del curso
+	            List<Modulo> modulos = getModulosByCursoId(cursoId, conn);
+	            for (Modulo m : modulos) {
+	                curso.addModulo(m);
+	            }
+	            
+	            cursos.add(curso);
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al obtener cursos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return cursos;
+	}
+	
+	// MÉTODOS AUXILIARES PRIVADOS
 	
 	private int getPaisIdByNombre(Connection conn, String nombrePais) {
 	    String sql = "SELECT id FROM Pais WHERE nombre = ?;";
@@ -819,9 +1054,222 @@ public class EleutradiaDBManager {
 	    return -1;
 	}
 	
-	// OBTENER DATOS DE TABLAS
+	private Particular getParticularFromRS(ResultSet rs, Connection conn) throws Exception {
+	    String fechaNacStr = rs.getString("fechaNacimiento");
+	    LocalDate fechaNac = (fechaNacStr != null && !fechaNacStr.isEmpty()) ? 
+	        LocalDate.parse(fechaNacStr) : null;
+	    
+	    int paisResId = rs.getInt("paisResidencia");
+	    int domFiscalId = rs.getInt("domicilioFiscal");
+	    int perfilId = rs.getInt("perfilFinanciero");
+	    
+	    return new Particular(
+	        rs.getString("dni"),
+	        rs.getString("nombre"),
+	        fechaNac,
+	        (paisResId > 0) ? getPaisById(paisResId, conn) : null,
+	        rs.getString("email"),
+	        rs.getString("password"),
+	        rs.getString("telefono"),
+	        rs.getString("direccion"),
+	        (domFiscalId > 0) ? getPaisById(domFiscalId, conn) : null,
+	        (perfilId > 0) ? getPerfilFinancieroById(perfilId, conn) : null
+	    );
+	}
+
+	private Empresa getEmpresaFromRS(ResultSet rs, Connection conn) throws Exception {
+	    int domFiscalId = rs.getInt("domicilioFiscal");
+	    int perfilId = rs.getInt("perfilFinanciero");
+	    
+	    return new Empresa(
+	        rs.getString("nif"),
+	        rs.getString("nombre"),
+	        rs.getString("email"),
+	        rs.getString("password"),
+	        rs.getString("telefono"),
+	        rs.getString("direccion"),
+	        (domFiscalId > 0) ? getPaisById(domFiscalId, conn) : null,
+	        (perfilId > 0) ? getPerfilFinancieroById(perfilId, conn) : null
+	    );
+	}
 	
+	private ProductoFinanciero getProductoFromRS(ResultSet rs, Connection conn) throws Exception {
+	    int id = rs.getInt("id");
+	    String plazoStr = rs.getString("plazo");
+	    YearMonth plazo = (plazoStr != null && !plazoStr.isEmpty()) ? 
+	        YearMonth.parse(plazoStr) : null;
+	    
+	    return new ProductoFinanciero(
+	        id,
+	        rs.getString("nombre"),
+	        plazo,
+	        getRentabilidadesByProductoId(id, conn),
+	        rs.getDouble("valorUnitario"),
+	        TipoProducto.values()[rs.getInt("tipoProducto")],
+	        RegionGeografica.values()[rs.getInt("regionGeografica")],
+	        PeriodicidadPago.values()[rs.getInt("perPago")],
+	        Divisa.values()[rs.getInt("divisa")],
+	        getGestoraById(rs.getInt("gestora"), conn)
+	    );
+	}
 	
+	private Pais getPaisById(int paisId, Connection conn) throws Exception {
+	    if (paisId == 0) return null;
+	    
+	    String sql = "SELECT * FROM Pais WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, paisId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            Pais pais = new Pais(
+	                rs.getInt("id"),
+	                rs.getString("nombre"),
+	                RegionGeografica.values()[rs.getInt("regionGeografica")]
+	            );
+	            rs.close();
+	            return pais;
+	        }
+	        rs.close();
+	    }
+	    
+	    return null;
+	}
+	
+	private Gestora getGestoraById(int gestoraId, Connection conn) throws Exception {
+	    String sql = "SELECT * FROM Gestora WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, gestoraId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            Gestora g = new Gestora(
+	                rs.getInt("id"),
+	                rs.getString("nombreComercial"),
+	                rs.getString("nombreCompleto"),
+	                rs.getString("direccion"),
+	                getPaisById(rs.getInt("paisSede"), conn),
+	                new ArrayList<>() // Lista de productos vacía
+	            );
+	            rs.close();
+	            return g;
+	        }
+	        rs.close();
+	    }
+	    
+	    return null;
+	}
+	
+	private PerfilFinanciero getPerfilFinancieroById(int perfilId, Connection conn) throws Exception {
+	    if (perfilId == 0) return null;
+	    
+	    String sql = "SELECT * FROM PerfilFinanciero WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, perfilId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            PerfilFinanciero perfil = new PerfilFinanciero(
+	                rs.getInt("horizonte"),
+	                PerfilRiesgo.values()[rs.getInt("perfilRiesgo")],
+	                NivelConocimiento.values()[rs.getInt("nivelConocimiento")],
+	                getTiposProductoByPerfil(perfilId, conn)
+	            );
+	            rs.close();
+	            return perfil;
+	        }
+	        rs.close();
+	    }
+	    
+	    return null;
+	}
+	
+	private List<TipoProducto> getTiposProductoByPerfil(int perfilId, Connection conn) throws Exception {
+	    List<TipoProducto> tipos = new ArrayList<>();
+	    String sql = "SELECT tipoProducto FROM PerfilFinancieroTipoProducto WHERE perfilFinanciero = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, perfilId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            tipos.add(TipoProducto.values()[rs.getInt("tipoProducto")]);
+	        }
+	        rs.close();
+	    }
+	    
+	    return tipos;
+	}
+	
+	private Map<PlazoRentabilidad, BigDecimal> getRentabilidadesByProductoId(
+	        int productoId, Connection conn) throws Exception {
+	    Map<PlazoRentabilidad, BigDecimal> rentabilidades = new java.util.HashMap<>();
+	    String sql = "SELECT plazoRentabilidad, porcentaje FROM Rentabilidad WHERE productoFinanciero = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, productoId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            rentabilidades.put(
+	                PlazoRentabilidad.values()[rs.getInt("plazoRentabilidad")],
+	                BigDecimal.valueOf(rs.getDouble("porcentaje"))
+	            );
+	        }
+	        rs.close();
+	    }
+	    
+	    return rentabilidades;
+	}
+	
+	private List<Modulo> getModulosByCursoId(int cursoId, Connection conn) throws Exception {
+	    List<Modulo> modulos = new ArrayList<>();
+	    String sql = "SELECT * FROM Modulo WHERE curso = ? ORDER BY posicion";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, cursoId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            int moduloId = rs.getInt("id");
+	            Modulo modulo = new Modulo(
+	                moduloId,
+	                rs.getString("nombre"),
+	                rs.getInt("posicion"),
+	                getLeccionesByModuloId(moduloId, conn)
+	            );
+	            modulos.add(modulo);
+	        }
+	        rs.close();
+	    }
+	    
+	    return modulos;
+	}
+	
+	private List<Leccion> getLeccionesByModuloId(int moduloId, Connection conn) throws Exception {
+	    List<Leccion> lecciones = new ArrayList<>();
+	    String sql = "SELECT * FROM Leccion WHERE modulo = ? ORDER BY posicion";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, moduloId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            Leccion leccion = new Leccion(
+	                rs.getInt("id"),
+	                rs.getString("titulo"),
+	                rs.getInt("posicion")
+	            );
+	            lecciones.add(leccion);
+	        }
+	        rs.close();
+	    }
+	    
+	    return lecciones;
+	}
 	
 	//IAG (Claude)
 	//SIN MODIFICAR
