@@ -761,7 +761,7 @@ public class PanelAprender extends JPanel {
             		panelInscripcion.actualizar(10, "Conectando...");
                     Thread.sleep(600); 
                 } else {
-                	panelInscripcion.actualizar(80, "Procesando solicitud...");
+                	panelInscripcion.actualizar(10, "Procesando solicitud...");
                     Thread.sleep(600);
                 }
                 
