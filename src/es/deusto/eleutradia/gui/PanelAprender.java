@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -198,23 +199,27 @@ public class PanelAprender extends JPanel {
             JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
             
             if (ventanaPrincipal != null) {
-
+            	
+            	Container vistaOriginalCompleta = ventanaPrincipal.getContentPane();
+            	
                 PanelSimulador panelSimulacion = new PanelSimulador();
 
                 panelSimulacion.addAccionVolver(eventoVolver -> {
-                    // 1. Volvemos a poner el panel original
-                    ventanaPrincipal.setContentPane(this);
                     
-                    // --- BLOQUE IMPORTANTE PARA EVITAR PANTALLA GRIS ---
-                    this.setVisible(true);   // Aseguramos que el panel sea visible
-                    this.revalidate();       // Recalcula el diseño interno del panel
-                    this.repaint();          // Fuerza el repintado de los píxeles
+                    // --- AL VOLVER ---
+                    // Restauramos la VISTA COMPLETA que guardamos antes
+                    ventanaPrincipal.setContentPane(vistaOriginalCompleta);
                     
-                    ventanaPrincipal.revalidate(); // Recalcula el marco de la ventana
-                    ventanaPrincipal.repaint();    // Repinta la ventana completa
-                    // ---------------------------------------------------
+                    // Refrescamos para evitar pantalla gris
+                    ventanaPrincipal.revalidate();
+                    ventanaPrincipal.repaint();
+                    
+                    // Opcional: Si el botón simulación se quedó "pulsado" o con foco, lo limpiamos
+                    botonSimulacion.setFocusable(false);
+                    botonSimulacion.setFocusable(true);
                 });
                 
+                // 4. Ponemos el simulador (ocupará toda la ventana temporalmente)
                 ventanaPrincipal.setContentPane(panelSimulacion);
                 ventanaPrincipal.revalidate();
                 ventanaPrincipal.repaint();
