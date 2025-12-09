@@ -124,6 +124,7 @@ public class PanelSimulador extends JPanel {
                 hilosProductos[i].start();            
             }
         });
+        btnIniciar.addMouseListener(myAdapterVerde);
 
 
         btnParar = new JButton("Detener Simulación");
@@ -138,6 +139,7 @@ public class PanelSimulador extends JPanel {
         btnParar.setOpaque(true);
         btnParar.setFocusPainted(false);
         btnParar.addActionListener(e -> detenerJuego("Simulación detenida manualmente."));
+        btnParar.addMouseListener(myAdapterAzul);
 
         
         btnVolver = new JButton("Volver a Cursos");
@@ -150,6 +152,7 @@ public class PanelSimulador extends JPanel {
         btnVolver.setContentAreaFilled(false);
         btnVolver.setOpaque(true);
         btnVolver.setFocusPainted(false);
+        btnVolver.addMouseListener(myAdapterGris);
 
 
         panelBotonesPrincipales.add(btnIniciar);
