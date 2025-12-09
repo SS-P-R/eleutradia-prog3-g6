@@ -432,25 +432,42 @@ public class PanelAprender extends JPanel {
 		    botonDesinscribir.setOpaque(true);
 		    botonDesinscribir.setFocusPainted(false);
 		    botonDesinscribir.addActionListener(e -> {
+
 		        int respuesta = JOptionPane.showConfirmDialog(panelCursosInfo,
 		            "¿Estás seguro de que quieres desinscribirte de " + cursoInfo.getNombre() + "?",
 		            "Confirmar desinscripción",
 		            JOptionPane.YES_NO_OPTION);
 		        
 		        if (respuesta == JOptionPane.YES_OPTION) {
-		            usuarioLogeado.removeCurso(cursoInfo);
-		            
-		            boolean exito = MainEleutradia.getDBManager()
-		                .desinscribirParticularDeCurso(usuarioLogeado.getDni(), cursoInfo.getId());
-		            
-		            if (exito) {
-		                JOptionPane.showMessageDialog(panelCursosInfo, 
-		                    "Te has desinscrito de " + cursoInfo.getNombre());
-		            }
-		            
-		            actualizarPanelInfoCurso();
-		            actualizarProgressBar();
-		            actualizarPanelMisCursos();
+
+		            JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
+		            PanelCargaThreads panelCarga = new PanelCargaThreads();
+		            rootPane.setGlassPane(panelCarga);
+		            panelCarga.setVisible(true); // Bloquea la pantalla
+
+		            Runnable logicaDesinscripcion = () -> {
+
+		                usuarioLogeado.removeCurso(cursoInfo);
+
+		                boolean exito = MainEleutradia.getDBManager()
+		                    .desinscribirParticularDeCurso(usuarioLogeado.getDni(), cursoInfo.getId());
+		                
+		                if (exito) {
+		                    JOptionPane.showMessageDialog(panelCursosInfo, 
+		                        "Te has desinscrito de " + cursoInfo.getNombre());
+		                } else {
+		                     JOptionPane.showMessageDialog(panelCursosInfo, 
+		                        "Error al conectar con la base de datos.", 
+		                        "Error", JOptionPane.ERROR_MESSAGE);
+		                }
+		                
+		                actualizarPanelInfoCurso();
+		                actualizarProgressBar();
+		                actualizarPanelMisCursos();
+		            };
+
+		            HiloVisual hilo = new HiloVisual(panelCarga, logicaDesinscripcion, false);
+		            hilo.start();
 		        }
 		    });
 		    botonDesinscribir.addMouseListener(myAdapterGris);
@@ -509,7 +526,7 @@ public class PanelAprender extends JPanel {
 			        }
 			    };
 
-			    HiloVisual hilo = new HiloVisual(panelCarga, logicaReal);
+			    HiloVisual hilo = new HiloVisual(panelCarga, logicaReal, true);
 			    hilo.start();
 			});
 			botonApuntar.addMouseListener(myAdapterAzul);
@@ -728,31 +745,54 @@ public class PanelAprender extends JPanel {
         
         private PanelCargaThreads panelInscripcion;
         private Runnable accionAlTerminar;
+        private boolean inscribirse;
 
-        public HiloVisual(PanelCargaThreads panelInscripcion, Runnable accionAlTerminar) {
+        public HiloVisual(PanelCargaThreads panelInscripcion, Runnable accionAlTerminar, boolean inscribirse) {
             this.panelInscripcion = panelInscripcion;
             this.accionAlTerminar = accionAlTerminar;
+            this.inscribirse = inscribirse;
         }
 
         @Override
         public void run() {
             try {
-
-                panelInscripcion.actualizar(10, "Conectando...");
-                Thread.sleep(600); 
+            	
+            	if (inscribirse) {
+            		panelInscripcion.actualizar(10, "Conectando...");
+                    Thread.sleep(600); 
+                } else {
+                	panelInscripcion.actualizar(80, "Procesando solicitud...");
+                    Thread.sleep(600);
+                }
+                
+                if (isInterrupted()) return;
+                
+                if (inscribirse) {
+                	panelInscripcion.actualizar(50, "Verificando disponibilidad...");
+                    Thread.sleep(800);
+                } else {
+                	panelInscripcion.actualizar(50, "Cancelando tu matrícula...");
+                    Thread.sleep(800);
+                }
 
                 if (isInterrupted()) return;
-
-                panelInscripcion.actualizar(50, "Verificando disponibilidad...");
-                Thread.sleep(800);
-
-                if (isInterrupted()) return;
-
-                panelInscripcion.actualizar(80, "Registrando usuario...");
-                Thread.sleep(600);
-
-                panelInscripcion.actualizar(100, "¡Procesando!");
-                Thread.sleep(300);
+                
+                if (inscribirse) {
+                	panelInscripcion.actualizar(80, "Registrando usuario...");
+                    Thread.sleep(600);
+                } else {
+                	panelInscripcion.actualizar(80, "Actualizando tu perfil...");
+                    Thread.sleep(600);
+                }
+                
+                if (inscribirse) {
+                	panelInscripcion.actualizar(100, "¡Procesando!");
+                    Thread.sleep(300);
+                } else {
+                	panelInscripcion.actualizar(100, "¡Baja completada!");
+                    Thread.sleep(300);
+                }
+                
 
                 SwingUtilities.invokeLater(() -> {
                     panelInscripcion.setVisible(false); 
