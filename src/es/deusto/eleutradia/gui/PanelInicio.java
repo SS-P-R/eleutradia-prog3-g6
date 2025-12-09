@@ -475,7 +475,7 @@ public class PanelInicio extends JPanel{
 
 	    final int[] indice = {0};
 
-	    // 🔁 HILO que cambia titulares
+	    //Hilo pasar
 	    Thread hiloTitulares = new Thread(() -> {
 	        try {
 	            while (true) {
@@ -483,7 +483,7 @@ public class PanelInicio extends JPanel{
 	                indice[0] = (indice[0] + 1) % noticias.size();
 
 	                javax.swing.SwingUtilities.invokeLater(() -> {
-	                    titularLabel.setText("📰 " + noticias.get(indice[0])[0]);
+	                    titularLabel.setText("Noticias: " + noticias.get(indice[0])[0]);
 	                });
 	            }
 	        } catch (InterruptedException e) {
