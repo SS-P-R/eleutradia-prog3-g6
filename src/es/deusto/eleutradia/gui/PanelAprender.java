@@ -193,7 +193,7 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//SIN MODIFICAR
+		//MODIFICADO
 		botonSimulacion.addActionListener(e -> {
             
             JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -205,21 +205,16 @@ public class PanelAprender extends JPanel {
                 PanelSimulador panelSimulacion = new PanelSimulador();
 
                 panelSimulacion.addAccionVolver(eventoVolver -> {
-                    
-                    // --- AL VOLVER ---
-                    // Restauramos la VISTA COMPLETA que guardamos antes
+
                     ventanaPrincipal.setContentPane(vistaOriginalCompleta);
-                    
-                    // Refrescamos para evitar pantalla gris
+
                     ventanaPrincipal.revalidate();
                     ventanaPrincipal.repaint();
-                    
-                    // Opcional: Si el botón simulación se quedó "pulsado" o con foco, lo limpiamos
+
                     botonSimulacion.setFocusable(false);
                     botonSimulacion.setFocusable(true);
                 });
                 
-                // 4. Ponemos el simulador (ocupará toda la ventana temporalmente)
                 ventanaPrincipal.setContentPane(panelSimulacion);
                 ventanaPrincipal.revalidate();
                 ventanaPrincipal.repaint();
