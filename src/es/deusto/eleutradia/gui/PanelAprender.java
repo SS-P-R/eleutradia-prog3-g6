@@ -176,7 +176,26 @@ public class PanelAprender extends JPanel {
 		panelProgreso.add(Box.createRigidArea(new Dimension(0, 10)));
 		panelProgreso.add(progressBarRacha);
 		
+		JPanel panelBotonAbajo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelBotonAbajo.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Margen inferior
+		
+		JButton botonSimulacion = new JButton("Simulación");
+		botonSimulacion.setPreferredSize(new Dimension(150, 45));
+		botonSimulacion.setBackground(MY_AZUL_CLARO);
+		botonSimulacion.setForeground(Color.WHITE);
+		botonSimulacion.setFont(FONT_ACCION_TITULO);
+		botonSimulacion.setBorderPainted(false);
+		botonSimulacion.setContentAreaFilled(false);
+		botonSimulacion.setOpaque(true);
+		botonSimulacion.setFocusPainted(false);
+		
+		botonSimulacion.addMouseListener(myAdapterAzul);
+		
+		panelBotonAbajo.add(botonSimulacion);
+		
 		panelDerecho.add(panelProgreso, BorderLayout.NORTH);
+		panelDerecho.add(panelBotonAbajo, BorderLayout.SOUTH);
 		
 		panelPrincipalPestanasCurso.add(panelDerecho, BorderLayout.EAST);
 		
