@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,7 +64,6 @@ public class VentanaInicial extends JFrame {
     //END IAG
     
     // Expresiones para validar identificadores
-    
     //IAG (ChatGPT)
     //SIN MODIFICAR
     private static final String DNI_REGEX = "^[0-9]{8}[A-Za-z]$";
@@ -72,6 +72,10 @@ public class VentanaInicial extends JFrame {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String TELEFONO_REGEX = "^\\d{9}$";
     //END IAG
+    
+    // Campos temporales para el registro multipaso
+    private String tempId, tempNombre, tempEmail, tempTlf, tempPass;
+    private boolean tempEsParticular;
 	
 	public VentanaInicial() {
 		super("EleuTradia: Inicio");
@@ -100,12 +104,14 @@ public class VentanaInicial extends JFrame {
 		JPanel panelBienvenida = construirPanelBienvenida();
 	    JPanel panelLoginParticular = construirPanelLogin(true);
 	    JPanel panelLoginEmpresa = construirPanelLogin(false);
-	    JPanel panelReg = construirPanelRegistro(true);
+	    JPanel panelReg1 = construirPanelRegistro1();
+	    JPanel panelReg2 = construirPanelRegistro2();
 	    
 	    contenedor.add(panelBienvenida, "bienvenida");
 	    contenedor.add(panelLoginParticular, "loginParticular");
 	    contenedor.add(panelLoginEmpresa, "loginEmpresa");
-	    contenedor.add(panelReg, "registro");
+	    contenedor.add(panelReg1, "registro1");
+	    contenedor.add(panelReg2, "registro2");
 	    
 	    layout.show(contenedor, "bienvenida");
 	}
@@ -190,7 +196,7 @@ public class VentanaInicial extends JFrame {
         botonRegistro.setAlignmentX(JButton.CENTER_ALIGNMENT);
         panelRegistro.add(botonRegistro);
         botonRegistro.addActionListener(e -> {
-			layout.show(contenedor, "registro");
+			layout.show(contenedor, "registro1");
 			setTitle("EleuTradia: Registro");
         });
         botonRegistro.addMouseListener(myAdapterRegistro);
@@ -308,7 +314,7 @@ public class VentanaInicial extends JFrame {
         return mainPanel;
     }
 	
-	private JPanel construirPanelRegistro(boolean esParticular) {
+	private JPanel construirPanelRegistro1() {
 		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
 		
 		JPanel panelDcho = new JPanel();
@@ -316,7 +322,7 @@ public class VentanaInicial extends JFrame {
         panelDcho.setBackground(Color.WHITE);
         panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 20));
         
-        JLabel tituloReg = new JLabel("Abra su cuenta:");
+        JLabel tituloReg = new JLabel("Abra su cuenta (1/2):");
         tituloReg.setFont(FONT_TITULO);
         tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
@@ -350,7 +356,7 @@ public class VentanaInicial extends JFrame {
         panelRegistro.add(Box.createVerticalStrut(10));
         
         // Campo de identificador
-        JLabel labelRegId = new JLabel(esParticular ? "DNI:" : "NIF:");
+        JLabel labelRegId = new JLabel("DNI:");
         panelRegistro.add(crearLabel(labelRegId));
         panelRegistro.add(Box.createVerticalStrut(10));
         
@@ -359,7 +365,7 @@ public class VentanaInicial extends JFrame {
         panelRegistro.add(Box.createVerticalStrut(20));
         
         // Campo de nombre
-        JLabel labelRegNombre = new JLabel(esParticular ? "Nombre completo:" : "Nombre de la empresa:");
+        JLabel labelRegNombre = new JLabel("Nombre completo:");
         panelRegistro.add(crearLabel(labelRegNombre));
         panelRegistro.add(Box.createVerticalStrut(10));
         
@@ -386,7 +392,7 @@ public class VentanaInicial extends JFrame {
         panelRegistro.add(Box.createVerticalStrut(20));
         
         // Campo de teléfono
-        panelRegistro.add(crearLabel(new JLabel(esParticular ? "Teléfono:" : "Teléfono de empresa")));
+        panelRegistro.add(crearLabel(new JLabel("Teléfono:")));
         panelRegistro.add(Box.createVerticalStrut(10));
         
         JTextField campoRegTlf = (JTextField) crearCampo(false);
@@ -432,19 +438,19 @@ public class VentanaInicial extends JFrame {
 		});
 		botonCancelar.addMouseListener(myAdapterGris);
         
-        JButton botonReg = new JButton("Confirmar");
-        botonReg.setFont(FONT_NORMAL);
-        botonReg.setBackground(MY_AZUL_CLARO);
-        botonReg.setForeground(Color.WHITE);
-        botonReg.setBorderPainted(false);
-        botonReg.setContentAreaFilled(false);
-        botonReg.setOpaque(true);
-        botonReg.setFocusPainted(false);
-        botonReg.setAlignmentX(JButton.LEFT_ALIGNMENT);
-        panelBotones.add(botonReg);
-        botonReg.addActionListener(e -> procesarRegistro(esParticular, campoRegId, campoRegNombre,
-        		campoRegEmail, campoRegTlf, campoRegPassword, campoRegConfirmPassword));
-        botonReg.addMouseListener(myAdapterAzul);
+        JButton botonContinuar = new JButton("Continuar");
+        botonContinuar.setFont(FONT_NORMAL);
+        botonContinuar.setBackground(MY_AZUL_CLARO);
+        botonContinuar.setForeground(Color.WHITE);
+        botonContinuar.setBorderPainted(false);
+        botonContinuar.setContentAreaFilled(false);
+        botonContinuar.setOpaque(true);
+        botonContinuar.setFocusPainted(false);
+        botonContinuar.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        panelBotones.add(botonContinuar);
+        botonContinuar.addActionListener(e -> validarYContinuar(radioParticular.isSelected(), 
+        		campoRegId, campoRegNombre, campoRegEmail, campoRegTlf, campoRegPassword, campoRegConfirmPassword));
+        botonContinuar.addMouseListener(myAdapterAzul);
         
         panelRegistro.add(panelBotones);
         
@@ -459,6 +465,142 @@ public class VentanaInicial extends JFrame {
         
         mainPanel.add(panelIzdo);
         mainPanel.add(panelDcho);
+		
+		return mainPanel;
+	}
+	
+	private JPanel construirPanelRegistro2() {
+		JPanel mainPanel = new JPanel(new GridLayout(1, 2));
+		
+		JPanel panelDcho = new JPanel();
+        panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
+        panelDcho.setBackground(Color.WHITE);
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 10, 20));
+        
+        JLabel tituloReg = new JLabel("Abra su cuenta (2/2):");
+        tituloReg.setFont(FONT_TITULO);
+        tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        panelDcho.add(tituloReg);
+        
+	    JPanel panelRegistro = new JPanel();
+	    panelRegistro.setLayout(new BoxLayout(panelRegistro, BoxLayout.Y_AXIS));
+	    panelRegistro.setBackground(Color.WHITE);
+	    panelRegistro.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+	    
+	    // Tipo de dirección
+        panelRegistro.add(crearLabel(new JLabel("Tipo de dirección:")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        String[] tiposDireccion = {"Plaza", "Calle", "Avenida", "Paseo", "Ronda", "Camino"};
+        JComboBox<String> comboTipoDireccion = new JComboBox<>(tiposDireccion);
+        comboTipoDireccion.setFont(FONT_CAMPO);
+        comboTipoDireccion.setMaximumSize(new Dimension(300, 50));
+        comboTipoDireccion.setAlignmentX(LEFT_ALIGNMENT);
+        panelRegistro.add(comboTipoDireccion);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Nombre de dirección
+        panelRegistro.add(crearLabel(new JLabel("Nombre de la dirección:")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JTextField campoNombreDireccion = (JTextField) crearCampo(false);
+        panelRegistro.add(campoNombreDireccion);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Domicilio fiscal
+        panelRegistro.add(crearLabel(new JLabel("Domicilio fiscal:")));
+        panelRegistro.add(Box.createVerticalStrut(10));
+        
+        JTextField campoDomicilioFiscal = (JTextField) crearCampo(false);
+        panelRegistro.add(campoDomicilioFiscal);
+        panelRegistro.add(Box.createVerticalStrut(20));
+        
+        // Campos específicos para Particular
+        JLabel labelFechaNacimiento = crearLabel(new JLabel("Fecha de nacimiento - DD/MM/AAAA:"));
+        JTextField campoFechaNacimiento = (JTextField) crearCampo(false);
+        
+        JLabel labelPaisResidencia = crearLabel(new JLabel("País de residencia:"));
+        JTextField campoPaisResidencia = (JTextField) crearCampo(false);
+        
+        JPanel panelCamposParticular = new JPanel();
+        panelCamposParticular.setLayout(new BoxLayout(panelCamposParticular, BoxLayout.Y_AXIS));
+        panelCamposParticular.setBackground(Color.WHITE);
+        panelCamposParticular.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        
+        panelCamposParticular.add(labelFechaNacimiento);
+        panelCamposParticular.add(Box.createVerticalStrut(10));
+        panelCamposParticular.add(campoFechaNacimiento);
+        panelCamposParticular.add(Box.createVerticalStrut(20));
+        
+        panelCamposParticular.add(labelPaisResidencia);
+        panelCamposParticular.add(Box.createVerticalStrut(10));
+        panelCamposParticular.add(campoPaisResidencia);
+        panelCamposParticular.add(Box.createVerticalStrut(20));
+        
+        panelRegistro.add(panelCamposParticular);
+
+        // Botones
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 10, 0));
+        panelBotones.setBackground(Color.WHITE);
+        panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        panelBotones.setMaximumSize(new Dimension(300, 25));
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        
+        JButton botonVolver = new JButton("Volver");
+        botonVolver.setFont(FONT_NORMAL);
+        botonVolver.setBackground(MY_GRIS_CLARO);
+        botonVolver.setForeground(Color.WHITE);
+        botonVolver.setBorderPainted(false);
+        botonVolver.setContentAreaFilled(false);
+        botonVolver.setOpaque(true);
+        botonVolver.setFocusPainted(false);
+        botonVolver.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        panelBotones.add(botonVolver);
+		botonVolver.addActionListener(e -> {
+			layout.show(contenedor, "registro1");
+		});
+		botonVolver.addMouseListener(myAdapterGris);
+        
+        JButton botonConfirmar = new JButton("Confirmar");
+        botonConfirmar.setFont(FONT_NORMAL);
+        botonConfirmar.setBackground(MY_AZUL_CLARO);
+        botonConfirmar.setForeground(Color.WHITE);
+        botonConfirmar.setBorderPainted(false);
+        botonConfirmar.setContentAreaFilled(false);
+        botonConfirmar.setOpaque(true);
+        botonConfirmar.setFocusPainted(false);
+        botonConfirmar.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        panelBotones.add(botonConfirmar);
+        botonConfirmar.addActionListener(e -> procesarRegistro(comboTipoDireccion, campoNombreDireccion,
+        		campoDomicilioFiscal, campoFechaNacimiento, campoPaisResidencia));
+        botonConfirmar.addMouseListener(myAdapterAzul);
+        
+        panelRegistro.add(Box.createVerticalStrut(60));
+        panelRegistro.add(panelBotones, JPanel.BOTTOM_ALIGNMENT);
+        
+        JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
+        scrollRegistro.setBorder(null);
+        scrollRegistro.setBackground(Color.WHITE);
+        scrollRegistro.getVerticalScrollBar().setUnitIncrement(16);
+        scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        panelDcho.add(scrollRegistro);
+        
+        JPanel panelIzdo = construirPanelImagen();
+        
+        mainPanel.add(panelIzdo);
+        mainPanel.add(panelDcho);
+        
+        // Listener para mostrar/ocultar campos según el tipo de usuario
+        panelDcho.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+            	boolean mostrarCamposParticular = tempEsParticular;
+                panelCamposParticular.setVisible(mostrarCamposParticular);
+                panelRegistro.revalidate();
+                panelRegistro.repaint();
+            }
+        });
 		
 		return mainPanel;
 	}
@@ -542,92 +684,147 @@ public class VentanaInicial extends JFrame {
 	    }
 	}
 	
-	private void procesarRegistro(boolean esParticular, JTextField campoRegId, JTextField campoRegNombre, JTextField campoRegEmail,
-			JTextField campoRegTlf, JPasswordField campoRegPassword, JPasswordField campoRegConfirmPassword) {
-        String id = campoRegId.getText().trim();
-        String nombre = campoRegNombre.getText().trim();
-        String email = campoRegEmail.getText().trim();
-        String tlf = campoRegTlf.getText().trim();
-        String pass = new String(campoRegPassword.getPassword());
-        String conf = new String(campoRegConfirmPassword.getPassword());
+	private void validarYContinuar(boolean esParticular, JTextField campoRegId, JTextField campoRegNombre, 
+	        JTextField campoRegEmail, JTextField campoRegTlf, JPasswordField campoRegPassword, 
+	        JPasswordField campoRegConfirmPassword) {
+	    String id = campoRegId.getText().trim();
+	    String nombre = campoRegNombre.getText().trim();
+	    String email = campoRegEmail.getText().trim();
+	    String tlf = campoRegTlf.getText().trim();
+	    String pass = new String(campoRegPassword.getPassword());
+	    String conf = new String(campoRegConfirmPassword.getPassword());
 
-        if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!nombre.matches(NOMBRE_REGEX)) {
-            JOptionPane.showMessageDialog(this, "El nombre solo puede contener letras.", "Nombre inválido", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (esParticular && nombre.split("\\s+").length < 2) {
-        	JOptionPane.showMessageDialog(this, "Introduzca su nombre completo.", "Nombre incompleto", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!email.matches(EMAIL_REGEX)) {
-        	JOptionPane.showMessageDialog(this, "Formato de email inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!tlf.matches(TELEFONO_REGEX)) {
-        	JOptionPane.showMessageDialog(this, "Formato de teléfono inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (pass.length()<8) {
-        	JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!pass.equals(conf)) {
-            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (esParticular) {
-        	if (!id.matches(DNI_REGEX)) {
-        		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
-	    		return;
-        	}
-        } else {
-        	if (!id.matches(NIF_REGEX)) {
-        		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
-	    		return;
-        	}
-        }
-        
-        if (dbManager.existeUsuario(id, esParticular)) {
-            JOptionPane.showMessageDialog(this, 
-                "Ya existe un usuario con ese " + (esParticular ? "DNI" : "NIF"), 
-                "Usuario duplicado", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if (dbManager.existeEmail(email)) {
-            JOptionPane.showMessageDialog(this, 
-                "Ya existe un usuario con ese email", 
-                "Email duplicado", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if (dbManager.existeTelefono(tlf)) {
-            JOptionPane.showMessageDialog(this, 
-                "Ya existe un usuario con ese teléfono", 
-                "Teléfono duplicado", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        boolean registrado = dbManager.insertarUsuario(id, nombre, email, tlf, pass, esParticular);
-        
-        if (registrado) {
-            mostrarCarga();
-            JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
-            layout.show(contenedor, "bienvenida");
-            setTitle("EleuTradia: Inicio");
-        } else {
-            JOptionPane.showMessageDialog(this, 
-                "Error al registrar el usuario. Inténtelo de nuevo.", 
-                "Error de registro", 
-                JOptionPane.ERROR_MESSAGE);
-        }
+	    if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (!nombre.matches(NOMBRE_REGEX)) {
+	        JOptionPane.showMessageDialog(this, "El nombre solo puede contener letras.", "Nombre inválido", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (esParticular && nombre.split("\\s+").length < 2) {
+	        JOptionPane.showMessageDialog(this, "Introduzca su nombre completo.", "Nombre incompleto", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (!email.matches(EMAIL_REGEX)) {
+	        JOptionPane.showMessageDialog(this, "Formato de email inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (!tlf.matches(TELEFONO_REGEX)) {
+	        JOptionPane.showMessageDialog(this, "Formato de teléfono inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (pass.length()<8) {
+	        JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (!pass.equals(conf)) {
+	        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    if (esParticular) {
+	        if (!id.matches(DNI_REGEX)) {
+	            JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	    } else {
+	        if (!id.matches(NIF_REGEX)) {
+	            JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	    }
+	    
+	    if (dbManager.existeUsuario(id, esParticular)) {
+	        JOptionPane.showMessageDialog(this, 
+	            "Ya existe un usuario con ese " + (esParticular ? "DNI" : "NIF"), 
+	            "Usuario duplicado", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
+	    if (dbManager.existeEmail(email)) {
+	        JOptionPane.showMessageDialog(this, 
+	            "Ya existe un usuario con ese email", 
+	            "Email duplicado", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
+	    if (dbManager.existeTelefono(tlf)) {
+	        JOptionPane.showMessageDialog(this, 
+	            "Ya existe un usuario con ese teléfono", 
+	            "Teléfono duplicado", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
+	    // Guardamos los datos temporalmente y pasamos a la segunda pantalla
+	    tempId = id;
+	    tempNombre = nombre;
+	    tempEmail = email;
+	    tempTlf = tlf;
+	    tempPass = pass;
+	    tempEsParticular = esParticular;
+	    
+	    layout.show(contenedor, "registro2");
+	}
+	
+	private void procesarRegistro(JComboBox<String> comboTipoDireccion, JTextField campoNombreDireccion,
+        JTextField campoDomicilioFiscal, JTextField campoFechaNacimiento, JTextField campoPaisResidencia) {
+    
+	    String tipoDireccion = (String) comboTipoDireccion.getSelectedItem();
+	    String nombreDireccion = campoNombreDireccion.getText().trim();
+	    String domicilioFiscal = campoDomicilioFiscal.getText().trim();
+	
+	    if (tipoDireccion == null || nombreDireccion.isEmpty() || domicilioFiscal.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Rellene todos los campos obligatorios.", 
+	                "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
+	    // Validaciones para Particular
+	    String fechaNacimiento = "";
+	    String paisResidencia = "";
+	    if (tempEsParticular) {
+	        fechaNacimiento = campoFechaNacimiento.getText().trim();
+	        paisResidencia = campoPaisResidencia.getText().trim();
+	        
+	        if (fechaNacimiento.isEmpty() || paisResidencia.isEmpty()) {
+	            JOptionPane.showMessageDialog(this, "Rellene todos los campos obligatorios.", 
+	                    "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        
+	        // Validar formato de fecha (DD/MM/AAAA)
+	        if (!fechaNacimiento.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+	            JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use DD/MM/AAAA", 
+	                    "Error de formato", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	    }
+	    
+	    // Construir la dirección completa
+	    String direccionCompleta = tipoDireccion + " " + nombreDireccion;
+	    
+	    // Aquí deberías modificar tu método insertarUsuario para incluir los nuevos campos
+	    // Por ahora, usamos el método existente
+	    boolean registrado = dbManager.insertarUsuario(tempId, tempNombre, tempEmail, tempTlf, tempPass, tempEsParticular,
+	    		direccionCompleta, fechaNacimiento, paisResidencia);
+	    
+	    if (registrado) {
+	        mostrarCarga();
+	        JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+	        layout.show(contenedor, "bienvenida");
+	        setTitle("EleuTradia: Inicio");
+	        
+	        // Limpiar variables temporales
+	        tempId = tempNombre = tempEmail = tempTlf = tempPass = null;
+	    } else {
+	        JOptionPane.showMessageDialog(this, 
+	            "Error al registrar el usuario. Inténtelo de nuevo.", 
+	            "Error de registro", 
+	            JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 	
     MouseAdapter myAdapterAzul = new MouseAdapter() {

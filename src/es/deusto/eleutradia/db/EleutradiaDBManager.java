@@ -766,10 +766,11 @@ public class EleutradiaDBManager {
 	}
 	
 	public boolean insertarUsuario(String id, String nombre, String email, String telefono, 
-            String password, boolean esParticular) {
+            String password, boolean esParticular, String direccion, 
+            String fechaNacimiento, String paisResidencia) {
 		if (esParticular) {
-			String sql = "INSERT INTO Particular (dni, nombre, email, password, telefono, direccion, fechaNacimiento) " + 
-						 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO Particular (dni, nombre, email, password, telefono, direccion, fechaNacimiento, paisResidencia) " + 
+						 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 			try (Connection conn = DriverManager.getConnection(connectionUrl);
 				 PreparedStatement pStmt = conn.prepareStatement(sql)) {
@@ -778,8 +779,23 @@ public class EleutradiaDBManager {
 				pStmt.setString(3, email);
 				pStmt.setString(4, password);
 				pStmt.setString(5, telefono);
-				pStmt.setString(6, "");
-				pStmt.setString(7, LocalDate.now().toString());
+				pStmt.setString(6, direccion);
+				if (fechaNacimiento != null && !fechaNacimiento.isEmpty()) {
+	                try {
+	                    String[] partes = fechaNacimiento.split("/");
+	                    LocalDate fecha = LocalDate.of(
+	                        Integer.parseInt(partes[2]), // año
+	                        Integer.parseInt(partes[1]), // mes
+	                        Integer.parseInt(partes[0])  // día
+	                    );
+	                    pStmt.setString(7, fecha.toString());
+	                } catch (Exception e) {
+	                    pStmt.setString(7, LocalDate.now().toString());
+	                }
+	            } else {
+	                pStmt.setString(7, LocalDate.now().toString());
+	            }
+				pStmt.setString(8, paisResidencia != null ? paisResidencia : "");
 				pStmt.executeUpdate();
 				return true;
 
@@ -798,7 +814,7 @@ public class EleutradiaDBManager {
 				pstmt.setString(3, email);
 				pstmt.setString(4, password);
 				pstmt.setString(5, telefono);
-				pstmt.setString(6, "");
+				pstmt.setString(6, direccion);
 				pstmt.executeUpdate();
 				return true;
 
