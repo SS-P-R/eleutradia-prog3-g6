@@ -710,6 +710,9 @@ public class PanelAprender extends JPanel {
             panelCentral.add(progressBar);
 
             add(panelCentral);
+            
+            addMouseListener(new MouseAdapter() {});
+            addMouseMotionListener(new MouseAdapter() {});
         }
 
         public void actualizar(int valor, String texto) {
