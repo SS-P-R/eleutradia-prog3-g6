@@ -190,7 +190,8 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setContentAreaFilled(false);
 		botonSimulacion.setOpaque(true);
 		botonSimulacion.setFocusPainted(false);
-		
+		//IAG (Gemini)
+		//SIN MODIFICAR
 		botonSimulacion.addActionListener(e -> {
             
             JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -210,6 +211,7 @@ public class PanelAprender extends JPanel {
                 ventanaPrincipal.repaint();
             }
         });
+		//END IAG
 		
 		botonSimulacion.addMouseListener(myAdapterAzul);
 		
