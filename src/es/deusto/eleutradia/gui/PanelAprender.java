@@ -493,6 +493,7 @@ public class PanelAprender extends JPanel {
 				        .inscribirParticularACurso(usuarioLogeado.getDni(), cursoInfo.getId());
 				
 				if (exito) {
+					usuarioLogeado.addCurso(cursoInfo);
 			        JOptionPane.showMessageDialog(panelCursosInfo, 
 			            "¡Te has inscrito a " + cursoInfo.getNombre() + "!");
 			    } else {
@@ -504,6 +505,7 @@ public class PanelAprender extends JPanel {
 
 				actualizarPanelInfoCurso();					
 				actualizarProgressBar();
+				actualizarPanelMisCursos();
 			});
 			botonApuntar.addMouseListener(myAdapterAzul);
 			
