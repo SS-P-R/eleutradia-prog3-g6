@@ -385,8 +385,7 @@ public class PanelInicio extends JPanel{
 		}
 		
 	
-		String productoRandomNombre = productoRandom.get(sel).getNombre();
-		JLabel mensajeGraficos = new JLabel("Échele un vistazo a " + "'"+productoRandomNombre+"'");
+		JLabel mensajeGraficos = new JLabel();
 		panelGraficos.add(mensajeGraficos);
 		
 		frame = new JFrame("Gráfico en Panel");
@@ -396,55 +395,75 @@ public class PanelInicio extends JPanel{
 		frame.setResizable(false);
 		frame.setMinimumSize(new Dimension(500,300));
 		
-		//IAG (ChatGPT)
-        try {
-        // Configuración del gráfico (codificada)
-        String chartConfig = "{type:'line',data:"
-        		+ "{labels:['Lun','Mar','Mie','Jue'],"
-        		+ "datasets:[{label:'"+productoRandomNombre+"',data:["+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+","+RandomizadorValores()+"],"
-        		+ "borderColor:'blue',fill:false}]},"
-        	    + "options:{"
-        	    + "plugins:{legend:{display:false}}," //TODO no funciona
-        	    + "scales:{"
-        	    + "x:{ticks:{color:'black',font:{size:8}}},"
-        	    + "y:{ticks:{color:'black',font:{size:1}}}"
-        	    + "}"
-        	    + "}"
-        		+ "}";
-        String encodedConfig = URLEncoder.encode(chartConfig, "UTF-8");
-        String urlString = "https://quickchart.io/chart?width=150&height=85&c=" + encodedConfig;
-        String urlString2 = "https://quickchart.io/chart?width=400&height=200&c=" + encodedConfig;
+		
+	    Runnable actualizarGrafico = () -> {
 
-        // Forma moderna: usar URI y luego convertir a URL
-        URI uri = URI.create(urlString);
-        URL url = uri.toURL();
-        URI uri2 = URI.create(urlString2);
-        URL url2 = uri2.toURL();
+			//IAG (ChatGPT)
+	        try {
+	            String nombre = productos.get(sel).getNombre();
+	            mensajeGraficos.setText("Échele un vistazo a '" + nombre + "'");
+	        // Configuración del gráfico (codificada)
+	            String chartConfig = "{type:'line',data:"
+	                    + "{labels:['Lun','Mar','Mie','Jue'],"
+	                    + "datasets:[{label:'" + nombre + "',data:["
+	                    + RandomizadorValores() + "," 
+	                    + RandomizadorValores() + "," 
+	                    + RandomizadorValores() + "," 
+	                    + RandomizadorValores()
+	                    + "],borderColor:'blue',fill:false}]},"
+	                    + "options:{plugins:{legend:{display:false}}}}";
+	        String encodedConfig = URLEncoder.encode(chartConfig, "UTF-8");
+	        String urlString = "https://quickchart.io/chart?width=150&height=85&c=" + encodedConfig;
+	        String urlString2 = "https://quickchart.io/chart?width=400&height=200&c=" + encodedConfig;
+	
+	        // Forma moderna: usar URI y luego convertir a URL
+	        URI uri = URI.create(urlString);
+	        URL url = uri.toURL();
+	        URI uri2 = URI.create(urlString2);
+	        URL url2 = uri2.toURL();
+	        
+	        ImageIcon icon = new ImageIcon(url);
+	        JLabel label = new JLabel(icon);
+	        panelGraficos.add(label, BorderLayout.CENTER);
+	        ImageIcon icon2 = new ImageIcon(url2);
+	        JLabel label2 = new JLabel(icon2);
+		    //END-IAG
+	
+	        frame.add(label2);
+	        frame.setVisible(false);
+	        
+	        }catch (Exception e) {
+				System.err.println("Error");
+			}
         
-        ImageIcon icon = new ImageIcon(url);
-        JLabel label = new JLabel(icon);
-        panelGraficos.add(label, BorderLayout.CENTER);
-        ImageIcon icon2 = new ImageIcon(url2);
-        JLabel label2 = new JLabel(icon2);
-	    //END-IAG
+	    };
+	    actualizarGrafico.run();
 
-        frame.add(label2);
-        frame.setVisible(false);
-        
-        }catch (Exception e) {
-			System.err.println("Error");
-		}
-        
-        JButton siguiente = new JButton("Siguiente");
-        siguiente.addActionListener(e->{
-        	sel += 1;
-        	if (sel>=productos.size()) {
-        		sel=0;
-        	}
-        	PanelGraficos();
+	    
+	    JButton siguiente = new JButton("Siguiente");
+	    panelGraficos.add(siguiente, BorderLayout.SOUTH);
+        siguiente.addActionListener(e -> {
+            sel = (sel + 1) % productos.size();
+            actualizarGrafico.run();
         });
+
         
         panelGraficos.add(siguiente);
+        
+        //Hilo
+        Thread hiloGraficos = new Thread(() -> {
+            try {
+                while (true) {
+                    Thread.sleep(7000); // cada 7 segundos
+                    sel = (sel + 1) % productos.size();
+                    javax.swing.SwingUtilities.invokeLater(actualizarGrafico);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        hiloGraficos.start();
+        
 		panelGraficos.setName("Gráfico");
 		PanelFocus(panelGraficos,null);
 		return panelGraficos;
