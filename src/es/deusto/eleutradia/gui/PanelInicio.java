@@ -476,12 +476,12 @@ public class PanelInicio extends JPanel{
 
 //IAG (ChatGPT)
 	    List<String> titulares = new ArrayList<>();
-	    titulares.add("IBEX 35 sube un 2%");
+	    titulares.add("IBEX 35 sube un 3%");
 	    titulares.add("El euro se fortalece frente al dólar");
 	    titulares.add("Caen las tecnológicas en Wall Street");
 
 	    List<String> noticias = new ArrayList<>();
-	    noticias.add("El IBEX 35 ha subido un 2% tras los datos de inflación.");
+	    noticias.add("El IBEX 35 ha subido un 3% tras los datos de inflación.");
 	    noticias.add("El euro gana fuerza frente al dólar por las decisiones del BCE.");
 	    noticias.add("Las empresas tecnológicas más grandes registran caídas importantes.");
 //END-IAG
