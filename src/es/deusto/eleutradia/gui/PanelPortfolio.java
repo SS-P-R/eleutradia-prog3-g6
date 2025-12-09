@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -136,7 +137,6 @@ public class PanelPortfolio extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
     }
-    
     private JPanel crearPanelSelector() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(15, 10));
@@ -149,26 +149,100 @@ public class PanelPortfolio extends JPanel {
         comboCarteras.setFont(FONT_NORMAL1);
         comboCarteras.setPreferredSize(new Dimension(300, 35));
         
+        // 1. Añadimos las carteras existentes
         for (Cartera cartera : usuarioActual.getCarteras()) {
             comboCarteras.addItem(cartera.getNombre());
         }
         
+        String opcionCrear = "+ Crear nueva cartera...";
+        comboCarteras.addItem(opcionCrear);
+
         if (usuarioActual.getCarteras().isEmpty()) {
-            comboCarteras.addItem("No hay carteras disponibles");
-            comboCarteras.setEnabled(false);
+            comboCarteras.setSelectedItem(opcionCrear);
         }
-        
+
         comboCarteras.addActionListener(e -> {
-            int index = comboCarteras.getSelectedIndex();
-            if (index >= 0 && index < usuarioActual.getCarteras().size()) {
-                carteraSeleccionada = usuarioActual.getCarteras().get(index);
-                cargarDatosPortfolio();
+            String seleccionado = (String) comboCarteras.getSelectedItem();
+            
+            if (opcionCrear.equals(seleccionado)) {
+                abrirDialogoCrearCartera();
+            } else {
+                int index = comboCarteras.getSelectedIndex();
+                if (index >= 0 && index < usuarioActual.getCarteras().size()) {
+                    carteraSeleccionada = usuarioActual.getCarteras().get(index);
+                    cargarDatosPortfolio();
+                }
             }
         });
         
         panel.add(comboCarteras, BorderLayout.EAST);
-        
         return panel;
+    }
+    private void abrirDialogoCrearCartera() {
+        JPanel panelFormulario = new JPanel(new GridLayout(0, 1));
+        JTextField txtNombre = new JTextField();
+        JTextField txtSaldo = new JTextField("0.0");
+        JComboBox<PerfilRiesgo> comboPerfil = new JComboBox<>(PerfilRiesgo.values());
+        JComboBox<Divisa> comboDivisa = new JComboBox<>(Divisa.values());
+
+        panelFormulario.add(new JLabel("Nombre de la Cartera:"));
+        panelFormulario.add(txtNombre);
+        panelFormulario.add(new JLabel("Saldo Inicial:"));
+        panelFormulario.add(txtSaldo);
+        panelFormulario.add(new JLabel("Perfil de Riesgo:"));
+        panelFormulario.add(comboPerfil);
+        panelFormulario.add(new JLabel("Divisa:"));
+        panelFormulario.add(comboDivisa);
+
+        int resultado = JOptionPane.showConfirmDialog(this, panelFormulario, 
+                "Nueva Cartera", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (resultado == JOptionPane.OK_OPTION) {
+            try {
+                String nombre = txtNombre.getText().trim();
+                double saldo = Double.parseDouble(txtSaldo.getText().trim());
+                PerfilRiesgo perfil = (PerfilRiesgo) comboPerfil.getSelectedItem();
+                Divisa divisa = (Divisa) comboDivisa.getSelectedItem();
+
+                if (nombre.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                Cartera nuevaCartera = new Cartera(nombre, saldo, perfil, divisa);
+                
+                // METODO PARA GUARDAR EN BASE DE DATOS
+                
+                // SI SE GUARDA CORRECTAMENTE
+                
+                // if (exito) {
+                    usuarioActual.getCarteras().add(nuevaCartera);
+                    carteraSeleccionada = nuevaCartera;
+                    
+                    ActionListener[] listeners = comboCarteras.getActionListeners();
+                    for (ActionListener l : listeners) comboCarteras.removeActionListener(l);
+                    
+                    comboCarteras.removeAllItems();
+                    for (Cartera c : usuarioActual.getCarteras()) comboCarteras.addItem(c.getNombre());
+                    comboCarteras.addItem("+ Crear nueva cartera...");
+                    comboCarteras.setSelectedItem(nuevaCartera.getNombre());
+                    
+                    for (ActionListener l : listeners) comboCarteras.addActionListener(l);
+                    
+                    cargarDatosPortfolio();
+                // }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "El saldo debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al crear la cartera.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            if (carteraSeleccionada != null) {
+                comboCarteras.setSelectedItem(carteraSeleccionada.getNombre());
+            }
+        }
     }
     
     private JPanel crearPanelResumenUsuario() {
