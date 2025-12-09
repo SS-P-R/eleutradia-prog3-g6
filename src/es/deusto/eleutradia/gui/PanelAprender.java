@@ -202,11 +202,19 @@ public class PanelAprender extends JPanel {
                 PanelSimulador panelSimulacion = new PanelSimulador();
 
                 panelSimulacion.addAccionVolver(eventoVolver -> {
+                    // 1. Volvemos a poner el panel original
                     ventanaPrincipal.setContentPane(this);
-                    ventanaPrincipal.revalidate();
-                    ventanaPrincipal.repaint();
+                    
+                    // --- BLOQUE IMPORTANTE PARA EVITAR PANTALLA GRIS ---
+                    this.setVisible(true);   // Aseguramos que el panel sea visible
+                    this.revalidate();       // Recalcula el diseño interno del panel
+                    this.repaint();          // Fuerza el repintado de los píxeles
+                    
+                    ventanaPrincipal.revalidate(); // Recalcula el marco de la ventana
+                    ventanaPrincipal.repaint();    // Repinta la ventana completa
+                    // ---------------------------------------------------
                 });
-
+                
                 ventanaPrincipal.setContentPane(panelSimulacion);
                 ventanaPrincipal.revalidate();
                 ventanaPrincipal.repaint();
