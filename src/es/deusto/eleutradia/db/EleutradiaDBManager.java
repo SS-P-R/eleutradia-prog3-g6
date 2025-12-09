@@ -443,6 +443,8 @@ public class EleutradiaDBManager {
 		}
 	}
 	
+	// MÉTODO PARA COMPROBAR SI LA BASE DE DATOS ESTÁ VACÍA
+	
 	private boolean isEmptyDB() {
 	    String sql = "SELECT COUNT(*) FROM ProductoFinanciero";
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
