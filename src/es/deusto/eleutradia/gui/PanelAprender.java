@@ -24,6 +24,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -189,6 +190,26 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setContentAreaFilled(false);
 		botonSimulacion.setOpaque(true);
 		botonSimulacion.setFocusPainted(false);
+		
+		botonSimulacion.addActionListener(e -> {
+            
+            JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
+            
+            if (ventanaPrincipal != null) {
+
+                PanelSimulador panelSimulacion = new PanelSimulador();
+
+                panelSimulacion.addAccionVolver(eventoVolver -> {
+                    ventanaPrincipal.setContentPane(this);
+                    ventanaPrincipal.revalidate();
+                    ventanaPrincipal.repaint();
+                });
+
+                ventanaPrincipal.setContentPane(panelSimulacion);
+                ventanaPrincipal.revalidate();
+                ventanaPrincipal.repaint();
+            }
+        });
 		
 		botonSimulacion.addMouseListener(myAdapterAzul);
 		
