@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Random;
 
@@ -325,6 +326,13 @@ public class PanelSimulador extends JPanel {
                 }
             }
         }       
+    }
+    
+    public void addAccionVolver(ActionListener listener) {
+        // Asegúrate de que btnVolver no sea null
+        if (btnVolver != null) {
+            btnVolver.addActionListener(listener);
+        }
     }
 
 }
