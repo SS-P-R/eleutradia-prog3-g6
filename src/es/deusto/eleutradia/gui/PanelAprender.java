@@ -503,11 +503,14 @@ public class PanelAprender extends JPanel {
 			    boolean yaInscrito = usuarioLogeado.getCursos().stream()
 			            .anyMatch(c -> c.getId() == cursoInfo.getId());
 			    if (yaInscrito) { return; }
-
+			    
+			    //IAG (Gemini)
+				//SIN MODIFICAR
 			    JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
 			    PanelCargaThreads panelCarga = new PanelCargaThreads();
 			    rootPane.setGlassPane(panelCarga);
 			    panelCarga.setVisible(true);
+				//END IAG
 
 			    Runnable logicaReal = () -> {
 			        
