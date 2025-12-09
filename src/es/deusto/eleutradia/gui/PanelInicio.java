@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
@@ -74,11 +75,18 @@ public class PanelInicio extends JPanel{
 		JPanel panelRecordatorio = PanelRecordatorio();
 		JPanel panelActivos = PanelActivos();
 		JPanel panelGraficos = PanelGraficos();
+		JPanel panelNoticias = PanelTitularesNoticias();
+		JPanel panelSuperior = new JPanel();
 		
+		panelSuperior.setLayout(new BorderLayout());
+		panelSuperior.add(panelSaludo, BorderLayout.WEST);
+		panelSuperior.add(panelNoticias, BorderLayout.EAST);
 		//Paneles accesorios con saludo incial y recordatorios
 		setVisible(true);
-		add(panelSaludo, BorderLayout.NORTH);
+		panelSuperior.setBackground(COLOR_FONDO_PRINCIPAL);
+		add(panelSuperior, BorderLayout.NORTH);
 		add(panelRecordatorio, BorderLayout.SOUTH);
+
 		
 		//Panel central
 		JPanel centro = new JPanel(new GridLayout(2,2,10,10));
@@ -271,7 +279,7 @@ public class PanelInicio extends JPanel{
 		JPanel activosPanel = new JPanel();
 		activosPanel.setBackground(Color.WHITE);
 		activosPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
-
+		activosPanel.setLayout(new BorderLayout());
 		
 		JLabel mensajeActivos = new JLabel();
 		mensajeActivos.setText("Resumen de sus activos: ");
@@ -292,7 +300,7 @@ public class PanelInicio extends JPanel{
 		if (carteras == null || carteras.isEmpty()) {
 			// Sin carteras - mostrar mensaje amigable
 			modelo.addRow(new Object[]{"Sin carteras", "---", "0.00 €"});
-			modelo.addRow(new Object[]{"", "Cree una cartera", "para empezar"});
+			modelo.addRow(new Object[]{"Cree una cartera", "---", "---"});
 			
 			JTable tablaResumen = new JTable(modelo);
 			tablaResumen.setFont(FONT_NORMAL2);
@@ -300,7 +308,9 @@ public class PanelInicio extends JPanel{
 			tablaResumen.getTableHeader().setFont(FONT_NORMAL2);
 			
 			JScrollPane scroll = new JScrollPane(tablaResumen);
-			scroll.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+			Border bordet1 = BorderFactory.createLineBorder(COLOR_BORDE, 1);
+			Border bordet2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+			scroll.setBorder(BorderFactory.createCompoundBorder(bordet1, bordet2));
 			activosPanel.add(scroll, BorderLayout.CENTER);
 			
 			// Botón para crear cartera
@@ -345,19 +355,20 @@ public class PanelInicio extends JPanel{
 
 		JTable tablaResumen = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tablaResumen);
-	    scroll.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		Border bordet1 = BorderFactory.createLineBorder(COLOR_BORDE, 1);
+		Border bordet2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+		scroll.setBorder(BorderFactory.createCompoundBorder(bordet1, bordet2));		
 		activosPanel.add(scroll, BorderLayout.CENTER);
 		
 		tablaResumen.setFont(FONT_NORMAL2);
 		tablaResumen.setRowHeight(20);
 		tablaResumen.getTableHeader().setFont(FONT_NORMAL2);		
-		//TODO Mejorar tabla
-		activosPanel.add(tablaResumen);
 
 		activosPanel.setName("Portfolio");
 		PanelFocus(activosPanel, null);
 		return activosPanel;	
 	};
+	
 	
 	int sel = 0;
 	private JPanel PanelGraficos() {
@@ -372,22 +383,6 @@ public class PanelInicio extends JPanel{
 		if (productoRandom.isEmpty()) {
 			productoRandom.add(RandomizadorProductos());
 		}
-		
-		int i = 0;
-		for (ProductoFinanciero producto: productos) {
-			if (productoRandom.getFirst()==producto) {
-				break;
-			}else {
-				i+=1;
-			}
-		}
-//		while (productos.size()>productoRandom.size()) {
-//			if (productos.size()>i+1) {
-//			}else {
-//				i=0;
-//				productoRandom.add(productos.get(i));
-//			}
-//		}
 		
 	
 		String productoRandomNombre = productoRandom.get(sel).getNombre();
@@ -454,6 +449,72 @@ public class PanelInicio extends JPanel{
 		PanelFocus(panelGraficos,null);
 		return panelGraficos;
 	}
+	
+	private JPanel PanelTitularesNoticias() {
+	    JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	    panel.setBackground(COLOR_FONDO_PRINCIPAL);
+
+	    List<String[]> noticias = new ArrayList<>();
+	    noticias.add(new String[]{
+	        "IBEX 35 sube un 2%",
+	        "El IBEX 35 ha subido un 2% tras la publicación de los datos de inflación."
+	    });
+	    noticias.add(new String[]{
+	        "El euro se fortalece",
+	        "El euro gana fuerza frente al dólar debido a las decisiones del BCE."
+	    });
+	    noticias.add(new String[]{
+	        "Caen las tecnológicas",
+	        "Las grandes tecnológicas han sufrido caídas en Wall Street."
+	    });
+
+	    JLabel titularLabel = new JLabel("📰 " + noticias.get(0)[0]);
+	    titularLabel.setFont(FONT_NORMAL2);
+	    titularLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+	    panel.add(titularLabel);
+
+	    final int[] indice = {0};
+
+	    // 🔁 HILO que cambia titulares
+	    Thread hiloTitulares = new Thread(() -> {
+	        try {
+	            while (true) {
+	                Thread.sleep(4000);
+	                indice[0] = (indice[0] + 1) % noticias.size();
+
+	                javax.swing.SwingUtilities.invokeLater(() -> {
+	                    titularLabel.setText("📰 " + noticias.get(indice[0])[0]);
+	                });
+	            }
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+	    });
+	    hiloTitulares.setDaemon(true);
+	    hiloTitulares.start();
+
+	    titularLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+	        @Override
+	        public void mouseClicked(java.awt.event.MouseEvent e) {
+	            JFrame ventana = new JFrame("Noticia");
+	            ventana.setSize(500, 300);
+	            ventana.setLocationRelativeTo(null);
+	            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+	            JTextArea texto = new JTextArea(noticias.get(indice[0])[1]);
+	            texto.setFont(FONT_NORMAL1);
+	            texto.setLineWrap(true);
+	            texto.setWrapStyleWord(true);
+	            texto.setEditable(false);
+
+	            ventana.add(new JScrollPane(texto));
+	            ventana.setVisible(true);
+	        }
+	    });
+
+	    return panel;
+	}
+
 	
 	private ProductoFinanciero RandomizadorProductos() {
 		productos = new ArrayList<ProductoFinanciero>();
