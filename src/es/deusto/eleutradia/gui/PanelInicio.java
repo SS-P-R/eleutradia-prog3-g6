@@ -454,21 +454,20 @@ public class PanelInicio extends JPanel{
 	    JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	    panel.setBackground(COLOR_FONDO_PRINCIPAL);
 
-	    List<String[]> noticias = new ArrayList<>();
-	    noticias.add(new String[]{
-	        "IBEX 35 sube un 2%",
-	        "El IBEX 35 ha subido un 2% tras la publicación de los datos de inflación."
-	    });
-	    noticias.add(new String[]{
-	        "El euro se fortalece",
-	        "El euro gana fuerza frente al dólar debido a las decisiones del BCE."
-	    });
-	    noticias.add(new String[]{
-	        "Caen las tecnológicas",
-	        "Las grandes tecnológicas han sufrido caídas en Wall Street."
-	    });
 
-	    JLabel titularLabel = new JLabel("📰 " + noticias.get(0)[0]);
+//IAG (ChatGPT)
+	    List<String> titulares = new ArrayList<>();
+	    titulares.add("IBEX 35 sube un 2%");
+	    titulares.add("El euro se fortalece frente al dólar");
+	    titulares.add("Caen las tecnológicas en Wall Street");
+
+	    List<String> noticias = new ArrayList<>();
+	    noticias.add("El IBEX 35 ha subido un 2% tras los datos de inflación.");
+	    noticias.add("El euro gana fuerza frente al dólar por las decisiones del BCE.");
+	    noticias.add("Las empresas tecnológicas más grandes registran caídas importantes.");
+//END-IAG
+
+	    JLabel titularLabel = new JLabel("Noticias:" + noticias.get(0));
 	    titularLabel.setFont(FONT_NORMAL2);
 	    titularLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 	    panel.add(titularLabel);
@@ -483,14 +482,13 @@ public class PanelInicio extends JPanel{
 	                indice[0] = (indice[0] + 1) % noticias.size();
 
 	                javax.swing.SwingUtilities.invokeLater(() -> {
-	                    titularLabel.setText("Noticias: " + noticias.get(indice[0])[0]);
+	                    titularLabel.setText("Noticias: " + noticias.get(indice[0]));
 	                });
 	            }
 	        } catch (InterruptedException e) {
 	            Thread.currentThread().interrupt();
 	        }
 	    });
-	    hiloTitulares.setDaemon(true);
 	    hiloTitulares.start();
 
 	    titularLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -499,12 +497,11 @@ public class PanelInicio extends JPanel{
 	            JFrame ventana = new JFrame("Noticia");
 	            ventana.setSize(500, 300);
 	            ventana.setLocationRelativeTo(null);
-	            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	            JTextArea texto = new JTextArea(noticias.get(indice[0])[1]);
+	            JTextArea texto = new JTextArea(noticias.get(indice[0]));
 	            texto.setFont(FONT_NORMAL1);
 	            texto.setLineWrap(true);
-	            texto.setWrapStyleWord(true);
 	            texto.setEditable(false);
 
 	            ventana.add(new JScrollPane(texto));
