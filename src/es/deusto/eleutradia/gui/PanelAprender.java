@@ -14,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -756,43 +759,30 @@ public class PanelAprender extends JPanel {
         @Override
         public void run() {
             try {
+            	List<String> frasesCarga;
             	
             	if (inscribirse) {
-            		panelInscripcion.actualizar(10, "Conectando...");
-                    Thread.sleep(600); 
+            		frasesCarga = Arrays.asList("Conectando...", "Verificando disponibilidad...", "Registrando usuario...", "¡Procesando!") ;
                 } else {
-                	panelInscripcion.actualizar(10, "Procesando solicitud...");
-                    Thread.sleep(600);
+                	frasesCarga = Arrays.asList("Procesando solicitud...", "Cancelando tu matrícula...", "Actualizando tu perfil...", "¡Baja completada!");
                 }
+            	
+            	panelInscripcion.actualizar(10, frasesCarga.get(0));
+                Thread.sleep(600); 
+               
                 
                 if (isInterrupted()) return;
                 
-                if (inscribirse) {
-                	panelInscripcion.actualizar(50, "Verificando disponibilidad...");
-                    Thread.sleep(800);
-                } else {
-                	panelInscripcion.actualizar(50, "Cancelando tu matrícula...");
-                    Thread.sleep(800);
-                }
-
+                panelInscripcion.actualizar(50, frasesCarga.get(1));
+                Thread.sleep(800);
+                
                 if (isInterrupted()) return;
                 
-                if (inscribirse) {
-                	panelInscripcion.actualizar(80, "Registrando usuario...");
-                    Thread.sleep(600);
-                } else {
-                	panelInscripcion.actualizar(80, "Actualizando tu perfil...");
-                    Thread.sleep(600);
-                }
+                panelInscripcion.actualizar(80, frasesCarga.get(2));
+                Thread.sleep(600);
                 
-                if (inscribirse) {
-                	panelInscripcion.actualizar(100, "¡Procesando!");
-                    Thread.sleep(300);
-                } else {
-                	panelInscripcion.actualizar(100, "¡Baja completada!");
-                    Thread.sleep(300);
-                }
-                
+                panelInscripcion.actualizar(100, frasesCarga.get(3));
+                Thread.sleep(300);
 
                 SwingUtilities.invokeLater(() -> {
                     panelInscripcion.setVisible(false); 
