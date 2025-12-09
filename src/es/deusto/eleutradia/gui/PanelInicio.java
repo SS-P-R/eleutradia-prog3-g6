@@ -55,7 +55,7 @@ public class PanelInicio extends JPanel{
     private ArrayList<ProductoFinanciero> productoRandom = new ArrayList<>();
 
     
-    private java.util.List<ProductoFinanciero> productos;
+    private List<ProductoFinanciero> productos;
 
 
 	public PanelInicio(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
