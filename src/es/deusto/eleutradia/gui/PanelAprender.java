@@ -180,7 +180,7 @@ public class PanelAprender extends JPanel {
 		
 		JPanel panelBotonAbajo = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelBotonAbajo.setBackground(COLOR_FONDO_PRINCIPAL);
-		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Margen inferior
+		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
 		JButton botonSimulacion = new JButton("Simulación");
 		botonSimulacion.setPreferredSize(new Dimension(150, 45));
