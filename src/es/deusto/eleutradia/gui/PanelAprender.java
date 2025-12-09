@@ -25,8 +25,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.Curso;
@@ -476,36 +478,49 @@ public class PanelAprender extends JPanel {
 	        botonApuntar.setOpaque(true);
 			botonApuntar.setFocusPainted(false);
 			botonApuntar.addActionListener(e -> {
-				
-				boolean yaInscrito = usuarioLogeado.getCursos().stream()
-		                .anyMatch(c -> c.getId() == cursoInfo.getId());
-		            
-	            if (yaInscrito) {
-	                JOptionPane.showMessageDialog(panelCursosInfo, 
-	                    "Ya estás inscrito a este curso.", 
-	                    "Información", 
-	                    JOptionPane.INFORMATION_MESSAGE);
-	                actualizarPanelInfoCurso();
-	                return;
-	            }
-				
-				boolean exito = MainEleutradia.getDBManager()
-				        .inscribirParticularACurso(usuarioLogeado.getDni(), cursoInfo.getId());
-				
-				if (exito) {
-					usuarioLogeado.addCurso(cursoInfo);
-			        JOptionPane.showMessageDialog(panelCursosInfo, 
-			            "¡Te has inscrito a " + cursoInfo.getNombre() + "!");
-			    } else {
-			        JOptionPane.showMessageDialog(panelCursosInfo, 
-			            "Error al inscribirte al curso. Inténtalo de nuevo.", 
-			            "Error", 
-			            JOptionPane.ERROR_MESSAGE);
-			    }
+			    
+			    // 1. CHEQUEOS PREVIOS (Igual que antes)
+			    boolean yaInscrito = usuarioLogeado.getCursos().stream()
+			            .anyMatch(c -> c.getId() == cursoInfo.getId());
+			    if (yaInscrito) { return; }
 
-				actualizarPanelInfoCurso();					
-				actualizarProgressBar();
-				actualizarPanelMisCursos();
+			    // 2. PREPARAR PANEL DE CARGA (GlassPane)
+			    JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
+			    PanelCargaThreads panelCarga = new PanelCargaThreads();
+			    rootPane.setGlassPane(panelCarga);
+			    panelCarga.setVisible(true);
+
+			    // 3. DEFINIMOS LA LÓGICA (Esto es lo que se ejecutará al llegar al 100%)
+			    Runnable logicaReal = () -> {
+			        
+			        // --- TU CÓDIGO DE BASE DE DATOS ---
+			        boolean exito = MainEleutradia.getDBManager()
+			                .inscribirParticularACurso(usuarioLogeado.getDni(), cursoInfo.getId());
+			        
+			        if (exito) {
+			            // Actualizar memoria
+			            usuarioLogeado.addCurso(cursoInfo);
+			            
+//			            // Actualizar Panel Inicio (Dashboard)
+//			            if (PanelInicio.instancia != null) {
+//			                PanelInicio.instancia.actualizarListaCursos();
+//			            }
+
+			            // Mensajes y repintado
+			            JOptionPane.showMessageDialog(panelCursosInfo, 
+			                "¡Te has inscrito a " + cursoInfo.getNombre() + "!");
+			            actualizarPanelInfoCurso();
+			            actualizarProgressBar();
+			            actualizarPanelMisCursos();
+			            
+			        } else {
+			            JOptionPane.showMessageDialog(panelCursosInfo, "Error en la BD");
+			        }
+			    };
+
+			    // 4. LANZAMOS EL HILO VISUAL Y LE PASAMOS LA LÓGICA
+			    HiloVisual hilo = new HiloVisual(panelCarga, logicaReal);
+			    hilo.start();
 			});
 			botonApuntar.addMouseListener(myAdapterAzul);
 			
@@ -671,4 +686,92 @@ public class PanelAprender extends JPanel {
 		@Override
 		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
     };
+    
+    private class PanelCargaThreads extends JPanel {
+        private static final long serialVersionUID = 1L;
+        private JProgressBar progressBar;
+        private JLabel lblMensaje;
+
+        public PanelCargaThreads() {
+
+            setOpaque(false);
+            setLayout(new GridBagLayout());
+
+            JPanel panelCentral = new JPanel();
+            panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
+            panelCentral.setBackground(Color.WHITE);
+            panelCentral.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(MY_AZUL_CLARO, 2),
+                BorderFactory.createEmptyBorder(20, 30, 20, 30)
+            ));
+            
+            lblMensaje = new JLabel("Procesando solicitud...");
+            lblMensaje.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            lblMensaje.setForeground(MY_AZUL_OSCURO);
+            lblMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            progressBar = new JProgressBar(0, 100);
+            progressBar.setPreferredSize(new Dimension(200, 20));
+            progressBar.setForeground(MY_AZUL_CLARO);
+            progressBar.setStringPainted(true);
+            progressBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            panelCentral.add(lblMensaje);
+            panelCentral.add(Box.createVerticalStrut(15)); 
+            panelCentral.add(progressBar);
+
+            add(panelCentral);
+        }
+
+        public void actualizar(int valor, String texto) {
+            SwingUtilities.invokeLater(() -> {
+                progressBar.setValue(valor);
+                lblMensaje.setText(texto);
+            });
+        }
+    }
+    
+    private class HiloVisual extends Thread {
+        
+        private PanelCargaThreads panelInscripcion;
+        private Runnable accionAlTerminar; // <--- AQUÍ GUARDAREMOS TU LÓGICA
+
+        public HiloVisual(PanelCargaThreads panelInscripcion, Runnable accionAlTerminar) {
+            this.panelInscripcion = panelInscripcion;
+            this.accionAlTerminar = accionAlTerminar;
+        }
+
+        @Override
+        public void run() {
+            try {
+                // --- PURO TEATRO VISUAL ---
+                panelInscripcion.actualizar(10, "Conectando...");
+                Thread.sleep(600); 
+
+                if (isInterrupted()) return;
+
+                panelInscripcion.actualizar(50, "Verificando disponibilidad...");
+                Thread.sleep(800);
+
+                if (isInterrupted()) return;
+
+                panelInscripcion.actualizar(80, "Registrando usuario...");
+                Thread.sleep(600);
+
+                panelInscripcion.actualizar(100, "¡Procesando!");
+                Thread.sleep(300);
+
+                // --- AQUÍ EJECUTAMOS TU LÓGICA REAL ---
+                // Usamos invokeLater para que tu lógica (que toca la interfaz)
+                // se ejecute de forma segura en el hilo principal.
+                SwingUtilities.invokeLater(() -> {
+                    panelInscripcion.setVisible(false); // Ocultamos la carga
+                    accionAlTerminar.run(); // <--- ¡BOOM! Ejecuta lo que le pasamos
+                });
+
+            } catch (InterruptedException e) {
+                SwingUtilities.invokeLater(() -> panelInscripcion.setVisible(false));
+            }
+        }
+    }
 }
