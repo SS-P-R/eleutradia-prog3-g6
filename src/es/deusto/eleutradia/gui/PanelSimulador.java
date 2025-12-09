@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.Random;
 
@@ -327,6 +329,39 @@ public class PanelSimulador extends JPanel {
             }
         }       
     }
+    
+    MouseAdapter myAdapterVerde = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_CLARO);}
+    };
+    
+	MouseAdapter myAdapterAzul = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
+    };
+	
+	MouseAdapter myAdapterGris = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+    };
     
     //IAG (Gemini)
   	//SIN MODIFICAR
