@@ -82,4 +82,20 @@ public class Curso {
 				+ ", nivelRecomendado=" + nivelRecomendado + "]";
 	}
 	
+	//IAG (Claude)
+	//SIN MODIFICAR
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    Curso curso = (Curso) obj;
+	    return id == curso.id; // Comparar por ID
+	}
+
+	@Override
+	public int hashCode() {
+	    return Integer.hashCode(id);
+	}
+	//END IAG
+	
 }

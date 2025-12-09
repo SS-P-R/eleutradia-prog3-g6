@@ -197,11 +197,11 @@ public class Cartera {
 	@Override
 	public String toString() {
 	    
-	    return "Cartera [nombre=" + nombre
-	            + ", saldo=" + saldo
-	            + ", perfilRiesgo=" + perfilRiesgo
-	            + ", divisa=" + divisa
-	            + ", operaciones=" + operaciones.size() + "]";
+	    return "Cartera [nombre = " + nombre
+	            + ", saldo = " + saldo
+	            + ", perfilRiesgo = " + perfilRiesgo
+	            + ", divisa = " + divisa
+	            + ", operaciones = " + operaciones.size() + "]";
 	}
 	private class DatosPosicion {
 	    ProductoFinanciero producto;

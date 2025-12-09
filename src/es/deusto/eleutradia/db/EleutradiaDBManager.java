@@ -270,7 +270,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS ProductoFinanciero (
 							id INTEGER PRIMARY KEY AUTOINCREMENT,
-							nombre TEXT NOT NULL,
+							nombre TEXT NOT NULL UNIQUE,
 							plazo TEXT,
 							valorUnitario REAL NOT NULL,
 							tipoProducto INTEGER NOT NULL,
@@ -766,10 +766,11 @@ public class EleutradiaDBManager {
 	}
 	
 	public boolean insertarUsuario(String id, String nombre, String email, String telefono, 
-            String password, boolean esParticular) {
+            String password, boolean esParticular, String direccion, 
+            String fechaNacimiento, String paisResidencia) {
 		if (esParticular) {
-			String sql = "INSERT INTO Particular (dni, nombre, email, password, telefono, direccion, fechaNacimiento) " + 
-						 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO Particular (dni, nombre, email, password, telefono, direccion, fechaNacimiento, paisResidencia) " + 
+						 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 			try (Connection conn = DriverManager.getConnection(connectionUrl);
 				 PreparedStatement pStmt = conn.prepareStatement(sql)) {
@@ -778,8 +779,23 @@ public class EleutradiaDBManager {
 				pStmt.setString(3, email);
 				pStmt.setString(4, password);
 				pStmt.setString(5, telefono);
-				pStmt.setString(6, "");
-				pStmt.setString(7, LocalDate.now().toString());
+				pStmt.setString(6, direccion);
+				if (fechaNacimiento != null && !fechaNacimiento.isEmpty()) {
+	                try {
+	                    String[] partes = fechaNacimiento.split("/");
+	                    LocalDate fecha = LocalDate.of(
+	                        Integer.parseInt(partes[2]), // año
+	                        Integer.parseInt(partes[1]), // mes
+	                        Integer.parseInt(partes[0])  // día
+	                    );
+	                    pStmt.setString(7, fecha.toString());
+	                } catch (Exception e) {
+	                    pStmt.setString(7, LocalDate.now().toString());
+	                }
+	            } else {
+	                pStmt.setString(7, LocalDate.now().toString());
+	            }
+				pStmt.setString(8, paisResidencia != null ? paisResidencia : "");
 				pStmt.executeUpdate();
 				return true;
 
@@ -798,7 +814,7 @@ public class EleutradiaDBManager {
 				pstmt.setString(3, email);
 				pstmt.setString(4, password);
 				pstmt.setString(5, telefono);
-				pstmt.setString(6, "");
+				pstmt.setString(6, direccion);
 				pstmt.executeUpdate();
 				return true;
 
@@ -1068,7 +1084,30 @@ public class EleutradiaDBManager {
 	// MÉTODOS DE INSCRIPCIÓN A CURSOS
 	
 	public boolean inscribirParticularACurso(String dni, int idCurso) {
-	    String sql = "INSERT OR IGNORE INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
+	    // Verificar si ya está inscrito
+	    String sqlCheck = "SELECT COUNT(*) FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmtCheck = conn.prepareStatement(sqlCheck)) {
+	        
+	        pstmtCheck.setString(1, dni);
+	        pstmtCheck.setInt(2, idCurso);
+	        ResultSet rs = pstmtCheck.executeQuery();
+	        
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            System.out.println("El usuario ya está inscrito a este curso");
+	            rs.close();
+	            return false; // Ya inscrito
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al verificar inscripción: %s%n", ex.getMessage());
+	        return false;
+	    }
+	    
+	    // Si no está inscrito, inscribir
+	    String sql = "INSERT INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -1077,6 +1116,7 @@ public class EleutradiaDBManager {
 	        pstmt.setInt(2, idCurso);
 	        int rows = pstmt.executeUpdate();
 	        
+	        System.out.println("Usuario inscrito correctamente al curso");
 	        return rows > 0;
 	        
 	    } catch (Exception ex) {
