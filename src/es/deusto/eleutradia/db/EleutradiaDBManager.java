@@ -84,7 +84,7 @@ public class EleutradiaDBManager {
 	    
 	    this.createDB();
 	    
-	    if (properties.getProperty("db.loadCSV", "false").equals("true")) {
+	    if (properties.getProperty("db.loadCSV", "false").equals("true") && isEmptyDB()) {
 	        insertEnumData();
 	        
 	        List<Pais> paises = this.loadCSV(CSV_PAISES, Pais::parseCSV);
@@ -106,6 +106,8 @@ public class EleutradiaDBManager {
 	        this.insertLecciones(leccionesData);
 	        
 	        System.out.println("Datos cargados desde CSV correctamente.");
+	    } else if (!isEmptyDB()) {
+	        System.out.println("La base de datos ya contiene datos. No se cargan los CSV.");
 	    }
 	}
 	
@@ -439,6 +441,21 @@ public class EleutradiaDBManager {
 			createDB();
 			System.out.println("Base de datos limpiada correctamente.");
 		}
+	}
+	
+	private boolean isEmptyDB() {
+	    String sql = "SELECT COUNT(*) FROM ProductoFinanciero";
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        if (rs.next()) {
+	            return rs.getInt(1) == 0;
+	        }
+	    } catch (Exception ex) {
+	        // Si la tabla no existe, se cuenta como vacía
+	        return true;
+	    }
+	    return true;
 	}
 	
 	// MÉTODOS DE INSERCIÓN DE DATOS EN TABLAS DE ENUMERACIONES
