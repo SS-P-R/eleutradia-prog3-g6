@@ -11,7 +11,7 @@ public abstract class Usuario {
     private String direccion;
     private Pais domicilioFiscal;
     private PerfilFinanciero perfilFinanciero;
-    private List<Cartera> carteras = new ArrayList<Cartera>();
+    private List<Cartera> carteras = new ArrayList<>();
 
 	public Usuario(String nombre, String email, String password, String telefono, String direccion,
 			Pais domicilioFiscal, PerfilFinanciero perfilFinanciero) {
@@ -84,8 +84,14 @@ public abstract class Usuario {
 		return carteras;
 	}
 	
-	public void setCarteras(List<Cartera> carteras) {
-		this.carteras = carteras;
+	public void addCartera(Cartera cartera) {
+	    if (!carteras.contains(cartera)) {
+	        carteras.add(cartera);
+	    }
+	}
+
+	public void removeCartera(Cartera cartera) {
+	    carteras.remove(cartera);
 	}
 
 	public double calcularPatrimonioLiquido() {

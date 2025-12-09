@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Cartera {
-    private final int id;
+    private int id;
     private String nombre;
     private double saldo;
     private PerfilRiesgo perfilRiesgo;
@@ -39,6 +39,10 @@ public class Cartera {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+	    this.id = id;
 	}
 
 	public String getNombre() {
@@ -88,9 +92,9 @@ public class Cartera {
 		return List.copyOf(posiciones);
 	}
 
-	public void setPosiciones(List<Posicion> posiciones) {
-		this.posiciones = posiciones;
-	}
+	public void addPosicion(Posicion pos) {
+        posiciones.add(pos);
+    }
 
 	public double calcularValorInversiones() {
 	    double total = 0.0;

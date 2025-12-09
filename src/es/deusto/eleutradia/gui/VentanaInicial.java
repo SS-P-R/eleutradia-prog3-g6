@@ -808,7 +808,7 @@ public class VentanaInicial extends JFrame {
 	    
 	    // Aquí deberías modificar tu método insertarUsuario para incluir los nuevos campos
 	    // Por ahora, usamos el método existente
-	    boolean registrado = dbManager.insertarUsuario(tempId, tempNombre, tempEmail, tempTlf, tempPass, tempEsParticular,
+	    boolean registrado = dbManager.insertUsuario(tempId, tempNombre, tempEmail, tempTlf, tempPass, tempEsParticular,
 	    		direccionCompleta, fechaNacimiento, paisResidencia);
 	    
 	    if (registrado) {

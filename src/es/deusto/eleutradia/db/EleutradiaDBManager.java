@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Divisa;
@@ -24,12 +26,14 @@ import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.Leccion;
 import es.deusto.eleutradia.domain.Modulo;
 import es.deusto.eleutradia.domain.NivelConocimiento;
+import es.deusto.eleutradia.domain.Operacion;
 import es.deusto.eleutradia.domain.Pais;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.PerfilRiesgo;
 import es.deusto.eleutradia.domain.PeriodicidadPago;
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
+import es.deusto.eleutradia.domain.Posicion;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
@@ -784,7 +788,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	public boolean insertarUsuario(String id, String nombre, String email, String telefono, 
+	public boolean insertUsuario(String id, String nombre, String email, String telefono, 
             String password, boolean esParticular, String direccion, 
             String fechaNacimiento, String paisResidencia) {
 		if (esParticular) {
@@ -844,6 +848,71 @@ public class EleutradiaDBManager {
 		}
 
 		return false;
+	}
+	
+	public boolean insertCartera(Cartera cartera, String idUsuario, boolean esParticular) {
+	    String sql = "INSERT INTO Cartera (nombre, saldo, perfilRiesgo, divisa, idParticular, idEmpresa) " +
+	                 "VALUES (?, ?, ?, ?, ?, ?)";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	        
+	        pstmt.setString(1, cartera.getNombre());
+	        pstmt.setDouble(2, cartera.getSaldo());
+	        pstmt.setInt(3, cartera.getPerfilRiesgo().ordinal());
+	        pstmt.setInt(4, cartera.getDivisa().ordinal());
+	        
+	        if (esParticular) {
+	            pstmt.setString(5, idUsuario);
+	            pstmt.setNull(6, Types.VARCHAR);
+	        } else {
+	            pstmt.setNull(5, Types.VARCHAR);
+	            pstmt.setString(6, idUsuario);
+	        }
+	        
+	        int rows = pstmt.executeUpdate();
+	        
+	        if (rows > 0) {
+	            ResultSet rs = pstmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                int id = rs.getInt(1);
+	                cartera.setId(id); // Asume que Cartera tiene un método setId
+	                rs.close();
+	                return true;
+	            }
+	            rs.close();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al insertar cartera: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	public boolean insertOperacion(Operacion operacion, int idCartera) {
+	    String sql = "INSERT INTO Operacion (prodFinanciero, cantidad, fechaOp, tipoOp, cartera) " +
+	                 "VALUES (?, ?, ?, ?, ?)";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setInt(1, operacion.getProdFinanciero().getId());
+	        pstmt.setDouble(2, operacion.getCantidad());
+	        pstmt.setString(3, operacion.getFechaOp().toString());
+	        pstmt.setInt(4, operacion.getTipoOp() ? 1 : 0);
+	        pstmt.setInt(5, idCartera);
+	        
+	        int rows = pstmt.executeUpdate();
+	        return rows > 0;
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al insertar operación: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
 	}
 	
 	// MÉTODOS DE AUTENTICACIÓN Y REGISTRO
@@ -1165,7 +1234,9 @@ public class EleutradiaDBManager {
 	    
 	    return false;
 	}
-
+	
+	//
+	
 	public List<Curso> getCursosPorParticular(String dni) {
 	    List<Curso> cursos = new ArrayList<>();
 	    String sql = """
@@ -1204,6 +1275,100 @@ public class EleutradiaDBManager {
 	    }
 	    
 	    return cursos;
+	}
+	
+	public List<Cartera> getCarterasPorUsuario(String idUsuario, boolean esParticular) {
+	    List<Cartera> carteras = new ArrayList<>();
+	    String campo = esParticular ? "idParticular" : "idEmpresa";
+	    String sql = "SELECT * FROM Cartera WHERE " + campo + " = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, idUsuario);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            Cartera cartera = getCarteraFromRS(rs, conn);
+	            if (cartera != null) {
+	                carteras.add(cartera);
+	            }
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al obtener carteras del usuario: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return carteras;
+	}
+	
+	public boolean actualizarPosicion(Posicion posicion, int idCartera) {
+	    // Primero verificar si ya existe una posición para este producto en esta cartera
+	    String sqlCheck = "SELECT id FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
+	    String sqlUpdate = "UPDATE Posicion SET cantidadTotal = ?, precioMedio = ? WHERE id = ?";
+	    String sqlInsert = "INSERT INTO Posicion (prodFinanciero, cantidadTotal, precioMedio, cartera) VALUES (?, ?, ?, ?)";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+	        
+	        // Verificar si existe
+	        int posicionId = -1;
+	        try (PreparedStatement pstmt = conn.prepareStatement(sqlCheck)) {
+	            pstmt.setInt(1, posicion.getProducto().getId());
+	            pstmt.setInt(2, idCartera);
+	            ResultSet rs = pstmt.executeQuery();
+	            if (rs.next()) {
+	                posicionId = rs.getInt("id");
+	            }
+	            rs.close();
+	        }
+	        
+	        // Actualizar o insertar
+	        if (posicionId != -1) {
+	            // Actualizar
+	            try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+	                pstmt.setDouble(1, posicion.getCantidadTotal());
+	                pstmt.setDouble(2, posicion.getPrecioMedioCompra());
+	                pstmt.setInt(3, posicionId);
+	                return pstmt.executeUpdate() > 0;
+	            }
+	        } else {
+	            // Insertar
+	            try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+	                pstmt.setInt(1, posicion.getProducto().getId());
+	                pstmt.setDouble(2, posicion.getCantidadTotal());
+	                pstmt.setDouble(3, posicion.getPrecioMedioCompra());
+	                pstmt.setInt(4, idCartera);
+	                return pstmt.executeUpdate() > 0;
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al actualizar posición: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	public boolean eliminarPosicion(int idProducto, int idCartera) {
+	    String sql = "DELETE FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setInt(1, idProducto);
+	        pstmt.setInt(2, idCartera);
+	        int rows = pstmt.executeUpdate();
+	        return rows > 0;
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al eliminar posición: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
 	}
 	
 	// MÉTODOS PRIVADOS AUXILIARES
@@ -1309,6 +1474,11 @@ public class EleutradiaDBManager {
 	        p.addCurso(curso);
 	    }
 	    
+	    List<Cartera> carteras = getCarterasPorUsuario(dni, true);
+	    for (Cartera cartera : carteras) {
+	        p.addCartera(cartera);
+	    }
+	    
 	    return p;
 	}
 
@@ -1316,8 +1486,10 @@ public class EleutradiaDBManager {
 	    int domFiscalId = rs.getInt("domicilioFiscal");
 	    int perfilId = rs.getInt("perfilFinanciero");
 	    
-	    return new Empresa(
-	        rs.getString("nif"),
+	    String nif = rs.getString("nif");
+	    
+	    Empresa e = new Empresa(
+	        nif,
 	        rs.getString("nombre"),
 	        rs.getString("email"),
 	        rs.getString("password"),
@@ -1326,6 +1498,13 @@ public class EleutradiaDBManager {
 	        (domFiscalId > 0) ? getPaisById(domFiscalId, conn) : null,
 	        (perfilId > 0) ? getPerfilFinancieroById(perfilId, conn) : null
 	    );
+	    
+	    List<Cartera> carteras = getCarterasPorUsuario(nif, false);
+	    for (Cartera cartera : carteras) {
+	        e.addCartera(cartera);
+	    }
+	    
+	    return e;
 	}
 	
 	private ProductoFinanciero getProductoFromRS(ResultSet rs, Connection conn) throws Exception {
@@ -1346,6 +1525,31 @@ public class EleutradiaDBManager {
 	        Divisa.values()[rs.getInt("divisa")],
 	        getGestoraById(rs.getInt("gestora"), conn)
 	    );
+	}
+	
+	private Cartera getCarteraFromRS(ResultSet rs, Connection conn) throws Exception {
+	    int id = rs.getInt("id");
+	    String nombre = rs.getString("nombre");
+	    double saldo = rs.getDouble("saldo");
+	    PerfilRiesgo perfilRiesgo = PerfilRiesgo.values()[rs.getInt("perfilRiesgo")];
+	    Divisa divisa = Divisa.values()[rs.getInt("divisa")];
+	    
+	    Cartera cartera = new Cartera(nombre, saldo, perfilRiesgo, divisa);
+	    cartera.setId(id); // Necesitas agregar este método a la clase Cartera
+	    
+	    // Cargar posiciones de la cartera
+	    List<Posicion> posiciones = getPosicionesByCarteraId(id, conn);
+	    for (Posicion pos : posiciones) {
+	        cartera.addPosicion(pos); // Necesitas este método en Cartera
+	    }
+	    
+	    // Cargar operaciones de la cartera
+	    List<Operacion> operaciones = getOperacionesByCarteraId(id, conn);
+	    for (Operacion op : operaciones) {
+	        cartera.addOperacion(op); // Necesitas este método en Cartera
+	    }
+	    
+	    return cartera;
 	}
 	
 	private Pais getPaisById(int paisId, Connection conn) throws Exception {
@@ -1437,6 +1641,79 @@ public class EleutradiaDBManager {
 	    }
 	    
 	    return tipos;
+	}
+	
+	private ProductoFinanciero getProductoById(int productoId, Connection conn) throws Exception {
+	    String sql = "SELECT * FROM ProductoFinanciero WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, productoId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            ProductoFinanciero producto = getProductoFromRS(rs, conn);
+	            rs.close();
+	            return producto;
+	        }
+	        rs.close();
+	    }
+	    
+	    return null;
+	}
+	
+	private List<Operacion> getOperacionesByCarteraId(int carteraId, Connection conn) throws Exception {
+	    List<Operacion> operaciones = new ArrayList<>();
+	    String sql = "SELECT * FROM Operacion WHERE cartera = ? ORDER BY fechaOp DESC";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, carteraId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            int productoId = rs.getInt("prodFinanciero");
+	            ProductoFinanciero producto = getProductoById(productoId, conn);
+	            
+	            if (producto != null) {
+	                Operacion operacion = new Operacion(
+	                    producto,
+	                    rs.getDouble("cantidad"),
+	                    LocalDate.parse(rs.getString("fechaOp")),
+	                    rs.getInt("tipoOp") == 1
+	                );
+	                operaciones.add(operacion);
+	            }
+	        }
+	        rs.close();
+	    }
+	    
+	    return operaciones;
+	}
+	
+	private List<Posicion> getPosicionesByCarteraId(int carteraId, Connection conn) throws Exception {
+	    List<Posicion> posiciones = new ArrayList<>();
+	    String sql = "SELECT * FROM Posicion WHERE cartera = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, carteraId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            int productoId = rs.getInt("prodFinanciero");
+	            ProductoFinanciero producto = getProductoById(productoId, conn);
+	            
+	            if (producto != null) {
+	                Posicion posicion = new Posicion(
+	                    producto,
+	                    rs.getDouble("cantidadTotal"),
+	                    rs.getDouble("precioMedio")
+	                );
+	                posiciones.add(posicion);
+	            }
+	        }
+	        rs.close();
+	    }
+	    
+	    return posiciones;
 	}
 	
 	private Map<PlazoRentabilidad, BigDecimal> getRentabilidadesByProductoId(
