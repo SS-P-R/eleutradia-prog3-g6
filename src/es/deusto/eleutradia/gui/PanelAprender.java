@@ -450,6 +450,7 @@ public class PanelAprender extends JPanel {
 		            
 		            actualizarPanelInfoCurso();
 		            actualizarProgressBar();
+		            actualizarPanelMisCursos();
 		        }
 		    });
 		    botonDesinscribir.addMouseListener(myAdapterGris);
