@@ -270,7 +270,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS ProductoFinanciero (
 							id INTEGER PRIMARY KEY AUTOINCREMENT,
-							nombre TEXT NOT NULL,
+							nombre TEXT NOT NULL UNIQUE,
 							plazo TEXT,
 							valorUnitario REAL NOT NULL,
 							tipoProducto INTEGER NOT NULL,
