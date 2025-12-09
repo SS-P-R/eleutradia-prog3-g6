@@ -723,7 +723,7 @@ public class PanelAprender extends JPanel {
     private class HiloVisual extends Thread {
         
         private PanelCargaThreads panelInscripcion;
-        private Runnable accionAlTerminar; // <--- AQUÍ GUARDAREMOS TU LÓGICA
+        private Runnable accionAlTerminar;
 
         public HiloVisual(PanelCargaThreads panelInscripcion, Runnable accionAlTerminar) {
             this.panelInscripcion = panelInscripcion;
@@ -733,7 +733,7 @@ public class PanelAprender extends JPanel {
         @Override
         public void run() {
             try {
-                // --- PURO TEATRO VISUAL ---
+
                 panelInscripcion.actualizar(10, "Conectando...");
                 Thread.sleep(600); 
 
@@ -750,12 +750,9 @@ public class PanelAprender extends JPanel {
                 panelInscripcion.actualizar(100, "¡Procesando!");
                 Thread.sleep(300);
 
-                // --- AQUÍ EJECUTAMOS TU LÓGICA REAL ---
-                // Usamos invokeLater para que tu lógica (que toca la interfaz)
-                // se ejecute de forma segura en el hilo principal.
                 SwingUtilities.invokeLater(() -> {
-                    panelInscripcion.setVisible(false); // Ocultamos la carga
-                    accionAlTerminar.run(); // <--- ¡BOOM! Ejecuta lo que le pasamos
+                    panelInscripcion.setVisible(false); 
+                    accionAlTerminar.run();
                 });
 
             } catch (InterruptedException e) {
