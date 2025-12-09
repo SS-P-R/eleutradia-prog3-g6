@@ -190,6 +190,7 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setContentAreaFilled(false);
 		botonSimulacion.setOpaque(true);
 		botonSimulacion.setFocusPainted(false);
+		
 		//IAG (Gemini)
 		//SIN MODIFICAR
 		botonSimulacion.addActionListener(e -> {

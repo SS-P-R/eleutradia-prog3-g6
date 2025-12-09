@@ -328,11 +328,14 @@ public class PanelSimulador extends JPanel {
         }       
     }
     
+    //IAG (Gemini)
+  	//SIN MODIFICAR
     public void addAccionVolver(ActionListener listener) {
-        // Asegúrate de que btnVolver no sea null
+
         if (btnVolver != null) {
             btnVolver.addActionListener(listener);
         }
     }
+	//END IAG
 
 }
