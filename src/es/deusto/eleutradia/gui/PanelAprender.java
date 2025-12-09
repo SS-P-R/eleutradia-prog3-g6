@@ -479,34 +479,24 @@ public class PanelAprender extends JPanel {
 			botonApuntar.setFocusPainted(false);
 			botonApuntar.addActionListener(e -> {
 			    
-			    // 1. CHEQUEOS PREVIOS (Igual que antes)
 			    boolean yaInscrito = usuarioLogeado.getCursos().stream()
 			            .anyMatch(c -> c.getId() == cursoInfo.getId());
 			    if (yaInscrito) { return; }
 
-			    // 2. PREPARAR PANEL DE CARGA (GlassPane)
 			    JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
 			    PanelCargaThreads panelCarga = new PanelCargaThreads();
 			    rootPane.setGlassPane(panelCarga);
 			    panelCarga.setVisible(true);
 
-			    // 3. DEFINIMOS LA LÓGICA (Esto es lo que se ejecutará al llegar al 100%)
 			    Runnable logicaReal = () -> {
 			        
-			        // --- TU CÓDIGO DE BASE DE DATOS ---
 			        boolean exito = MainEleutradia.getDBManager()
 			                .inscribirParticularACurso(usuarioLogeado.getDni(), cursoInfo.getId());
 			        
 			        if (exito) {
-			            // Actualizar memoria
-			            usuarioLogeado.addCurso(cursoInfo);
-			            
-//			            // Actualizar Panel Inicio (Dashboard)
-//			            if (PanelInicio.instancia != null) {
-//			                PanelInicio.instancia.actualizarListaCursos();
-//			            }
 
-			            // Mensajes y repintado
+			            usuarioLogeado.addCurso(cursoInfo);
+
 			            JOptionPane.showMessageDialog(panelCursosInfo, 
 			                "¡Te has inscrito a " + cursoInfo.getNombre() + "!");
 			            actualizarPanelInfoCurso();
@@ -518,7 +508,6 @@ public class PanelAprender extends JPanel {
 			        }
 			    };
 
-			    // 4. LANZAMOS EL HILO VISUAL Y LE PASAMOS LA LÓGICA
 			    HiloVisual hilo = new HiloVisual(panelCarga, logicaReal);
 			    hilo.start();
 			});
