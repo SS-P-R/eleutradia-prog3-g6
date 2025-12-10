@@ -35,6 +35,7 @@ import es.deusto.eleutradia.domain.Usuario;
 public class PanelPerfil extends JPanel {
     private static final long serialVersionUID = 1L;
     
+    private es.deusto.eleutradia.db.EleutradiaDBManager dbManager = new es.deusto.eleutradia.db.EleutradiaDBManager();
     private Usuario usuarioActual;
     private VentanaPrincipal ventanaPrincipal;
     private GestorTema gestorTema;
@@ -478,38 +479,31 @@ public class PanelPerfil extends JPanel {
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFocusPainted(false);
         btnGuardar.addActionListener(e -> {
-            String actual = new String(txtActual.getPassword());
-            String nueva = new String(txtNueva.getPassword());
-            String confirmar = new String(txtConfirmar.getPassword());
-            if (!actual.equals(usuarioActual.getPassword())) {
-                JOptionPane.showMessageDialog(dialog, 
-                    "La contraseña actual es incorrecta", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+            String passActual = new String(txtActual.getPassword());
+            String passNueva = new String(txtNueva.getPassword());
+            String passConfirm = new String(txtConfirmar.getPassword());
+
+            if (!passActual.equals(usuarioActual.getPassword())) {
+                JOptionPane.showMessageDialog(dialog, "La contraseña actual es incorrecta.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            if (nueva.length() < 6) {
-                JOptionPane.showMessageDialog(dialog, 
-                    "La contraseña debe tener al menos 6 caracteres", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+            if (!passNueva.equals(passConfirm)) {
+                JOptionPane.showMessageDialog(dialog, "Las contraseñas nuevas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            if (!nueva.equals(confirmar)) {
-                JOptionPane.showMessageDialog(dialog, 
-                    "Las contraseñas no coinciden", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+            if (passNueva.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "La contraseña no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            usuarioActual.setPassword(nueva);
-            JOptionPane.showMessageDialog(dialog, 
-                "Contraseña cambiada exitosamente", 
-                "Éxito", 
-                JOptionPane.INFORMATION_MESSAGE);
-            dialog.dispose();
+            boolean exito = dbManager.editarContrasena(usuarioActual, passNueva);
+
+            if (exito) {
+                usuarioActual.setPassword(passNueva); 
+                JOptionPane.showMessageDialog(dialog, "Contraseña cambiada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                dialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Error al guardar la nueva contraseña en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         
         panelBotones.add(btnCancelar);
@@ -586,24 +580,24 @@ public class PanelPerfil extends JPanel {
 
         btnCancelar.addActionListener(e -> dialog.dispose());
         btnGuardar.addActionListener(e -> {
-            usuarioActual.setNombre(txtNombre.getText());
             usuarioActual.setEmail(txtEmail.getText());
             usuarioActual.setTelefono(txtTelefono.getText());
             usuarioActual.setDireccion(txtDireccion.getText());
-            if (usuarioActual.getDomicilioFiscal() != null) {
-                usuarioActual.getDomicilioFiscal().setNombre(txtFiscal.getText());
+            boolean exito = dbManager.editarPerfil(usuarioActual);
+            
+            if (exito) {
+                JOptionPane.showMessageDialog(dialog,
+                    "Información actualizada y guardada correctamente.",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+                dialog.dispose();
+                refrescarDatos();
+            } else {
+                JOptionPane.showMessageDialog(dialog,
+                    "Error al guardar los datos en la base de datos.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             }
-            else if (!txtFiscal.getText().isEmpty()) {
-                usuarioActual.setDomicilioFiscal(usuarioActual.getDomicilioFiscal());
-            }
-
-            JOptionPane.showMessageDialog(dialog,
-                "Información actualizada correctamente.",
-                "Éxito",
-                JOptionPane.INFORMATION_MESSAGE);
-
-            dialog.dispose();
-            refrescarDatos(); // refresh UI with new data
         });
 
         panelBotones.add(btnCancelar);
