@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,13 +20,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
+import es.deusto.eleutradia.domain.Operacion;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.main.MainEleutradia;
 
 public class VentanaAnadirACartera extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
+	private EleutradiaDBManager dbManager;
 	
 	private Usuario usuario;
 	private ProductoFinanciero producto;
@@ -48,6 +54,7 @@ public class VentanaAnadirACartera extends JDialog {
 		super(padre, "Selección de cartera", modal);
 		this.usuario = usuario;
 		this.producto = producto;
+		this.dbManager = MainEleutradia.getDBManager();
 		this.configurarVentana(padre);
         this.construirVentana();
         this.setVisible(true);
@@ -228,13 +235,45 @@ public class VentanaAnadirACartera extends JDialog {
         }
 		
 		if (carteraSel != null) {
-			carteraSel.addProducto(producto, cantidadAcciones);
-			JOptionPane.showMessageDialog(this,
-					String.format("Producto añadido correctamente:\n%.4f acciones de %s", 
-							cantidadAcciones, producto.getNombre()),
-					"Producto añadido",
-					JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+			double costoTotal = cantidadAcciones * producto.getValorUnitario();
+			if (carteraSel.getSaldo() < costoTotal) {
+				JOptionPane.showMessageDialog(this,
+						String.format("Saldo insuficiente.\nCosto: %.2f %s\nSaldo disponible: %.2f %s",
+								costoTotal, carteraSel.getDivisa(),
+								carteraSel.getSaldo(), carteraSel.getDivisa()),
+						"Saldo insuficiente",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		
+			Operacion operacion = new Operacion(producto, cantidadAcciones, LocalDate.now(), true);
+				
+			// GUARDAR EN BASE DE DATOS
+			boolean exito = dbManager.insertOperacion(operacion, carteraSel.getId());
+			
+			if (exito) {
+				carteraSel.addProducto(producto, cantidadAcciones);
+				
+				dbManager.actualizarPosicion(
+					carteraSel.obtenerPosicionesActuales().stream()
+						.filter(p -> p.getProducto().getId() == producto.getId())
+						.findFirst()
+						.orElse(null),
+					carteraSel.getId()
+				);
+				
+				JOptionPane.showMessageDialog(this,
+						String.format("Producto añadido correctamente:\n%.4f acciones de %s\nCosto total: %.2f %s", 
+								cantidadAcciones, producto.getNombre(), costoTotal, carteraSel.getDivisa()),
+						"Producto añadido",
+						JOptionPane.INFORMATION_MESSAGE);
+				dispose();
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Error al guardar la operación en la base de datos.",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	

@@ -908,10 +908,58 @@ public class EleutradiaDBManager {
 	        pstmt.setInt(5, idCartera);
 	        
 	        int rows = pstmt.executeUpdate();
+
+	        if (rows > 0) {
+	            // Obtener el saldo actual de la cartera desde la BD
+	            String sqlSaldo = "SELECT saldo FROM Cartera WHERE id = ?";
+	            try (PreparedStatement pstmtSaldo = conn.prepareStatement(sqlSaldo)) {
+	                pstmtSaldo.setInt(1, idCartera);
+	                ResultSet rs = pstmtSaldo.executeQuery();
+	                
+	                if (rs.next()) {
+	                    double saldoActual = rs.getDouble("saldo");
+	                    double costoOperacion = operacion.getCantidad() * operacion.getProdFinanciero().getValorUnitario();
+	                    
+	                    // Si es compra (true), resta del saldo. Si es venta (false), suma al saldo
+	                    double nuevoSaldo = operacion.getTipoOp() ? 
+	                        saldoActual - costoOperacion : 
+	                        saldoActual + costoOperacion;
+	                    
+	                    // Actualizar el saldo en la BD
+	                    String sqlUpdate = "UPDATE Cartera SET saldo = ? WHERE id = ?";
+	                    try (PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate)) {
+	                        pstmtUpdate.setDouble(1, nuevoSaldo);
+	                        pstmtUpdate.setInt(2, idCartera);
+	                        pstmtUpdate.executeUpdate();
+	                    }
+	                }
+	                rs.close();
+	            }
+	            
+	            return true;
+	        }
+	    } catch (Exception ex) {
+	        System.err.format("Error al insertar operación: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	public boolean actualizarSaldoCartera(int idCartera, double nuevoSaldo) {
+	    String sql = "UPDATE Cartera SET saldo = ? WHERE id = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setDouble(1, nuevoSaldo);
+	        pstmt.setInt(2, idCartera);
+	        
+	        int rows = pstmt.executeUpdate();
 	        return rows > 0;
 	        
 	    } catch (Exception ex) {
-	        System.err.format("Error al insertar operación: %s%n", ex.getMessage());
+	        System.err.format("Error al actualizar saldo de cartera: %s%n", ex.getMessage());
 	        ex.printStackTrace();
 	    }
 	    
