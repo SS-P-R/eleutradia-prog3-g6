@@ -70,7 +70,7 @@ public class PanelInicio extends JPanel{
 		
 		//Cargar paneles
 		JPanel panelSaludo = PanelSaludo();
-		JPanel panelCursos = PanelCursos();
+		JPanel panelCursos = PanelCursos(); 
 		JPanel panelLecciones = PanelLecciones();
 		JPanel panelRecordatorio = PanelRecordatorio();
 		JPanel panelActivos = PanelActivos();
