@@ -253,7 +253,6 @@ public class PanelPortfolio extends JPanel {
                 JOptionPane.showMessageDialog(this, "Error al crear la cartera.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-        	
             if (carteraSeleccionada != null) {
                 comboCarteras.setSelectedItem(carteraSeleccionada.getNombre());
             }
