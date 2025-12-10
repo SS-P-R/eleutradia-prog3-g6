@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -179,7 +180,7 @@ public class PanelAprender extends JPanel {
 		
 		JPanel panelBotonAbajo = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelBotonAbajo.setBackground(COLOR_FONDO_PRINCIPAL);
-		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Margen inferior
+		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
 		JButton botonSimulacion = new JButton("Simulación");
 		botonSimulacion.setPreferredSize(new Dimension(150, 45));
@@ -192,21 +193,28 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//SIN MODIFICAR
+		//MODIFICADO
 		botonSimulacion.addActionListener(e -> {
             
             JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
             
             if (ventanaPrincipal != null) {
-
+            	
+            	Container vistaOriginalCompleta = ventanaPrincipal.getContentPane();
+            	
                 PanelSimulador panelSimulacion = new PanelSimulador();
 
                 panelSimulacion.addAccionVolver(eventoVolver -> {
-                    ventanaPrincipal.setContentPane(this);
+
+                    ventanaPrincipal.setContentPane(vistaOriginalCompleta);
+
                     ventanaPrincipal.revalidate();
                     ventanaPrincipal.repaint();
-                });
 
+                    botonSimulacion.setFocusable(false);
+                    botonSimulacion.setFocusable(true);
+                });
+                
                 ventanaPrincipal.setContentPane(panelSimulacion);
                 ventanaPrincipal.revalidate();
                 ventanaPrincipal.repaint();
