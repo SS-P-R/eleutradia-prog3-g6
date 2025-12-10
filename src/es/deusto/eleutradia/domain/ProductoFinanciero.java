@@ -9,6 +9,7 @@ import java.util.Map;
 public class ProductoFinanciero {
 	private final int id;
 	private String nombre;
+	private String ticker;
 	private YearMonth plazo; // En caso de que lo haya (bonos y depósitos)
 	private Map<PlazoRentabilidad, BigDecimal> rentabilidades;
 	private double valorUnitario;
@@ -18,11 +19,12 @@ public class ProductoFinanciero {
 	private Divisa divisa;
 	private Gestora gestora;
 
-	public ProductoFinanciero(int id, String nombre, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
+	public ProductoFinanciero(int id, String nombre, String ticker, YearMonth plazo, Map<PlazoRentabilidad, BigDecimal> rentabilidades,
 			double valorUnitario, TipoProducto tipoProducto, RegionGeografica regionGeografica,
 			PeriodicidadPago perPago, Divisa divisa, Gestora gestora) {
 		this.id = id;
 		this.nombre = nombre;
+		this.ticker = ticker;
 		this.plazo = plazo;
 		//IAG (ChatGPT)
 		//SIN MODIFICAR
@@ -51,6 +53,10 @@ public class ProductoFinanciero {
 	public YearMonth getPlazo() {
 		return plazo;
 	}
+	
+	public String getTicker() {
+		return ticker;
+	}
 
 	public void setPlazo(YearMonth plazo) {
 		this.plazo = plazo;
@@ -78,6 +84,10 @@ public class ProductoFinanciero {
 
 	public void setTipoProducto(TipoProducto tipoProducto) {
 		this.tipoProducto = tipoProducto;
+	}
+	
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
 	}
 
 	public RegionGeografica getRegionGeografica() {

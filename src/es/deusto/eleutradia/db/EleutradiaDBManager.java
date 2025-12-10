@@ -276,6 +276,7 @@ public class EleutradiaDBManager {
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS ProductoFinanciero (
 							id INTEGER PRIMARY KEY AUTOINCREMENT,
+							ticker TEXT NOT NULL UNIQUE,
 							nombre TEXT NOT NULL UNIQUE,
 							plazo TEXT,
 							valorUnitario REAL NOT NULL,
@@ -634,7 +635,7 @@ public class EleutradiaDBManager {
 	}
 	
 	public void insertProductos(List<String[]> productosData) {
-	    String sql1 = "INSERT OR IGNORE INTO ProductoFinanciero (nombre, plazo, valorUnitario, tipoProducto, regionGeografica, perPago, divisa, gestora) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+	    String sql1 = "INSERT OR IGNORE INTO ProductoFinanciero (nombre, ticker, plazo, valorUnitario, tipoProducto, regionGeografica, perPago, divisa, gestora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	    String sql2 = "INSERT OR IGNORE INTO Rentabilidad (productoFinanciero, plazoRentabilidad, porcentaje) VALUES (?, ?, ?);";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -645,14 +646,15 @@ public class EleutradiaDBManager {
 	            if (data == null) continue;
 	            
 	            String nombre = data[0];
-	            String plazoStr = data[1];
-	            String rentabilidadesStr = data[2];
-	            double valorUnitario = Double.parseDouble(data[3]);
-	            String tipoProductoStr = data[4];
-	            String regionGeograficaStr = data[5];
-	            String periodicidadPagoStr = data[6];
-	            String divisaStr = data[7];
-	            String gestoraNombre = data[8];
+	            String ticker = data[1];
+	            String plazoStr = data[2];
+	            String rentabilidadesStr = data[3];
+	            double valorUnitario = Double.parseDouble(data[4]);
+	            String tipoProductoStr = data[5];
+	            String regionGeograficaStr = data[6];
+	            String periodicidadPagoStr = data[7];
+	            String divisaStr = data[8];
+	            String gestoraNombre = data[9];
 	            
 	            String plazo = (plazoStr.isEmpty()) ? null : plazoStr;
 	            
@@ -669,13 +671,14 @@ public class EleutradiaDBManager {
 	            }
 	            
 	            pStmt1.setString(1, nombre);
-	            pStmt1.setString(2, plazo);
-	            pStmt1.setDouble(3, valorUnitario);
-	            pStmt1.setInt(4, tipoProductoId);
-	            pStmt1.setInt(5, regionGeograficaId);
-	            pStmt1.setInt(6, periodicidadPagoId);
-	            pStmt1.setInt(7, divisaId);
-	            pStmt1.setInt(8, gestoraId);
+	            pStmt1.setString(2, ticker);
+	            pStmt1.setString(3, plazo);
+	            pStmt1.setDouble(4, valorUnitario);
+	            pStmt1.setInt(5, tipoProductoId);
+	            pStmt1.setInt(6, regionGeograficaId);
+	            pStmt1.setInt(7, periodicidadPagoId);
+	            pStmt1.setInt(8, divisaId);
+	            pStmt1.setInt(9, gestoraId);
 	            pStmt1.executeUpdate();
 	            
 	            ResultSet rs = pStmt1.getGeneratedKeys();
@@ -1515,6 +1518,7 @@ public class EleutradiaDBManager {
 	    return new ProductoFinanciero(
 	        id,
 	        rs.getString("nombre"),
+	        rs.getString("ticker"),
 	        plazo,
 	        getRentabilidadesByProductoId(id, conn),
 	        rs.getDouble("valorUnitario"),
@@ -1523,6 +1527,7 @@ public class EleutradiaDBManager {
 	        PeriodicidadPago.values()[rs.getInt("perPago")],
 	        Divisa.values()[rs.getInt("divisa")],
 	        getGestoraById(rs.getInt("gestora"), conn)
+	        
 	    );
 	}
 	
