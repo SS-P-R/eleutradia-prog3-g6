@@ -1235,7 +1235,7 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
-	//
+	// MÉTODOS DE CONSULTA DE CURSOS Y CARTERAS POR USUARIO
 	
 	public List<Curso> getCursosPorParticular(String dni) {
 	    List<Curso> cursos = new ArrayList<>();
@@ -1305,7 +1305,6 @@ public class EleutradiaDBManager {
 	}
 	
 	public boolean actualizarPosicion(Posicion posicion, int idCartera) {
-	    // Primero verificar si ya existe una posición para este producto en esta cartera
 	    String sqlCheck = "SELECT id FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
 	    String sqlUpdate = "UPDATE Posicion SET cantidadTotal = ?, precioMedio = ? WHERE id = ?";
 	    String sqlInsert = "INSERT INTO Posicion (prodFinanciero, cantidadTotal, precioMedio, cartera) VALUES (?, ?, ?, ?)";

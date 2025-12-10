@@ -1,6 +1,9 @@
 package es.deusto.eleutradia.gui;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.*;
+import es.deusto.eleutradia.main.MainEleutradia;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
@@ -16,6 +19,8 @@ import java.util.List;
 
 public class PanelPortfolio extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	private EleutradiaDBManager dbManager;
 
     private Usuario usuarioActual;
     private Cartera carteraSeleccionada;
@@ -211,11 +216,20 @@ public class PanelPortfolio extends JPanel {
 
                 Cartera nuevaCartera = new Cartera(nombre, saldo, perfil, divisa);
                 
-                // METODO PARA GUARDAR EN BASE DE DATOS
+                // GUARDAR EN BASE DE DATOS
+                dbManager = MainEleutradia.getDBManager();
+                boolean esParticular = usuarioActual instanceof Particular;
+                String idUsuario;
                 
-                // SI SE GUARDA CORRECTAMENTE
+                if (esParticular) {
+                    idUsuario = ((Particular) usuarioActual).getDni();
+                } else {
+                    idUsuario = ((Empresa) usuarioActual).getNif();
+                }
                 
-                // if (exito) {
+                boolean exito = dbManager.insertCartera(nuevaCartera, idUsuario, esParticular);
+                
+                if (exito) {
                     usuarioActual.getCarteras().add(nuevaCartera);
                     carteraSeleccionada = nuevaCartera;
                     
@@ -230,7 +244,7 @@ public class PanelPortfolio extends JPanel {
                     for (ActionListener l : listeners) comboCarteras.addActionListener(l);
                     
                     cargarDatosPortfolio();
-                // }
+                }
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "El saldo debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
