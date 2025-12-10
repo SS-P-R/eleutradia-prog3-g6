@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,7 +57,7 @@ public class PanelInicio extends JPanel{
     private ArrayList<ProductoFinanciero> productoRandom = new ArrayList<>();
 
     
-    private java.util.List<ProductoFinanciero> productos;
+    private List<ProductoFinanciero> productos;
 
 
 	public PanelInicio(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
@@ -372,7 +373,7 @@ public class PanelInicio extends JPanel{
 	
 	int sel = 0;
 	private JPanel PanelGraficos() {
-		JPanel panelGraficos = new JPanel();
+		JPanel panelGraficos = new JPanel(new BorderLayout(10,10));
 		panelGraficos.setBackground(COLOR_CARD);
 		panelGraficos.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
 		
@@ -385,19 +386,24 @@ public class PanelInicio extends JPanel{
 		}
 		
 	
-		JLabel mensajeGraficos = new JLabel();
-		panelGraficos.add(mensajeGraficos);
+	    JLabel mensajeGraficos = new JLabel("", SwingConstants.CENTER);
+	    mensajeGraficos.setFont(FONT_TITULO2);
+	    panelGraficos.add(mensajeGraficos, BorderLayout.NORTH);
+
+	    JLabel mensajePequeño = new JLabel("", SwingConstants.CENTER);
+	    panelGraficos.add(mensajePequeño, BorderLayout.CENTER);
 		
-		frame = new JFrame("Gráfico en Panel");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(900, 500);
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.setMinimumSize(new Dimension(500,300));
-		
+	    if (frame==null) {
+			frame = new JFrame("Gráfico en Panel");
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        frame.setSize(900, 500);
+			frame.setLocationRelativeTo(null);
+			frame.setResizable(false);
+			frame.setMinimumSize(new Dimension(500,300));	
+	    }
+
 		
 	    Runnable actualizarGrafico = () -> {
-
 			//IAG (ChatGPT)
 	        try {
 	            String nombre = productos.get(sel).getNombre();
@@ -415,22 +421,32 @@ public class PanelInicio extends JPanel{
 	        String encodedConfig = URLEncoder.encode(chartConfig, "UTF-8");
 	        String urlString = "https://quickchart.io/chart?width=150&height=85&c=" + encodedConfig;
 	        String urlString2 = "https://quickchart.io/chart?width=400&height=200&c=" + encodedConfig;
-	
-	        // Forma moderna: usar URI y luego convertir a URL
-	        URI uri = URI.create(urlString);
-	        URL url = uri.toURL();
-	        URI uri2 = URI.create(urlString2);
+	        URI uri = URI.create(urlString); 
+	        URL url = uri.toURL(); 
+	        URI uri2 = URI.create(urlString2); 
 	        URL url2 = uri2.toURL();
+	      //END-IAG
+
 	        
-	        ImageIcon icon = new ImageIcon(url);
-	        JLabel label = new JLabel(icon);
-	        panelGraficos.add(label, BorderLayout.CENTER);
-	        ImageIcon icon2 = new ImageIcon(url2);
-	        JLabel label2 = new JLabel(icon2);
-		    //END-IAG
-	
-	        frame.add(label2);
-	        frame.setVisible(false);
+	        new Thread(() -> {
+                try {
+                    ImageIcon icon = new ImageIcon(url);
+                    ImageIcon icon2 = new ImageIcon(url2);
+
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        mensajePequeño.setIcon(icon); // gráfico pequeño
+                        // actualizar gráfico grande si ya está visible
+                        if (frame.isVisible()) {
+                            frame.getContentPane().removeAll();
+                            frame.add(new JLabel(icon2));
+                            frame.revalidate();
+                            frame.repaint();
+                        }
+                    });
+                } catch (Exception e) {
+                    javax.swing.SwingUtilities.invokeLater(() -> mensajePequeño.setText("Error cargando gráfico"));
+                }
+            }).start();
 	        
 	        }catch (Exception e) {
 				System.err.println("Error");
@@ -447,8 +463,14 @@ public class PanelInicio extends JPanel{
             actualizarGrafico.run();
         });
 
+        mensajePequeño.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                frame.setVisible(true);
+            }
+        });
         
-        panelGraficos.add(siguiente);
+        panelGraficos.add(siguiente, BorderLayout.SOUTH);
         
         //Hilo
         Thread hiloGraficos = new Thread(() -> {
