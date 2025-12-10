@@ -57,6 +57,8 @@ public class PanelPortfolio extends JPanel {
     
     public PanelPortfolio(Usuario usuario) {
         this.usuarioActual = usuario;
+        this.dbManager = MainEleutradia.getDBManager();
+        
         if (!usuario.getCarteras().isEmpty()) {
             this.carteraSeleccionada = usuario.getCarteras().get(0);
         }
@@ -217,7 +219,7 @@ public class PanelPortfolio extends JPanel {
                 Cartera nuevaCartera = new Cartera(nombre, saldo, perfil, divisa);
                 
                 // GUARDAR EN BASE DE DATOS
-                dbManager = MainEleutradia.getDBManager();
+                
                 boolean esParticular = usuarioActual instanceof Particular;
                 String idUsuario;
                 
