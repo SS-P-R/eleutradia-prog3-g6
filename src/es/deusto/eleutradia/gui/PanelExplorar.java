@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -32,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -76,8 +78,8 @@ public class PanelExplorar extends JPanel {
     private static final Color MY_VERDE_OSCURO = new Color(25, 120, 50);
     private static final Color MY_ROSA_CLARO = new Color(220, 90, 130);
     private static final Color MY_ROSA_OSCURO = new Color(180, 50, 100);
-    private static final Color COLOR_FONDO_PRINCIPAL = new Color(250, 250, 250);
-    private static final Color COLOR_BORDE = new Color(220, 220, 230);
+    private static final Color COLOR_MAIN = new Color(250, 250, 250);
+    private static final Color COLOR_BORDER = new Color(220, 220, 230);
     private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
     private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 12);
@@ -85,8 +87,16 @@ public class PanelExplorar extends JPanel {
     public PanelExplorar(Usuario usuario) {
     	this.usuario = usuario;
     	
+    	//IAG (Claude)
+    	//ADAPTADO: Personalización deseada de ToolTips
+    	UIManager.put("ToolTip.background", Color.BLACK);
+        UIManager.put("ToolTip.foreground", Color.WHITE);
+        UIManager.put("ToolTip.border", BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
+        UIManager.put("ToolTip.font", new Font("Segoe UI", Font.PLAIN, 12));
+        //END IAG
+    	
         this.setLayout(new BorderLayout(10, 10));
-        this.setBackground(COLOR_FONDO_PRINCIPAL);
+        this.setBackground(COLOR_MAIN);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         cargarProductos();
@@ -116,7 +126,7 @@ public class PanelExplorar extends JPanel {
         JPanel mainPanelSuperior = new JPanel(new BorderLayout(10, 10));
         mainPanelSuperior.setBackground(Color.WHITE);
         mainPanelSuperior.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+                BorderFactory.createLineBorder(COLOR_BORDER, 1),
                 BorderFactory.createEmptyBorder(5, 10, 10, 20)
             ));
         
@@ -197,7 +207,7 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.setLayout(new BoxLayout(mainPanelFiltros, BoxLayout.Y_AXIS));
         mainPanelFiltros.setBackground(Color.WHITE);
         mainPanelFiltros.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1),
+            BorderFactory.createLineBorder(COLOR_BORDER, 1),
             BorderFactory.createEmptyBorder(30, 5, 5, 20)
         ));
         mainPanelFiltros.setPreferredSize(new Dimension(150, 0));
@@ -284,7 +294,7 @@ public class PanelExplorar extends JPanel {
         JPanel mainPanelTabla = new JPanel(new BorderLayout());
         mainPanelTabla.setBackground(Color.WHITE);
         mainPanelTabla.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+                BorderFactory.createLineBorder(COLOR_BORDER, 1),
                 BorderFactory.createEmptyBorder(20, 10, 10, 10)
             ));
         
@@ -300,30 +310,114 @@ public class PanelExplorar extends JPanel {
         
         tablaProductos = new JTable(modeloTabla);
         tablaProductos.setFont(FONT_NORMAL);
-        tablaProductos.setRowHeight(25);
+        tablaProductos.setRowHeight(30);
+        
+        // Asegurarse de líneas de tabla finas y uniformes
+        tablaProductos.setShowGrid(true);
+        tablaProductos.setGridColor(COLOR_BORDER);
+        tablaProductos.setIntercellSpacing(new Dimension(1, 1));
+        tablaProductos.setFocusable(false);
+        
+        tablaProductos.getTableHeader().setPreferredSize(new Dimension(0, 30));
         tablaProductos.getTableHeader().setFont(FONT_SUBTITULO);
-        tablaProductos.setSelectionBackground(new Color(200, 220, 255));
+        tablaProductos.getTableHeader().setBackground(MY_AZUL_OSCURO);
+        tablaProductos.getTableHeader().setForeground(Color.WHITE);
+        tablaProductos.getTableHeader().setOpaque(true);
+        
+        tablaProductos.setSelectionBackground(new Color(200, 210, 240));
         tablaProductos.getTableHeader().setReorderingAllowed(false); // No mover columnas
         tablaProductos.getTableHeader().setResizingAllowed(false);   // No redimensionar columnas
+        
+        // Iluminar fila al pasar el cursor por encima
+        tablaProductos.addMouseMotionListener(new MouseAdapter() {
+            private int lastRow = -1;
+            
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int row = tablaProductos.rowAtPoint(e.getPoint());
+                if (row != lastRow) {
+                    lastRow = row;
+                    tablaProductos.repaint();
+                }
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                tablaProductos.repaint();
+            }
+        });
+        
+        DefaultTableCellRenderer rendererHover = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                aplicarColoresHover(this, table, isSelected, row);
+                return this;
+            }
+        };
         
         // Ajustar anchos de columna
         tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre
         tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100); // Región
-        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(50);  // Precio
-        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(30);  // Divisa
+        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(40);  // Precio
+        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(25);  // Divisa
         tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(55);  // YTD
-        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(45);  // Riesgo
-        tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(100); // Gestora
+        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(40);  // Riesgo
+        tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(90);  // Gestora
         
-        DefaultTableCellRenderer rendererCentro = new DefaultTableCellRenderer();
-        rendererCentro.setHorizontalAlignment(JLabel.CENTER);
-        tablaProductos.getColumnModel().getColumn(3).setCellRenderer(rendererCentro);  // Divisa
+        tablaProductos.getColumnModel().getColumn(0).setCellRenderer(rendererHover); // Nombre
+        tablaProductos.getColumnModel().getColumn(1).setCellRenderer(rendererHover); // Región
+        
+        DefaultTableCellRenderer rendererDerecha = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.RIGHT);
+                aplicarColoresHover(this, table, isSelected, row);
+                return this;
+            }
+        };
+        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha); // Precio
+        
+        DefaultTableCellRenderer rendererCentro = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setHorizontalAlignment(JLabel.CENTER);
+                aplicarColoresHover(this, table, isSelected, row);
+                return this;
+            }
+        };
         tablaProductos.getColumnModel().getColumn(4).setCellRenderer(rendererCentro);  // YTD
         tablaProductos.getColumnModel().getColumn(5).setCellRenderer(rendererCentro);  // Riesgo
         
-        DefaultTableCellRenderer rendererDerecha = new DefaultTableCellRenderer();
-        rendererDerecha.setHorizontalAlignment(JLabel.RIGHT);
-        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha); // Precio
+        // Renderer de los logos de las divisas
+		tablaProductos.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+			@Override
+			public void setValue(Object value) {
+                if (value instanceof ImageIcon) {
+                    setIcon((ImageIcon) value);
+                    setText("");
+                } else {
+                    setIcon(null);
+                    setText(value != null ? value.toString() : "");
+                }
+                setHorizontalAlignment(JLabel.CENTER);
+            }
+			
+			@Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                ProductoFinanciero producto = productosFiltrados.get(row);
+                this.setToolTipText(producto.getDivisa().getNombre());	
+                aplicarColoresHover(this, table, isSelected, row);
+                return this;
+            }
+		});
         
         // Renderer de los logos de gestoras
         tablaProductos.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
@@ -344,13 +438,14 @@ public class PanelExplorar extends JPanel {
                     boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 ProductoFinanciero producto = productosFiltrados.get(row);
-                this.setToolTipText(producto.getGestora().getNombreCompleto());	
+                this.setToolTipText(producto.getGestora().getNombreCompleto());
+                aplicarColoresHover(this, table, isSelected, row);
                 return this;
             }
         });
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
-        scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDER, 1));
         scrollPane.getVerticalScrollBar().setUI(myScrollBar);
         
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
@@ -391,6 +486,26 @@ public class PanelExplorar extends JPanel {
         botonAnadirACartera.addMouseListener(myAdapterVerde);
         
         return mainPanelTabla;
+    }
+    
+    private void aplicarColoresHover(DefaultTableCellRenderer renderer, JTable table, 
+            boolean isSelected, int row) {
+    	if (isSelected) {
+    		renderer.setBackground(new Color(210, 220, 255));
+    	} else {
+    		// Comprobar si el mouse está sobre la fila
+    		Point mousePos = table.getMousePosition();
+    		if (mousePos != null && table.rowAtPoint(mousePos) == row) {
+    			renderer.setBackground(new Color(220, 240, 255));
+    		} else {
+    			// Alternar colores de fila
+    			if (row % 2 == 0) {
+    				renderer.setBackground(Color.WHITE);
+    			} else {
+    				renderer.setBackground(COLOR_MAIN);
+    			}
+    		}
+    	}
     }
     
     //IAG (ChatGPT)
@@ -531,13 +646,14 @@ public class PanelExplorar extends JPanel {
     private void actualizarTabla(List<ProductoFinanciero> productos) {
         modeloTabla.setRowCount(0);
         for (ProductoFinanciero p : productos) {
-        	String rutaImagen = null;
+        	
+        	String rutaImgGestora = null;
         	ImageIcon iconoGestora = null;
             if (p.getGestora() != null) {
-                rutaImagen = "/images/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
+                rutaImgGestora = "/images/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
             }
-            if (getClass().getResource(rutaImagen) != null) {
-                iconoGestora = new ImageIcon(getClass().getResource(rutaImagen));
+            if (getClass().getResource(rutaImgGestora) != null) {
+                iconoGestora = new ImageIcon(getClass().getResource(rutaImgGestora));
             }
             if (iconoGestora != null) {
                 Image imagen = iconoGestora.getImage();
@@ -560,11 +676,23 @@ public class PanelExplorar extends JPanel {
                 iconoGestora = new ImageIcon(imagenEscalada);
             }
             
+            String rutaImgDivisa = null;
+            ImageIcon iconoDivisa = null;
+			if (p.getDivisa() != null) {
+				rutaImgDivisa = "/images/divisas/" + p.getDivisa().toString().toLowerCase() + ".png";
+			}
+			if (getClass().getResource(rutaImgDivisa) != null) {
+				iconoDivisa = new ImageIcon(getClass().getResource(rutaImgDivisa));
+			}
+			if (iconoDivisa != null) {
+				iconoDivisa = new ImageIcon(iconoDivisa.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
+			}
+            
             Object[] fila = {
         		p.getNombre(),
                 p.getRegionGeografica().getNombre(),
                 String.format("%.2f", p.getValorUnitario()),
-                p.getDivisa(),
+                iconoDivisa,
                 formatearRentabilidad(p.getRentabilidades().get(PlazoRentabilidad.YTD)),
                 p.getTipoProducto().getStringRiesgo(),
                 iconoGestora
