@@ -303,6 +303,8 @@ public class PanelExplorar extends JPanel {
         tablaProductos.setRowHeight(25);
         tablaProductos.getTableHeader().setFont(FONT_SUBTITULO);
         tablaProductos.setSelectionBackground(new Color(200, 220, 255));
+        tablaProductos.getTableHeader().setReorderingAllowed(false); // No mover columnas
+        tablaProductos.getTableHeader().setResizingAllowed(false);   // No redimensionar columnas
         
         // Ajustar anchos de columna
         tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre

@@ -395,7 +395,7 @@ public class PanelInicio extends JPanel{
 		
 	    if (frame==null) {
 			frame = new JFrame("Gráfico en Panel");
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        frame.setSize(900, 500);
 			frame.setLocationRelativeTo(null);
 			frame.setResizable(false);
@@ -538,7 +538,7 @@ public class PanelInicio extends JPanel{
 	            JFrame ventana = new JFrame("Noticia");
 	            ventana.setSize(500, 300);
 	            ventana.setLocationRelativeTo(null);
-	            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	            JTextArea texto = new JTextArea(noticias.get(indice[0]));
 	            texto.setFont(FONT_NORMAL1);
