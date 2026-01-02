@@ -47,6 +47,8 @@ import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
 import es.deusto.eleutradia.main.MainEleutradia;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class PanelExplorar extends JPanel {
     
     private static final long serialVersionUID = 1L;
@@ -68,22 +70,6 @@ public class PanelExplorar extends JPanel {
     private List<ProductoFinanciero> productosTotales;
     private List<ProductoFinanciero> productosFiltrados;
     
-    // Estilos
-    private static final Color MY_AZUL_CLARO = new Color(0, 120, 255);
-    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
-    private static final Color MY_GRIS_SCROLLBAR = new Color(180, 180, 180);
-    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
-    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
-    private static final Color MY_VERDE_CLARO = new Color(40, 170, 70);
-    private static final Color MY_VERDE_OSCURO = new Color(25, 120, 50);
-    private static final Color MY_ROSA_CLARO = new Color(220, 90, 130);
-    private static final Color MY_ROSA_OSCURO = new Color(180, 50, 100);
-    private static final Color COLOR_MAIN = new Color(250, 250, 250);
-    private static final Color COLOR_BORDER = new Color(220, 220, 230);
-    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 12);
-    
     public PanelExplorar(Usuario usuario) {
     	this.usuario = usuario;
     	
@@ -96,7 +82,7 @@ public class PanelExplorar extends JPanel {
         //END IAG
     	
         this.setLayout(new BorderLayout(10, 10));
-        this.setBackground(COLOR_MAIN);
+        this.setBackground(MAIN_FONDO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         cargarProductos();
@@ -126,29 +112,29 @@ public class PanelExplorar extends JPanel {
         JPanel mainPanelSuperior = new JPanel(new BorderLayout(10, 10));
         mainPanelSuperior.setBackground(Color.WHITE);
         mainPanelSuperior.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_BORDER, 1),
+                BorderFactory.createLineBorder(MAIN_BORDE, 1),
                 BorderFactory.createEmptyBorder(5, 10, 10, 20)
             ));
         
         // Título
         JLabel titulo = new JLabel("Descubra nuestra selección de productos de inversión", JLabel.CENTER);
-        titulo.setFont(FONT_TITULO);
-        titulo.setForeground(MY_AZUL_CLARO);
+        titulo.setFont(TITULO_MEDIO);
+        titulo.setForeground(AZUL_CLARO);
         
         // Panel de búsqueda
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         panelBusqueda.setBackground(Color.WHITE);
         
         JLabel labelBuscar = new JLabel("Buscar:");
-        labelBuscar.setFont(FONT_SUBTITULO);
+        labelBuscar.setFont(SUBTITULO_MEDIO);
         
         campoBusqueda = new JTextField();
-        campoBusqueda.setFont(FONT_NORMAL);
+        campoBusqueda.setFont(CUERPO_PEQUENO);
         campoBusqueda.setPreferredSize(new Dimension(150, 30));
         
         JButton botonBuscar = new JButton("Buscar");
-        botonBuscar.setFont(FONT_NORMAL);
-        botonBuscar.setBackground(MY_AZUL_CLARO);
+        botonBuscar.setFont(CUERPO_PEQUENO);
+        botonBuscar.setBackground(AZUL_CLARO);
         botonBuscar.setForeground(Color.WHITE);
         botonBuscar.setBorderPainted(false);
         botonBuscar.setContentAreaFilled(false);
@@ -156,8 +142,8 @@ public class PanelExplorar extends JPanel {
         botonBuscar.setFocusPainted(false);
         
         JButton botonLimpiar = new JButton("Limpiar filtros");
-        botonLimpiar.setFont(FONT_NORMAL);
-        botonLimpiar.setBackground(MY_GRIS_CLARO);
+        botonLimpiar.setFont(CUERPO_PEQUENO);
+        botonLimpiar.setBackground(GRIS_MEDIO);
         botonLimpiar.setForeground(Color.WHITE);
         botonLimpiar.setBorderPainted(false);
         botonLimpiar.setContentAreaFilled(false);
@@ -165,8 +151,8 @@ public class PanelExplorar extends JPanel {
         botonLimpiar.setFocusPainted(false);
         
         JButton botonVerFiltros = new JButton((verFiltros ? "Ocultar" : "Mostrar") + " filtros");
-        botonVerFiltros.setFont(FONT_NORMAL);
-        botonVerFiltros.setBackground(MY_ROSA_CLARO);
+        botonVerFiltros.setFont(CUERPO_PEQUENO);
+        botonVerFiltros.setBackground(ROSA_CLARO);
         botonVerFiltros.setForeground(Color.WHITE);
         botonVerFiltros.setPreferredSize(botonVerFiltros.getPreferredSize());
         botonVerFiltros.setBorderPainted(false);
@@ -207,13 +193,13 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.setLayout(new BoxLayout(mainPanelFiltros, BoxLayout.Y_AXIS));
         mainPanelFiltros.setBackground(Color.WHITE);
         mainPanelFiltros.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDER, 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(30, 5, 5, 20)
         ));
         mainPanelFiltros.setPreferredSize(new Dimension(150, 0));
         
         JLabel tituloFiltros = new JLabel("- FILTROS -");
-        tituloFiltros.setFont(FONT_SUBTITULO);
+        tituloFiltros.setFont(SUBTITULO_MEDIO);
         tituloFiltros.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloFiltros.setHorizontalAlignment(JLabel.CENTER);
         tituloFiltros.setMaximumSize(new Dimension(Integer.MAX_VALUE, tituloFiltros.getPreferredSize().height));
@@ -284,8 +270,8 @@ public class PanelExplorar extends JPanel {
     
     private JLabel crearLabelFiltro(String texto) {
         JLabel label = new JLabel(texto);
-        label.setFont(FONT_NORMAL);
-        label.setForeground(MY_GRIS_CLARO);
+        label.setFont(CUERPO_PEQUENO);
+        label.setForeground(GRIS_MEDIO);
         label.setAlignmentX(LEFT_ALIGNMENT);
         return label;
     }
@@ -294,7 +280,7 @@ public class PanelExplorar extends JPanel {
         JPanel mainPanelTabla = new JPanel(new BorderLayout());
         mainPanelTabla.setBackground(Color.WHITE);
         mainPanelTabla.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_BORDER, 1),
+                BorderFactory.createLineBorder(MAIN_BORDE, 1),
                 BorderFactory.createEmptyBorder(20, 10, 10, 10)
             ));
         
@@ -309,18 +295,18 @@ public class PanelExplorar extends JPanel {
         };
         
         tablaProductos = new JTable(modeloTabla);
-        tablaProductos.setFont(FONT_NORMAL);
+        tablaProductos.setFont(CUERPO_PEQUENO);
         tablaProductos.setRowHeight(30);
         
         // Asegurarse de líneas de tabla finas y uniformes
         tablaProductos.setShowGrid(true);
-        tablaProductos.setGridColor(COLOR_BORDER);
+        tablaProductos.setGridColor(MAIN_BORDE);
         tablaProductos.setIntercellSpacing(new Dimension(1, 1));
         tablaProductos.setFocusable(false);
         
         tablaProductos.getTableHeader().setPreferredSize(new Dimension(0, 30));
-        tablaProductos.getTableHeader().setFont(FONT_SUBTITULO);
-        tablaProductos.getTableHeader().setBackground(MY_AZUL_OSCURO);
+        tablaProductos.getTableHeader().setFont(SUBTITULO_MEDIO);
+        tablaProductos.getTableHeader().setBackground(AZUL_OSCURO);
         tablaProductos.getTableHeader().setForeground(Color.WHITE);
         tablaProductos.getTableHeader().setOpaque(true);
         
@@ -445,7 +431,7 @@ public class PanelExplorar extends JPanel {
         });
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
-        scrollPane.setBorder(BorderFactory.createLineBorder(COLOR_BORDER, 1));
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
         scrollPane.getVerticalScrollBar().setUI(myScrollBar);
         
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
@@ -455,8 +441,8 @@ public class PanelExplorar extends JPanel {
         panelAcciones.setBackground(Color.WHITE);
         
         JButton botonVerDetalle = new JButton("Ver detalle");
-        botonVerDetalle.setFont(FONT_NORMAL);
-        botonVerDetalle.setBackground(MY_AZUL_CLARO);
+        botonVerDetalle.setFont(CUERPO_PEQUENO);
+        botonVerDetalle.setBackground(AZUL_CLARO);
         botonVerDetalle.setForeground(Color.WHITE);
         botonVerDetalle.setBorderPainted(false);
         botonVerDetalle.setContentAreaFilled(false);
@@ -464,8 +450,8 @@ public class PanelExplorar extends JPanel {
         botonVerDetalle.setFocusPainted(false);
         
         JButton botonAnadirACartera = new JButton("Añadir a cartera");
-        botonAnadirACartera.setFont(FONT_NORMAL);
-        botonAnadirACartera.setBackground(MY_VERDE_CLARO);
+        botonAnadirACartera.setFont(CUERPO_PEQUENO);
+        botonAnadirACartera.setBackground(VERDE_CLARO);
         botonAnadirACartera.setForeground(Color.WHITE);
         botonAnadirACartera.setBorderPainted(false);
         botonAnadirACartera.setContentAreaFilled(false);
@@ -502,7 +488,7 @@ public class PanelExplorar extends JPanel {
     			if (row % 2 == 0) {
     				renderer.setBackground(Color.WHITE);
     			} else {
-    				renderer.setBackground(COLOR_MAIN);
+    				renderer.setBackground(MAIN_FONDO);
     			}
     		}
     	}
@@ -513,9 +499,9 @@ public class PanelExplorar extends JPanel {
     BasicScrollBarUI myScrollBar = new BasicScrollBarUI() {
 		@Override
 	    protected void configureScrollBarColors() {
-	        this.thumbColor = MY_GRIS_SCROLLBAR;
-	        this.thumbDarkShadowColor = MY_GRIS_SCROLLBAR;
-	        this.thumbHighlightColor = MY_GRIS_SCROLLBAR;
+	        this.thumbColor = GRIS_SCROLLBAR;
+	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
+	        this.thumbHighlightColor = GRIS_SCROLLBAR;
 	        this.trackColor = Color.WHITE; 
 	    }
 
@@ -546,9 +532,9 @@ public class PanelExplorar extends JPanel {
                 scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
                     @Override
                     protected void configureScrollBarColors() {
-                        this.thumbColor = MY_GRIS_SCROLLBAR;
-                        this.thumbDarkShadowColor = MY_GRIS_SCROLLBAR;
-                        this.thumbHighlightColor = MY_GRIS_SCROLLBAR;
+                        this.thumbColor = GRIS_SCROLLBAR;
+                        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
+                        this.thumbHighlightColor = GRIS_SCROLLBAR;
                         this.trackColor = Color.WHITE;
                     }
                     @Override
@@ -775,49 +761,5 @@ public class PanelExplorar extends JPanel {
         }
         return gestoras.toArray(new String[0]);
     }
-    
-    MouseAdapter myAdapterAzul = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-    };
-    
-    MouseAdapter myAdapterGris = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-    };
-    
-    MouseAdapter myAdapterVerde = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_CLARO);}
-    };
-    
-    MouseAdapter myAdapterRosa = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_ROSA_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_ROSA_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_ROSA_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_ROSA_CLARO);}
-    };
     
 }

@@ -7,10 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Random;
 
@@ -40,6 +40,8 @@ import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class VentanaInicial extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -49,20 +51,6 @@ public class VentanaInicial extends JFrame {
 	private CardLayout layout;
 	private JPanel contenedor;
     private ImageIcon originalIcon;
-	
-    // Estilos
-    private static final Color MY_AZUL_CLARO = new Color(0, 120, 255);
-    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
-    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
-    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
-    
-    //IAG (ChatGPT)
-    //ADAPTADO: tamaño reducido
-    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_NORMAL = new Font("Segoe UI", Font.BOLD, 12);
-    private static final Font FONT_CAMPO = new Font("Segoe UI", Font.PLAIN, 14);
-    //END IAG
     
     // Expresiones para validar identificadores
     //IAG (ChatGPT)
@@ -128,14 +116,14 @@ public class VentanaInicial extends JFrame {
 		panelDcho.setAlignmentY(JPanel.CENTER_ALIGNMENT);
 
 		JLabel titulo = new JLabel("¡Bienvenido/a a EleuTradia!", JLabel.CENTER);
-		titulo.setFont(FONT_TITULO);
+		titulo.setFont(TITULO_GRANDE);
 		titulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		titulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, titulo.getPreferredSize().height));
 		panelDcho.add(titulo);
 		panelDcho.add(Box.createVerticalStrut(10));
 		
 		JLabel subtitulo = new JLabel("Seleccione su método de acceso:", JLabel.CENTER);
-		subtitulo.setFont(FONT_SUBTITULO);
+		subtitulo.setFont(SUBTITULO_GRANDE);
 		subtitulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		subtitulo.setMaximumSize(new Dimension(Integer.MAX_VALUE, subtitulo.getPreferredSize().height));
 		panelDcho.add(subtitulo);
@@ -144,7 +132,7 @@ public class VentanaInicial extends JFrame {
 		JButton botonParticular = new JButton("Acceder como Particular");
 		botonParticular.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonParticular.setMaximumSize(new Dimension(220, 40));
-		botonParticular.setBackground(MY_AZUL_CLARO);
+		botonParticular.setBackground(AZUL_CLARO);
 		botonParticular.setForeground(Color.WHITE);
         botonParticular.setBorderPainted(false);
         botonParticular.setContentAreaFilled(false);
@@ -161,7 +149,7 @@ public class VentanaInicial extends JFrame {
 		JButton botonEmpresa = new JButton("Acceder como Empresa");
 		botonEmpresa.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonEmpresa.setMaximumSize(new Dimension(220, 40));
-		botonEmpresa.setBackground(MY_AZUL_CLARO);
+		botonEmpresa.setBackground(AZUL_CLARO);
 		botonEmpresa.setForeground(Color.WHITE);
         botonEmpresa.setBorderPainted(false);
         botonEmpresa.setContentAreaFilled(false);
@@ -181,15 +169,15 @@ public class VentanaInicial extends JFrame {
         panelRegistro.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         
         JLabel labelRegistro = new JLabel("¿No es cliente?");
-        labelRegistro.setFont(FONT_NORMAL);
-        labelRegistro.setForeground(MY_AZUL_CLARO);
+        labelRegistro.setFont(SUBTITULO_PEQUENO);
+        labelRegistro.setForeground(AZUL_CLARO);
         labelRegistro.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panelRegistro.add(labelRegistro);
         
         JButton botonRegistro = new JButton("Pulse aquí para abrir una cuenta");
-        botonRegistro.setFont(FONT_NORMAL);
+        botonRegistro.setFont(SUBTITULO_PEQUENO);
         botonRegistro.setBackground(Color.WHITE);
-        botonRegistro.setForeground(MY_AZUL_CLARO);
+        botonRegistro.setForeground(AZUL_CLARO);
         botonRegistro.setBorderPainted(false);
         botonRegistro.setContentAreaFilled(false);
         botonRegistro.setOpaque(true);
@@ -223,13 +211,13 @@ public class VentanaInicial extends JFrame {
         panelDcho.setBorder(BorderFactory.createEmptyBorder(100, 50, 100, 50));
         
 	    JLabel tituloLogin = new JLabel("Inicio de sesión - " + tipoUsuario, JLabel.CENTER);
-	    tituloLogin.setFont(FONT_TITULO);
+	    tituloLogin.setFont(TITULO_GRANDE);
 	    tituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 	    panelDcho.add(tituloLogin);
 	    panelDcho.add(Box.createVerticalStrut(10));
 	    
 	    JLabel subtituloLogin = new JLabel("Introduzca sus datos:", JLabel.CENTER);
-	    subtituloLogin.setFont(FONT_SUBTITULO);
+	    subtituloLogin.setFont(SUBTITULO_GRANDE);
 	    subtituloLogin.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 	    panelDcho.add(subtituloLogin);
 	    panelDcho.add(Box.createVerticalStrut(30));
@@ -277,8 +265,8 @@ public class VentanaInicial extends JFrame {
         panelBotones.setMaximumSize(new Dimension(350, 50));
         
         JButton botonVolver = new JButton("Volver");
-        botonVolver.setFont(FONT_NORMAL);
-        botonVolver.setBackground(MY_GRIS_CLARO);
+        botonVolver.setFont(SUBTITULO_PEQUENO);
+        botonVolver.setBackground(GRIS_MEDIO);
         botonVolver.setForeground(Color.WHITE);
         botonVolver.setBorderPainted(false);
         botonVolver.setContentAreaFilled(false);
@@ -292,8 +280,8 @@ public class VentanaInicial extends JFrame {
         botonVolver.addMouseListener(myAdapterGris);
         
         JButton botonLogin = new JButton("Iniciar sesión");
-        botonLogin.setFont(FONT_NORMAL);
-        botonLogin.setBackground(MY_AZUL_CLARO);
+        botonLogin.setFont(SUBTITULO_PEQUENO);
+        botonLogin.setBackground(AZUL_CLARO);
         botonLogin.setForeground(Color.WHITE);
         botonLogin.setBorderPainted(false);
         botonLogin.setContentAreaFilled(false);
@@ -324,7 +312,7 @@ public class VentanaInicial extends JFrame {
         panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 20));
         
         JLabel tituloReg = new JLabel("Abra su cuenta (1/2):");
-        tituloReg.setFont(FONT_TITULO);
+        tituloReg.setFont(TITULO_GRANDE);
         tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panelDcho.add(tituloReg);
@@ -424,8 +412,8 @@ public class VentanaInicial extends JFrame {
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JButton botonCancelar = new JButton("Cancelar");
-        botonCancelar.setFont(FONT_NORMAL);
-        botonCancelar.setBackground(MY_GRIS_CLARO);
+        botonCancelar.setFont(SUBTITULO_PEQUENO);
+        botonCancelar.setBackground(GRIS_MEDIO);
         botonCancelar.setForeground(Color.WHITE);
         botonCancelar.setBorderPainted(false);
         botonCancelar.setContentAreaFilled(false);
@@ -440,8 +428,8 @@ public class VentanaInicial extends JFrame {
 		botonCancelar.addMouseListener(myAdapterGris);
         
         JButton botonContinuar = new JButton("Continuar");
-        botonContinuar.setFont(FONT_NORMAL);
-        botonContinuar.setBackground(MY_AZUL_CLARO);
+        botonContinuar.setFont(SUBTITULO_PEQUENO);
+        botonContinuar.setBackground(AZUL_CLARO);
         botonContinuar.setForeground(Color.WHITE);
         botonContinuar.setBorderPainted(false);
         botonContinuar.setContentAreaFilled(false);
@@ -479,7 +467,7 @@ public class VentanaInicial extends JFrame {
         panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 10, 20));
         
         JLabel tituloReg = new JLabel("Abra su cuenta (2/2):");
-        tituloReg.setFont(FONT_TITULO);
+        tituloReg.setFont(TITULO_GRANDE);
         tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panelDcho.add(tituloReg);
@@ -495,7 +483,7 @@ public class VentanaInicial extends JFrame {
         
         String[] tiposDireccion = {"Plaza", "Calle", "Avenida", "Paseo", "Ronda", "Camino"};
         JComboBox<String> comboTipoDireccion = new JComboBox<>(tiposDireccion);
-        comboTipoDireccion.setFont(FONT_CAMPO);
+        comboTipoDireccion.setFont(CUERPO_GRANDE);
         comboTipoDireccion.setMaximumSize(new Dimension(300, 50));
         comboTipoDireccion.setAlignmentX(LEFT_ALIGNMENT);
         panelRegistro.add(comboTipoDireccion);
@@ -549,8 +537,8 @@ public class VentanaInicial extends JFrame {
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JButton botonVolver = new JButton("Volver");
-        botonVolver.setFont(FONT_NORMAL);
-        botonVolver.setBackground(MY_GRIS_CLARO);
+        botonVolver.setFont(SUBTITULO_PEQUENO);
+        botonVolver.setBackground(GRIS_MEDIO);
         botonVolver.setForeground(Color.WHITE);
         botonVolver.setBorderPainted(false);
         botonVolver.setContentAreaFilled(false);
@@ -564,8 +552,8 @@ public class VentanaInicial extends JFrame {
 		botonVolver.addMouseListener(myAdapterGris);
         
         JButton botonConfirmar = new JButton("Confirmar");
-        botonConfirmar.setFont(FONT_NORMAL);
-        botonConfirmar.setBackground(MY_AZUL_CLARO);
+        botonConfirmar.setFont(SUBTITULO_PEQUENO);
+        botonConfirmar.setBackground(AZUL_CLARO);
         botonConfirmar.setForeground(Color.WHITE);
         botonConfirmar.setBorderPainted(false);
         botonConfirmar.setContentAreaFilled(false);
@@ -593,9 +581,9 @@ public class VentanaInicial extends JFrame {
         mainPanel.add(panelDcho);
         
         // Listener para mostrar/ocultar campos según el tipo de usuario
-        panelDcho.addComponentListener(new java.awt.event.ComponentAdapter() {
+        panelDcho.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentShown(java.awt.event.ComponentEvent e) {
+            public void componentShown(ComponentEvent e) {
             	boolean mostrarCamposParticular = tempEsParticular;
                 panelCamposParticular.setVisible(mostrarCamposParticular);
                 panelRegistro.revalidate();
@@ -638,15 +626,15 @@ public class VentanaInicial extends JFrame {
 	}
 	
 	private JLabel crearLabel(JLabel myLabel) {
-        myLabel.setFont(FONT_NORMAL);
-        myLabel.setForeground(MY_GRIS_OSCURO);
+        myLabel.setFont(SUBTITULO_PEQUENO);
+        myLabel.setForeground(GRIS_OSCURO);
         myLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         return myLabel;
 	}
 	
 	private JTextComponent crearCampo(boolean oculto) {
 	    JTextComponent campo = oculto ? new JPasswordField(20) : new JTextField(20);
-	    campo.setFont(FONT_CAMPO);
+	    campo.setFont(CUERPO_GRANDE);
 	    campo.setMaximumSize(new Dimension(300, 25));
 	    campo.setPreferredSize(new Dimension(300, 25));
 	    campo.setAlignmentX(LEFT_ALIGNMENT);
@@ -834,39 +822,6 @@ public class VentanaInicial extends JFrame {
 	            JOptionPane.ERROR_MESSAGE);
 	    }
 	}
-	
-    MouseAdapter myAdapterAzul = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-    };
-    
-    MouseAdapter myAdapterGris = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-    };
-    
-    MouseAdapter myAdapterRegistro = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setForeground(MY_AZUL_CLARO);}
-    };
     
     private void mostrarCarga() {
         // Diálogo modal que bloquea al usuario pero no al EDT

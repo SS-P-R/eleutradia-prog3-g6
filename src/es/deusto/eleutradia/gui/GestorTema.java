@@ -2,14 +2,13 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.Color;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class GestorTema {
 	private static GestorTema instancia;
 	private boolean temaOscuro;
 	
 	//Tema claro
-    public static final Color FONDO_CLARO = new Color(248, 249, 250);
-    public static final Color CARD_CLARO = Color.WHITE;
-    public static final Color BORDE_CLARO = new Color(222, 226, 230);
     public static final Color TEXTO_PRINCIPAL_CLARO = new Color(33, 37, 41);
     public static final Color TEXTO_SECUNDARIO = new Color(108, 117, 125);   
     
@@ -32,8 +31,8 @@ public class GestorTema {
     }
     
     public static GestorTema getInstancia() {
-    	if(instancia==null) {
-    		instancia=new GestorTema();
+    	if (instancia == null) {
+    		instancia = new GestorTema();
     	}
     	return instancia;
     }
@@ -43,7 +42,7 @@ public class GestorTema {
     }
     
     public void cambiarTema() {
-    	this.temaOscuro=!this.temaOscuro;
+    	this.temaOscuro = !this.temaOscuro;
     }
     
     public void hacerTemaOscuro() {
@@ -51,15 +50,15 @@ public class GestorTema {
     }
     
     public Color getColorFondo() {
-        return temaOscuro ? FONDO_OSCURO : FONDO_CLARO;
+        return temaOscuro ? FONDO_OSCURO : MAIN_FONDO;
     }
     
     public Color getColorVentana() {
-        return temaOscuro ? CARD_OSCURO : CARD_CLARO;
+        return temaOscuro ? CARD_OSCURO : Color.WHITE;
     }
     
     public Color getColorBorde() {
-        return temaOscuro ? BORDE_OSCURO : BORDE_CLARO;
+        return temaOscuro ? BORDE_OSCURO : MAIN_BORDE;
     }
     
     public Color getColorTextoPrincipal() {

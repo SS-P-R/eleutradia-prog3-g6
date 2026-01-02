@@ -16,9 +16,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
+
+import static es.deusto.eleutradia.gui.style.UITema.AZUL_CLARO;
 
 public class VentanaPrincipal extends JFrame {
 	
@@ -53,18 +56,14 @@ public class VentanaPrincipal extends JFrame {
     private PanelExplorar panelExplorar;
     private PanelPerfil panelPerfil;
     private PanelPortfolio panelPortfolio;
-
-    
-    // Estilos
-    private static final Color MY_AZUL = new Color(0, 100, 255);   // Azul
-	
+    	
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
 		this.usuario = usuario;
 		this.gestorTema = GestorTema.getInstancia();
 		this.configurarVentana();
 		this.inicializarPaneles();
-		this.construirPanelNavegacion();
+		this.construirPanelMenu();
 		this.addKeyListener(navegacionKeyListener);
 		this.setFocusable(true);
 		this.requestFocusInWindow();
@@ -85,7 +84,6 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	private void inicializarPaneles() {		
-		// Ejemplo de las 5 ventanas
 		this.panelInicio = new PanelInicio(usuario, this);
 		this.panelExplorar = new PanelExplorar(usuario);
 		this.panelPortfolio = new PanelPortfolio(usuario);
@@ -98,7 +96,7 @@ public class VentanaPrincipal extends JFrame {
         	this.panelAprender.add(new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares."), JLabel.CENTER);
         	JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
         	botonCrearParticular.setBackground(Color.WHITE);
-        	botonCrearParticular.setForeground(MY_AZUL);
+        	botonCrearParticular.setForeground(AZUL_CLARO);
         	botonCrearParticular.setBorderPainted(false);
         	botonCrearParticular.setFocusPainted(false);
         	panelAprender.add(botonCrearParticular);
@@ -117,32 +115,34 @@ public class VentanaPrincipal extends JFrame {
         layout.show(contenedor, "Inicio");
 	}
 	
-	private void construirPanelNavegacion() {
-		JPanel panelNavegacion = new JPanel();
-		panelNavegacion.setLayout(new BoxLayout(panelNavegacion, BoxLayout.Y_AXIS));
-		panelNavegacion.setBackground(Color.WHITE);
-		panelNavegacion.setBorder(BorderFactory.createTitledBorder(
-			    BorderFactory.createLineBorder(Color.BLACK, 4), "Menú", javax.swing.border.TitledBorder.CENTER,
-			    javax.swing.border.TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 14), Color.BLACK));
-		panelNavegacion.add(Box.createVerticalGlue());
+	private void construirPanelMenu() {
+		JPanel panelMenu = new JPanel();
+		panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
+		panelMenu.setBackground(Color.WHITE);
+		panelMenu.setBorder(BorderFactory.createTitledBorder(
+			    BorderFactory.createLineBorder(Color.BLACK, 4), "Menú", TitledBorder.CENTER,
+			    TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 14), Color.BLACK));
+	    panelMenu.setPreferredSize(new Dimension(110, 600));
 		
-		agregarBotonNavegacion(panelNavegacion, "Inicio", "Inicio",
+		panelMenu.add(Box.createVerticalGlue());
+		
+		agregarBotonMenu(panelMenu, "Inicio", "Inicio",
 	            ICONO_INICIO_NEGRO, ICONO_INICIO_AZUL);
 		
-	    agregarBotonNavegacion(panelNavegacion, "Explorar", "Explorar",
+	    agregarBotonMenu(panelMenu, "Explorar", "Explorar",
 	            ICONO_EXPLORAR_NEGRO, ICONO_EXPLORAR_AZUL);
 		
-	    agregarBotonNavegacion(panelNavegacion, "Portfolio", "Portfolio",
+	    agregarBotonMenu(panelMenu, "Portfolio", "Portfolio",
 	            ICONO_PORTFOLIO_NEGRO, ICONO_PORTFOLIO_AZUL);
 
-	    agregarBotonNavegacion(panelNavegacion, "Aprender", "Aprender",
+	    agregarBotonMenu(panelMenu, "Aprender", "Aprender",
 	            ICONO_APRENDER_NEGRO, ICONO_APRENDER_AZUL);
 
-	    agregarBotonNavegacion(panelNavegacion, "Perfil", "Perfil",
+	    agregarBotonMenu(panelMenu, "Perfil", "Perfil",
 	            ICONO_PERFIL_NEGRO, ICONO_PERFIL_AZUL);
 		
-		panelNavegacion.add(Box.createVerticalGlue());
-		this.add(panelNavegacion, BorderLayout.WEST);
+		panelMenu.add(Box.createVerticalGlue());
+		this.add(panelMenu, BorderLayout.WEST);
 		
 		botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
 		botonInicio.setText("");
@@ -184,7 +184,7 @@ public class VentanaPrincipal extends JFrame {
         return boton;
     }
 	
-	private void agregarBotonNavegacion(JPanel panel, String nombrePanel,
+	private void agregarBotonMenu(JPanel panel, String nombrePanel,
 			String texto, String iconoNormal, String iconoActivo) {
 		
 	    ImageIcon icono = cargarIcono(iconoNormal);

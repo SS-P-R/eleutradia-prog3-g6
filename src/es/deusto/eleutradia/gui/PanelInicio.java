@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URI;
@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
@@ -38,6 +39,8 @@ import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.Usuario;
 import es.deusto.eleutradia.main.MainEleutradia;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class PanelInicio extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -45,20 +48,8 @@ public class PanelInicio extends JPanel{
 	private Usuario usuario;
 	private JFrame frame;
 	
-	private static final Color COLOR_FONDO_PRINCIPAL = new Color(248, 249, 250);
-    private static final Color COLOR_CARD = Color.WHITE;
-    private static final Color COLOR_BORDE = new Color(222, 226, 230);
-
-    private static final Font FONT_TITULO1 = new Font("Segoe UI", Font.BOLD, 20);
-    private static final Font FONT_TITULO2 = new Font("Segoe UI", Font.BOLD, 16);
-    private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
-    private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
-	
     private ArrayList<ProductoFinanciero> productoRandom = new ArrayList<>();
-
-    
     private List<ProductoFinanciero> productos;
-
 
 	public PanelInicio(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
 		this.usuario = usuario;
@@ -66,17 +57,16 @@ public class PanelInicio extends JPanel{
 		
 		//Fondo
 		this.setLayout(new BorderLayout(10,10));
-		this.setBackground(COLOR_FONDO_PRINCIPAL);
+		this.setBackground(MAIN_FONDO);
 		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		//Cargar paneles
-		JPanel panelSaludo = PanelSaludo();
-		JPanel panelCursos = PanelCursos(); 
-		JPanel panelLecciones = PanelLecciones();
-		JPanel panelRecordatorio = PanelRecordatorio();
-		JPanel panelActivos = PanelActivos();
-		JPanel panelGraficos = PanelGraficos();
-		JPanel panelNoticias = PanelTitularesNoticias();
+		JPanel panelSaludo = construirPanelSaludo();
+		JPanel panelCursos = construirPanelCursos(); 
+		JPanel panelLecciones = construirPanelLecciones();
+		JPanel panelActivos = construirPanelActivos();
+		JPanel panelGraficos = construirPanelGraficos();
+		JPanel panelNoticias = panelTitularesNoticias();
 		JPanel panelSuperior = new JPanel();
 		
 		panelSuperior.setLayout(new BorderLayout());
@@ -84,15 +74,13 @@ public class PanelInicio extends JPanel{
 		panelSuperior.add(panelNoticias, BorderLayout.EAST);
 		//Paneles accesorios con saludo incial y recordatorios
 		setVisible(true);
-		panelSuperior.setBackground(COLOR_FONDO_PRINCIPAL);
+		panelSuperior.setBackground(MAIN_FONDO);
 		add(panelSuperior, BorderLayout.NORTH);
-		add(panelRecordatorio, BorderLayout.SOUTH);
-
 		
 		//Panel central
-		JPanel centro = new JPanel(new GridLayout(2,2,10,10));
+		JPanel centro = new JPanel(new GridLayout(2, 2, 10, 10));
 		centro.setBackground(getBackground());
-		centro.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		centro.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		centro.add(panelCursos);
 		centro.add(panelLecciones);
 		centro.add(panelActivos);
@@ -101,54 +89,30 @@ public class PanelInicio extends JPanel{
 		
 	}
 	
-
-	private JPanel PanelSaludo() {
+	private JPanel construirPanelSaludo() {
 		JPanel panelSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel saludoTxt = new JLabel("¡Hola, " + usuario.getNombre().split(" ")[0] + "!");
 		saludoTxt.setOpaque(true);
-		saludoTxt.setBackground(COLOR_FONDO_PRINCIPAL);
-		saludoTxt.setFont(FONT_TITULO1);
+		saludoTxt.setBackground(MAIN_FONDO);
+		saludoTxt.setFont(TITULO_GRANDE);
 		
 //		Border recuadro = BorderFactory.createLineBorder(Color.gray, 1);
-		Border posicion = BorderFactory.createEmptyBorder(5,10,5,10);
+		Border posicion = BorderFactory.createEmptyBorder(5, 10, 5, 10);
 		saludoTxt.setBorder(posicion);
 		
 		panelSaludo.setBackground(getBackground());
 		panelSaludo.add(saludoTxt);
 		return panelSaludo;
 	}	
-	
-	
-	private JPanel PanelRecordatorio() {
-		JPanel recordatorio = new JPanel(new FlowLayout());
-		recordatorio.setBackground(COLOR_FONDO_PRINCIPAL);
-		JButton completarPerfil = new JButton("Ir al perfil");
-		completarPerfil.addActionListener(e->{
-			ventanaPrincipal.mostrarPanel("Perfil");
-		});
-		if (usuario instanceof Particular) {
-			Particular particular = (Particular) usuario;
-			if (particular.getPaisResidencia()==null) {
-				recordatorio.add(completarPerfil);
-				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su país."));
-			} else if (particular.getDireccion()==null) {
-				recordatorio.add(completarPerfil);
-				recordatorio.add(new JLabel("Todavía no ha completado su perfil, añada su dirección."));
-			} else {
-//				recordatorio.add(new JLabel("Todo correcto.")); // Innecesario
-			}
-		}
-		return recordatorio;
-	}
 
-	private JPanel PanelLecciones() {
+	private JPanel construirPanelLecciones() {
 	    JPanel proxLecJPanel = new JPanel();
-	    proxLecJPanel.setBackground(COLOR_CARD);
-	    proxLecJPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
+	    proxLecJPanel.setBackground(Color.WHITE);
+	    proxLecJPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
 	    
 	    JLabel mensajeLecciones = new JLabel();
 	    mensajeLecciones.setText("¿Preparado para su próxima lección?");
-	    mensajeLecciones.setFont(FONT_TITULO2);
+	    mensajeLecciones.setFont(SUBTITULO_GRANDE);
 	    proxLecJPanel.add(mensajeLecciones);
 
 	    JPanel leccionesPanel = new JPanel();
@@ -157,7 +121,7 @@ public class PanelInicio extends JPanel{
 	    proxLecJPanel.add(leccionesPanel);
 
 	    JLabel mensajeLecciones2 = new JLabel("Lecciones recomendadas para continuar aprendiendo:");
-	    mensajeLecciones2.setFont(FONT_NORMAL2);
+	    mensajeLecciones2.setFont(CUERPO_PEQUENO);
 	    leccionesPanel.add(Box.createVerticalStrut(10));
 	    leccionesPanel.add(mensajeLecciones2);
 
@@ -169,7 +133,7 @@ public class PanelInicio extends JPanel{
 	        if (todosCursos == null || todosCursos.isEmpty()) {
 	            leccionesPanel.add(Box.createVerticalStrut(10));
 	            JLabel mensajeError = new JLabel("No hay cursos disponibles en este momento.");
-	            mensajeError.setFont(FONT_NORMAL1);
+	            mensajeError.setFont(CUERPO_GRANDE);
 	            leccionesPanel.add(mensajeError);
 	            
 	            proxLecJPanel.setName("Aprender");
@@ -199,7 +163,7 @@ public class PanelInicio extends JPanel{
 	            for (Leccion leccion : listaLecciones) {
 	                leccionesPanel.add(Box.createVerticalStrut(10));
 	                JLabel leccionSumada = new JLabel("• " + leccion.getTitulo());
-	                leccionSumada.setFont(FONT_NORMAL1);
+	                leccionSumada.setFont(CUERPO_GRANDE);
 	                leccionesPanel.add(leccionSumada);
 	            }
 	        }
@@ -207,21 +171,21 @@ public class PanelInicio extends JPanel{
 	        if (listaCursosActivos.size() == todosCursos.size()) {
 	            leccionesPanel.add(Box.createVerticalStrut(10));
 	            JLabel mensajeFelicitacion = new JLabel("¡Asombroso! No hay lecciones nuevas que recomendar.");
-	            mensajeFelicitacion.setFont(FONT_NORMAL1);
+	            mensajeFelicitacion.setFont(CUERPO_GRANDE);
 	            leccionesPanel.add(mensajeFelicitacion);
 	            leccionesPanel.add(Box.createVerticalStrut(10));
 	            //TODO Añadir imagen de un trofeo
 	        } else if (listaLecciones.isEmpty()) {
 	            leccionesPanel.add(Box.createVerticalStrut(10));
 	            JLabel mensajeVacio = new JLabel("No hay lecciones disponibles en este momento.");
-	            mensajeVacio.setFont(FONT_NORMAL1);
+	            mensajeVacio.setFont(CUERPO_GRANDE);
 	            leccionesPanel.add(mensajeVacio);
 	        }
 	        
 	    } else {
 	        leccionesPanel.add(Box.createVerticalStrut(10));
 	        JLabel mensajeNoDisponible = new JLabel("Esta función no está disponible para empresas.");
-	        mensajeNoDisponible.setFont(FONT_NORMAL1);
+	        mensajeNoDisponible.setFont(CUERPO_GRANDE);
 	        leccionesPanel.add(mensajeNoDisponible);
 	    }
 	    
@@ -230,14 +194,14 @@ public class PanelInicio extends JPanel{
 	    return proxLecJPanel;
 	}
 	
-	private JPanel PanelCursos() {
+	private JPanel construirPanelCursos() {
 		JPanel cursosPanel = new JPanel();
-		cursosPanel.setBackground(COLOR_CARD);
-		cursosPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
+		cursosPanel.setBackground(Color.WHITE);
+		cursosPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
 		
 		JLabel mensajeCursos = new JLabel();
 		mensajeCursos.setText("Cursos en progreso: ");
-		mensajeCursos.setFont(FONT_TITULO2);
+		mensajeCursos.setFont(SUBTITULO_GRANDE);
 		cursosPanel.add(mensajeCursos);
 		
 		JPanel cursosProgreso = new JPanel();
@@ -256,13 +220,13 @@ public class PanelInicio extends JPanel{
 			if (listaCursosActivos.isEmpty()) {
 				cursosProgreso.add(Box.createVerticalStrut(20));
 				JLabel mensaje1 = new JLabel("Todavía vacío, es hora de empezar un curso.");
-				mensaje1.setFont(FONT_NORMAL1);
+				mensaje1.setFont(CUERPO_GRANDE);
 				cursosProgreso.add(mensaje1);
 				
 				
 				cursosProgreso.add(Box.createVerticalStrut(10));
 				JLabel mensaje2 = new JLabel("¿A qué espera?");
-				mensaje2.setFont(FONT_NORMAL1);
+				mensaje2.setFont(CUERPO_GRANDE);
 				cursosProgreso.add(mensaje2);
 				
 				cursosProgreso.add(Box.createVerticalStrut(10));
@@ -276,16 +240,16 @@ public class PanelInicio extends JPanel{
 	}
 
 	
-	private JPanel PanelActivos() {
+	private JPanel construirPanelActivos() {
 		JPanel activosPanel = new JPanel();
 		activosPanel.setBackground(Color.WHITE);
-		activosPanel.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
+		activosPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
 		activosPanel.setLayout(new BorderLayout());
 		
 		JLabel mensajeActivos = new JLabel();
 		mensajeActivos.setText("Resumen de sus activos: ");
-		mensajeActivos.setFont(FONT_TITULO2);
-		mensajeActivos.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		mensajeActivos.setFont(SUBTITULO_GRANDE);
+		mensajeActivos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		activosPanel.add(mensajeActivos, BorderLayout.NORTH);
 		
 		String[] columnas = {"Concepto","Cartera", "Valor (€)"};
@@ -304,12 +268,12 @@ public class PanelInicio extends JPanel{
 			modelo.addRow(new Object[]{"Cree una cartera", "---", "---"});
 			
 			JTable tablaResumen = new JTable(modelo);
-			tablaResumen.setFont(FONT_NORMAL2);
+			tablaResumen.setFont(CUERPO_PEQUENO);
 			tablaResumen.setRowHeight(20);
-			tablaResumen.getTableHeader().setFont(FONT_NORMAL2);
+			tablaResumen.getTableHeader().setFont(CUERPO_PEQUENO);
 			
 			JScrollPane scroll = new JScrollPane(tablaResumen);
-			Border bordet1 = BorderFactory.createLineBorder(COLOR_BORDE, 1);
+			Border bordet1 = BorderFactory.createLineBorder(MAIN_BORDE, 1);
 			Border bordet2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 			scroll.setBorder(BorderFactory.createCompoundBorder(bordet1, bordet2));
 			activosPanel.add(scroll, BorderLayout.CENTER);
@@ -356,14 +320,14 @@ public class PanelInicio extends JPanel{
 
 		JTable tablaResumen = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tablaResumen);
-		Border bordet1 = BorderFactory.createLineBorder(COLOR_BORDE, 1);
+		Border bordet1 = BorderFactory.createLineBorder(MAIN_BORDE, 1);
 		Border bordet2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		scroll.setBorder(BorderFactory.createCompoundBorder(bordet1, bordet2));		
 		activosPanel.add(scroll, BorderLayout.CENTER);
 		
-		tablaResumen.setFont(FONT_NORMAL2);
+		tablaResumen.setFont(CUERPO_PEQUENO);
 		tablaResumen.setRowHeight(20);
-		tablaResumen.getTableHeader().setFont(FONT_NORMAL2);		
+		tablaResumen.getTableHeader().setFont(CUERPO_PEQUENO);		
 
 		activosPanel.setName("Portfolio");
 		PanelFocus(activosPanel, null);
@@ -372,10 +336,10 @@ public class PanelInicio extends JPanel{
 	
 	
 	int sel = 0;
-	private JPanel PanelGraficos() {
+	private JPanel construirPanelGraficos() {
 		JPanel panelGraficos = new JPanel(new BorderLayout(10,10));
-		panelGraficos.setBackground(COLOR_CARD);
-		panelGraficos.setBorder(BorderFactory.createLineBorder(COLOR_BORDE,1));
+		panelGraficos.setBackground(Color.WHITE);
+		panelGraficos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
 		
 		if (MainEleutradia.listaProductos != null) {
         	productos = new ArrayList<>(MainEleutradia.listaProductos);
@@ -387,7 +351,7 @@ public class PanelInicio extends JPanel{
 		
 	
 	    JLabel mensajeGraficos = new JLabel("", SwingConstants.CENTER);
-	    mensajeGraficos.setFont(FONT_TITULO2);
+	    mensajeGraficos.setFont(SUBTITULO_GRANDE);
 	    panelGraficos.add(mensajeGraficos, BorderLayout.NORTH);
 
 	    JLabel mensajePequeño = new JLabel("", SwingConstants.CENTER);
@@ -433,7 +397,7 @@ public class PanelInicio extends JPanel{
                     ImageIcon icon = new ImageIcon(url);
                     ImageIcon icon2 = new ImageIcon(url2);
 
-                    javax.swing.SwingUtilities.invokeLater(() -> {
+                    SwingUtilities.invokeLater(() -> {
                         mensajePequeño.setIcon(icon); // gráfico pequeño
                         // actualizar gráfico grande si ya está visible
                         if (frame.isVisible()) {
@@ -444,7 +408,7 @@ public class PanelInicio extends JPanel{
                         }
                     });
                 } catch (Exception e) {
-                    javax.swing.SwingUtilities.invokeLater(() -> mensajePequeño.setText("Error cargando gráfico"));
+                    SwingUtilities.invokeLater(() -> mensajePequeño.setText("Error cargando gráfico"));
                 }
             }).start();
 	        
@@ -463,9 +427,9 @@ public class PanelInicio extends JPanel{
             actualizarGrafico.run();
         });
 
-        mensajePequeño.addMouseListener(new java.awt.event.MouseAdapter() {
+        mensajePequeño.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 frame.setVisible(true);
             }
         });
@@ -491,12 +455,12 @@ public class PanelInicio extends JPanel{
 		return panelGraficos;
 	}
 	
-	private JPanel PanelTitularesNoticias() {
+	private JPanel panelTitularesNoticias() {
 	    JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	    panel.setBackground(COLOR_FONDO_PRINCIPAL);
+	    panel.setBackground(MAIN_FONDO);
 
-
-//IAG (ChatGPT)
+	    //IAG (ChatGPT)
+	    //SIN MODIFICAR
 	    List<String> titulares = new ArrayList<>();
 	    titulares.add("IBEX 35 sube un 3%");
 	    titulares.add("El euro se fortalece frente al dólar");
@@ -506,23 +470,23 @@ public class PanelInicio extends JPanel{
 	    noticias.add("El IBEX 35 ha subido un 3% tras los datos de inflación.");
 	    noticias.add("El euro gana fuerza frente al dólar por las decisiones del BCE.");
 	    noticias.add("Las empresas tecnológicas más grandes registran caídas importantes.");
-//END-IAG
+	    //END IAG
 
 	    JLabel titularLabel = new JLabel("Noticias:" + noticias.get(0));
-	    titularLabel.setFont(FONT_NORMAL2);
+	    titularLabel.setFont(CUERPO_PEQUENO);
 	    titularLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 	    panel.add(titularLabel);
 
 	    final int[] indice = {0};
 
-	    //Hilo pasar
+	    // Hilo pasar
 	    Thread hiloTitulares = new Thread(() -> {
 	        try {
 	            while (true) {
 	                Thread.sleep(4000);
 	                indice[0] = (indice[0] + 1) % noticias.size();
 
-	                javax.swing.SwingUtilities.invokeLater(() -> {
+	                SwingUtilities.invokeLater(() -> {
 	                    titularLabel.setText("Noticias: " + noticias.get(indice[0]));
 	                });
 	            }
@@ -532,16 +496,16 @@ public class PanelInicio extends JPanel{
 	    });
 	    hiloTitulares.start();
 
-	    titularLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+	    titularLabel.addMouseListener(new MouseAdapter() {
 	        @Override
-	        public void mouseClicked(java.awt.event.MouseEvent e) {
+	        public void mouseClicked(MouseEvent e) {
 	            JFrame ventana = new JFrame("Noticia");
 	            ventana.setSize(500, 300);
 	            ventana.setLocationRelativeTo(null);
 	            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	            JTextArea texto = new JTextArea(noticias.get(indice[0]));
-	            texto.setFont(FONT_NORMAL1);
+	            texto.setFont(CUERPO_GRANDE);
 	            texto.setLineWrap(true);
 	            texto.setEditable(false);
 

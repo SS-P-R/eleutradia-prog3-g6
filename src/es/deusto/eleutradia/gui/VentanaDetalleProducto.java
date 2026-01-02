@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,33 +29,20 @@ import es.deusto.eleutradia.domain.PlazoRentabilidad;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
+
 public class VentanaDetalleProducto extends JDialog {
 
     private static final long serialVersionUID = 1L;
     private ProductoFinanciero producto;
-    
-    // Colores y fuentes
-    private static final Color COLOR_FONDO_PRINCIPAL = new Color(250, 250, 250);
-    private static final Color COLOR_BORDE = new Color(220, 220, 230);
-    private static final Color MY_AZUL_CLARO = new Color(0, 120, 255);
-    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
-    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
-    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
-    private static final Color MY_VERDE_OSCURO = new Color(0, 130, 40);
-    private static final Color MY_ROJO_CLARO = new Color(220, 50, 50);
-    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 13);
-    private static final Font FONT_PEQUENO = new Font("Segoe UI", Font.PLAIN, 11);
-    private static final Font FONT_NUMERO_GRANDE = new Font("Segoe UI", Font.BOLD, 16);
-    private static final Font FONT_NUMERO_MEDIO = new Font("Segoe UI", Font.BOLD, 14);
 
     public VentanaDetalleProducto(JFrame padre, ProductoFinanciero producto, boolean modal) {
         super(padre, "Detalles del producto", modal);
         this.producto = producto;
         this.setSize(700, 600);
         this.setLocationRelativeTo(padre);
-        this.setBackground(COLOR_FONDO_PRINCIPAL);
+        this.setBackground(MAIN_FONDO);
         this.setLayout(new BorderLayout(0, 0));
         this.setResizable(false);
         this.construirVentana();
@@ -65,7 +51,7 @@ public class VentanaDetalleProducto extends JDialog {
 
     private void construirVentana() {
         JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
-        panelPrincipal.setBackground(COLOR_FONDO_PRINCIPAL);
+        panelPrincipal.setBackground(MAIN_FONDO);
         panelPrincipal.setBorder(new EmptyBorder(20, 20, 20, 20));
         
         panelPrincipal.add(construirPanelProducto(), BorderLayout.NORTH);
@@ -79,7 +65,7 @@ public class VentanaDetalleProducto extends JDialog {
         JPanel panel = new JPanel(new BorderLayout(15, 10));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         
         JPanel panelLogo = new JPanel(new BorderLayout());
@@ -100,7 +86,7 @@ public class VentanaDetalleProducto extends JDialog {
             JLabel labelSinLogo = new JLabel("📊");
             labelSinLogo.setFont(new Font("Segoe UI", Font.PLAIN, 40));
             labelSinLogo.setHorizontalAlignment(JLabel.CENTER);
-            labelSinLogo.setForeground(MY_GRIS_CLARO);
+            labelSinLogo.setForeground(GRIS_MEDIO);
             panelLogo.add(labelSinLogo, BorderLayout.CENTER);
         }
         
@@ -109,14 +95,14 @@ public class VentanaDetalleProducto extends JDialog {
         panelInfo.setBackground(Color.WHITE);
         
         JLabel labelNombre = new JLabel(producto.getNombre());
-        labelNombre.setFont(FONT_TITULO);
-        labelNombre.setForeground(MY_AZUL_CLARO);
+        labelNombre.setFont(TITULO_GRANDE);
+        labelNombre.setForeground(AZUL_CLARO);
         labelNombre.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel labelTipo = new JLabel(producto.getTipoProducto().getNombre() + 
                 " • " + producto.getRegionGeografica().getNombre());
-        labelTipo.setFont(FONT_NORMAL);
-        labelTipo.setForeground(MY_GRIS_CLARO);
+        labelTipo.setFont(CUERPO_MEDIO);
+        labelTipo.setForeground(GRIS_MEDIO);
         labelTipo.setAlignmentX(LEFT_ALIGNMENT);
         
         JPanel panelPrecio = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -124,11 +110,11 @@ public class VentanaDetalleProducto extends JDialog {
         panelPrecio.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel labelPrecio = new JLabel(String.format("%.2f", producto.getValorUnitario()));
-        labelPrecio.setFont(FONT_NUMERO_GRANDE);
-        labelPrecio.setForeground(MY_AZUL_OSCURO);
+        labelPrecio.setFont(SUBTITULO_GRANDE);
+        labelPrecio.setForeground(AZUL_OSCURO);
         JLabel labelDivisa = new JLabel(" " + producto.getDivisa().getSimbolo() + "/acción");
-        labelDivisa.setFont(FONT_NORMAL);
-        labelDivisa.setForeground(MY_GRIS_CLARO);
+        labelDivisa.setFont(CUERPO_MEDIO);
+        labelDivisa.setForeground(GRIS_MEDIO);
         panelPrecio.add(labelPrecio);
         panelPrecio.add(labelDivisa);
         
@@ -145,12 +131,12 @@ public class VentanaDetalleProducto extends JDialog {
         panelRiesgo.setPreferredSize(new Dimension(100, 80));
         
         JLabel labelRiesgoTitulo = new JLabel("Nivel de riesgo");
-        labelRiesgoTitulo.setFont(FONT_PEQUENO);
-        labelRiesgoTitulo.setForeground(MY_GRIS_CLARO);
+        labelRiesgoTitulo.setFont(CUERPO_PEQUENO);
+        labelRiesgoTitulo.setForeground(GRIS_MEDIO);
         labelRiesgoTitulo.setAlignmentX(CENTER_ALIGNMENT);
         
         JLabel labelRiesgoValor = new JLabel(producto.getTipoProducto().getStringRiesgo());
-        labelRiesgoValor.setFont(FONT_SUBTITULO);
+        labelRiesgoValor.setFont(SUBTITULO_MEDIO);
         labelRiesgoValor.setForeground(TipoProducto.getColorRiesgo(producto.getTipoProducto().getRiesgo()));
         labelRiesgoValor.setAlignmentX(CENTER_ALIGNMENT);
         
@@ -170,7 +156,7 @@ public class VentanaDetalleProducto extends JDialog {
     private JPanel construirPanelDetalles() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_FONDO_PRINCIPAL);
+        panel.setBackground(MAIN_FONDO);
         
         // Sección: Información General
         panel.add(construirSeccionInformacion());
@@ -187,13 +173,13 @@ public class VentanaDetalleProducto extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         panel.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel tituloSeccion = new JLabel("Información General");
-        tituloSeccion.setFont(FONT_SUBTITULO);
-        tituloSeccion.setForeground(MY_AZUL_OSCURO);
+        tituloSeccion.setFont(SUBTITULO_MEDIO);
+        tituloSeccion.setForeground(AZUL_OSCURO);
         tituloSeccion.setAlignmentX(LEFT_ALIGNMENT);
         panel.add(tituloSeccion);
         panel.add(Box.createVerticalStrut(10));
@@ -256,13 +242,13 @@ public class VentanaDetalleProducto extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         panel.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel tituloSeccion = new JLabel("Rentabilidades Históricas");
-        tituloSeccion.setFont(FONT_SUBTITULO);
-        tituloSeccion.setForeground(MY_AZUL_OSCURO);
+        tituloSeccion.setFont(SUBTITULO_MEDIO);
+        tituloSeccion.setForeground(AZUL_OSCURO);
         tituloSeccion.setAlignmentX(LEFT_ALIGNMENT);
         panel.add(tituloSeccion);
         panel.add(Box.createVerticalStrut(10));
@@ -292,16 +278,16 @@ public class VentanaDetalleProducto extends JDialog {
             if (valor != null) {
                 String textoValor = String.format("%.2f%%", valor);
                 JLabel labelValor = new JLabel(textoValor);
-                labelValor.setFont(FONT_NUMERO_MEDIO);
+                labelValor.setFont(SUBTITULO_MEDIO);
                 
                 if (valor.compareTo(BigDecimal.ZERO) > 0) {
-                    labelValor.setForeground(MY_VERDE_OSCURO);
+                    labelValor.setForeground(VERDE_OSCURO);
                     labelValor.setText("▲ " + textoValor);
                 } else if (valor.compareTo(BigDecimal.ZERO) < 0) {
-                    labelValor.setForeground(MY_ROJO_CLARO);
+                    labelValor.setForeground(ROJO_CLARO);
                     labelValor.setText("▼ " + textoValor);
                 } else {
-                    labelValor.setForeground(MY_GRIS_OSCURO);
+                    labelValor.setForeground(GRIS_OSCURO);
                     labelValor.setText("― " + textoValor);
                 }
                 panelGrid.add(labelValor, gbc);
@@ -318,11 +304,11 @@ public class VentanaDetalleProducto extends JDialog {
     
     private JPanel construirPanelInferior() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        panel.setBackground(COLOR_FONDO_PRINCIPAL);
+        panel.setBackground(MAIN_FONDO);
         
         JButton botonCerrar = new JButton("Cerrar");
-        botonCerrar.setFont(FONT_NORMAL);
-        botonCerrar.setBackground(MY_GRIS_CLARO);
+        botonCerrar.setFont(CUERPO_MEDIO);
+        botonCerrar.setBackground(GRIS_MEDIO);
         botonCerrar.setForeground(Color.WHITE);
         botonCerrar.setPreferredSize(new Dimension(110, 35));
         botonCerrar.setBorderPainted(false);
@@ -339,38 +325,26 @@ public class VentanaDetalleProducto extends JDialog {
     
     private JLabel crearLabelInfo(String texto) {
         JLabel label = new JLabel(texto);
-        label.setFont(FONT_NORMAL);
-        label.setForeground(MY_GRIS_OSCURO);
+        label.setFont(CUERPO_MEDIO);
+        label.setForeground(GRIS_OSCURO);
         return label;
     }
     
     private JLabel crearLabelValor(String texto) {
         JLabel label = new JLabel(texto);
-        label.setFont(FONT_NORMAL);
-        label.setForeground(MY_AZUL_OSCURO);
+        label.setFont(CUERPO_MEDIO);
+        label.setForeground(AZUL_OSCURO);
         return label;
-    }
-    
-    private ImageIcon cargarIconoEscalado(String ruta, int anchoMax, int altoMax) {
-        if (ruta == null || getClass().getResource(ruta) == null) return null;
-        ImageIcon icono = new ImageIcon(getClass().getResource(ruta));
-        Image img = icono.getImage();
-        int anchoOriginal = img.getWidth(null);
-        int altoOriginal = img.getHeight(null);
-        double ratio = Math.min((double)anchoMax/anchoOriginal, (double)altoMax/altoOriginal);
-        int anchoNuevo = (int)(anchoOriginal * ratio);
-        int altoNuevo = (int)(altoOriginal * ratio);
-        return new ImageIcon(img.getScaledInstance(anchoNuevo, altoNuevo, Image.SCALE_SMOOTH));
     }
     
     MouseAdapter myAdapterGris = new MouseAdapter() {
     	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(GRIS_OSCURO);}
 		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(GRIS_MEDIO);}
 		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(GRIS_OSCURO);}
 		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(GRIS_MEDIO);}
     };
 }

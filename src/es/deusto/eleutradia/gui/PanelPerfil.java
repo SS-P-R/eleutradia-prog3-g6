@@ -27,19 +27,22 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class PanelPerfil extends JPanel {
     private static final long serialVersionUID = 1L;
     
-    private es.deusto.eleutradia.db.EleutradiaDBManager dbManager = new es.deusto.eleutradia.db.EleutradiaDBManager();
+    private EleutradiaDBManager dbManager = new EleutradiaDBManager();
     private Usuario usuarioActual;
     private VentanaPrincipal ventanaPrincipal;
     private GestorTema gestorTema;
-    
+    private boolean temaOscuro = false;
  
     private Color getColorFondo() {
         return gestorTema.getColorFondo();
@@ -52,26 +55,13 @@ public class PanelPerfil extends JPanel {
     private Color getColorTextoPrincipal() {
         return gestorTema.getColorTextoPrincipal();
     }
-    
-    private boolean temaOscuro = false;
-    private static final Color COLOR_FONDO_CLARO = new Color(248, 249, 250);
-    private static final Color COLOR_SCROLLBAR = new Color(180, 180, 180);
-    private static final Color COLOR_BORDE = new Color(222, 226, 230);
-    private static final Color COLOR_TEXTO_SECUNDARIO = new Color(108, 117, 125);
-    private static final Color COLOR_ACENTO = new Color(0, 123, 255);
-    private static final Color COLOR_EXITO = new Color(40, 167, 69);
-    
-    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 18);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
-    private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
-	
+        	
     public PanelPerfil(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
         this.usuarioActual = usuario;
         this.ventanaPrincipal=ventanaPrincipal;
         this.gestorTema = GestorTema.getInstancia();
         this.setLayout(new BorderLayout(15, 15));
-        this.setBackground(COLOR_FONDO_CLARO);
+        this.setBackground(MAIN_FONDO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         initComponents();
@@ -97,9 +87,9 @@ public class PanelPerfil extends JPanel {
         scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 		@Override
 	    protected void configureScrollBarColors() {
-	        this.thumbColor = COLOR_SCROLLBAR;
-	        this.thumbDarkShadowColor = COLOR_SCROLLBAR;
-	        this.thumbHighlightColor = COLOR_SCROLLBAR;
+	        this.thumbColor = GRIS_SCROLLBAR;
+	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
+	        this.thumbHighlightColor = GRIS_SCROLLBAR;
 	        this.trackColor = Color.WHITE; 
 	    }
 
@@ -142,12 +132,12 @@ public class PanelPerfil extends JPanel {
         lblNombre.setForeground(getColorTextoPrincipal());
         
         JLabel lblEmail = new JLabel(usuarioActual.getEmail());
-        lblEmail.setFont(FONT_NORMAL1);
-        lblEmail.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblEmail.setFont(CUERPO_GRANDE);
+        lblEmail.setForeground(GRIS_MEDIO);
         
         JLabel lblTipo = new JLabel("Cuenta Activa • " + usuarioActual.getCarteras().size() + " Cartera(s)");
-        lblTipo.setFont(FONT_NORMAL1);
-        lblTipo.setForeground(COLOR_EXITO);
+        lblTipo.setFont(CUERPO_GRANDE);
+        lblTipo.setForeground(VERDE_CLARO);
         
         infoPanel.add(lblNombre);
         infoPanel.add(lblEmail);
@@ -162,7 +152,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Información Personal");
-        lblTitulo.setFont(FONT_TITULO);
+        lblTitulo.setFont(TITULO_MEDIO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -183,14 +173,14 @@ public class PanelPerfil extends JPanel {
         
         panel.add(contentPanel, BorderLayout.CENTER);
         JButton btnEditar = new JButton("Editar Información");
-        btnEditar.setFont(FONT_SUBTITULO);
-        btnEditar.setBackground(COLOR_TEXTO_SECUNDARIO);
+        btnEditar.setFont(SUBTITULO_MEDIO);
+        btnEditar.setBackground(GRIS_MEDIO);
         btnEditar.setForeground(Color.WHITE);
         btnEditar.setFocusPainted(false);
         btnEditar.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         btnEditar.setEnabled(true);
         btnEditar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnEditar.setBackground(COLOR_ACENTO);
+        btnEditar.setBackground(AZUL_CLARO);
         btnEditar.setToolTipText("Editar información personal");
 
         btnEditar.addActionListener(e -> mostrarEditarInformacion());
@@ -207,7 +197,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Perfil Financiero");
-        lblTitulo.setFont(FONT_TITULO);
+        lblTitulo.setFont(TITULO_MEDIO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -250,7 +240,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Configuración de Cuenta");
-        lblTitulo.setFont(FONT_TITULO);
+        lblTitulo.setFont(TITULO_MEDIO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -259,11 +249,11 @@ public class PanelPerfil extends JPanel {
         JPanel panelPassword = new JPanel(new BorderLayout(10, 5));
         panelPassword.setBackground(getColorVentana());
         JLabel lblPassword = new JLabel("Contraseña");
-        lblPassword.setFont(FONT_SUBTITULO);
+        lblPassword.setFont(SUBTITULO_MEDIO);
         lblPassword.setForeground(getColorTextoPrincipal());
         JButton btnCambiarPassword = new JButton("Cambiar contraseña");
-        btnCambiarPassword.setFont(FONT_NORMAL2);
-        btnCambiarPassword.setBackground(COLOR_ACENTO);
+        btnCambiarPassword.setFont(CUERPO_PEQUENO);
+        btnCambiarPassword.setBackground(AZUL_CLARO);
         btnCambiarPassword.setForeground(Color.WHITE);
         btnCambiarPassword.setPreferredSize(new Dimension(140, 25));
         btnCambiarPassword.setFocusPainted(false);
@@ -279,10 +269,10 @@ public class PanelPerfil extends JPanel {
         JPanel panelTema = new JPanel(new BorderLayout(10, 5));
         panelTema.setBackground(getColorVentana());
         JLabel lblTema = new JLabel("Tema de Interfaz");
-        lblTema.setFont(FONT_SUBTITULO);
+        lblTema.setFont(SUBTITULO_MEDIO);
         lblTema.setForeground(getColorTextoPrincipal());
         JToggleButton toggleTema = new JToggleButton(temaOscuro ? "Oscuro" : "Claro");
-        toggleTema.setFont(FONT_NORMAL2);
+        toggleTema.setFont(CUERPO_PEQUENO);
         toggleTema.setSelected(temaOscuro);
         toggleTema.setFocusPainted(false);
         
@@ -296,17 +286,16 @@ public class PanelPerfil extends JPanel {
             }
         });
         
-        
         panelTema.add(lblTema, BorderLayout.WEST);
         panelTema.add(toggleTema, BorderLayout.EAST);
         contentPanel.add(panelTema);
         JPanel panelNotif = new JPanel(new BorderLayout(10, 5));
         panelNotif.setBackground(getColorVentana());
         JLabel lblNotif = new JLabel("Notificaciones por Email");
-        lblNotif.setFont(FONT_SUBTITULO);
+        lblNotif.setFont(SUBTITULO_MEDIO);
         lblNotif.setForeground(getColorTextoPrincipal());
         JCheckBox checkNotif = new JCheckBox("Activar");
-        checkNotif.setFont(FONT_NORMAL2);
+        checkNotif.setFont(CUERPO_PEQUENO);
         checkNotif.setSelected(true);
         checkNotif.setBackground(getColorVentana());
         checkNotif.setForeground(getColorTextoPrincipal());
@@ -331,7 +320,7 @@ public class PanelPerfil extends JPanel {
         panel.setLayout(new BorderLayout(0, 15));
 
         JLabel lblTitulo = new JLabel("Estadísticas de Cuenta");
-        lblTitulo.setFont(FONT_TITULO);
+        lblTitulo.setFont(TITULO_MEDIO);
         lblTitulo.setForeground(getColorTextoPrincipal());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
@@ -376,12 +365,12 @@ public class PanelPerfil extends JPanel {
 
         // --- Text labels ---
         JLabel lblTitulo = new JLabel(titulo);
-        lblTitulo.setFont(FONT_NORMAL1);
+        lblTitulo.setFont(CUERPO_GRANDE);
         lblTitulo.setForeground(getColorTextoPrincipal());
 
         JLabel lblValor = new JLabel(valor);
-        lblValor.setFont(FONT_NORMAL1);
-        lblValor.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblValor.setFont(CUERPO_GRANDE);
+        lblValor.setForeground(GRIS_MEDIO);
 
         JPanel textPanel = new JPanel(new GridLayout(2, 1));
         textPanel.setOpaque(false);
@@ -399,11 +388,11 @@ public class PanelPerfil extends JPanel {
         panel.setBackground(getColorVentana());
         
         JLabel lblLabel = new JLabel(label);
-        lblLabel.setFont(FONT_NORMAL2);
-        lblLabel.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblLabel.setFont(CUERPO_PEQUENO);
+        lblLabel.setForeground(GRIS_MEDIO);
         
         JLabel lblValor = new JLabel(valor);
-        lblValor.setFont(FONT_SUBTITULO);
+        lblValor.setFont(SUBTITULO_MEDIO);
         lblValor.setForeground(getColorTextoPrincipal());
         
         panel.add(lblLabel, BorderLayout.NORTH);
@@ -416,7 +405,7 @@ public class PanelPerfil extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(15, 5));
         panel.setBackground(getColorVentana());
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
         
@@ -427,11 +416,11 @@ public class PanelPerfil extends JPanel {
         textPanel.setBackground(getColorVentana());
         
         JLabel lblLabel = new JLabel(label);
-        lblLabel.setFont(FONT_NORMAL2);
-        lblLabel.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblLabel.setFont(CUERPO_PEQUENO);
+        lblLabel.setForeground(GRIS_MEDIO);
         
         JLabel lblValor = new JLabel(valor);
-        lblValor.setFont(FONT_SUBTITULO);
+        lblValor.setFont(SUBTITULO_MEDIO);
         lblValor.setForeground(getColorTextoPrincipal());
         
         textPanel.add(lblLabel);
@@ -455,19 +444,19 @@ public class PanelPerfil extends JPanel {
         JPanel panelActual = new JPanel(new BorderLayout(5, 5));
         panelActual.add(new JLabel("Contraseña Actual:"), BorderLayout.NORTH);
         JPasswordField txtActual = new JPasswordField();
-        txtActual.setFont(FONT_NORMAL1);
+        txtActual.setFont(CUERPO_GRANDE);
         panelActual.add(txtActual, BorderLayout.CENTER);
         mainPanel.add(panelActual);
         JPanel panelNueva = new JPanel(new BorderLayout(5, 5));
         panelNueva.add(new JLabel("Contraseña Nueva:"), BorderLayout.NORTH);
         JPasswordField txtNueva = new JPasswordField();
-        txtNueva.setFont(FONT_NORMAL1);
+        txtNueva.setFont(CUERPO_GRANDE);
         panelNueva.add(txtNueva, BorderLayout.CENTER);
         mainPanel.add(panelNueva);
         JPanel panelConfirmar = new JPanel(new BorderLayout(5, 5));
         panelConfirmar.add(new JLabel("Confirmar Contraseña:"), BorderLayout.NORTH);
         JPasswordField txtConfirmar = new JPasswordField();
-        txtConfirmar.setFont(FONT_NORMAL1);
+        txtConfirmar.setFont(CUERPO_GRANDE);
         panelConfirmar.add(txtConfirmar, BorderLayout.CENTER);
         mainPanel.add(panelConfirmar);
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -475,7 +464,7 @@ public class PanelPerfil extends JPanel {
         btnCancelar.addActionListener(e -> dialog.dispose());
         
         JButton btnGuardar = new JButton("Guardar");
-        btnGuardar.setBackground(COLOR_ACENTO);
+        btnGuardar.setBackground(AZUL_CLARO);
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFocusPainted(false);
         btnGuardar.addActionListener(e -> {
@@ -518,7 +507,7 @@ public class PanelPerfil extends JPanel {
         JPanel card = new JPanel();
         card.setBackground(getColorVentana());
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         return card;
@@ -537,28 +526,28 @@ public class PanelPerfil extends JPanel {
         JPanel panelNombre = new JPanel(new BorderLayout(5, 5));
         panelNombre.add(new JLabel("Nombre Completo:"), BorderLayout.NORTH);
         JTextField txtNombre = new javax.swing.JTextField(usuarioActual.getNombre());
-        txtNombre.setFont(FONT_NORMAL1);
+        txtNombre.setFont(CUERPO_GRANDE);
         panelNombre.add(txtNombre, BorderLayout.CENTER);
         mainPanel.add(panelNombre);
 
         JPanel panelEmail = new JPanel(new BorderLayout(5, 5));
         panelEmail.add(new JLabel("Email:"), BorderLayout.NORTH);
         JTextField txtEmail = new javax.swing.JTextField(usuarioActual.getEmail());
-        txtEmail.setFont(FONT_NORMAL1);
+        txtEmail.setFont(CUERPO_GRANDE);
         panelEmail.add(txtEmail, BorderLayout.CENTER);
         mainPanel.add(panelEmail);
 
         JPanel panelTelefono = new JPanel(new BorderLayout(5, 5));
         panelTelefono.add(new JLabel("Teléfono:"), BorderLayout.NORTH);
         JTextField txtTelefono = new javax.swing.JTextField(usuarioActual.getTelefono());
-        txtTelefono.setFont(FONT_NORMAL1);
+        txtTelefono.setFont(CUERPO_GRANDE);
         panelTelefono.add(txtTelefono, BorderLayout.CENTER);
         mainPanel.add(panelTelefono);
 
         JPanel panelDireccion = new JPanel(new BorderLayout(5, 5));
         panelDireccion.add(new JLabel("Dirección:"), BorderLayout.NORTH);
         JTextField txtDireccion = new javax.swing.JTextField(usuarioActual.getDireccion());
-        txtDireccion.setFont(FONT_NORMAL1);
+        txtDireccion.setFont(CUERPO_GRANDE);
         panelDireccion.add(txtDireccion, BorderLayout.CENTER);
         mainPanel.add(panelDireccion);
 
@@ -567,14 +556,14 @@ public class PanelPerfil extends JPanel {
         JTextField txtFiscal = new javax.swing.JTextField(
             usuarioActual.getDomicilioFiscal() != null ? usuarioActual.getDomicilioFiscal().getNombre() : ""
         );
-        txtFiscal.setFont(FONT_NORMAL1);
+        txtFiscal.setFont(CUERPO_GRANDE);
         panelFiscal.add(txtFiscal, BorderLayout.CENTER);
         mainPanel.add(panelFiscal);
        
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnCancelar = new JButton("Cancelar");
         JButton btnGuardar = new JButton("Guardar");
-        btnGuardar.setBackground(COLOR_ACENTO);
+        btnGuardar.setBackground(AZUL_CLARO);
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFocusPainted(false);
 
@@ -608,7 +597,6 @@ public class PanelPerfil extends JPanel {
         dialog.setVisible(true);
     }
 
-    
     private void actualizarTema() {
         removeAll();
         initComponents();
@@ -620,7 +608,6 @@ public class PanelPerfil extends JPanel {
             "Tema Cambiado", 
             JOptionPane.INFORMATION_MESSAGE);
     }
-    
     
     public void refrescarDatos() {
         removeAll();

@@ -4,18 +4,26 @@ import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.*;
 import es.deusto.eleutradia.main.MainEleutradia;
 
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
+
+import static es.deusto.eleutradia.gui.style.UITema.*;
 
 public class PanelPortfolio extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -40,7 +48,6 @@ public class PanelPortfolio extends JPanel {
     private DefaultListModel<String> operationsListModel;
     
     // Estilos
-    private static final Color COLOR_SCROLLBAR = new Color(180, 180, 180);
     private Color COLOR_GANANCIA = gestorTema.getColorGanancia();
     private Color COLOR_PERDIDA = gestorTema.getColorPerdida();
     private Color COLOR_FONDO_PRINCIPAL = gestorTema.getColorFondo();
@@ -48,12 +55,6 @@ public class PanelPortfolio extends JPanel {
     private Color COLOR_BORDE = gestorTema.getColorBorde();
     private Color COLOR_TEXTO_SECUNDARIO = gestorTema.getColorTextoSecundario();
     private Color COLOR_ACENTO = gestorTema.getColorAcento();
-    
-    private static final Font FONT_TITULO1 = new Font("Segoe UI", Font.BOLD, 20);
-    private static final Font FONT_TITULO2 = new Font("Segoe UI", Font.BOLD, 16);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_NORMAL1 = new Font("Segoe UI", Font.PLAIN, 14);
-    private static final Font FONT_NORMAL2 = new Font("Segoe UI", Font.PLAIN, 12);
     
     public PanelPortfolio(Usuario usuario) {
         this.usuarioActual = usuario;
@@ -92,9 +93,9 @@ public class PanelPortfolio extends JPanel {
         scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
     		@Override
     	    protected void configureScrollBarColors() {
-    	        this.thumbColor = COLOR_SCROLLBAR;
-    	        this.thumbDarkShadowColor = COLOR_SCROLLBAR;
-    	        this.thumbHighlightColor = COLOR_SCROLLBAR;
+    	        this.thumbColor = GRIS_SCROLLBAR;
+    	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
+    	        this.thumbHighlightColor = GRIS_SCROLLBAR;
     	        this.trackColor = Color.WHITE; 
     	    }
 
@@ -118,9 +119,9 @@ public class PanelPortfolio extends JPanel {
         scrollPane.getHorizontalScrollBar().setUI(new BasicScrollBarUI() {
     		@Override
     	    protected void configureScrollBarColors() {
-    	        this.thumbColor = COLOR_SCROLLBAR;
-    	        this.thumbDarkShadowColor = COLOR_SCROLLBAR;
-    	        this.thumbHighlightColor = COLOR_SCROLLBAR;
+    	        this.thumbColor = GRIS_SCROLLBAR;
+    	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
+    	        this.thumbHighlightColor = GRIS_SCROLLBAR;
     	        this.trackColor = Color.WHITE; 
     	    }
 
@@ -149,11 +150,11 @@ public class PanelPortfolio extends JPanel {
         panel.setLayout(new BorderLayout(15, 10));
         
         JLabel lblTitulo = new JLabel("Mis Carteras");
-        lblTitulo.setFont(FONT_TITULO2);
+        lblTitulo.setFont(SUBTITULO_GRANDE);
         panel.add(lblTitulo, BorderLayout.WEST);
         
         comboCarteras = new JComboBox<>();
-        comboCarteras.setFont(FONT_NORMAL1);
+        comboCarteras.setFont(CUERPO_GRANDE);
         comboCarteras.setPreferredSize(new Dimension(300, 35));
         
         // 1. Añadimos las carteras existentes
@@ -268,30 +269,30 @@ public class PanelPortfolio extends JPanel {
         JPanel card1 = crearCard();
         card1.setLayout(new BorderLayout(5, 5));
         JLabel lbl1 = new JLabel("Patrimonio Total (Todas las Carteras)");
-        lbl1.setFont(FONT_NORMAL2);
+        lbl1.setFont(CUERPO_PEQUENO);
         lbl1.setForeground(COLOR_TEXTO_SECUNDARIO);
         lblPatrimonioTotalUsuario = new JLabel("0,00 €");
-        lblPatrimonioTotalUsuario.setFont(FONT_TITULO1);
+        lblPatrimonioTotalUsuario.setFont(TITULO_GRANDE);
         card1.add(lbl1, BorderLayout.NORTH);
         card1.add(lblPatrimonioTotalUsuario, BorderLayout.CENTER);
         panelPrincipal.add(card1);
         JPanel card2 = crearCard();
         card2.setLayout(new BorderLayout(5, 5));
         JLabel lbl2 = new JLabel("Efectivo Total");
-        lbl2.setFont(FONT_NORMAL2);
+        lbl2.setFont(CUERPO_PEQUENO);
         lbl2.setForeground(COLOR_TEXTO_SECUNDARIO);
         lblPatrimonioLiquido = new JLabel("0,00 €");
-        lblPatrimonioLiquido.setFont(FONT_TITULO1);
+        lblPatrimonioLiquido.setFont(TITULO_GRANDE);
         card2.add(lbl2, BorderLayout.NORTH);
         card2.add(lblPatrimonioLiquido, BorderLayout.CENTER);
         panelPrincipal.add(card2);
         JPanel card3 = crearCard();
         card3.setLayout(new BorderLayout(5, 5));
         JLabel lbl3 = new JLabel("Inversiones Totales");
-        lbl3.setFont(FONT_NORMAL2);
+        lbl3.setFont(CUERPO_PEQUENO);
         lbl3.setForeground(COLOR_TEXTO_SECUNDARIO);
         lblPatrimonioInvertido = new JLabel("0,00 €");
-        lblPatrimonioInvertido.setFont(FONT_TITULO1);
+        lblPatrimonioInvertido.setFont(TITULO_GRANDE);
         card3.add(lbl3, BorderLayout.NORTH);
         card3.add(lblPatrimonioInvertido, BorderLayout.CENTER);
         panelPrincipal.add(card3);
@@ -311,7 +312,7 @@ public class PanelPortfolio extends JPanel {
         JPanel card = crearCard();
         card.setLayout(new BorderLayout(10, 10));
         lblNombreCartera = new JLabel("Cartera Seleccionada");
-        lblNombreCartera.setFont(FONT_TITULO2);
+        lblNombreCartera.setFont(SUBTITULO_GRANDE);
         lblNombreCartera.setForeground(COLOR_ACENTO);
         card.add(lblNombreCartera, BorderLayout.NORTH);
         lblPatrimonioCartera = new JLabel("0,00 €");
@@ -319,7 +320,7 @@ public class PanelPortfolio extends JPanel {
         lblPatrimonioCartera.setForeground(new Color(33, 37, 41));
         card.add(lblPatrimonioCartera, BorderLayout.CENTER);
         lblGananciasTotal = new JLabel("▲ +0,00 € (0,00%)");
-        lblGananciasTotal.setFont(FONT_SUBTITULO);
+        lblGananciasTotal.setFont(SUBTITULO_MEDIO);
         lblGananciasTotal.setForeground(COLOR_GANANCIA);
         card.add(lblGananciasTotal, BorderLayout.SOUTH);
         return card;
@@ -330,17 +331,17 @@ public class PanelPortfolio extends JPanel {
         card.setLayout(new GridLayout(3, 1, 0, 15));
         JPanel panelSaldo = crearItemDesglose("Saldo Disponible");
         lblSaldoDisponible = new JLabel("0,00 €");
-        lblSaldoDisponible.setFont(FONT_TITULO2);
+        lblSaldoDisponible.setFont(SUBTITULO_GRANDE);
         panelSaldo.add(lblSaldoDisponible);
         card.add(panelSaldo);
         JPanel panelInversiones = crearItemDesglose("Valor de Inversiones");
         lblValorInversiones = new JLabel("0,00 €");
-        lblValorInversiones.setFont(FONT_TITULO2);
+        lblValorInversiones.setFont(SUBTITULO_GRANDE);
         panelInversiones.add(lblValorInversiones);
         card.add(panelInversiones);
         JPanel panelRiesgo = crearItemDesglose("Perfil de Riesgo");
         JLabel lblRiesgo = new JLabel("-");
-        lblRiesgo.setFont(FONT_TITULO2);
+        lblRiesgo.setFont(SUBTITULO_GRANDE);
         panelRiesgo.add(lblRiesgo);
         card.add(panelRiesgo);
         
@@ -351,7 +352,7 @@ public class PanelPortfolio extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBackground(COLOR_VENTANA);
         JLabel lblTitulo = new JLabel(titulo);
-        lblTitulo.setFont(FONT_NORMAL2);
+        lblTitulo.setFont(CUERPO_PEQUENO);
         lblTitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
         panel.add(lblTitulo, BorderLayout.NORTH);
         
@@ -380,12 +381,12 @@ public class PanelPortfolio extends JPanel {
         
         tablePosiciones = new JTable(tableModel);
         tablePosiciones.setRowHeight(35);
-        tablePosiciones.setFont(FONT_NORMAL2);
+        tablePosiciones.setFont(CUERPO_PEQUENO);
         tablePosiciones.setGridColor(COLOR_BORDE);
         tablePosiciones.setSelectionBackground(new Color(232, 244, 253));
         tablePosiciones.setSelectionForeground(Color.BLACK);
         JTableHeader header = tablePosiciones.getTableHeader();
-        header.setFont(FONT_SUBTITULO);
+        header.setFont(SUBTITULO_MEDIO);
         header.setBackground(COLOR_FONDO_PRINCIPAL);
         header.setForeground(COLOR_TEXTO_SECUNDARIO);
         header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, COLOR_BORDE));
@@ -414,7 +415,7 @@ public class PanelPortfolio extends JPanel {
         panel.setLayout(new BorderLayout(0, 15));
         panel.setPreferredSize(new Dimension(0, 200));
         JLabel lblTitulo = new JLabel("Operaciones Recientes");
-        lblTitulo.setFont(FONT_TITULO2);
+        lblTitulo.setFont(SUBTITULO_GRANDE);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
         operationsListModel = new DefaultListModel<>();
@@ -434,7 +435,7 @@ public class PanelPortfolio extends JPanel {
         panel.setBackground(COLOR_FONDO_PRINCIPAL);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         JButton btnActualizar = new JButton("Actualizar Datos");
-        btnActualizar.setFont(FONT_SUBTITULO);
+        btnActualizar.setFont(SUBTITULO_MEDIO);
         btnActualizar.setBackground(COLOR_ACENTO);
         btnActualizar.setForeground(Color.WHITE);
         btnActualizar.setFocusPainted(false);
@@ -571,7 +572,7 @@ public class PanelPortfolio extends JPanel {
                 } catch (NumberFormatException e) {
                     c.setForeground(Color.BLACK);
                 }
-                setFont(FONT_SUBTITULO);
+                setFont(SUBTITULO_MEDIO);
             }
             
             setHorizontalAlignment(JLabel.RIGHT);

@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.Random;
 
@@ -19,18 +17,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class PanelSimulador extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private static final int NUM_PRODUCTOS = 4;
     private static final double SALDO_INICIAL = 1000.0;
-    
-    private static final Color MY_VERDE_CLARO = new Color(40, 167, 69);
-    private static final Color MY_VERDE_OSCURO = new Color(35, 99, 31);
-    private static final Color MY_AZUL_CLARO = new Color(0, 120, 255);
-    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
-    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
-    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
 
     private JButton btnIniciar;
     private JButton btnParar;
@@ -45,8 +38,8 @@ public class PanelSimulador extends JPanel {
     private JButton[] btnComprar = new JButton[NUM_PRODUCTOS];
     private JButton[] btnVender = new JButton[NUM_PRODUCTOS];
 
-    private String[] NOMBRES = {"Tecnológica", "Oro", "Criptomoneda", "Renovables"};
-    private double[] PRECIOS_BASE = {150.0, 1200.0, 500.0, 80.0};
+    private static final String[] NOMBRES = {"Tecnológica", "Oro", "Criptomoneda", "Renovables"};
+    private static final double[] PRECIOS_BASE = {150.0, 1200.0, 500.0, 80.0};
     
     private double saldoActual = SALDO_INICIAL;
     private int[] cartera = new int[NUM_PRODUCTOS];
@@ -97,7 +90,7 @@ public class PanelSimulador extends JPanel {
         btnIniciar = new JButton("Iniciar Simulación");
         btnIniciar.setMinimumSize(new Dimension(150, 45));
         btnIniciar.setPreferredSize(new Dimension(150, 45));
-        btnIniciar.setBackground(MY_VERDE_CLARO);
+        btnIniciar.setBackground(VERDE_CLARO);
         btnIniciar.setForeground(Color.WHITE);
         btnIniciar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnIniciar.setBorderPainted(false);
@@ -131,7 +124,7 @@ public class PanelSimulador extends JPanel {
         btnParar.setMinimumSize(new Dimension(150, 45));
         btnParar.setPreferredSize(new Dimension(150, 45));
         btnParar.setEnabled(false);
-        btnParar.setBackground(MY_AZUL_CLARO);
+        btnParar.setBackground(AZUL_CLARO);
         btnParar.setForeground(Color.WHITE);
         btnParar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnParar.setBorderPainted(false);
@@ -145,7 +138,7 @@ public class PanelSimulador extends JPanel {
         btnVolver = new JButton("Volver a Cursos");
         btnVolver.setMinimumSize(new Dimension(150, 45));
 		btnVolver.setPreferredSize(new Dimension(150, 45));
-        btnVolver.setBackground(MY_GRIS_CLARO);
+        btnVolver.setBackground(GRIS_CLARO);
         btnVolver.setForeground(Color.WHITE);
         btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnVolver.setBorderPainted(false);
@@ -333,43 +326,9 @@ public class PanelSimulador extends JPanel {
         }       
     }
     
-    MouseAdapter myAdapterVerde = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_VERDE_CLARO);}
-    };
-    
-	MouseAdapter myAdapterAzul = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-    };
-	
-	MouseAdapter myAdapterGris = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-    };
-    
     //IAG (Gemini)
   	//SIN MODIFICAR
     public void addAccionVolver(ActionListener listener) {
-
         if (btnVolver != null) {
             btnVolver.addActionListener(listener);
         }

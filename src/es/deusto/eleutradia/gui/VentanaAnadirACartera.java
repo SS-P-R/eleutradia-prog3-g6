@@ -7,11 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
@@ -36,6 +34,8 @@ import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
 import es.deusto.eleutradia.main.MainEleutradia;
 
+import static es.deusto.eleutradia.gui.style.UITema.*;
+
 public class VentanaAnadirACartera extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private EleutradiaDBManager dbManager;
@@ -47,21 +47,6 @@ public class VentanaAnadirACartera extends JDialog {
     private JComboBox<Double> comboCantidad;
     private JComboBox<String> comboTipoCantidad;
     private JLabel labelCostoTotal, labelSaldoDisponible, labelSaldoRestante;
-    
-    // Estilos
-    private static final Color COLOR_FONDO_PRINCIPAL = new Color(250, 250, 250);
-    private static final Color COLOR_BORDE = new Color(220, 220, 230);
-    private static final Color MY_AZUL_CLARO = new Color(0, 100, 255);
-    private static final Color MY_AZUL_OSCURO = new Color(10, 60, 170);
-    private static final Color MY_GRIS_CLARO = new Color(120, 120, 120);
-    private static final Color MY_GRIS_OSCURO = new Color(70, 70, 70);
-    private static final Color MY_VERDE_CLARO = new Color(40, 170, 70);
-    private static final Color MY_NARANJA_CLARO = new Color(255, 140, 0);
-    private static final Font FONT_TITULO = new Font("Segoe UI", Font.BOLD, 20);
-    private static final Font FONT_SUBTITULO = new Font("Segoe UI", Font.BOLD, 14);
-    private static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 13);
-    private static final Font FONT_PEQUENO = new Font("Segoe UI", Font.PLAIN, 11);
-    private static final Font FONT_NUMERO_GRANDE = new Font("Segoe UI", Font.BOLD, 16);
 	
 	public VentanaAnadirACartera(JFrame padre, Usuario usuario, ProductoFinanciero producto, boolean modal) {
 		super(padre, "Selección de cartera", modal);
@@ -70,7 +55,7 @@ public class VentanaAnadirACartera extends JDialog {
 		this.dbManager = MainEleutradia.getDBManager();
 		this.setSize(700, 600);
 		this.setLocationRelativeTo(padre);
-		this.setBackground(COLOR_FONDO_PRINCIPAL);
+		this.setBackground(MAIN_FONDO);
 		this.setLayout(new BorderLayout(0, 0));
 		this.setResizable(false);
         this.construirVentana();
@@ -79,7 +64,7 @@ public class VentanaAnadirACartera extends JDialog {
 	
 	private void construirVentana() {
         JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
-        panelPrincipal.setBackground(COLOR_FONDO_PRINCIPAL);
+        panelPrincipal.setBackground(MAIN_FONDO);
         panelPrincipal.setBorder(new EmptyBorder(20, 20, 20, 20));
         panelPrincipal.add(construirPanelProducto(), BorderLayout.NORTH);
         panelPrincipal.add(construirPanelFormulario(), BorderLayout.CENTER);
@@ -91,7 +76,7 @@ public class VentanaAnadirACartera extends JDialog {
 		JPanel panel = new JPanel(new BorderLayout(15, 10));
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
             new EmptyBorder(15, 20, 15, 20)));
 		
 		JPanel panelLogo = new JPanel(new BorderLayout());
@@ -112,7 +97,7 @@ public class VentanaAnadirACartera extends JDialog {
             JLabel labelSinLogo = new JLabel("📊");
             labelSinLogo.setFont(new Font("Segoe UI", Font.PLAIN, 40));
             labelSinLogo.setHorizontalAlignment(JLabel.CENTER);
-            labelSinLogo.setForeground(MY_GRIS_CLARO);
+            labelSinLogo.setForeground(GRIS_MEDIO);
             panelLogo.add(labelSinLogo, BorderLayout.CENTER);
         }
         
@@ -121,14 +106,14 @@ public class VentanaAnadirACartera extends JDialog {
         panelInfo.setBackground(Color.WHITE);
         
         JLabel labelNombre = new JLabel(producto.getNombre());
-        labelNombre.setFont(FONT_TITULO);
-        labelNombre.setForeground(MY_AZUL_CLARO);
+        labelNombre.setFont(TITULO_GRANDE);
+        labelNombre.setForeground(AZUL_CLARO);
         labelNombre.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel labelTipo = new JLabel(producto.getTipoProducto().getNombre() + 
                 " • " + producto.getRegionGeografica().getNombre());
-		labelTipo.setFont(FONT_NORMAL);
-		labelTipo.setForeground(MY_GRIS_CLARO);
+		labelTipo.setFont(CUERPO_MEDIO);
+		labelTipo.setForeground(GRIS_MEDIO);
 		labelTipo.setAlignmentX(LEFT_ALIGNMENT);
 		
 		JPanel panelPrecio = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -136,11 +121,11 @@ public class VentanaAnadirACartera extends JDialog {
         panelPrecio.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel labelPrecio = new JLabel(String.format("%.2f", producto.getValorUnitario()));
-        labelPrecio.setFont(FONT_NUMERO_GRANDE);
-        labelPrecio.setForeground(MY_AZUL_OSCURO);
+        labelPrecio.setFont(SUBTITULO_GRANDE);
+        labelPrecio.setForeground(AZUL_OSCURO);
         JLabel labelDivisa = new JLabel(" " + producto.getDivisa().getSimbolo() + "/acción");
-        labelDivisa.setFont(FONT_NORMAL);
-        labelDivisa.setForeground(MY_GRIS_CLARO);
+        labelDivisa.setFont(CUERPO_MEDIO);
+        labelDivisa.setForeground(GRIS_MEDIO);
         panelPrecio.add(labelPrecio);
         panelPrecio.add(labelDivisa);
         
@@ -156,11 +141,11 @@ public class VentanaAnadirACartera extends JDialog {
         panelRiesgo.setPreferredSize(new Dimension(100, 80));
         
         JLabel labelRiesgoTitulo = new JLabel("Nivel de riesgo");
-        labelRiesgoTitulo.setFont(FONT_PEQUENO);
-        labelRiesgoTitulo.setForeground(MY_GRIS_CLARO);
+        labelRiesgoTitulo.setFont(CUERPO_PEQUENO);
+        labelRiesgoTitulo.setForeground(GRIS_MEDIO);
         labelRiesgoTitulo.setAlignmentX(CENTER_ALIGNMENT);
         JLabel labelRiesgoValor = new JLabel(producto.getTipoProducto().getStringRiesgo());
-        labelRiesgoValor.setFont(FONT_SUBTITULO);
+        labelRiesgoValor.setFont(SUBTITULO_MEDIO);
         labelRiesgoValor.setForeground(TipoProducto.getColorRiesgo(producto.getTipoProducto().getRiesgo()));
         labelRiesgoValor.setAlignmentX(CENTER_ALIGNMENT);
         panelRiesgo.add(Box.createVerticalGlue());
@@ -180,11 +165,11 @@ public class VentanaAnadirACartera extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1), new EmptyBorder(20, 20, 20, 20)));
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), new EmptyBorder(20, 20, 20, 20)));
         
         JLabel tituloSeccion = new JLabel("Configurar operación");
-        tituloSeccion.setFont(FONT_SUBTITULO);
-        tituloSeccion.setForeground(MY_AZUL_OSCURO);
+        tituloSeccion.setFont(SUBTITULO_MEDIO);
+        tituloSeccion.setForeground(AZUL_OSCURO);
         tituloSeccion.setAlignmentX(LEFT_ALIGNMENT);
         panel.add(tituloSeccion);
         panel.add(Box.createVerticalStrut(15));
@@ -199,13 +184,13 @@ public class VentanaAnadirACartera extends JDialog {
         // CARTERA
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST; gbc.weightx = 0.0;
         JLabel labelCartera = new JLabel("Cartera:");
-        labelCartera.setFont(FONT_NORMAL);
-        labelCartera.setForeground(MY_GRIS_OSCURO);
+        labelCartera.setFont(CUERPO_MEDIO);
+        labelCartera.setForeground(GRIS_OSCURO);
         panelCampos.add(labelCartera, gbc);
         
         gbc.gridx = 1; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.WEST; gbc.weightx = 1.0;
         comboCarteras = new JComboBox<>();
-        comboCarteras.setFont(FONT_NORMAL);
+        comboCarteras.setFont(CUERPO_MEDIO);
         comboCarteras.setPreferredSize(new Dimension(300, 35));
         comboCarteras.addItem("-- Seleccione una cartera --");
         if (usuario.getCarteras().isEmpty()) {
@@ -224,28 +209,28 @@ public class VentanaAnadirACartera extends JDialog {
         // CANTIDAD
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1; gbc.weightx = 0.0; gbc.anchor = GridBagConstraints.EAST;
         JLabel labelCantidad = new JLabel("Cantidad:");
-        labelCantidad.setFont(FONT_NORMAL);
-        labelCantidad.setForeground(MY_GRIS_OSCURO);
+        labelCantidad.setFont(CUERPO_MEDIO);
+        labelCantidad.setForeground(GRIS_OSCURO);
         panelCampos.add(labelCantidad, gbc);
         
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST; gbc.weightx = 0.5;
         Double[] cantidadesTipicas = {1.0, 5.0, 10.0, 20.0, 50.0, 100.0, 200.0, 500.0};
         comboCantidad = new JComboBox<>(cantidadesTipicas);
-        comboCantidad.setFont(FONT_NORMAL);
+        comboCantidad.setFont(CUERPO_MEDIO);
         comboCantidad.setEditable(true);
         comboCantidad.setPreferredSize(new Dimension(150, 35));
         comboCantidad.setToolTipText("Ingrese o seleccione la cantidad que desea comprar");
         comboCantidad.addActionListener(e -> actualizarCalculos());
         comboCantidad.getEditor().getEditorComponent().addKeyListener(
             new KeyAdapter() {
-                public void keyReleased(java.awt.event.KeyEvent evt) {actualizarCalculos();}
+                public void keyReleased(KeyEvent evt) {actualizarCalculos();}
             });
         panelCampos.add(comboCantidad, gbc);
         
         gbc.gridx = 2; gbc.weightx = 0.5;
         String[] tiposCantidad = {"Acciones", "Euros (€)"};
         comboTipoCantidad = new JComboBox<>(tiposCantidad);
-        comboTipoCantidad.setFont(FONT_NORMAL);
+        comboTipoCantidad.setFont(CUERPO_MEDIO);
         comboTipoCantidad.setPreferredSize(new Dimension(130, 35));
         comboTipoCantidad.setToolTipText("Seleccione si desea comprar por acciones o por importe");
         comboTipoCantidad.addActionListener(e -> actualizarCalculos());
@@ -258,12 +243,12 @@ public class VentanaAnadirACartera extends JDialog {
 	private JPanel construirPanelInferior() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_FONDO_PRINCIPAL);
+        panel.setBackground(MAIN_FONDO);
         
         JPanel panelResumen = new JPanel(new GridBagLayout());
         panelResumen.setBackground(Color.WHITE);
         panelResumen.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COLOR_BORDE, 1), new EmptyBorder(15, 20, 15, 20)));
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), new EmptyBorder(15, 20, 15, 20)));
         panelResumen.setAlignmentX(LEFT_ALIGNMENT);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 15);
@@ -271,8 +256,8 @@ public class VentanaAnadirACartera extends JDialog {
         
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
         JLabel tituloResumen = new JLabel("Resumen de la operación");
-        tituloResumen.setFont(FONT_SUBTITULO);
-        tituloResumen.setForeground(MY_AZUL_OSCURO);
+        tituloResumen.setFont(SUBTITULO_MEDIO);
+        tituloResumen.setForeground(AZUL_OSCURO);
         panelResumen.add(tituloResumen, gbc);
         
         gbc.gridy = 1;
@@ -282,47 +267,47 @@ public class VentanaAnadirACartera extends JDialog {
         
         gbc.gridy = 2; gbc.gridwidth = 1;
         JLabel labelCostoTitulo = new JLabel("Costo total:");
-        labelCostoTitulo.setFont(FONT_NORMAL);
-        labelCostoTitulo.setForeground(MY_GRIS_OSCURO);
+        labelCostoTitulo.setFont(CUERPO_MEDIO);
+        labelCostoTitulo.setForeground(GRIS_OSCURO);
         panelResumen.add(labelCostoTitulo, gbc);
         gbc.gridx = 1;
         labelCostoTotal = new JLabel("0.00 €");
-        labelCostoTotal.setFont(FONT_NUMERO_GRANDE);
-        labelCostoTotal.setForeground(MY_AZUL_OSCURO);
+        labelCostoTotal.setFont(SUBTITULO_GRANDE);
+        labelCostoTotal.setForeground(AZUL_OSCURO);
         panelResumen.add(labelCostoTotal, gbc);
         
         gbc.gridx = 0; gbc.gridy = 3;
         JLabel labelSaldoDispTitulo = new JLabel("Saldo disponible:");
-        labelSaldoDispTitulo.setFont(FONT_NORMAL);
-        labelSaldoDispTitulo.setForeground(MY_GRIS_OSCURO);
+        labelSaldoDispTitulo.setFont(CUERPO_MEDIO);
+        labelSaldoDispTitulo.setForeground(GRIS_OSCURO);
         panelResumen.add(labelSaldoDispTitulo, gbc);
         gbc.gridx = 1;
         labelSaldoDisponible = new JLabel("-- €");
-        labelSaldoDisponible.setFont(FONT_NORMAL);
-        labelSaldoDisponible.setForeground(MY_GRIS_CLARO);
+        labelSaldoDisponible.setFont(CUERPO_MEDIO);
+        labelSaldoDisponible.setForeground(GRIS_MEDIO);
         panelResumen.add(labelSaldoDisponible, gbc);
         
         gbc.gridx = 0; gbc.gridy = 4;
         JLabel labelSaldoRestTitulo = new JLabel("Saldo restante:");
-        labelSaldoRestTitulo.setFont(FONT_NORMAL);
-        labelSaldoRestTitulo.setForeground(MY_GRIS_OSCURO);
+        labelSaldoRestTitulo.setFont(CUERPO_MEDIO);
+        labelSaldoRestTitulo.setForeground(GRIS_OSCURO);
         panelResumen.add(labelSaldoRestTitulo, gbc);
         gbc.gridx = 1;
         labelSaldoRestante = new JLabel("-- €");
-        labelSaldoRestante.setFont(FONT_NORMAL);
-        labelSaldoRestante.setForeground(MY_VERDE_CLARO);
+        labelSaldoRestante.setFont(CUERPO_MEDIO);
+        labelSaldoRestante.setForeground(VERDE_CLARO);
         panelResumen.add(labelSaldoRestante, gbc);
         
         panel.add(panelResumen);
         panel.add(Box.createVerticalStrut(15));
         
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        panelBotones.setBackground(COLOR_FONDO_PRINCIPAL);
+        panelBotones.setBackground(MAIN_FONDO);
         panelBotones.setAlignmentX(LEFT_ALIGNMENT);
         
         botonCancelar = new JButton("Cancelar");
-        botonCancelar.setFont(FONT_NORMAL);
-        botonCancelar.setBackground(MY_GRIS_CLARO);
+        botonCancelar.setFont(CUERPO_MEDIO);
+        botonCancelar.setBackground(GRIS_MEDIO);
         botonCancelar.setForeground(Color.WHITE);
         botonCancelar.setPreferredSize(new Dimension(110, 35));
         botonCancelar.setBorderPainted(false);
@@ -332,8 +317,8 @@ public class VentanaAnadirACartera extends JDialog {
         botonCancelar.setToolTipText("Cancelar y cerrar esta ventana");
         
         botonConfirmar = new JButton("Confirmar compra");
-        botonConfirmar.setFont(FONT_NORMAL);
-        botonConfirmar.setBackground(MY_AZUL_CLARO);
+        botonConfirmar.setFont(CUERPO_MEDIO);
+        botonConfirmar.setBackground(AZUL_CLARO);
         botonConfirmar.setForeground(Color.WHITE);
         botonConfirmar.setPreferredSize(new Dimension(160, 35));
         botonConfirmar.setBorderPainted(false);
@@ -360,7 +345,7 @@ public class VentanaAnadirACartera extends JDialog {
                 labelCostoTotal.setText("0.00 €");
                 labelSaldoDisponible.setText("-- €");
                 labelSaldoRestante.setText("-- €");
-                labelSaldoRestante.setForeground(MY_GRIS_CLARO);
+                labelSaldoRestante.setForeground(GRIS_MEDIO);
                 return;
             }
             Cartera carteraSeleccionada = usuario.getCarteras().get(indiceCartera - 1);
@@ -372,7 +357,7 @@ public class VentanaAnadirACartera extends JDialog {
                     carteraSeleccionada.getSaldo(), carteraSeleccionada.getDivisa().getSimbolo()));
                 labelSaldoRestante.setText(String.format("%.2f %s", 
                     carteraSeleccionada.getSaldo(), carteraSeleccionada.getDivisa().getSimbolo()));
-                labelSaldoRestante.setForeground(MY_VERDE_CLARO);
+                labelSaldoRestante.setForeground(VERDE_CLARO);
                 return;
             }
             String tipoCantidad = (String) comboTipoCantidad.getSelectedItem();
@@ -387,11 +372,11 @@ public class VentanaAnadirACartera extends JDialog {
                 labelSaldoRestante.setForeground(Color.RED);
                 labelCostoTotal.setForeground(Color.RED);
             } else if (saldoRestante < carteraSeleccionada.getSaldo() * 0.1) {
-                labelSaldoRestante.setForeground(MY_NARANJA_CLARO);
-                labelCostoTotal.setForeground(MY_AZUL_OSCURO);
+                labelSaldoRestante.setForeground(NARANJA_CLARO);
+                labelCostoTotal.setForeground(AZUL_OSCURO);
             } else {
-                labelSaldoRestante.setForeground(MY_VERDE_CLARO);
-                labelCostoTotal.setForeground(MY_AZUL_OSCURO);
+                labelSaldoRestante.setForeground(VERDE_CLARO);
+                labelCostoTotal.setForeground(AZUL_OSCURO);
             }
         } catch (NumberFormatException ex) {
             labelCostoTotal.setText("-- €");
@@ -509,39 +494,5 @@ public class VentanaAnadirACartera extends JDialog {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-	
-	private ImageIcon cargarIconoEscalado(String ruta, int anchoMax, int altoMax) {
-        if (ruta == null || getClass().getResource(ruta) == null) return null;
-        ImageIcon icono = new ImageIcon(getClass().getResource(ruta));
-        Image img = icono.getImage();
-        int anchoOriginal = img.getWidth(null);
-        int altoOriginal = img.getHeight(null);
-        double ratio = Math.min((double)anchoMax/anchoOriginal, (double)altoMax/altoOriginal);
-        int anchoNuevo = (int)(anchoOriginal * ratio);
-        int altoNuevo = (int)(altoOriginal * ratio);
-        return new ImageIcon(img.getScaledInstance(anchoNuevo, altoNuevo, Image.SCALE_SMOOTH));
-    }
-	
-	
-	MouseAdapter myAdapterAzul = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_AZUL_CLARO);}
-    };
-	
-	MouseAdapter myAdapterGris = new MouseAdapter() {
-    	@Override
-		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-		@Override
-		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_OSCURO);}
-		@Override
-		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(MY_GRIS_CLARO);}
-    };
+
 }
