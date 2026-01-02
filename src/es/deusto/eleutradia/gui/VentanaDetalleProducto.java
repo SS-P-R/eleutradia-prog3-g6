@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
+import es.deusto.eleutradia.domain.TipoProducto;
 
 public class VentanaDetalleProducto extends JDialog {
 
@@ -53,7 +54,7 @@ public class VentanaDetalleProducto extends JDialog {
     public VentanaDetalleProducto(JFrame padre, ProductoFinanciero producto, boolean modal) {
         super(padre, "Detalles del producto", modal);
         this.producto = producto;
-        this.setSize(700, 700);
+        this.setSize(700, 600);
         this.setLocationRelativeTo(padre);
         this.setBackground(COLOR_FONDO_PRINCIPAL);
         this.setLayout(new BorderLayout(0, 0));
@@ -81,14 +82,13 @@ public class VentanaDetalleProducto extends JDialog {
             BorderFactory.createLineBorder(COLOR_BORDE, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         
-        // Panel Logo
         JPanel panelLogo = new JPanel(new BorderLayout());
         panelLogo.setBackground(Color.WHITE);
         panelLogo.setPreferredSize(new Dimension(100, 80));
         
         String rutaLogoGestora = null;
         if (producto.getGestora() != null) {
-            rutaLogoGestora = "/images/gestora" + producto.getGestora().getNombreComercial().toLowerCase() + ".png";
+            rutaLogoGestora = "/images/gestoras/gestora" + producto.getGestora().getNombreComercial().toLowerCase() + ".png";
         }
         ImageIcon iconoGestora = cargarIconoEscalado(rutaLogoGestora, 80, 60);
         if (iconoGestora != null) {
@@ -104,7 +104,6 @@ public class VentanaDetalleProducto extends JDialog {
             panelLogo.add(labelSinLogo, BorderLayout.CENTER);
         }
         
-        // Panel Info
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
         panelInfo.setBackground(Color.WHITE);
@@ -152,7 +151,7 @@ public class VentanaDetalleProducto extends JDialog {
         
         JLabel labelRiesgoValor = new JLabel(producto.getTipoProducto().getStringRiesgo());
         labelRiesgoValor.setFont(FONT_SUBTITULO);
-        labelRiesgoValor.setForeground(obtenerColorRiesgo(producto.getTipoProducto().getRiesgo()));
+        labelRiesgoValor.setForeground(TipoProducto.getColorRiesgo(producto.getTipoProducto().getRiesgo()));
         labelRiesgoValor.setAlignmentX(CENTER_ALIGNMENT);
         
         panelRiesgo.add(Box.createVerticalGlue());
@@ -363,22 +362,6 @@ public class VentanaDetalleProducto extends JDialog {
         int altoNuevo = (int)(altoOriginal * ratio);
         return new ImageIcon(img.getScaledInstance(anchoNuevo, altoNuevo, Image.SCALE_SMOOTH));
     }
-    
-    //IAG (Claude)
-  	//SIN MODIFICAR: Devuelve un color para cada nivel de riesgo (1-7)
-  	private Color obtenerColorRiesgo(int riesgo) {
-          switch (riesgo) {
-              case 1: return new Color(0, 160, 60);    // Verde intenso
-              case 2: return new Color(80, 190, 80);   // Verde claro
-              case 3: return new Color(190, 200, 70);  // Amarillo verdoso
-              case 4: return new Color(255, 200, 0);   // Amarillo
-              case 5: return new Color(255, 150, 0);   // Naranja
-              case 6: return new Color(255, 90, 0);    // Naranja oscuro
-              case 7: return new Color(200, 40, 40);   // Rojo
-              default: return MY_GRIS_CLARO;
-          }
-      }
-  	//END IAG
     
     MouseAdapter myAdapterGris = new MouseAdapter() {
     	@Override

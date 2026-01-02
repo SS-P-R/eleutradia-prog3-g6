@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -619,10 +620,17 @@ public class VentanaInicial extends JFrame {
 	
 	private void generarImagenRandom() {
 		try {
+			File carpeta = new File(getClass().getResource("/images/fondos/").toURI());
+			File[] fondos = carpeta.listFiles((dir, name) -> name.toLowerCase().endsWith(".png"));
+			
+			if (fondos == null || fondos.length == 0) throw new RuntimeException("No hay imágenes en la carpeta");
+			
         	Random random = new Random();
-            ImageIcon icon = new ImageIcon(getClass().getResource("/images/fondos/fondo" + (random.nextInt(2)+1) + ".png"));
-            Image imagen = icon.getImage().getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
+        	File fondoRandom = fondos[random.nextInt(fondos.length)];
+        	ImageIcon icon = new ImageIcon(fondoRandom.getAbsolutePath());
+            Image imagen = icon.getImage().getScaledInstance(this.getWidth()/2, this.getHeight(), Image.SCALE_SMOOTH);
             originalIcon = new ImageIcon(imagen);
+            
         } catch (Exception e) {
             System.err.println("Error al cargar la imagen");
             originalIcon = null;

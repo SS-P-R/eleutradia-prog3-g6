@@ -32,6 +32,7 @@ import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Operacion;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
+import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
 import es.deusto.eleutradia.main.MainEleutradia;
 
@@ -67,7 +68,7 @@ public class VentanaAnadirACartera extends JDialog {
 		this.usuario = usuario;
 		this.producto = producto;
 		this.dbManager = MainEleutradia.getDBManager();
-		this.setSize(700, 700);
+		this.setSize(700, 600);
 		this.setLocationRelativeTo(padre);
 		this.setBackground(COLOR_FONDO_PRINCIPAL);
 		this.setLayout(new BorderLayout(0, 0));
@@ -90,7 +91,8 @@ public class VentanaAnadirACartera extends JDialog {
 		JPanel panel = new JPanel(new BorderLayout(15, 10));
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(BorderFactory.createCompoundBorder(
-	            BorderFactory.createLineBorder(COLOR_BORDE, 1), new EmptyBorder(15, 20, 15, 20)));
+            BorderFactory.createLineBorder(COLOR_BORDE, 1), 
+            new EmptyBorder(15, 20, 15, 20)));
 		
 		JPanel panelLogo = new JPanel(new BorderLayout());
 		panelLogo.setBackground(Color.WHITE);
@@ -98,7 +100,7 @@ public class VentanaAnadirACartera extends JDialog {
 		
 		String rutaLogoGestora = null;
         if (producto.getGestora() != null) {
-            rutaLogoGestora = "/images/gestora" + producto.getGestora().getNombreComercial().toLowerCase() + ".png";
+            rutaLogoGestora = "/images/gestoras/gestora" + producto.getGestora().getNombreComercial().toLowerCase() + ".png";
         }
         ImageIcon iconoGestora = cargarIconoEscalado(rutaLogoGestora, 80, 60);
         if (iconoGestora != null) {
@@ -159,7 +161,7 @@ public class VentanaAnadirACartera extends JDialog {
         labelRiesgoTitulo.setAlignmentX(CENTER_ALIGNMENT);
         JLabel labelRiesgoValor = new JLabel(producto.getTipoProducto().getStringRiesgo());
         labelRiesgoValor.setFont(FONT_SUBTITULO);
-        labelRiesgoValor.setForeground(obtenerColorRiesgo(producto.getTipoProducto().getRiesgo()));
+        labelRiesgoValor.setForeground(TipoProducto.getColorRiesgo(producto.getTipoProducto().getRiesgo()));
         labelRiesgoValor.setAlignmentX(CENTER_ALIGNMENT);
         panelRiesgo.add(Box.createVerticalGlue());
         panelRiesgo.add(labelRiesgoTitulo);
@@ -204,7 +206,7 @@ public class VentanaAnadirACartera extends JDialog {
         gbc.gridx = 1; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.WEST; gbc.weightx = 1.0;
         comboCarteras = new JComboBox<>();
         comboCarteras.setFont(FONT_NORMAL);
-        comboCarteras.setPreferredSize(new Dimension(300, 32));
+        comboCarteras.setPreferredSize(new Dimension(300, 35));
         comboCarteras.addItem("-- Seleccione una cartera --");
         if (usuario.getCarteras().isEmpty()) {
             comboCarteras.setEnabled(false);
@@ -231,7 +233,7 @@ public class VentanaAnadirACartera extends JDialog {
         comboCantidad = new JComboBox<>(cantidadesTipicas);
         comboCantidad.setFont(FONT_NORMAL);
         comboCantidad.setEditable(true);
-        comboCantidad.setPreferredSize(new Dimension(150, 32));
+        comboCantidad.setPreferredSize(new Dimension(150, 35));
         comboCantidad.setToolTipText("Ingrese o seleccione la cantidad que desea comprar");
         comboCantidad.addActionListener(e -> actualizarCalculos());
         comboCantidad.getEditor().getEditorComponent().addKeyListener(
@@ -244,7 +246,7 @@ public class VentanaAnadirACartera extends JDialog {
         String[] tiposCantidad = {"Acciones", "Euros (€)"};
         comboTipoCantidad = new JComboBox<>(tiposCantidad);
         comboTipoCantidad.setFont(FONT_NORMAL);
-        comboTipoCantidad.setPreferredSize(new Dimension(130, 32));
+        comboTipoCantidad.setPreferredSize(new Dimension(130, 35));
         comboTipoCantidad.setToolTipText("Seleccione si desea comprar por acciones o por importe");
         comboTipoCantidad.addActionListener(e -> actualizarCalculos());
         panelCampos.add(comboTipoCantidad, gbc);
@@ -520,21 +522,6 @@ public class VentanaAnadirACartera extends JDialog {
         return new ImageIcon(img.getScaledInstance(anchoNuevo, altoNuevo, Image.SCALE_SMOOTH));
     }
 	
-	//IAG (Claude)
-	//SIN MODIFICAR: Devuelve un color para cada nivel de riesgo (1-7)
-	private Color obtenerColorRiesgo(int riesgo) {
-        switch (riesgo) {
-            case 1: return new Color(0, 160, 60);    // Verde intenso
-            case 2: return new Color(80, 190, 80);   // Verde claro
-            case 3: return new Color(190, 200, 70);  // Amarillo verdoso
-            case 4: return new Color(255, 200, 0);   // Amarillo
-            case 5: return new Color(255, 150, 0);   // Naranja
-            case 6: return new Color(255, 90, 0);    // Naranja oscuro
-            case 7: return new Color(200, 40, 40);   // Rojo
-            default: return MY_GRIS_CLARO;
-        }
-    }
-	//END IAG
 	
 	MouseAdapter myAdapterAzul = new MouseAdapter() {
     	@Override

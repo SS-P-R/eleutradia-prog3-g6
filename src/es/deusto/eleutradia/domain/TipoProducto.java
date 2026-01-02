@@ -1,5 +1,7 @@
 package es.deusto.eleutradia.domain;
 
+import java.awt.Color;
+
 public enum TipoProducto {
 	
 	// TipoProducto(Nombre del tipo,
@@ -57,5 +59,21 @@ public enum TipoProducto {
 	public double getImporteMin() {
 		return importeMin;
 	}
+	
+	//IAG (Claude)
+	//SIN MODIFICAR: Devuelve un color para cada nivel de riesgo (1-7)
+	public static Color getColorRiesgo(int riesgo) {
+        switch (riesgo) {
+            case 1: return new Color(0, 160, 60);    // Verde intenso
+            case 2: return new Color(80, 190, 80);   // Verde claro
+            case 3: return new Color(190, 200, 70);  // Amarillo verdoso
+            case 4: return new Color(255, 200, 0);   // Amarillo
+            case 5: return new Color(255, 150, 0);   // Naranja
+            case 6: return new Color(255, 90, 0);    // Naranja oscuro
+            case 7: return new Color(200, 40, 40);   // Rojo
+            default: return Color.GRAY;
+        }
+    }
+	//END IAG
 	
 }
