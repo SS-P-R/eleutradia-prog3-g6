@@ -620,7 +620,7 @@ public class VentanaInicial extends JFrame {
 	private void generarImagenRandom() {
 		try {
         	Random random = new Random();
-            ImageIcon icon = new ImageIcon(getClass().getResource("/images/fondos/fondoLogin" + (random.nextInt(2)+1) + ".png"));
+            ImageIcon icon = new ImageIcon(getClass().getResource("/images/fondos/fondo" + (random.nextInt(2)+1) + ".png"));
             Image imagen = icon.getImage().getScaledInstance(this.getWidth()/2, this.getHeight(), java.awt.Image.SCALE_SMOOTH);
             originalIcon = new ImageIcon(imagen);
         } catch (Exception e) {
