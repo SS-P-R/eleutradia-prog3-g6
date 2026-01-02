@@ -61,7 +61,7 @@ public class Curso {
 	}
 
 	public String getRutaImagen() {
-		return String.format("/images/curso%d.png", id);
+		return String.format("/images/cursos/curso%d.png", id);
 	}
 	
 	public static Curso parseCSV(String linea) {

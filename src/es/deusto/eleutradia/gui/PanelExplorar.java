@@ -650,7 +650,7 @@ public class PanelExplorar extends JPanel {
         	String rutaImgGestora = null;
         	ImageIcon iconoGestora = null;
             if (p.getGestora() != null) {
-                rutaImgGestora = "/images/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
+                rutaImgGestora = "/images/gestoras/gestora" + p.getGestora().getNombreComercial().toLowerCase() + ".png";
             }
             if (getClass().getResource(rutaImgGestora) != null) {
                 iconoGestora = new ImageIcon(getClass().getResource(rutaImgGestora));
