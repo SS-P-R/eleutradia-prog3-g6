@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
@@ -68,9 +67,9 @@ public class VentanaAnadirACartera extends JDialog {
 		this.usuario = usuario;
 		this.producto = producto;
 		this.dbManager = MainEleutradia.getDBManager();
-		this.setSize(700, 550);
+		this.setSize(700, 700);
 		this.setLocationRelativeTo(padre);
-		this.setBackground(COLOR_BORDE);
+		this.setBackground(COLOR_FONDO_PRINCIPAL);
 		this.setLayout(new BorderLayout(0, 0));
 		this.setResizable(false);
         this.construirVentana();
@@ -260,9 +259,9 @@ public class VentanaAnadirACartera extends JDialog {
         panel.setBackground(COLOR_FONDO_PRINCIPAL);
         
         JPanel panelResumen = new JPanel(new GridBagLayout());
-        panelResumen.setBackground(new Color(245, 248, 255));
+        panelResumen.setBackground(Color.WHITE);
         panelResumen.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 215, 240), 1), new EmptyBorder(15, 20, 15, 20)));
+            BorderFactory.createLineBorder(COLOR_BORDE, 1), new EmptyBorder(15, 20, 15, 20)));
         panelResumen.setAlignmentX(LEFT_ALIGNMENT);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 15);
@@ -275,7 +274,7 @@ public class VentanaAnadirACartera extends JDialog {
         panelResumen.add(tituloResumen, gbc);
         
         gbc.gridy = 1;
-        JSeparator separador = new JSeparator(SwingConstants.HORIZONTAL);
+        JSeparator separador = new JSeparator(JSeparator.HORIZONTAL);
         separador.setPreferredSize(new Dimension(400, 1));
         panelResumen.add(separador, gbc);
         
@@ -521,26 +520,21 @@ public class VentanaAnadirACartera extends JDialog {
         return new ImageIcon(img.getScaledInstance(anchoNuevo, altoNuevo, Image.SCALE_SMOOTH));
     }
 	
+	//IAG (Claude)
+	//SIN MODIFICAR: Devuelve un color para cada nivel de riesgo (1-7)
 	private Color obtenerColorRiesgo(int riesgo) {
-	    switch (riesgo) {
-	        case 1:
-	            return new Color(0, 160, 60);    // Verde intenso (muy bajo)
-	        case 2:
-	            return new Color(80, 190, 80);   // Verde claro (bajo)
-	        case 3:
-	            return new Color(190, 200, 70);  // Amarillo verdoso (medio-bajo)
-	        case 4:
-	            return new Color(255, 200, 0);   // Amarillo (medio)
-	        case 5:
-	            return new Color(255, 150, 0);   // Naranja (medio-alto)
-	        case 6:
-	            return new Color(255, 90, 0);    // Naranja oscuro (alto)
-	        case 7:
-	            return new Color(200, 40, 40);   // Rojo (muy alto)
-	        default:
-	            return MY_GRIS_CLARO;
-	    }
-	}
+        switch (riesgo) {
+            case 1: return new Color(0, 160, 60);    // Verde intenso
+            case 2: return new Color(80, 190, 80);   // Verde claro
+            case 3: return new Color(190, 200, 70);  // Amarillo verdoso
+            case 4: return new Color(255, 200, 0);   // Amarillo
+            case 5: return new Color(255, 150, 0);   // Naranja
+            case 6: return new Color(255, 90, 0);    // Naranja oscuro
+            case 7: return new Color(200, 40, 40);   // Rojo
+            default: return MY_GRIS_CLARO;
+        }
+    }
+	//END IAG
 	
 	MouseAdapter myAdapterAzul = new MouseAdapter() {
     	@Override
