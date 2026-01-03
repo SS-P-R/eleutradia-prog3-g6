@@ -57,7 +57,7 @@ public class PanelInicio extends JPanel{
 		
 		//Fondo
 		this.setLayout(new BorderLayout(10,10));
-		this.setBackground(MAIN_FONDO);
+		this.setBackground(MAIN_FONDO_CLARO);
 		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		//Cargar paneles
@@ -74,7 +74,7 @@ public class PanelInicio extends JPanel{
 		panelSuperior.add(panelNoticias, BorderLayout.EAST);
 		//Paneles accesorios con saludo incial y recordatorios
 		setVisible(true);
-		panelSuperior.setBackground(MAIN_FONDO);
+		panelSuperior.setBackground(MAIN_FONDO_CLARO);
 		add(panelSuperior, BorderLayout.NORTH);
 		
 		//Panel central
@@ -93,7 +93,7 @@ public class PanelInicio extends JPanel{
 		JPanel panelSaludo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel saludoTxt = new JLabel("¡Hola, " + usuario.getNombre().split(" ")[0] + "!");
 		saludoTxt.setOpaque(true);
-		saludoTxt.setBackground(MAIN_FONDO);
+		saludoTxt.setBackground(MAIN_FONDO_CLARO);
 		saludoTxt.setFont(TITULO_GRANDE);
 		
 //		Border recuadro = BorderFactory.createLineBorder(Color.gray, 1);
@@ -108,7 +108,7 @@ public class PanelInicio extends JPanel{
 	private JPanel construirPanelLecciones() {
 	    JPanel proxLecJPanel = new JPanel();
 	    proxLecJPanel.setBackground(Color.WHITE);
-	    proxLecJPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
+	    proxLecJPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO,1));
 	    
 	    JLabel mensajeLecciones = new JLabel();
 	    mensajeLecciones.setText("¿Preparado para su próxima lección?");
@@ -197,7 +197,7 @@ public class PanelInicio extends JPanel{
 	private JPanel construirPanelCursos() {
 		JPanel cursosPanel = new JPanel();
 		cursosPanel.setBackground(Color.WHITE);
-		cursosPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
+		cursosPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO,1));
 		
 		JLabel mensajeCursos = new JLabel();
 		mensajeCursos.setText("Cursos en progreso: ");
@@ -243,7 +243,7 @@ public class PanelInicio extends JPanel{
 	private JPanel construirPanelActivos() {
 		JPanel activosPanel = new JPanel();
 		activosPanel.setBackground(Color.WHITE);
-		activosPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
+		activosPanel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO,1));
 		activosPanel.setLayout(new BorderLayout());
 		
 		JLabel mensajeActivos = new JLabel();
@@ -273,7 +273,7 @@ public class PanelInicio extends JPanel{
 			tablaResumen.getTableHeader().setFont(CUERPO_PEQUENO);
 			
 			JScrollPane scroll = new JScrollPane(tablaResumen);
-			Border bordet1 = BorderFactory.createLineBorder(MAIN_BORDE, 1);
+			Border bordet1 = BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1);
 			Border bordet2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 			scroll.setBorder(BorderFactory.createCompoundBorder(bordet1, bordet2));
 			activosPanel.add(scroll, BorderLayout.CENTER);
@@ -320,7 +320,7 @@ public class PanelInicio extends JPanel{
 
 		JTable tablaResumen = new JTable(modelo);
 		JScrollPane scroll = new JScrollPane(tablaResumen);
-		Border bordet1 = BorderFactory.createLineBorder(MAIN_BORDE, 1);
+		Border bordet1 = BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1);
 		Border bordet2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		scroll.setBorder(BorderFactory.createCompoundBorder(bordet1, bordet2));		
 		activosPanel.add(scroll, BorderLayout.CENTER);
@@ -339,7 +339,7 @@ public class PanelInicio extends JPanel{
 	private JPanel construirPanelGraficos() {
 		JPanel panelGraficos = new JPanel(new BorderLayout(10,10));
 		panelGraficos.setBackground(Color.WHITE);
-		panelGraficos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE,1));
+		panelGraficos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO,1));
 		
 		if (MainEleutradia.listaProductos != null) {
         	productos = new ArrayList<>(MainEleutradia.listaProductos);
@@ -457,7 +457,7 @@ public class PanelInicio extends JPanel{
 	
 	private JPanel panelTitularesNoticias() {
 	    JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	    panel.setBackground(MAIN_FONDO);
+	    panel.setBackground(MAIN_FONDO_CLARO);
 
 	    //IAG (ChatGPT)
 	    //SIN MODIFICAR

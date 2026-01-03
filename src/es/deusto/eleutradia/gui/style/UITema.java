@@ -6,18 +6,32 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 public class UITema {
 	
-	public static final Color MAIN_FONDO = new Color(250, 250, 250);
-	public static final Color MAIN_PANEL = Color.WHITE;
-	public static final Color MAIN_BORDE = new Color(220, 220, 230);
+	private static UITema instancia;
+	private boolean temaOscuro;
 	
+	// Colores del tema claro
+	public static final Color MAIN_FONDO_CLARO = new Color(250, 250, 250);
+	public static final Color MAIN_PANEL_CLARO = Color.WHITE;
+	public static final Color MAIN_BORDE_CLARO = new Color(220, 220, 230);
+	
+	// Colores del tema oscuro
     public static final Color MAIN_FONDO_OSCURO = new Color(40, 40, 40);
     public static final Color MAIN_PANEL_OSCURO = new Color(55, 55, 55);
     public static final Color MAIN_BORDE_OSCURO = new Color(90, 90, 90);
 	
+    // Colores según el tema actual
+    public Color colorTexto;
+    public Color colorFondo;
+    public Color colorPanel;
+    public Color colorBorde;
+    
+    // Colores generales
 	public static final Color GRIS_SCROLLBAR = new Color(180, 180, 180);
 	public static final Color GRIS_SUAVE = new Color(220, 220, 220);
 	public static final Color GRIS_CLARO = new Color(170, 170, 170);
@@ -32,6 +46,7 @@ public class UITema {
 	public static final Color ROJO_CLARO = new Color(220, 50, 50);
 	public static final Color NARANJA_CLARO = new Color(255, 140, 0);
     
+	// Fuentes generales
 	public static final Font TITULO_GRANDE = new Font("Segoe UI", Font.BOLD, 20);
 	public static final Font TITULO_MEDIO = new Font("Segoe UI", Font.BOLD, 18);
 	public static final Font SUBTITULO_GRANDE = new Font("Segoe UI", Font.BOLD, 16);
@@ -42,6 +57,7 @@ public class UITema {
 	public static final Font CUERPO_PEQUENO = new Font("Segoe UI", Font.PLAIN, 12);
 	public static final Font CUERPO_CURSIVA = new Font("Segoe UI", Font.ITALIC, 14);
 
+	// Mouse Adapters
     public static MouseAdapter myAdapterAzul = new MouseAdapter() {
     	@Override
 		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(AZUL_OSCURO);}
@@ -97,6 +113,61 @@ public class UITema {
 		public void mouseReleased(MouseEvent e) {e.getComponent().setForeground(AZUL_CLARO);}
     };
     
+    private UITema() {
+    	this.temaOscuro = false;
+    	actualizarColores();
+    }
+    
+    public static UITema getInstancia() {
+    	if (instancia == null) {
+    		instancia = new UITema();
+    	}
+    	return instancia;
+    }
+    
+    // Métodos para gestionar el tema
+    public boolean esTemaOscuro() {
+    	return this.temaOscuro;
+    }
+    
+	public void cambiarTema() {
+		this.temaOscuro = !this.temaOscuro;
+		actualizarColores();
+	}
+	
+	public void establecerTemaOscuro(boolean oscuro) {
+    	if (this.temaOscuro != oscuro) {
+    		this.temaOscuro = oscuro;
+    		actualizarColores();
+    	}
+    }
+	
+	// Método para actualizar los colores según el tema actual
+	private void actualizarColores() {
+    	if (temaOscuro) {
+    		colorTexto = MAIN_FONDO_CLARO;
+    		colorFondo = MAIN_FONDO_OSCURO;
+    		colorPanel = MAIN_PANEL_OSCURO;
+    		colorBorde = MAIN_BORDE_OSCURO;
+    	} else {
+    		colorTexto = MAIN_FONDO_OSCURO;
+    		colorFondo = MAIN_FONDO_CLARO;
+    		colorPanel = MAIN_PANEL_CLARO;
+    		colorBorde = MAIN_BORDE_CLARO;
+    	}
+    	actualizarTooltips();
+    }
+	
+    // Configurar tooltips según el tema
+    private void actualizarTooltips() {
+    	UIManager.put("ToolTip.background", temaOscuro ? MAIN_PANEL_OSCURO : Color.BLACK);
+    	UIManager.put("ToolTip.foreground", temaOscuro ? MAIN_FONDO_CLARO : Color.WHITE);
+    	UIManager.put("ToolTip.border", BorderFactory.createLineBorder(
+    		temaOscuro ? MAIN_BORDE_OSCURO : Color.DARK_GRAY, 1));
+    	UIManager.put("ToolTip.font", CUERPO_PEQUENO);
+    }
+    
+    // Método reutilizable para cargar y escalar iconos
 	public static ImageIcon cargarIconoEscalado(String ruta, int anchoMax, int altoMax) {
         if (ruta == null || UITema.class.getResource(ruta) == null) return null;
         ImageIcon icono = new ImageIcon(UITema.class.getResource(ruta));

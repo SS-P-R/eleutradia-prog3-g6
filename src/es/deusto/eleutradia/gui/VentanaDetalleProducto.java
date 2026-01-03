@@ -42,7 +42,7 @@ public class VentanaDetalleProducto extends JDialog {
         this.producto = producto;
         this.setSize(700, 600);
         this.setLocationRelativeTo(padre);
-        this.setBackground(MAIN_FONDO);
+        this.setBackground(MAIN_FONDO_CLARO);
         this.setLayout(new BorderLayout(0, 0));
         this.setResizable(false);
         this.construirVentana();
@@ -51,7 +51,7 @@ public class VentanaDetalleProducto extends JDialog {
 
     private void construirVentana() {
         JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
-        panelPrincipal.setBackground(MAIN_FONDO);
+        panelPrincipal.setBackground(MAIN_FONDO_CLARO);
         panelPrincipal.setBorder(new EmptyBorder(20, 20, 20, 20));
         
         panelPrincipal.add(construirPanelProducto(), BorderLayout.NORTH);
@@ -65,7 +65,7 @@ public class VentanaDetalleProducto extends JDialog {
         JPanel panel = new JPanel(new BorderLayout(15, 10));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         
         JPanel panelLogo = new JPanel(new BorderLayout());
@@ -156,7 +156,7 @@ public class VentanaDetalleProducto extends JDialog {
     private JPanel construirPanelDetalles() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(MAIN_FONDO);
+        panel.setBackground(MAIN_FONDO_CLARO);
         
         // Sección: Información General
         panel.add(construirSeccionInformacion());
@@ -173,7 +173,7 @@ public class VentanaDetalleProducto extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         panel.setAlignmentX(LEFT_ALIGNMENT);
         
@@ -242,7 +242,7 @@ public class VentanaDetalleProducto extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1), 
             new EmptyBorder(15, 20, 15, 20)));
         panel.setAlignmentX(LEFT_ALIGNMENT);
         
@@ -304,7 +304,7 @@ public class VentanaDetalleProducto extends JDialog {
     
     private JPanel construirPanelInferior() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        panel.setBackground(MAIN_FONDO);
+        panel.setBackground(MAIN_FONDO_CLARO);
         
         JButton botonCerrar = new JButton("Cerrar");
         botonCerrar.setFont(CUERPO_MEDIO);

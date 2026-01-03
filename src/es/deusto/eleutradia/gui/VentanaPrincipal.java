@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.gui.style.UITema;
 
 import static es.deusto.eleutradia.gui.style.UITema.AZUL_CLARO;
 
@@ -28,7 +29,7 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private Usuario usuario;
-	private GestorTema gestorTema;
+	private UITema uiTema;
 	        
     private CardLayout layout;
     private JPanel contenedor;
@@ -60,7 +61,7 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
 		this.usuario = usuario;
-		this.gestorTema = GestorTema.getInstancia();
+		this.uiTema = UITema.getInstancia();
 		this.configurarVentana();
 		this.inicializarPaneles();
 		this.construirPanelMenu();
@@ -72,7 +73,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void configurarVentana() {
 		this.setLayout(new BorderLayout());
-		this.setSize(800,600);
+		this.setSize(800, 600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -158,7 +159,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	public void actualizarTema() {
-		if (panelPerfil!=null) {
+		if (panelPerfil != null) {
 			panelPortfolio.refrescarColores();
 		}
 	    if (panelPerfil != null) {
