@@ -48,13 +48,9 @@ public class PanelPortfolio extends JPanel {
     private DefaultListModel<String> operationsListModel;
     
     // Estilos
-    private Color COLOR_GANANCIA = gestorTema.getColorGanancia();
-    private Color COLOR_PERDIDA = gestorTema.getColorPerdida();
-    private Color COLOR_FONDO_PRINCIPAL = gestorTema.getColorFondo();
-    private Color COLOR_VENTANA = gestorTema.getColorVentana();
+    private Color COLOR_FONDO = gestorTema.getColorFondo();
+    private Color COLOR_PANEL = gestorTema.getColorPanel();
     private Color COLOR_BORDE = gestorTema.getColorBorde();
-    private Color COLOR_TEXTO_SECUNDARIO = gestorTema.getColorTextoSecundario();
-    private Color COLOR_ACENTO = gestorTema.getColorAcento();
     
     public PanelPortfolio(Usuario usuario) {
         this.usuarioActual = usuario;
@@ -65,7 +61,7 @@ public class PanelPortfolio extends JPanel {
         }
         
         this.setLayout(new BorderLayout(15, 15));
-        this.setBackground(COLOR_FONDO_PRINCIPAL);
+        this.setBackground(COLOR_FONDO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         inicializarPaneles();
@@ -75,15 +71,15 @@ public class PanelPortfolio extends JPanel {
     
     private void inicializarPaneles() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
-        mainPanel.setBackground(COLOR_FONDO_PRINCIPAL);
+        mainPanel.setBackground(COLOR_FONDO);
         JPanel topPanel = new JPanel(new BorderLayout(15, 15));
-        topPanel.setBackground(COLOR_FONDO_PRINCIPAL);
+        topPanel.setBackground(COLOR_FONDO);
         topPanel.add(crearPanelSelector(), BorderLayout.NORTH);
         topPanel.add(crearPanelResumenUsuario(), BorderLayout.CENTER);
         mainPanel.add(topPanel, BorderLayout.NORTH);  
         mainPanel.add(crearPanelResumenCartera(), BorderLayout.CENTER);
         JPanel bottomContainer = new JPanel(new BorderLayout(15, 15));
-        bottomContainer.setBackground(COLOR_FONDO_PRINCIPAL);
+        bottomContainer.setBackground(COLOR_FONDO);
         bottomContainer.add(crearPanelPosiciones(), BorderLayout.CENTER);  
         bottomContainer.add(crearPanelOperacionesRecientes(), BorderLayout.SOUTH);
         mainPanel.add(bottomContainer, BorderLayout.SOUTH);
@@ -264,13 +260,13 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearPanelResumenUsuario() {
         JPanel panelPrincipal = new JPanel(new GridLayout(1, 3, 15, 0));
-        panelPrincipal.setBackground(COLOR_FONDO_PRINCIPAL);
+        panelPrincipal.setBackground(COLOR_FONDO);
         
         JPanel card1 = crearCard();
         card1.setLayout(new BorderLayout(5, 5));
         JLabel lbl1 = new JLabel("Patrimonio Total (Todas las Carteras)");
         lbl1.setFont(CUERPO_PEQUENO);
-        lbl1.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lbl1.setForeground(GRIS_MEDIO);
         lblPatrimonioTotalUsuario = new JLabel("0,00 €");
         lblPatrimonioTotalUsuario.setFont(TITULO_GRANDE);
         card1.add(lbl1, BorderLayout.NORTH);
@@ -280,7 +276,7 @@ public class PanelPortfolio extends JPanel {
         card2.setLayout(new BorderLayout(5, 5));
         JLabel lbl2 = new JLabel("Efectivo Total");
         lbl2.setFont(CUERPO_PEQUENO);
-        lbl2.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lbl2.setForeground(GRIS_MEDIO);
         lblPatrimonioLiquido = new JLabel("0,00 €");
         lblPatrimonioLiquido.setFont(TITULO_GRANDE);
         card2.add(lbl2, BorderLayout.NORTH);
@@ -290,7 +286,7 @@ public class PanelPortfolio extends JPanel {
         card3.setLayout(new BorderLayout(5, 5));
         JLabel lbl3 = new JLabel("Inversiones Totales");
         lbl3.setFont(CUERPO_PEQUENO);
-        lbl3.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lbl3.setForeground(GRIS_MEDIO);
         lblPatrimonioInvertido = new JLabel("0,00 €");
         lblPatrimonioInvertido.setFont(TITULO_GRANDE);
         card3.add(lbl3, BorderLayout.NORTH);
@@ -302,7 +298,7 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearPanelResumenCartera() {
         JPanel panelPrincipal = new JPanel(new GridLayout(1, 2, 15, 0));
-        panelPrincipal.setBackground(COLOR_FONDO_PRINCIPAL);
+        panelPrincipal.setBackground(COLOR_FONDO);
         panelPrincipal.add(crearCardPatrimonioCartera());
         panelPrincipal.add(crearCardDesgloseCartera());
         return panelPrincipal;
@@ -313,7 +309,7 @@ public class PanelPortfolio extends JPanel {
         card.setLayout(new BorderLayout(10, 10));
         lblNombreCartera = new JLabel("Cartera Seleccionada");
         lblNombreCartera.setFont(SUBTITULO_GRANDE);
-        lblNombreCartera.setForeground(COLOR_ACENTO);
+        lblNombreCartera.setForeground(AZUL_CLARO);
         card.add(lblNombreCartera, BorderLayout.NORTH);
         lblPatrimonioCartera = new JLabel("0,00 €");
         lblPatrimonioCartera.setFont(new Font("Arial", Font.BOLD, 36));
@@ -321,7 +317,7 @@ public class PanelPortfolio extends JPanel {
         card.add(lblPatrimonioCartera, BorderLayout.CENTER);
         lblGananciasTotal = new JLabel("▲ +0,00 € (0,00%)");
         lblGananciasTotal.setFont(SUBTITULO_MEDIO);
-        lblGananciasTotal.setForeground(COLOR_GANANCIA);
+        lblGananciasTotal.setForeground(VERDE_OSCURO);
         card.add(lblGananciasTotal, BorderLayout.SOUTH);
         return card;
     }
@@ -350,10 +346,10 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearItemDesglose(String titulo) {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBackground(COLOR_VENTANA);
+        panel.setBackground(COLOR_PANEL);
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(CUERPO_PEQUENO);
-        lblTitulo.setForeground(COLOR_TEXTO_SECUNDARIO);
+        lblTitulo.setForeground(GRIS_MEDIO);
         panel.add(lblTitulo, BorderLayout.NORTH);
         
         return panel;
@@ -387,8 +383,8 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.setSelectionForeground(Color.BLACK);
         JTableHeader header = tablePosiciones.getTableHeader();
         header.setFont(SUBTITULO_MEDIO);
-        header.setBackground(COLOR_FONDO_PRINCIPAL);
-        header.setForeground(COLOR_TEXTO_SECUNDARIO);
+        header.setBackground(COLOR_FONDO);
+        header.setForeground(GRIS_MEDIO);
         header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, COLOR_BORDE));
         tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(200);
         tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(120);
@@ -432,11 +428,11 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearPanelBotones() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panel.setBackground(COLOR_FONDO_PRINCIPAL);
+        panel.setBackground(COLOR_FONDO);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         JButton btnActualizar = new JButton("Actualizar Datos");
         btnActualizar.setFont(SUBTITULO_MEDIO);
-        btnActualizar.setBackground(COLOR_ACENTO);
+        btnActualizar.setBackground(AZUL_CLARO);
         btnActualizar.setForeground(Color.WHITE);
         btnActualizar.setFocusPainted(false);
         btnActualizar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -449,7 +445,7 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearCard() {
         JPanel card = new JPanel();
-        card.setBackground(COLOR_VENTANA);
+        card.setBackground(COLOR_PANEL);
         card.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(COLOR_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
@@ -497,7 +493,7 @@ public class PanelPortfolio extends JPanel {
         String signo = gananciaTotal >= 0 ? "+" : "";
         lblGananciasTotal.setText(String.format("%s %s%,.2f %s (%s%.2f%%)", 
             simbolo, signo, gananciaTotal, carteraSeleccionada.getDivisa(), signo, porcentajeGanancia));
-        lblGananciasTotal.setForeground(gananciaTotal >= 0 ? COLOR_GANANCIA : COLOR_PERDIDA);
+        lblGananciasTotal.setForeground(gananciaTotal >= 0 ? VERDE_OSCURO : ROJO_CLARO);
         tableModel.setRowCount(0);
         
         for (Posicion posicion : posiciones) {
@@ -563,9 +559,9 @@ public class PanelPortfolio extends JPanel {
                     double numValue = Double.parseDouble(strValue);
                     
                     if (numValue > 0) {
-                        c.setForeground(COLOR_GANANCIA);
+                        c.setForeground(VERDE_OSCURO);
                     } else if (numValue < 0) {
-                        c.setForeground(COLOR_PERDIDA);
+                        c.setForeground(ROJO_CLARO);
                     } else {
                         c.setForeground(Color.BLACK);
                     }
@@ -585,7 +581,7 @@ public class PanelPortfolio extends JPanel {
     }
     
     public void refrescarColores() {
-        this.setBackground(COLOR_FONDO_PRINCIPAL);
+        this.setBackground(COLOR_FONDO);
         inicializarPaneles();
     }
 }

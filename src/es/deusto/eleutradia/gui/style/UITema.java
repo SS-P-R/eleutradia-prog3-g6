@@ -11,9 +11,14 @@ import javax.swing.ImageIcon;
 public class UITema {
 	
 	public static final Color MAIN_FONDO = new Color(250, 250, 250);
+	public static final Color MAIN_PANEL = Color.WHITE;
 	public static final Color MAIN_BORDE = new Color(220, 220, 230);
+	
+    public static final Color MAIN_FONDO_OSCURO = new Color(40, 40, 40);
+    public static final Color MAIN_PANEL_OSCURO = new Color(55, 55, 55);
+    public static final Color MAIN_BORDE_OSCURO = new Color(90, 90, 90);
+	
 	public static final Color GRIS_SCROLLBAR = new Color(180, 180, 180);
-    
 	public static final Color GRIS_SUAVE = new Color(220, 220, 220);
 	public static final Color GRIS_CLARO = new Color(170, 170, 170);
 	public static final Color GRIS_MEDIO = new Color(120, 120, 120);
