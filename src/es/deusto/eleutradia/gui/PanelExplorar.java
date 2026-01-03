@@ -32,9 +32,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Gestora;
@@ -203,6 +200,7 @@ public class PanelExplorar extends JPanel {
         selectTipoProducto.setAlignmentX(LEFT_ALIGNMENT);
         selectTipoProducto.addActionListener(e -> aplicarFiltros());
         aplicarScrollBarCombo(selectTipoProducto);
+        aplicarTooltipPorItem(selectTipoProducto);
         mainPanelFiltros.add(selectTipoProducto);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
         
@@ -214,6 +212,7 @@ public class PanelExplorar extends JPanel {
         selectClaseActivo.setAlignmentX(LEFT_ALIGNMENT);
         selectClaseActivo.addActionListener(e -> aplicarFiltros());
         aplicarScrollBarCombo(selectClaseActivo);
+        aplicarTooltipPorItem(selectClaseActivo);
         mainPanelFiltros.add(selectClaseActivo);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
         
@@ -225,6 +224,7 @@ public class PanelExplorar extends JPanel {
         selectRegion.setAlignmentX(LEFT_ALIGNMENT);
         selectRegion.addActionListener(e -> aplicarFiltros());
         aplicarScrollBarCombo(selectRegion);
+        aplicarTooltipPorItem(selectRegion);
         mainPanelFiltros.add(selectRegion);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
         
@@ -239,6 +239,7 @@ public class PanelExplorar extends JPanel {
         selectRiesgo.setAlignmentX(LEFT_ALIGNMENT);
         selectRiesgo.addActionListener(e -> aplicarFiltros());
         aplicarScrollBarCombo(selectRiesgo);
+        aplicarTooltipPorItem(selectRiesgo);
         mainPanelFiltros.add(selectRiesgo);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
         
@@ -250,6 +251,7 @@ public class PanelExplorar extends JPanel {
         selectGestora.setAlignmentX(LEFT_ALIGNMENT);
         selectGestora.addActionListener(e -> aplicarFiltros());
         aplicarScrollBarCombo(selectGestora);
+        aplicarTooltipPorItem(selectGestora);
         mainPanelFiltros.add(selectGestora);
         
         mainPanelFiltros.add(Box.createVerticalGlue());
@@ -421,7 +423,7 @@ public class PanelExplorar extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
-        scrollPane.getVerticalScrollBar().setUI(myScrollBar);
+        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
         
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
         
@@ -482,66 +484,6 @@ public class PanelExplorar extends JPanel {
     		}
     	}
     }
-    
-    //IAG (ChatGPT)
-    //ADAPTADO: Diseño personalizado
-    BasicScrollBarUI myScrollBar = new BasicScrollBarUI() {
-		@Override
-	    protected void configureScrollBarColors() {
-	        this.thumbColor = GRIS_SCROLLBAR;
-	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
-	        this.thumbHighlightColor = GRIS_SCROLLBAR;
-	        this.trackColor = Color.WHITE; 
-	    }
-
-	    @Override
-	    protected JButton createDecreaseButton(int orientation) {
-	        return createInvisibleButton();
-	    }
-
-	    @Override
-	    protected JButton createIncreaseButton(int orientation) {
-	        return createInvisibleButton();
-	    }
-
-	    private JButton createInvisibleButton() {
-	        JButton button = new JButton();
-	        button.setPreferredSize(new Dimension(0, 0));
-	        button.setVisible(false);
-	        return button;
-	    }
-    };
-    
-    private void aplicarScrollBarCombo(JComboBox<?> combo) {
-        combo.setUI(new BasicComboBoxUI() {
-            @Override
-            protected BasicComboPopup createPopup() {
-                BasicComboPopup popup = (BasicComboPopup) super.createPopup();
-                JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
-                scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-                    @Override
-                    protected void configureScrollBarColors() {
-                        this.thumbColor = GRIS_SCROLLBAR;
-                        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
-                        this.thumbHighlightColor = GRIS_SCROLLBAR;
-                        this.trackColor = Color.WHITE;
-                    }
-                    @Override
-                    protected JButton createDecreaseButton(int orientation) { return createInvisibleButton(); }
-                    @Override
-                    protected JButton createIncreaseButton(int orientation) { return createInvisibleButton(); }
-                    private JButton createInvisibleButton() {
-                        JButton button = new JButton();
-                        button.setPreferredSize(new Dimension(0,0));
-                        button.setVisible(false);
-                        return button;
-                    }
-                });
-                return popup;
-            }
-        });
-    }
-    //END IAG
     
     private void aplicarFiltros() {
         String textoBusqueda = campoBusqueda.getText().trim().toLowerCase();

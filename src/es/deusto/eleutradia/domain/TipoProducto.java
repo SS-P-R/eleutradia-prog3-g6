@@ -10,23 +10,23 @@ public enum TipoProducto {
 	//				importe mínimo en USD para contratarlo)
 	
 	// --- Activos de RF ---
-	DEPOSITO("Depósitos", ClaseActivo.RF, 1, 10000.0),
-	BONO("Bonos", ClaseActivo.RF, 2, 1000.0),
-	LETRA_TESORO("Letras del tesoro", ClaseActivo.RF, 1, 100.0),
-	PP_RF("P. de Pensiones a RF", ClaseActivo.RF, 3, 100.0),
+	DEP("Depósitos", ClaseActivo.RF, 1, 10000.0),
+	BND("Bonos", ClaseActivo.RF, 2, 1000.0),   			           // BND: Bonds
+	LDT("Letras tesoro", ClaseActivo.RF, 1, 100.0),
+	PP_RF("Plan de Pensiones RF", ClaseActivo.RF, 3, 100.0),
 	ETF_RF("ETFs de RF", ClaseActivo.RF, 3, 1000.0),
 	
 	// --- Activos de RV ---
-	ACCION("Acciones", ClaseActivo.RV, 5, 10.0),
-	FONDO_INVERSION("Fondos de inversión", ClaseActivo.RV, 4, 1.0),
-	PP_RV("P. de Pensiones a RV", ClaseActivo.RV, 4, 100.0),
+	ACC("Acciones", ClaseActivo.RV, 5, 10.0),
+	FDI("Fondos de inversión", ClaseActivo.RV, 4, 1.0),
+	PP_RV("Plan de Pensiones RV", ClaseActivo.RV, 4, 100.0),
 	ETF_RV("ETFs de RV", ClaseActivo.RV, 4, 10.0),
 	
 	// --- Activos alternativos ---
-	CRIPTOMONEDA("Criptomonedas", ClaseActivo.ALT, 7, 10.0),
-	COMMODITY("Materias primas", ClaseActivo.ALT, 6, 100.0),
-	PRIVATE_EQUITY("Capital inversión", ClaseActivo.ALT, 6, 10000.0),
-	CROWDFUND_INM("Inmuebles", ClaseActivo.ALT, 6, 1000.0);
+	CRP("Criptomonedas", ClaseActivo.ALT, 7, 10.0),
+	CMD("Materias primas", ClaseActivo.ALT, 6, 100.0),	           // CMD: Commodities
+	PEQ("Capital inversión", ClaseActivo.ALT, 6, 10000.0),         // PEQ: Private Equity
+	CFI("CrowdFunding Inmobiliario", ClaseActivo.ALT, 6, 1000.0);
 	
 	private final String nombre;
 	private final ClaseActivo claseActivo;

@@ -32,7 +32,6 @@ import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Leccion;
@@ -676,35 +675,6 @@ public class PanelAprender extends JPanel {
 			progressBarRacha.setString(misCursos + "/" + totalCursos);
 		}
 	}
-	
-	private BasicScrollBarUI crearScrollBarUI() {
-		return new BasicScrollBarUI() {
-			@Override
-		    protected void configureScrollBarColors() {
-		        this.thumbColor = GRIS_SCROLLBAR;
-		        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
-		        this.thumbHighlightColor = GRIS_SCROLLBAR;
-		        this.trackColor = Color.WHITE; 
-		    }
-	
-		    @Override
-		    protected JButton createDecreaseButton(int orientation) {
-		        return createInvisibleButton();
-		    }
-	
-		    @Override
-		    protected JButton createIncreaseButton(int orientation) {
-		        return createInvisibleButton();
-		    }
-	
-		    private JButton createInvisibleButton() {
-		        JButton button = new JButton();
-		        button.setPreferredSize(new Dimension(0, 0));
-		        button.setVisible(false);
-		        return button;
-		    }
-		};
-    };
     
     private class PanelCargaThreads extends JPanel {
         private static final long serialVersionUID = 1L;

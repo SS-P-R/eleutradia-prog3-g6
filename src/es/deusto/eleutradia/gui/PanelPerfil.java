@@ -24,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
@@ -72,32 +71,7 @@ public class PanelPerfil extends JPanel {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-		@Override
-	    protected void configureScrollBarColors() {
-	        this.thumbColor = GRIS_SCROLLBAR;
-	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
-	        this.thumbHighlightColor = GRIS_SCROLLBAR;
-	        this.trackColor = Color.WHITE; 
-	    }
-
-	    @Override
-	    protected JButton createDecreaseButton(int orientation) {
-	        return createInvisibleButton();
-	    }
-
-	    @Override
-	    protected JButton createIncreaseButton(int orientation) {
-	        return createInvisibleButton();
-	    }
-
-	    private JButton createInvisibleButton() {
-	        JButton button = new JButton();
-	        button.setPreferredSize(new Dimension(0, 0));
-	        button.setVisible(false);
-	        return button;
-	    }
-    });
+        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
         add(scrollPane, BorderLayout.CENTER);
     }
     

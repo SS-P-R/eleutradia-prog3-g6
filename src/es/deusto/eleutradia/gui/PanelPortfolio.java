@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -82,58 +81,8 @@ public class PanelPortfolio extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-    		@Override
-    	    protected void configureScrollBarColors() {
-    	        this.thumbColor = GRIS_SCROLLBAR;
-    	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
-    	        this.thumbHighlightColor = GRIS_SCROLLBAR;
-    	        this.trackColor = Color.WHITE; 
-    	    }
-
-    	    @Override
-    	    protected JButton createDecreaseButton(int orientation) {
-    	        return createInvisibleButton();
-    	    }
-
-    	    @Override
-    	    protected JButton createIncreaseButton(int orientation) {
-    	        return createInvisibleButton();
-    	    }
-
-    	    private JButton createInvisibleButton() {
-    	        JButton button = new JButton();
-    	        button.setPreferredSize(new Dimension(0, 0));
-    	        button.setVisible(false);
-    	        return button;
-    	    }
-        });
-        scrollPane.getHorizontalScrollBar().setUI(new BasicScrollBarUI() {
-    		@Override
-    	    protected void configureScrollBarColors() {
-    	        this.thumbColor = GRIS_SCROLLBAR;
-    	        this.thumbDarkShadowColor = GRIS_SCROLLBAR;
-    	        this.thumbHighlightColor = GRIS_SCROLLBAR;
-    	        this.trackColor = Color.WHITE; 
-    	    }
-
-    	    @Override
-    	    protected JButton createDecreaseButton(int orientation) {
-    	        return createInvisibleButton();
-    	    }
-
-    	    @Override
-    	    protected JButton createIncreaseButton(int orientation) {
-    	        return createInvisibleButton();
-    	    }
-
-    	    private JButton createInvisibleButton() {
-    	        JButton button = new JButton();
-    	        button.setPreferredSize(new Dimension(0, 0));
-    	        button.setVisible(false);
-    	        return button;
-    	    }
-        });
+        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
         add(scrollPane, BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
     }

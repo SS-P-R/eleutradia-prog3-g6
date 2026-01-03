@@ -1,6 +1,8 @@
 package es.deusto.eleutradia.gui.style;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -8,7 +10,16 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class UITema {
 	
@@ -158,7 +169,7 @@ public class UITema {
     	actualizarTooltips();
     }
 	
-    // Configurar tooltips según el tema
+    // Método para crear ToolTips personalizados
     private void actualizarTooltips() {
     	UIManager.put("ToolTip.background", temaOscuro ? MAIN_PANEL_OSCURO : Color.BLACK);
     	UIManager.put("ToolTip.foreground", temaOscuro ? MAIN_FONDO_CLARO : Color.WHITE);
@@ -167,7 +178,74 @@ public class UITema {
     	UIManager.put("ToolTip.font", CUERPO_PEQUENO);
     }
     
-    // Método reutilizable para cargar y escalar iconos
+    //IAG (Claude)
+    //ADAPTADO: Diseño adaptado al tema oscuro/claro
+    
+    // Método para crear ScrollBars personalizadas
+    public static BasicScrollBarUI crearScrollBarUI() {
+        return new BasicScrollBarUI() {
+
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = GRIS_SCROLLBAR;
+                this.thumbDarkShadowColor = GRIS_SCROLLBAR;
+                this.thumbHighlightColor = GRIS_SCROLLBAR;
+                this.trackColor = Color.WHITE;
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createInvisibleButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createInvisibleButton();
+            }
+
+            private JButton createInvisibleButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setVisible(false);
+                return button;
+            }
+        };
+    }
+
+    // Método para aplicar el método anterior a un JComboBox
+    public static void aplicarScrollBarCombo(JComboBox<?> combo) {
+        combo.setUI(new BasicComboBoxUI() {
+
+            @Override
+            protected BasicComboPopup createPopup() {
+                BasicComboPopup popup = (BasicComboPopup) super.createPopup();
+                JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
+                scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+                return popup;
+            }
+        });
+    }
+    //END IAG
+    
+    // Método para aplicar ToolTips personalizados a los items de un JComboBox
+    public static void aplicarTooltipPorItem(JComboBox<?> combo) {
+        combo.setRenderer(new DefaultListCellRenderer() {
+
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+
+                JLabel label = (JLabel) super.getListCellRendererComponent(
+                        list, value, index, isSelected, cellHasFocus);
+
+                label.setToolTipText(value != null ? value.toString() : null);
+                return label;
+            }
+        });
+    }
+    
+    // Método para cargar y escalar iconos
 	public static ImageIcon cargarIconoEscalado(String ruta, int anchoMax, int altoMax) {
         if (ruta == null || UITema.class.getResource(ruta) == null) return null;
         ImageIcon icono = new ImageIcon(UITema.class.getResource(ruta));

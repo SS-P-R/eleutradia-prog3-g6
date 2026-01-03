@@ -446,6 +446,7 @@ public class VentanaInicial extends JFrame {
         JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
         scrollRegistro.setBorder(null); // elimina el borde del scroll
         scrollRegistro.setBackground(Color.WHITE);
+        scrollRegistro.getVerticalScrollBar().setUI(crearScrollBarUI());
         scrollRegistro.getVerticalScrollBar().setUnitIncrement(16); // suaviza el scroll
         scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelDcho.add(scrollRegistro);
@@ -571,6 +572,7 @@ public class VentanaInicial extends JFrame {
         JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
         scrollRegistro.setBorder(null);
         scrollRegistro.setBackground(Color.WHITE);
+        scrollRegistro.getVerticalScrollBar().setUI(crearScrollBarUI());
         scrollRegistro.getVerticalScrollBar().setUnitIncrement(16);
         scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelDcho.add(scrollRegistro);
