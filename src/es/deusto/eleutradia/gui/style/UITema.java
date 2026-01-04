@@ -5,8 +5,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -15,11 +17,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import es.deusto.eleutradia.domain.ProductoFinanciero;
 
 public class UITema {
 	
@@ -190,7 +196,7 @@ public class UITema {
                 this.thumbColor = GRIS_SCROLLBAR;
                 this.thumbDarkShadowColor = GRIS_SCROLLBAR;
                 this.thumbHighlightColor = GRIS_SCROLLBAR;
-                this.trackColor = Color.WHITE;
+                this.trackColor = MAIN_FONDO_CLARO;
             }
 
             @Override
@@ -225,6 +231,7 @@ public class UITema {
             }
         });
     }
+    
     //END IAG
     
     // Método para aplicar ToolTips personalizados a los items de un JComboBox
@@ -243,6 +250,194 @@ public class UITema {
                 return label;
             }
         });
+    }
+    
+    // Método para aplicar colores de fila personalizados a una JTable
+    public static void aplicarColoresHover(DefaultTableCellRenderer renderer, JTable table, 
+            boolean isSelected, int row) {
+        
+        UITema tema = UITema.getInstancia();
+        
+        if (isSelected) {
+            if (tema.esTemaOscuro()) {
+                renderer.setBackground(new Color(70, 80, 100));
+                renderer.setForeground(MAIN_FONDO_CLARO);
+            } else {
+                renderer.setBackground(new Color(200, 210, 240));
+                renderer.setForeground(Color.BLACK);
+            }
+        } else {
+            // Comprobar si el mouse está sobre la fila
+            Point mousePos = table.getMousePosition();
+            if (mousePos != null && table.rowAtPoint(mousePos) == row) {
+                // Color hover según el tema
+                if (tema.esTemaOscuro()) {
+                    renderer.setBackground(new Color(65, 65, 75));
+                } else {
+                    renderer.setBackground(new Color(220, 235, 255));
+                }
+            } else {
+                // Colores alternos según el tema
+                if (row % 2 == 0) {
+                    renderer.setBackground(tema.colorPanel);
+                } else {
+                    renderer.setBackground(tema.colorFondo);
+                }
+            }
+            
+            // Color del texto según el tema (solo si no está seleccionado)
+            renderer.setForeground(tema.colorTexto);
+        }
+    }
+    
+    public static class RendererHover extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            aplicarColoresHover(this, table, isSelected, row);
+            setHorizontalAlignment(JLabel.LEFT);
+            return this;
+        }
+    }
+    
+    public static class RightRendererHover extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            aplicarColoresHover(this, table, isSelected, row);
+            setHorizontalAlignment(JLabel.RIGHT);
+            return this;
+        }
+    }
+    
+    public static class CenterRendererHover extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            aplicarColoresHover(this, table, isSelected, row);
+            setHorizontalAlignment(JLabel.CENTER);
+            return this;
+        }
+    }
+    
+    public static class RendererImagen extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+        public void setValue(Object value) {
+            if (value instanceof ImageIcon) {
+                setIcon((ImageIcon) value);
+                setText("");
+            } else {
+                setIcon(null);
+                setText(value != null ? value.toString() : "");
+            }
+            setHorizontalAlignment(JLabel.CENTER);
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            aplicarColoresHover(this, table, isSelected, row);
+            return this;
+        }
+    }
+    
+    public static class RendererRentabilidad extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            aplicarColoresHover(this, table, isSelected, row);
+            
+            if (!isSelected && value != null && !value.toString().isEmpty()) {
+                String strValue = value.toString();
+                
+                try {
+                    strValue = strValue.replace("%", "").replace("€", "").replace("$", "")
+                                       .replace("USD", "").replace("EUR", "").trim();
+                    double numValue = Double.parseDouble(strValue);
+                    
+                    if (numValue > 0) {
+                        setForeground(VERDE_OSCURO);
+                    } else if (numValue < 0) {
+                        setForeground(ROJO_CLARO);
+                    } else {
+                        setForeground(Color.BLACK);
+                    }
+                } catch (NumberFormatException e) {
+                    // Mantener el color del tema si no se puede parsear
+                	setForeground(UITema.getInstancia().colorTexto);
+                }
+                setFont(SUBTITULO_MEDIO);
+            }
+            
+            setHorizontalAlignment(JLabel.CENTER);
+            return this;
+        }
+    }
+    
+    public static class RendererLogoGestora extends RendererImagen {
+		private static final long serialVersionUID = 1L;
+		
+		private List<ProductoFinanciero> productos;
+        
+        public RendererLogoGestora(List<ProductoFinanciero> productos) {
+            this.productos = productos;
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            if (productos != null && row < productos.size()) {
+                ProductoFinanciero producto = productos.get(row);
+                if (producto.getGestora() != null) {
+                    setToolTipText(producto.getGestora().getNombreCompleto());
+                }
+            }
+            
+            return this;
+        }
+    }
+    
+    public static class RendererLogoDivisa extends RendererImagen {
+		private static final long serialVersionUID = 1L;
+		
+		private List<ProductoFinanciero> productos;
+        
+        public RendererLogoDivisa(List<ProductoFinanciero> productos) {
+            this.productos = productos;
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            if (productos != null && row < productos.size()) {
+                ProductoFinanciero producto = productos.get(row);
+                if (producto.getDivisa() != null) {
+                    setToolTipText(producto.getDivisa().getNombre());
+                }
+            }
+            
+            return this;
+        }
     }
     
     // Método para cargar y escalar iconos

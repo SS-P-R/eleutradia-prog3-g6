@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import es.deusto.eleutradia.domain.Curso;
@@ -297,8 +296,8 @@ public class PanelAprender extends JPanel {
 			
 			panelMisCursos.setLayout(new BorderLayout());
 			
-			JLabel labelVacio = new JLabel("Aún no te has inscrito a ningún curso.");
-			labelVacio.setHorizontalAlignment(SwingConstants.CENTER);
+			JLabel labelVacio = new JLabel("Aún no se ha inscrito a ningún curso.");
+			labelVacio.setHorizontalAlignment(JLabel.CENTER);
 			labelVacio.setForeground(GRIS_CLARO);
 			labelVacio.setFont(CUERPO_PEQUENO);
 			
@@ -437,7 +436,7 @@ public class PanelAprender extends JPanel {
 		if (usuarioLogeado.getCursos().stream()
 		        .anyMatch(c -> c.getId() == cursoInfo.getId())) {
 			
-			JLabel labelInscrito = new JLabel("Inscrito", SwingConstants.CENTER);
+			JLabel labelInscrito = new JLabel("Inscrito", JLabel.CENTER);
 			labelInscrito.setFont(SUBTITULO_MEDIO); 
 			labelInscrito.setMinimumSize(new Dimension(150, 45));
 			labelInscrito.setPreferredSize(new Dimension(150, 45));
@@ -606,7 +605,7 @@ public class PanelAprender extends JPanel {
 
 			JLabel labelImagen = new JLabel(new ImageIcon(imagen));
 			labelImagen.setAlignmentX(Component.LEFT_ALIGNMENT);
-			labelImagen.setHorizontalAlignment(SwingConstants.CENTER); 
+			labelImagen.setHorizontalAlignment(JLabel.CENTER); 
 			labelImagen.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0)); 
 
 			panelContenido.add(labelImagen);

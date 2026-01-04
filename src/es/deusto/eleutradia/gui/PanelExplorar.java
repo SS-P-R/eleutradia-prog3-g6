@@ -2,11 +2,9 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -29,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
 
@@ -40,6 +37,7 @@ import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.RegionGeografica;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -295,6 +293,7 @@ public class PanelExplorar extends JPanel {
         tablaProductos.setSelectionBackground(new Color(200, 210, 240));
         tablaProductos.setIntercellSpacing(new Dimension(1, 1));
         tablaProductos.setFocusable(false);
+        tablaProductos.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
         tablaProductos.getTableHeader().setPreferredSize(new Dimension(0, 30));
         tablaProductos.getTableHeader().setFont(SUBTITULO_MEDIO);
@@ -323,16 +322,6 @@ public class PanelExplorar extends JPanel {
             }
         });
         
-        DefaultTableCellRenderer rendererHover = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                aplicarColoresHover(this, table, isSelected, row);
-                return this;
-            }
-        };
-        
         // Ajustar anchos de columna
         tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre
         tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100); // Región
@@ -342,83 +331,13 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(40);  // Riesgo
         tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(90);  // Gestora
         
-        tablaProductos.getColumnModel().getColumn(0).setCellRenderer(rendererHover); // Nombre
-        tablaProductos.getColumnModel().getColumn(1).setCellRenderer(rendererHover); // Región
-        
-        DefaultTableCellRenderer rendererDerecha = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.RIGHT);
-                aplicarColoresHover(this, table, isSelected, row);
-                return this;
-            }
-        };
-        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(rendererDerecha); // Precio
-        
-        DefaultTableCellRenderer rendererCentro = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setHorizontalAlignment(JLabel.CENTER);
-                aplicarColoresHover(this, table, isSelected, row);
-                return this;
-            }
-        };
-        tablaProductos.getColumnModel().getColumn(4).setCellRenderer(rendererCentro);  // YTD
-        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(rendererCentro);  // Riesgo
-        
-        // Renderer de los logos de las divisas
-		tablaProductos.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
-			@Override
-			public void setValue(Object value) {
-                if (value instanceof ImageIcon) {
-                    setIcon((ImageIcon) value);
-                    setText("");
-                } else {
-                    setIcon(null);
-                    setText(value != null ? value.toString() : "");
-                }
-                setHorizontalAlignment(JLabel.CENTER);
-            }
-			
-			@Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                ProductoFinanciero producto = productosFiltrados.get(row);
-                this.setToolTipText(producto.getDivisa().getNombre());	
-                aplicarColoresHover(this, table, isSelected, row);
-                return this;
-            }
-		});
-        
-        // Renderer de los logos de gestoras
-        tablaProductos.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public void setValue(Object value) {
-                if (value instanceof ImageIcon) {
-                    setIcon((ImageIcon) value);
-                    setText("");
-                } else {
-                    setIcon(null);
-                    setText(value != null ? value.toString() : "");
-                }
-                setHorizontalAlignment(JLabel.CENTER);
-            }
-            
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                ProductoFinanciero producto = productosFiltrados.get(row);
-                this.setToolTipText(producto.getGestora().getNombreCompleto());
-                aplicarColoresHover(this, table, isSelected, row);
-                return this;
-            }
-        });
+        tablaProductos.getColumnModel().getColumn(0).setCellRenderer(new UITema.RendererHover());
+        tablaProductos.getColumnModel().getColumn(1).setCellRenderer(new UITema.RendererHover());
+        tablaProductos.getColumnModel().getColumn(2).setCellRenderer(new UITema.RightRendererHover());
+		tablaProductos.getColumnModel().getColumn(3).setCellRenderer(new UITema.RendererLogoDivisa(productosFiltrados));
+        tablaProductos.getColumnModel().getColumn(4).setCellRenderer(new UITema.CenterRendererHover());
+        tablaProductos.getColumnModel().getColumn(5).setCellRenderer(new UITema.CenterRendererHover());
+        tablaProductos.getColumnModel().getColumn(6).setCellRenderer(new UITema.RendererLogoGestora(productosFiltrados));
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
@@ -462,26 +381,6 @@ public class PanelExplorar extends JPanel {
         botonAnadirACartera.addMouseListener(myAdapterVerde);
         
         return mainPanelTabla;
-    }
-    
-    private void aplicarColoresHover(DefaultTableCellRenderer renderer, JTable table, 
-            boolean isSelected, int row) {
-    	if (isSelected) {
-    		renderer.setBackground(new Color(210, 220, 255));
-    	} else {
-    		// Comprobar si el mouse está sobre la fila
-    		Point mousePos = table.getMousePosition();
-    		if (mousePos != null && table.rowAtPoint(mousePos) == row) {
-    			renderer.setBackground(new Color(220, 240, 255));
-    		} else {
-    			// Alternar colores de fila
-    			if (row % 2 == 0) {
-    				renderer.setBackground(Color.WHITE);
-    			} else {
-    				renderer.setBackground(MAIN_FONDO_CLARO);
-    			}
-    		}
-    	}
     }
     
     private void aplicarFiltros() {

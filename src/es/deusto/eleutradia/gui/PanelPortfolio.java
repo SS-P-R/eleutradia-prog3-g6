@@ -6,6 +6,8 @@ import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -205,12 +207,14 @@ public class PanelPortfolio extends JPanel {
     }
     
     private JPanel crearPanelResumenUsuario() {
-        JPanel panelPrincipal = new JPanel(new GridLayout(1, 3, 15, 0));
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
         panelPrincipal.setBackground(uiTema.colorFondo);
         
+        // Patrimonio total
         JPanel card1 = crearCard();
         card1.setLayout(new BorderLayout(5, 5));
-        JLabel lbl1 = new JLabel("Patrimonio total (todas las carteras)");
+        JLabel lbl1 = new JLabel("Patrimonio total");
         lbl1.setFont(CUERPO_PEQUENO);
         lbl1.setForeground(GRIS_MEDIO);
         lblPatrimonioTotalUsuario = new JLabel("0,00 €", JLabel.RIGHT);
@@ -219,6 +223,9 @@ public class PanelPortfolio extends JPanel {
         card1.add(lblPatrimonioTotalUsuario, BorderLayout.CENTER);
         panelPrincipal.add(card1);
         
+        panelPrincipal.add(Box.createRigidArea(new Dimension(15, 0)));
+        
+        // Efectivo total
         JPanel card2 = crearCard();
         card2.setLayout(new BorderLayout(5, 5));
         JLabel lbl2 = new JLabel("Efectivo total");
@@ -229,9 +236,13 @@ public class PanelPortfolio extends JPanel {
         card2.add(lbl2, BorderLayout.NORTH);
         card2.add(lblPatrimonioLiquido, BorderLayout.CENTER);
         panelPrincipal.add(card2);
+        
+        panelPrincipal.add(Box.createRigidArea(new Dimension(15, 0)));
+        
+        // Inversiones totales
         JPanel card3 = crearCard();
         card3.setLayout(new BorderLayout(5, 5));
-        JLabel lbl3 = new JLabel("Inversiones Totales");
+        JLabel lbl3 = new JLabel("Inversiones totales");
         lbl3.setFont(CUERPO_PEQUENO);
         lbl3.setForeground(GRIS_MEDIO);
         lblPatrimonioInvertido = new JLabel("0,00 €", JLabel.RIGHT);
@@ -244,9 +255,11 @@ public class PanelPortfolio extends JPanel {
     }
     
     private JPanel crearPanelResumenCartera() {
-        JPanel panelPrincipal = new JPanel(new GridLayout(1, 2, 15, 0));
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
         panelPrincipal.setBackground(uiTema.colorFondo);
         panelPrincipal.add(crearCardPatrimonioCartera());
+        panelPrincipal.add(Box.createRigidArea(new Dimension(15, 0)));
         panelPrincipal.add(crearCardDesgloseCartera());
         return panelPrincipal;
     }
@@ -254,7 +267,7 @@ public class PanelPortfolio extends JPanel {
     private JPanel crearCardPatrimonioCartera() {
         JPanel card = crearCard();
         card.setLayout(new BorderLayout(10, 10));
-        lblNombreCartera = new JLabel("Cartera Seleccionada");
+        lblNombreCartera = new JLabel("Cartera seleccionada");
         lblNombreCartera.setFont(SUBTITULO_GRANDE);
         lblNombreCartera.setForeground(AZUL_CLARO);
         card.add(lblNombreCartera, BorderLayout.NORTH);
@@ -271,18 +284,31 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearCardDesgloseCartera() {
         JPanel card = crearCard();
-        card.setLayout(new GridLayout(3, 1, 0, 15));
-        JPanel panelSaldo = crearItemDesglose("Saldo Disponible");
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        
+        // Saldo disponible
+        JPanel panelSaldo = crearItemDesglose("Saldo disponible");
+        panelSaldo.setAlignmentX(JPanel.LEFT_ALIGNMENT);
         lblSaldoDisponible = new JLabel("0,00 €", JLabel.RIGHT);
         lblSaldoDisponible.setFont(SUBTITULO_GRANDE);
         panelSaldo.add(lblSaldoDisponible);
         card.add(panelSaldo);
-        JPanel panelInversiones = crearItemDesglose("Valor de Inversiones");
+        
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        // Valor de inversiones
+        JPanel panelInversiones = crearItemDesglose("Valor de inversiones");
+        panelInversiones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
         lblValorInversiones = new JLabel("0,00 €", JLabel.RIGHT);
         lblValorInversiones.setFont(SUBTITULO_GRANDE);
         panelInversiones.add(lblValorInversiones);
         card.add(panelInversiones);
-        JPanel panelRiesgo = crearItemDesglose("Perfil de Riesgo");
+        
+        card.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        // Perfil de riesgo
+        JPanel panelRiesgo = crearItemDesglose("Perfil de riesgo");
+        panelRiesgo.setAlignmentX(JPanel.LEFT_ALIGNMENT);
         JLabel lblRiesgo = new JLabel("-", JLabel.RIGHT);
         lblRiesgo.setFont(SUBTITULO_GRANDE);
         panelRiesgo.add(lblRiesgo);
@@ -334,7 +360,7 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.setIntercellSpacing(new Dimension(1, 1));
         tablePosiciones.setFocusable(false);
         
-        tablePosiciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tablePosiciones.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
         JTableHeader header = tablePosiciones.getTableHeader();
         header.setFont(SUBTITULO_MEDIO);
@@ -347,24 +373,23 @@ public class PanelPortfolio extends JPanel {
         
         tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(150); // Producto
         tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(50);  // Cantidad
-        tablePosiciones.getColumnModel().getColumn(2).setPreferredWidth(90); // Precio Medio
-        tablePosiciones.getColumnModel().getColumn(3).setPreferredWidth(90); // Precio Actual
-        tablePosiciones.getColumnModel().getColumn(4).setPreferredWidth(70); // Valor
+        tablePosiciones.getColumnModel().getColumn(2).setPreferredWidth(80);  // Precio Medio
+        tablePosiciones.getColumnModel().getColumn(3).setPreferredWidth(80);  // Precio Actual
+        tablePosiciones.getColumnModel().getColumn(4).setPreferredWidth(60);  // Valor
         tablePosiciones.getColumnModel().getColumn(5).setPreferredWidth(70);  // Rentabilidad
-        tablePosiciones.getColumnModel().getColumn(6).setPreferredWidth(70);  // Porcentaje
+        tablePosiciones.getColumnModel().getColumn(6).setPreferredWidth(60);  // Porcentaje
         
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        DefaultTableCellRenderer centerRenderer = new UITema.CenterRendererHover();
         tablePosiciones.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        DefaultTableCellRenderer rightRenderer = new UITema.RightRendererHover();
         tablePosiciones.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         tablePosiciones.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
         tablePosiciones.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
 
-        tablePosiciones.getColumnModel().getColumn(5).setCellRenderer(new RendererGananciaPerdida());
-        tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(new RendererGananciaPerdida());
+        DefaultTableCellRenderer rentRenderer = new UITema.RendererRentabilidad();
+        tablePosiciones.getColumnModel().getColumn(5).setCellRenderer(rentRenderer);
+        tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(rentRenderer);
         
         JScrollPane scrollPane = new JScrollPane(tablePosiciones);
         scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
@@ -391,6 +416,7 @@ public class PanelPortfolio extends JPanel {
         operationsList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         JScrollPane scrollPane = new JScrollPane(operationsList);
         scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
+        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
         panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;
@@ -506,43 +532,6 @@ public class PanelPortfolio extends JPanel {
         
         if (ops.isEmpty()) {
             operationsListModel.addElement("No hay operaciones registradas en esta cartera");
-        }
-    }
-    
-    private class RendererGananciaPerdida extends DefaultTableCellRenderer {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            
-            if (!isSelected) {
-                c.setBackground(Color.WHITE);
-            }
-            
-            if (value != null && !value.toString().isEmpty()) {
-                String strValue = value.toString();
-                
-                try {
-                    strValue = strValue.replace("%", "").replace("€", "").replace("$", "")
-                                       .replace("USD", "").replace("EUR", "").trim();
-                    double numValue = Double.parseDouble(strValue);
-                    
-                    if (numValue > 0) {
-                        c.setForeground(VERDE_OSCURO);
-                    } else if (numValue < 0) {
-                        c.setForeground(ROJO_CLARO);
-                    } else {
-                        c.setForeground(Color.BLACK);
-                    }
-                } catch (NumberFormatException e) {
-                    c.setForeground(Color.BLACK);
-                }
-                setFont(SUBTITULO_MEDIO);
-            }
-            
-            setHorizontalAlignment(JLabel.CENTER);
-            
-            return c;
         }
     }
     
