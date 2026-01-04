@@ -83,6 +83,7 @@ public class PanelPortfolio extends JPanel {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
         scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(scrollPane, BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
     }
@@ -96,7 +97,7 @@ public class PanelPortfolio extends JPanel {
         
         comboCarteras = new JComboBox<>();
         comboCarteras.setFont(CUERPO_GRANDE);
-        comboCarteras.setPreferredSize(new Dimension(300, 35));
+        comboCarteras.setPreferredSize(new Dimension(250, 35));
         
         // 1. Añadimos las carteras existentes
         for (Cartera cartera : usuario.getCarteras()) {
@@ -209,20 +210,21 @@ public class PanelPortfolio extends JPanel {
         
         JPanel card1 = crearCard();
         card1.setLayout(new BorderLayout(5, 5));
-        JLabel lbl1 = new JLabel("Patrimonio Total (Todas las Carteras)");
+        JLabel lbl1 = new JLabel("Patrimonio total (todas las carteras)");
         lbl1.setFont(CUERPO_PEQUENO);
         lbl1.setForeground(GRIS_MEDIO);
-        lblPatrimonioTotalUsuario = new JLabel("0,00 €");
+        lblPatrimonioTotalUsuario = new JLabel("0,00 €", JLabel.RIGHT);
         lblPatrimonioTotalUsuario.setFont(TITULO_GRANDE);
         card1.add(lbl1, BorderLayout.NORTH);
         card1.add(lblPatrimonioTotalUsuario, BorderLayout.CENTER);
         panelPrincipal.add(card1);
+        
         JPanel card2 = crearCard();
         card2.setLayout(new BorderLayout(5, 5));
-        JLabel lbl2 = new JLabel("Efectivo Total");
+        JLabel lbl2 = new JLabel("Efectivo total");
         lbl2.setFont(CUERPO_PEQUENO);
         lbl2.setForeground(GRIS_MEDIO);
-        lblPatrimonioLiquido = new JLabel("0,00 €");
+        lblPatrimonioLiquido = new JLabel("0,00 €", JLabel.RIGHT);
         lblPatrimonioLiquido.setFont(TITULO_GRANDE);
         card2.add(lbl2, BorderLayout.NORTH);
         card2.add(lblPatrimonioLiquido, BorderLayout.CENTER);
@@ -232,7 +234,7 @@ public class PanelPortfolio extends JPanel {
         JLabel lbl3 = new JLabel("Inversiones Totales");
         lbl3.setFont(CUERPO_PEQUENO);
         lbl3.setForeground(GRIS_MEDIO);
-        lblPatrimonioInvertido = new JLabel("0,00 €");
+        lblPatrimonioInvertido = new JLabel("0,00 €", JLabel.RIGHT);
         lblPatrimonioInvertido.setFont(TITULO_GRANDE);
         card3.add(lbl3, BorderLayout.NORTH);
         card3.add(lblPatrimonioInvertido, BorderLayout.CENTER);
@@ -256,11 +258,11 @@ public class PanelPortfolio extends JPanel {
         lblNombreCartera.setFont(SUBTITULO_GRANDE);
         lblNombreCartera.setForeground(AZUL_CLARO);
         card.add(lblNombreCartera, BorderLayout.NORTH);
-        lblPatrimonioCartera = new JLabel("0,00 €");
+        lblPatrimonioCartera = new JLabel("0,00 €", JLabel.CENTER);
         lblPatrimonioCartera.setFont(new Font("Arial", Font.BOLD, 36));
-        lblPatrimonioCartera.setForeground(new Color(33, 37, 41));
+        lblPatrimonioCartera.setForeground(GRIS_OSCURO);
         card.add(lblPatrimonioCartera, BorderLayout.CENTER);
-        lblGananciasTotal = new JLabel("▲ +0,00 € (0,00%)");
+        lblGananciasTotal = new JLabel("▲ +0,00 € (0,00%)", JLabel.CENTER);
         lblGananciasTotal.setFont(SUBTITULO_MEDIO);
         lblGananciasTotal.setForeground(VERDE_OSCURO);
         card.add(lblGananciasTotal, BorderLayout.SOUTH);
@@ -271,17 +273,17 @@ public class PanelPortfolio extends JPanel {
         JPanel card = crearCard();
         card.setLayout(new GridLayout(3, 1, 0, 15));
         JPanel panelSaldo = crearItemDesglose("Saldo Disponible");
-        lblSaldoDisponible = new JLabel("0,00 €");
+        lblSaldoDisponible = new JLabel("0,00 €", JLabel.RIGHT);
         lblSaldoDisponible.setFont(SUBTITULO_GRANDE);
         panelSaldo.add(lblSaldoDisponible);
         card.add(panelSaldo);
         JPanel panelInversiones = crearItemDesglose("Valor de Inversiones");
-        lblValorInversiones = new JLabel("0,00 €");
+        lblValorInversiones = new JLabel("0,00 €", JLabel.RIGHT);
         lblValorInversiones.setFont(SUBTITULO_GRANDE);
         panelInversiones.add(lblValorInversiones);
         card.add(panelInversiones);
         JPanel panelRiesgo = crearItemDesglose("Perfil de Riesgo");
-        JLabel lblRiesgo = new JLabel("-");
+        JLabel lblRiesgo = new JLabel("-", JLabel.RIGHT);
         lblRiesgo.setFont(SUBTITULO_GRANDE);
         panelRiesgo.add(lblRiesgo);
         card.add(panelRiesgo);
@@ -305,12 +307,13 @@ public class PanelPortfolio extends JPanel {
         panel.setLayout(new BorderLayout(0, 15));
         panel.setPreferredSize(new Dimension(0, 400));
         JLabel lblTitulo = new JLabel("Posiciones Actuales");
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitulo.setFont(TITULO_MEDIO);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
+        
         String[] columnNames = {
-            "Producto", "Tipo", "Cantidad", "Precio Medio", 
-            "Precio Actual", "Valor Total", "Ganancia/Pérdida", "%"
+            "Producto", "Cant.", "P. Medio",
+            "P. Actual", "Valor", "Rent.", "%"
         };
         
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -321,31 +324,53 @@ public class PanelPortfolio extends JPanel {
         };
         
         tablePosiciones = new JTable(tableModel);
-        tablePosiciones.setRowHeight(35);
         tablePosiciones.setFont(CUERPO_PEQUENO);
+        tablePosiciones.setRowHeight(35);
+        
+        tablePosiciones.setShowGrid(true);
         tablePosiciones.setGridColor(uiTema.colorBorde);
-        tablePosiciones.setSelectionBackground(new Color(232, 244, 253));
+        tablePosiciones.setSelectionBackground(new Color(200, 210, 240));
         tablePosiciones.setSelectionForeground(Color.BLACK);
+        tablePosiciones.setIntercellSpacing(new Dimension(1, 1));
+        tablePosiciones.setFocusable(false);
+        
+        tablePosiciones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        
         JTableHeader header = tablePosiciones.getTableHeader();
         header.setFont(SUBTITULO_MEDIO);
-        header.setBackground(uiTema.colorFondo);
-        header.setForeground(GRIS_MEDIO);
+        header.setBackground(uiTema.esTemaOscuro() ? GRIS_MEDIO : AZUL_OSCURO);
+        header.setForeground(uiTema.esTemaOscuro() ? GRIS_SUAVE : Color.WHITE);
+        header.setOpaque(true);
+        header.setReorderingAllowed(false);
+        header.setResizingAllowed(false);
         header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, uiTema.colorBorde));
-        tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(200);
-        tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(120);
-        tablePosiciones.getColumnModel().getColumn(2).setPreferredWidth(100);
-        tablePosiciones.getColumnModel().getColumn(3).setPreferredWidth(120);
-        tablePosiciones.getColumnModel().getColumn(4).setPreferredWidth(120);
-        tablePosiciones.getColumnModel().getColumn(5).setPreferredWidth(130);
-        tablePosiciones.getColumnModel().getColumn(6).setPreferredWidth(150);
-        tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(new RendererGananciaPerdida());
-        tablePosiciones.getColumnModel().getColumn(7).setCellRenderer(new RendererGananciaPerdida());
+        
+        tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(150); // Producto
+        tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(50);  // Cantidad
+        tablePosiciones.getColumnModel().getColumn(2).setPreferredWidth(90); // Precio Medio
+        tablePosiciones.getColumnModel().getColumn(3).setPreferredWidth(90); // Precio Actual
+        tablePosiciones.getColumnModel().getColumn(4).setPreferredWidth(70); // Valor
+        tablePosiciones.getColumnModel().getColumn(5).setPreferredWidth(70);  // Rentabilidad
+        tablePosiciones.getColumnModel().getColumn(6).setPreferredWidth(70);  // Porcentaje
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         tablePosiciones.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        tablePosiciones.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        tablePosiciones.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        tablePosiciones.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+        tablePosiciones.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+
+        tablePosiciones.getColumnModel().getColumn(5).setCellRenderer(new RendererGananciaPerdida());
+        tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(new RendererGananciaPerdida());
+        
         JScrollPane scrollPane = new JScrollPane(tablePosiciones);
         scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
+        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;
@@ -445,12 +470,11 @@ public class PanelPortfolio extends JPanel {
             ProductoFinanciero producto = posicion.getProducto();
             Object[] row = {
                 producto.getNombre(),
-                producto.getTipoProducto().toString(),
                 String.format("%.2f", posicion.getCantidadTotal()),
-                String.format("%.2f %s", posicion.getPrecioMedioCompra(), producto.getDivisa()),
-                String.format("%.2f %s", producto.getValorUnitario(), producto.getDivisa()),
-                String.format("%.2f %s", posicion.getValorTotal(), producto.getDivisa()),
-                String.format("%.2f %s", posicion.getGanancia(), producto.getDivisa()),
+                String.format("%.2f %s", posicion.getPrecioMedioCompra(), posicion.getProducto().getDivisa().getSimbolo()),
+                String.format("%.2f %s", producto.getValorUnitario(), posicion.getProducto().getDivisa().getSimbolo()),
+                String.format("%.2f %s", posicion.getValorTotal(), posicion.getProducto().getDivisa().getSimbolo()),
+                String.format("%.2f %s", posicion.getGanancia(), posicion.getProducto().getDivisa().getSimbolo()),
                 String.format("%.2f%%", posicion.getPorcentajeGanancia())
             };
             tableModel.addRow(row);
@@ -458,7 +482,7 @@ public class PanelPortfolio extends JPanel {
         
         if (posiciones.isEmpty()) {
             Object[] row = {
-                "No hay posiciones activas en esta cartera", "", "", "", "", "", "", ""
+                "No hay posiciones activas en esta cartera", "", "", "", "", "", ""
             };
             tableModel.addRow(row);
         }
@@ -516,7 +540,8 @@ public class PanelPortfolio extends JPanel {
                 setFont(SUBTITULO_MEDIO);
             }
             
-            setHorizontalAlignment(JLabel.RIGHT);
+            setHorizontalAlignment(JLabel.CENTER);
+            
             return c;
         }
     }

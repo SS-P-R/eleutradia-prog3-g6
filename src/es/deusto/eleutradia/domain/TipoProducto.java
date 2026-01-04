@@ -12,7 +12,7 @@ public enum TipoProducto {
 	// --- Activos de RF ---
 	DEP("Depósitos", ClaseActivo.RF, 1, 10000.0),
 	BND("Bonos", ClaseActivo.RF, 2, 1000.0),   			           // BND: Bonds
-	LDT("Letras tesoro", ClaseActivo.RF, 1, 100.0),
+	LDT("Letras del tesoro", ClaseActivo.RF, 1, 100.0),
 	PP_RF("Plan de Pensiones RF", ClaseActivo.RF, 3, 100.0),
 	ETF_RF("ETFs de RF", ClaseActivo.RF, 3, 1000.0),
 	

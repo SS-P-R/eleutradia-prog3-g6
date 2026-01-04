@@ -277,7 +277,7 @@ public class PanelExplorar extends JPanel {
         
         // Crear modelo de tabla
         String anoActual = String.valueOf(Year.now().getValue());
-        String[] columnas = {"Nombre", "Región", "Precio", "Div", anoActual, "Riesgo", "Gestora"};
+        String[] columnas = {"Nombre", "Región", "Precio", "Div.", anoActual, "Riesgo", "Gestora"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -292,6 +292,7 @@ public class PanelExplorar extends JPanel {
         // Asegurarse de líneas de tabla finas y uniformes
         tablaProductos.setShowGrid(true);
         tablaProductos.setGridColor(MAIN_BORDE_CLARO);
+        tablaProductos.setSelectionBackground(new Color(200, 210, 240));
         tablaProductos.setIntercellSpacing(new Dimension(1, 1));
         tablaProductos.setFocusable(false);
         
@@ -299,9 +300,7 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getTableHeader().setFont(SUBTITULO_MEDIO);
         tablaProductos.getTableHeader().setBackground(AZUL_OSCURO);
         tablaProductos.getTableHeader().setForeground(Color.WHITE);
-        tablaProductos.getTableHeader().setOpaque(true);
-        
-        tablaProductos.setSelectionBackground(new Color(200, 210, 240));
+        tablaProductos.getTableHeader().setOpaque(true);        
         tablaProductos.getTableHeader().setReorderingAllowed(false); // No mover columnas
         tablaProductos.getTableHeader().setResizingAllowed(false);   // No redimensionar columnas
         
