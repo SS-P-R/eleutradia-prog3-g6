@@ -140,7 +140,7 @@ public class PanelPortfolio extends JPanel {
         JComboBox<PerfilRiesgo> comboPerfil = new JComboBox<>(PerfilRiesgo.values());
         JComboBox<Divisa> comboDivisa = new JComboBox<>(Divisa.values());
 
-        UITema.personalizarComboBox(comboPerfil);;
+        UITema.personalizarComboBox(comboPerfil);
         UITema.personalizarComboBox(comboDivisa);
         
         panelFormulario.add(new JLabel("Nombre de la cartera:"));
@@ -558,7 +558,7 @@ public class PanelPortfolio extends JPanel {
             
             String simboloDivisaProducto = op.getProdFinanciero().getDivisa().getSimbolo();
             
-            operationsListModel.addElement(String.format("%s %s | %s | %.2f unidades de %s",
+            operationsListModel.addElement(String.format("%s %s | %s | %.2f unidades de %s a %.2f %s",
                 simboloOp,
                 op.getFechaOp().toString(),
                 tipo,
