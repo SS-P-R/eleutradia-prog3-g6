@@ -122,6 +122,7 @@ public class UITema {
     
     private UITema() {
     	personalizarTooltips();
+    	personalizarDialogs();
     }
     
     public static UITema getInstancia() {
@@ -157,7 +158,6 @@ public class UITema {
      * Muestra un diálogo de información personalizado
      */
     public static void mostrarInfo(Component parent, String mensaje, String titulo) {
-        personalizarDialogs();
         JOptionPane.showMessageDialog(parent, mensaje, titulo, 
             JOptionPane.INFORMATION_MESSAGE);
     }
@@ -166,7 +166,6 @@ public class UITema {
      * Muestra un diálogo de advertencia personalizado
      */
     public static void mostrarWarning(Component parent, String mensaje, String titulo) {
-        personalizarDialogs();
         JOptionPane.showMessageDialog(parent, mensaje, titulo, 
             JOptionPane.WARNING_MESSAGE);
     }
@@ -175,7 +174,6 @@ public class UITema {
      * Muestra un diálogo de error personalizado
      */
     public static void mostrarError(Component parent, String mensaje, String titulo) {
-        personalizarDialogs();
         JOptionPane.showMessageDialog(parent, mensaje, titulo, 
             JOptionPane.ERROR_MESSAGE);
     }
@@ -185,7 +183,6 @@ public class UITema {
      * @return true si el usuario acepta, false si cancela
      */
     public static boolean mostrarConfirmacion(Component parent, String mensaje, String titulo) {
-        personalizarDialogs();
         int resultado = JOptionPane.showConfirmDialog(parent, mensaje, titulo,
             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return resultado == JOptionPane.YES_OPTION;
@@ -196,7 +193,6 @@ public class UITema {
      * @return true si el usuario acepta, false si cancela
      */
     public static boolean mostrarConfirmacionOkCancel(Component parent, String mensaje, String titulo) {
-        personalizarDialogs();
         int resultado = JOptionPane.showConfirmDialog(parent, mensaje, titulo,
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         return resultado == JOptionPane.OK_OPTION;
@@ -207,7 +203,6 @@ public class UITema {
      * @return el texto ingresado o null si se cancela
      */
     public static String mostrarInputTexto(Component parent, String mensaje, String titulo, String valorInicial) {
-        personalizarDialogs();
         return (String) JOptionPane.showInputDialog(parent, mensaje, titulo,
             JOptionPane.PLAIN_MESSAGE, null, null, valorInicial);
     }
@@ -218,7 +213,6 @@ public class UITema {
      */
     public static Object mostrarInputSeleccion(Component parent, String mensaje, String titulo, 
             Object[] opciones, Object seleccionInicial) {
-        personalizarDialogs();
         return JOptionPane.showInputDialog(parent, mensaje, titulo,
             JOptionPane.PLAIN_MESSAGE, null, opciones, seleccionInicial);
     }

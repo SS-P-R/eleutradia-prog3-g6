@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -83,11 +85,11 @@ public class PanelPerfil extends JPanel {
         
         JLabel lblNombre = new JLabel(usuario.getNombre());
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        lblNombre.setForeground(GRIS_MEDIO);
+        lblNombre.setForeground(Color.BLACK);
         
         JLabel lblEmail = new JLabel(usuario.getEmail());
         lblEmail.setFont(CUERPO_GRANDE);
-        lblEmail.setForeground(GRIS_MEDIO);
+        lblEmail.setForeground(Color.BLACK);
         
         JLabel lblTipo = new JLabel("Cuenta Activa • " + usuario.getCarteras().size() + " Cartera(s)");
         lblTipo.setFont(CUERPO_GRANDE);
@@ -191,31 +193,44 @@ public class PanelPerfil extends JPanel {
     private JPanel crearPanelConfiguracion() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(0, 15));
+        
+        // Título
         JLabel lblTitulo = new JLabel("Configuración de Cuenta");
         lblTitulo.setFont(TITULO_MEDIO);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
-        JPanel contentPanel = new JPanel(new GridLayout(3, 1, 0, 10));
+        
+        // Contenido
+        JPanel contentPanel = new JPanel(new GridLayout(2, 1, 0, 10));
         contentPanel.setBackground(MAIN_PANEL);
+        
+        	// Cambiar contraseña
         JPanel panelPassword = new JPanel(new BorderLayout(10, 5));
         panelPassword.setBackground(MAIN_PANEL);
         JLabel lblPassword = new JLabel("Contraseña");
         lblPassword.setFont(SUBTITULO_MEDIO);
+        
         JButton btnCambiarPassword = new JButton("Cambiar contraseña");
         btnCambiarPassword.setFont(CUERPO_PEQUENO);
         btnCambiarPassword.setBackground(AZUL_CLARO);
         btnCambiarPassword.setForeground(Color.WHITE);
         btnCambiarPassword.setPreferredSize(new Dimension(140, 25));
+        btnCambiarPassword.setVerticalAlignment(JButton.CENTER);
         btnCambiarPassword.setFocusPainted(false);
         btnCambiarPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCambiarPassword.addActionListener(e -> mostrarDialogoCambiarPassword());
-        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        JPanel panelBoton = new JPanel();
+        panelBoton.setLayout(new BoxLayout(panelBoton, BoxLayout.Y_AXIS));
         panelBoton.setBackground(MAIN_PANEL);
+        panelBoton.add(Box.createVerticalGlue());
         panelBoton.add(btnCambiarPassword);
+        panelBoton.add(Box.createVerticalGlue());
+        
         panelPassword.add(lblPassword, BorderLayout.WEST);
         panelPassword.add(panelBoton, BorderLayout.EAST);
         contentPanel.add(panelPassword);
         
+            // Notificaciones por email
         JPanel panelNotif = new JPanel(new BorderLayout(10, 5));
         panelNotif.setBackground(MAIN_PANEL);
         JLabel lblNotif = new JLabel("Notificaciones por email");
@@ -227,7 +242,7 @@ public class PanelPerfil extends JPanel {
         checkNotif.setFocusPainted(false);
         checkNotif.addActionListener(e -> {
             UITema.mostrarInfo(this, 
-                "Preferencia guardada (demostración)", 
+                "Preferencia guardada (simulación)", 
                 "Notificaciones");
         });
         

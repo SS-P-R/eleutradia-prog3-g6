@@ -11,6 +11,7 @@ import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.gui.VentanaInicial;
+import es.deusto.eleutradia.gui.style.UITema;
 
 public class MainEleutradia {
 	
@@ -30,6 +31,9 @@ public class MainEleutradia {
 	    listaEmpresas = dbManager.getEmpresas();
 	    listaProductos = dbManager.getProductos();
 	    listaCursos = dbManager.getCursos();
+	    
+	    // Inicializar la personalización del tema
+	    UITema.getInstancia();
 		
 		// Ejecutar la creacion de la GUI
 		SwingUtilities.invokeLater(() -> new VentanaInicial());
