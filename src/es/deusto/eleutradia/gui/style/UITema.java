@@ -2,6 +2,7 @@ package es.deusto.eleutradia.gui.style;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -17,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.DefaultListCellRenderer;
@@ -131,6 +133,35 @@ public class UITema {
     	}
     	return instancia;
     }
+    
+    public static void personalizarRadioButton(JRadioButton radio) {
+        radio.setFont(CUERPO_MEDIO);
+        radio.setBackground(Color.WHITE);
+        radio.setForeground(GRIS_OSCURO);
+        radio.setFocusPainted(false);
+        radio.setBorderPainted(false);
+        radio.setOpaque(false);
+        radio.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        radio.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (!radio.isSelected()) {
+                    radio.setForeground(AZUL_CLARO);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                radio.setForeground(radio.isSelected() ? AZUL_OSCURO : GRIS_OSCURO);
+            }
+        });
+
+        radio.addActionListener(e -> {
+            radio.setForeground(AZUL_OSCURO);
+        });
+    }
+
 	
     // Método para crear ToolTips personalizados
     private void personalizarTooltips() {

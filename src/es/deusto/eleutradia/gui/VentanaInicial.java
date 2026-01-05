@@ -330,9 +330,10 @@ public class VentanaInicial extends JFrame {
         panelTipoUsuario.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));     
         
         JRadioButton radioParticular = new JRadioButton("Particular", true);
-        radioParticular.setBackground(Color.WHITE);
         JRadioButton radioEmpresa = new JRadioButton("Empresa");
-        radioEmpresa.setBackground(Color.WHITE);
+        UITema.personalizarRadioButton(radioParticular);
+        UITema.personalizarRadioButton(radioEmpresa);
+        
         ButtonGroup grupoTipoUsuario = new ButtonGroup();
         grupoTipoUsuario.add(radioParticular);
         grupoTipoUsuario.add(radioEmpresa);
