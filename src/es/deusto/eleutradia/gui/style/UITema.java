@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -44,10 +45,10 @@ public class UITema {
     public static final Color MAIN_BORDE_OSCURO = new Color(90, 90, 90);
 	
     // Colores según el tema actual
-    public Color colorTexto;
-    public Color colorFondo;
-    public Color colorPanel;
-    public Color colorBorde;
+    private Color colorTexto;
+    private Color colorFondo;
+    private Color colorPanel;
+    private Color colorBorde;
     
     // Colores generales
 	public static final Color GRIS_SCROLLBAR = new Color(180, 180, 180);
@@ -143,6 +144,23 @@ public class UITema {
     	return instancia;
     }
     
+    // Getters de los colores según el tema actual
+    public Color getColorTexto() {
+        return colorTexto;
+    }
+
+    public Color getColorFondo() {
+        return colorFondo;
+    }
+
+    public Color getColorPanel() {
+        return colorPanel;
+    }
+
+    public Color getColorBorde() {
+        return colorBorde;
+    }
+    
     // Métodos para gestionar el tema
     public boolean esTemaOscuro() {
     	return this.temaOscuro;
@@ -185,24 +203,25 @@ public class UITema {
     	UIManager.put("ToolTip.font", CUERPO_PEQUENO);
     }
     
+    //IAG (Claude)
+    //ADAPTADO: Diseño adaptado al tema oscuro/claro
+    
+    // Método para personalizar los diálogos JOptionPane
     private static void personalizarDialogs() {
         UITema tema = UITema.getInstancia();
         
-        Color fondoBoton = tema.esTemaOscuro() ? GRIS_SUAVE : Color.WHITE;
+        Color fondoBoton = tema.esTemaOscuro() ? GRIS_CLARO : GRIS_MEDIO;
         
-        UIManager.put("OptionPane.background", tema.esTemaOscuro() ? GRIS_OSCURO : AZUL_OSCURO);
-        UIManager.put("OptionPane.messageForeground", Color.WHITE);
-        UIManager.put("Panel.background", tema.esTemaOscuro() ? GRIS_OSCURO : AZUL_OSCURO);
+        UIManager.put("OptionPane.background", tema.esTemaOscuro() ? MAIN_FONDO_OSCURO : MAIN_FONDO_CLARO);
+        UIManager.put("OptionPane.messageForeground", tema.esTemaOscuro() ? MAIN_FONDO_CLARO : MAIN_FONDO_OSCURO);
+        UIManager.put("Panel.background", tema.esTemaOscuro() ? MAIN_FONDO_OSCURO : MAIN_FONDO_CLARO);
         UIManager.put("Button.background", fondoBoton);
-        UIManager.put("Button.foreground", tema.esTemaOscuro() ? Color.BLACK : AZUL_OSCURO);
+        UIManager.put("Button.foreground", tema.esTemaOscuro() ? Color.BLACK : Color.WHITE);
         UIManager.put("Button.select", fondoBoton.darker());
-        UIManager.put("Button.hover", true);
-        UIManager.put("Button.hoverBackground", fondoBoton.darker());
-        UIManager.put("Button.focus", fondoBoton);
-        UIManager.put("Button.focusPainted", false);
+        UIManager.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
         UIManager.put("Button.border", BorderFactory.createEmptyBorder(5, 15, 5, 15));
         UIManager.put("OptionPane.messageFont", CUERPO_GRANDE);
-        UIManager.put("OptionPane.buttonFont", SUBTITULO_MEDIO);
+        UIManager.put("OptionPane.buttonFont", SUBTITULO_PEQUENO);
     }
     
     /**
@@ -217,7 +236,7 @@ public class UITema {
     /**
      * Muestra un diálogo de advertencia personalizado
      */
-    public static void mostrarAdvertencia(Component parent, String mensaje, String titulo) {
+    public static void mostrarWarning(Component parent, String mensaje, String titulo) {
         personalizarDialogs();
         JOptionPane.showMessageDialog(parent, mensaje, titulo, 
             JOptionPane.WARNING_MESSAGE);
@@ -274,6 +293,8 @@ public class UITema {
         return JOptionPane.showInputDialog(parent, mensaje, titulo,
             JOptionPane.PLAIN_MESSAGE, null, opciones, seleccionInicial);
     }
+    
+    //END IAG
     
     //IAG (Claude)
     //ADAPTADO: Diseño adaptado al tema oscuro/claro

@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.gui.style.TemaActualizable;
 import es.deusto.eleutradia.gui.style.UITema;
 
 import static es.deusto.eleutradia.gui.style.UITema.AZUL_CLARO;
@@ -33,25 +34,20 @@ public class VentanaPrincipal extends JFrame {
 	        
     private CardLayout layout;
     private JPanel contenedor;
-    
+    private JPanel panelMenu;
     private JButton botonInicio, botonExplorar, botonPortfolio, botonAprender, botonPerfil;
     
     private final String[] nombresPaneles = {"Inicio", "Explorar", "Portfolio", "Aprender", "Perfil"};
     private int indicePanelActual = 0;
     
-    // Rutas de los iconos de pestaña
-    private static final String ICONO_INICIO_NEGRO = "/images/menu/inicioNegro.png";
-    private static final String ICONO_INICIO_AZUL = "/images/menu/inicioAzul.png";
-    private static final String ICONO_EXPLORAR_NEGRO = "/images/menu/explorarNegro.png";
-    private static final String ICONO_EXPLORAR_AZUL = "/images/menu/explorarAzul.png";
-    private static final String ICONO_PORTFOLIO_NEGRO = "/images/menu/portfolioNegro.png";
-    private static final String ICONO_PORTFOLIO_AZUL = "/images/menu/portfolioAzul.png";
-    private static final String ICONO_APRENDER_NEGRO = "/images/menu/aprenderNegro.png";  
-    private static final String ICONO_APRENDER_AZUL = "/images/menu/aprenderAzul.png";    
-    private static final String ICONO_PERFIL_NEGRO = "/images/menu/perfilNegro.png";    
-    private static final String ICONO_PERFIL_AZUL = "/images/menu/perfilAzul.png";
+    // Nombres de los iconos de menú
+    private static final String INICIO = "inicio";
+    private static final String EXPLORAR = "explorar";
+    private static final String PORTFOLIO = "portfolio";
+    private static final String APRENDER = "aprender";
+    private static final String PERFIL = "perfil";
     
-    //Paneles
+    // Paneles
     private PanelInicio panelInicio;
     private PanelAprender panelAprender;
     private PanelExplorar panelExplorar;
@@ -105,7 +101,6 @@ public class VentanaPrincipal extends JFrame {
     			new VentanaInicial().setVisible(true);
     			dispose();
         	});
-        	
         }
         
         contenedor.add(this.panelInicio, "Inicio");
@@ -117,63 +112,97 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	private void construirPanelMenu() {
-		JPanel panelMenu = new JPanel();
+		panelMenu = new JPanel();
 		panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
-		panelMenu.setBackground(Color.WHITE);
+		panelMenu.setBackground(uiTema.getColorFondo());
+		Color colorBorde = uiTema.esTemaOscuro() ? Color.WHITE : Color.BLACK;
 		panelMenu.setBorder(BorderFactory.createTitledBorder(
-			    BorderFactory.createLineBorder(Color.BLACK, 4), "Menú", TitledBorder.CENTER,
-			    TitledBorder.TOP, new Font("Segoe UI", Font.BOLD, 14), Color.BLACK));
-	    panelMenu.setPreferredSize(new Dimension(110, 600));
+			    BorderFactory.createLineBorder(colorBorde, 4), "Menú", TitledBorder.CENTER,
+			    TitledBorder.BOTTOM, new Font("Segoe UI", Font.BOLD, 14), colorBorde));
+	    panelMenu.setPreferredSize(new Dimension(105, 600));
 		
 		panelMenu.add(Box.createVerticalGlue());
 		
-		agregarBotonMenu(panelMenu, "Inicio", "Inicio",
-	            ICONO_INICIO_NEGRO, ICONO_INICIO_AZUL);
-		
-	    agregarBotonMenu(panelMenu, "Explorar", "Explorar",
-	            ICONO_EXPLORAR_NEGRO, ICONO_EXPLORAR_AZUL);
-		
-	    agregarBotonMenu(panelMenu, "Portfolio", "Portfolio",
-	            ICONO_PORTFOLIO_NEGRO, ICONO_PORTFOLIO_AZUL);
-
-	    agregarBotonMenu(panelMenu, "Aprender", "Aprender",
-	            ICONO_APRENDER_NEGRO, ICONO_APRENDER_AZUL);
-
-	    agregarBotonMenu(panelMenu, "Perfil", "Perfil",
-	            ICONO_PERFIL_NEGRO, ICONO_PERFIL_AZUL);
+		agregarBotonMenu(panelMenu, "Inicio", "Inicio", INICIO);
+	    agregarBotonMenu(panelMenu, "Explorar", "Explorar", EXPLORAR);
+	    agregarBotonMenu(panelMenu, "Portfolio", "Portfolio", PORTFOLIO);
+	    agregarBotonMenu(panelMenu, "Aprender", "Aprender", APRENDER);
+	    agregarBotonMenu(panelMenu, "Perfil", "Perfil", PERFIL);
 		
 		panelMenu.add(Box.createVerticalGlue());
+		
 		this.add(panelMenu, BorderLayout.WEST);
 		
-		botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
+		botonInicio.setIcon(cargarIcono(INICIO, true));
 		botonInicio.setText("");
 	}
 
-	private ImageIcon cargarIcono(String ruta) {
+	private ImageIcon cargarIcono(String nombreIcono, boolean seleccionado) {
         try {
-            return new ImageIcon(getClass().getResource(ruta));
+        	String colorIcono = "";
+        	if (seleccionado) colorIcono = "Azul";
+        	else colorIcono = uiTema.esTemaOscuro() ? "Blanco" : "Negro";
+        	String rutaIcono = "/images/menu/" + nombreIcono + colorIcono + ".png";
+            return new ImageIcon(getClass().getResource(rutaIcono));
         } catch (Exception e) {
-            System.err.println("Error al cargar icono: " + ruta);
-            return null; // El botón se mostrará sin icono si falla
+            System.err.println("Error al cargar icono: " + nombreIcono);
+            return null; // el botón se muestra sin icono si falla
         }
 	}
 	
 	public void actualizarTema() {
-		if (panelPerfil != null) {
-			panelPortfolio.refrescarColores();
-		}
-	    if (panelPerfil != null) {
-	        panelPerfil.refrescarDatos();
-	    }
+	    // Ventana
+	    getContentPane().setBackground(uiTema.getColorFondo());
+
+	    // Paneles
+	    actualizarPanel(panelInicio);
+	    actualizarPanel(panelExplorar);
+	    actualizarPanel(panelPortfolio);
+	    actualizarPanel(panelAprender);
+	    actualizarPanel(panelPerfil);
+
+	    actualizarIconosBotones();
+
 	    revalidate();
 	    repaint();
+	}
+	
+	private void actualizarPanel(JPanel panel) {
+	    if (panel instanceof TemaActualizable temaPanel) {
+	        temaPanel.refrescarColores();
+	    }
+	}
+	
+	private void actualizarIconosBotones() {
+	    String panelActual = nombresPaneles[indicePanelActual];
+	    
+	    // Resetear todos los botones con los nuevos iconos del tema
+	    resetBoton(botonInicio, INICIO, 
+	        panelActual.equals("Inicio") ? "" : "Inicio");
+	    botonInicio.setIcon(cargarIcono(INICIO, panelActual.equals("Inicio")));
+	    
+	    resetBoton(botonExplorar, EXPLORAR, 
+	        panelActual.equals("Explorar") ? "" : "Explorar");
+	    botonExplorar.setIcon(cargarIcono(EXPLORAR, panelActual.equals("Explorar")));
+	    
+	    resetBoton(botonPortfolio, PORTFOLIO, 
+	        panelActual.equals("Portfolio") ? "" : "Portfolio");
+	    botonPortfolio.setIcon(cargarIcono(PORTFOLIO, panelActual.equals("Portfolio")));
+	    
+	    resetBoton(botonAprender, APRENDER, 
+	        panelActual.equals("Aprender") ? "" : "Aprender");
+	    botonAprender.setIcon(cargarIcono(APRENDER, panelActual.equals("Aprender")));
+	    
+	    resetBoton(botonPerfil, PERFIL, 
+	        panelActual.equals("Perfil") ? "" : "Perfil");
+	    botonPerfil.setIcon(cargarIcono(PERFIL, panelActual.equals("Perfil")));
 	}
 	
 	private JButton crearBotonNavegacion(String texto, ImageIcon icono) {
         JButton boton = new JButton(texto);
         if (icono != null) boton.setIcon(icono);
         
-        boton.setForeground(Color.BLACK);
+        boton.setForeground(uiTema.getColorTexto());
         boton.setVerticalTextPosition(JButton.BOTTOM); 
         boton.setHorizontalTextPosition(JButton.CENTER);
         boton.setAlignmentX(JButton.CENTER_ALIGNMENT);
@@ -186,16 +215,16 @@ public class VentanaPrincipal extends JFrame {
     }
 	
 	private void agregarBotonMenu(JPanel panel, String nombrePanel,
-			String texto, String iconoNormal, String iconoActivo) {
+			String texto, String nombreIcono) {
 		
-	    ImageIcon icono = cargarIcono(iconoNormal);
+	    ImageIcon icono = cargarIcono(nombreIcono, false);
 	    JButton boton = crearBotonNavegacion(texto, icono);
 	    panel.add(boton);
 	    panel.add(Box.createVerticalStrut(30));
 
 	    boton.addActionListener(e -> {
 	        mostrarPanel(nombrePanel);
-	        boton.setIcon(cargarIcono(iconoActivo));
+	        boton.setIcon(cargarIcono(nombreIcono, true));
 	        boton.setText("");
 	        VentanaPrincipal.this.requestFocusInWindow();
 	    });
@@ -214,20 +243,20 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void resetBotones() {
-		resetBoton(botonInicio, ICONO_INICIO_NEGRO, "Inicio");
+		resetBoton(botonInicio, INICIO, "Inicio");
 
-		resetBoton(botonExplorar, ICONO_EXPLORAR_NEGRO, "Explorar");
+		resetBoton(botonExplorar, EXPLORAR, "Explorar");
 
-		resetBoton(botonPortfolio, ICONO_PORTFOLIO_NEGRO, "Portfolio");
+		resetBoton(botonPortfolio, PORTFOLIO, "Portfolio");
 
-		resetBoton(botonAprender, ICONO_APRENDER_NEGRO, "Aprender");
+		resetBoton(botonAprender, APRENDER, "Aprender");
 
-		resetBoton(botonPerfil, ICONO_PERFIL_NEGRO, "Perfil");
+		resetBoton(botonPerfil, PERFIL, "Perfil");
 
     }
 	
-	private void resetBoton(JButton boton, String iconoRuta, String texto) {
-	    boton.setIcon(cargarIcono(iconoRuta));
+	private void resetBoton(JButton boton, String nombreIcono, String texto) {
+	    boton.setIcon(cargarIcono(nombreIcono, false));
 	    boton.setText(texto);
 	}
 	
@@ -244,23 +273,23 @@ public class VentanaPrincipal extends JFrame {
 		
 		switch (nombre) {
 		case "Inicio":
-			botonInicio.setIcon(cargarIcono(ICONO_INICIO_AZUL));
+			botonInicio.setIcon(cargarIcono(INICIO, true));
 			botonInicio.setText("");
 			break;
 		case "Explorar":
-			botonExplorar.setIcon(cargarIcono(ICONO_EXPLORAR_AZUL));
+			botonExplorar.setIcon(cargarIcono(EXPLORAR, true));
 			botonExplorar.setText("");
 			break;
 		case "Portfolio":
-			botonPortfolio.setIcon(cargarIcono(ICONO_PORTFOLIO_AZUL));
+			botonPortfolio.setIcon(cargarIcono(PORTFOLIO, true));
 			botonPortfolio.setText("");
 			break;
 		case "Aprender":
-			botonAprender.setIcon(cargarIcono(ICONO_APRENDER_AZUL));
+			botonAprender.setIcon(cargarIcono(APRENDER, true));
 			botonAprender.setText("");
 			break;
 		case "Perfil":
-			botonPerfil.setIcon(cargarIcono(ICONO_PERFIL_AZUL));
+			botonPerfil.setIcon(cargarIcono(PERFIL, true));
 			botonPerfil.setText("");
 			break;
 			

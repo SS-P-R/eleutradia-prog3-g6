@@ -2,6 +2,7 @@ package es.deusto.eleutradia.gui;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.*;
+import es.deusto.eleutradia.gui.style.TemaActualizable;
 import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
@@ -26,7 +27,7 @@ import java.util.List;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
-public class PanelPortfolio extends JPanel {
+public class PanelPortfolio extends JPanel implements TemaActualizable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -57,7 +58,7 @@ public class PanelPortfolio extends JPanel {
         }
         
         this.setLayout(new BorderLayout(15, 15));
-        this.setBackground(uiTema.colorFondo);
+        this.setBackground(uiTema.getColorFondo());
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         inicializarPaneles();
@@ -67,15 +68,15 @@ public class PanelPortfolio extends JPanel {
     
     private void inicializarPaneles() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
-        mainPanel.setBackground(uiTema.colorFondo);
+        mainPanel.setBackground(uiTema.getColorFondo());
         JPanel topPanel = new JPanel(new BorderLayout(15, 15));
-        topPanel.setBackground(uiTema.colorFondo);
+        topPanel.setBackground(uiTema.getColorFondo());
         topPanel.add(crearPanelSelector(), BorderLayout.NORTH);
         topPanel.add(crearPanelResumenUsuario(), BorderLayout.CENTER);
         mainPanel.add(topPanel, BorderLayout.NORTH);  
         mainPanel.add(crearPanelResumenCartera(), BorderLayout.CENTER);
         JPanel bottomContainer = new JPanel(new BorderLayout(15, 15));
-        bottomContainer.setBackground(uiTema.colorFondo);
+        bottomContainer.setBackground(uiTema.getColorFondo());
         bottomContainer.add(crearPanelPosiciones(), BorderLayout.CENTER);  
         bottomContainer.add(crearPanelOperacionesRecientes(), BorderLayout.SOUTH);
         mainPanel.add(bottomContainer, BorderLayout.SOUTH);
@@ -92,7 +93,7 @@ public class PanelPortfolio extends JPanel {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(15, 10));
         
-        JLabel lblTitulo = new JLabel("Mis Carteras");
+        JLabel lblTitulo = new JLabel("Mis carteras");
         lblTitulo.setFont(SUBTITULO_GRANDE);
         panel.add(lblTitulo, BorderLayout.WEST);
         
@@ -205,7 +206,7 @@ public class PanelPortfolio extends JPanel {
     private JPanel crearPanelResumenUsuario() {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
-        panelPrincipal.setBackground(uiTema.colorFondo);
+        panelPrincipal.setBackground(uiTema.getColorFondo());
         
         // Patrimonio total
         JPanel card1 = crearCard();
@@ -253,7 +254,7 @@ public class PanelPortfolio extends JPanel {
     private JPanel crearPanelResumenCartera() {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
-        panelPrincipal.setBackground(uiTema.colorFondo);
+        panelPrincipal.setBackground(uiTema.getColorFondo());
         panelPrincipal.add(crearCardPatrimonioCartera());
         panelPrincipal.add(Box.createRigidArea(new Dimension(15, 0)));
         panelPrincipal.add(crearCardDesgloseCartera());
@@ -315,7 +316,7 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearItemDesglose(String titulo) {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBackground(uiTema.colorPanel);
+        panel.setBackground(uiTema.getColorPanel());
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(CUERPO_PEQUENO);
         lblTitulo.setForeground(GRIS_MEDIO);
@@ -350,7 +351,7 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.setRowHeight(35);
         
         tablePosiciones.setShowGrid(true);
-        tablePosiciones.setGridColor(uiTema.colorBorde);
+        tablePosiciones.setGridColor(uiTema.getColorBorde());
         tablePosiciones.setSelectionBackground(new Color(200, 210, 240));
         tablePosiciones.setSelectionForeground(Color.BLACK);
         tablePosiciones.setIntercellSpacing(new Dimension(1, 1));
@@ -365,7 +366,7 @@ public class PanelPortfolio extends JPanel {
         header.setOpaque(true);
         header.setReorderingAllowed(false);
         header.setResizingAllowed(false);
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, uiTema.colorBorde));
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, uiTema.getColorBorde()));
         
         tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(150); // Producto
         tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(50);  // Cantidad
@@ -388,7 +389,7 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(rentRenderer);
         
         JScrollPane scrollPane = new JScrollPane(tablePosiciones);
-        scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
+        scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.getColorBorde()));
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -411,7 +412,7 @@ public class PanelPortfolio extends JPanel {
         operationsList.setFixedCellHeight(30);
         operationsList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         JScrollPane scrollPane = new JScrollPane(operationsList);
-        scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
+        scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.getColorBorde()));
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         panel.add(scrollPane, BorderLayout.CENTER);
         
@@ -420,7 +421,7 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearPanelBotones() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panel.setBackground(uiTema.colorFondo);
+        panel.setBackground(uiTema.getColorFondo());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         JButton btnActualizar = new JButton("Actualizar Datos");
         btnActualizar.setFont(SUBTITULO_MEDIO);
@@ -437,9 +438,9 @@ public class PanelPortfolio extends JPanel {
     
     private JPanel crearCard() {
         JPanel card = new JPanel();
-        card.setBackground(uiTema.colorPanel);
+        card.setBackground(uiTema.getColorPanel());
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(uiTema.colorBorde, 1),
+            BorderFactory.createLineBorder(uiTema.getColorBorde(), 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         return card;
@@ -534,9 +535,10 @@ public class PanelPortfolio extends JPanel {
     public void refrescarDatos() {
         cargarDatosPortfolio();
     }
-    
-    public void refrescarColores() {
-        this.setBackground(uiTema.colorFondo);
-        inicializarPaneles();
-    }
+
+	@Override
+	public void refrescarColores() {
+		setBackground(uiTema.getColorFondo());
+	    repaint();
+	}
 }

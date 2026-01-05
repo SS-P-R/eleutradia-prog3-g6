@@ -257,7 +257,7 @@ public class PanelSimulador extends JPanel {
         double nuevoSaldo = saldoActual + cantidad;
         
         if (cantidad < 0 && nuevoSaldo < 0) {
-            UITema.mostrarAdvertencia(this, "Saldo insuficiente.", "Transacción no realizada");
+            UITema.mostrarWarning(this, "Saldo insuficiente.", "Transacción no realizada");
             return;
         }
 

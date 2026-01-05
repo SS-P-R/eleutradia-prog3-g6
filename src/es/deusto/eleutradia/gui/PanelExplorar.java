@@ -532,7 +532,7 @@ public class PanelExplorar extends JPanel {
             new VentanaDetalleProducto(framePadre, producto, true);
             //END IAG
         } else {
-        	UITema.mostrarAdvertencia(this,
+        	UITema.mostrarWarning(this,
         			"Por favor, seleccione un producto para ver sus detalles.",
         			"Selección necesaria");
         }
@@ -545,7 +545,7 @@ public class PanelExplorar extends JPanel {
             JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
             new VentanaAnadirACartera(framePadre, usuario, producto, true);
         } else {
-        	UITema.mostrarAdvertencia(this,
+        	UITema.mostrarWarning(this,
         			"Por favor, seleccione un producto para añadirlo a su cartera.",
         			"Selección necesaria");
         }

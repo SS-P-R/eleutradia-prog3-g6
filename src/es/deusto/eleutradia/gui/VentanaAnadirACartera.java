@@ -387,14 +387,14 @@ public class VentanaAnadirACartera extends JDialog {
 	private void seleccionarCartera() {
 	    int indexCartera = comboCarteras.getSelectedIndex();
 	    if (indexCartera <= 0) {
-	        UITema.mostrarAdvertencia(this,
+	        UITema.mostrarWarning(this,
 	                "Por favor, seleccione una cartera antes de continuar.",
 	                "Ninguna cartera seleccionada");
 	        return;
 	    }
 	    
 	    if (usuario.getCarteras().isEmpty()) {
-	        UITema.mostrarAdvertencia(this, 
+	        UITema.mostrarWarning(this, 
 	                "Debe tener al menos una cartera creada para realizar esta acción.",
 	                "Cartera necesaria");
 	        return;
@@ -407,13 +407,13 @@ public class VentanaAnadirACartera extends JDialog {
 	        Object cantidadDeseada = comboCantidad.getEditor().getItem();
 	        cantidad = Double.parseDouble(cantidadDeseada.toString());
 	        if (cantidad <= 0) {
-	            UITema.mostrarAdvertencia(this, 
+	            UITema.mostrarWarning(this, 
 	                    "La cantidad debe ser mayor que cero.", 
 	                    "Cantidad inválida");
 	            return;
 	        }
 	    } catch (NumberFormatException ex) {
-	        	UITema.mostrarAdvertencia(this, 
+	        	UITema.mostrarWarning(this, 
 	                "Por favor, introduzca una cantidad válida.", 
 	                "Cantidad inválida");
 	        return;
