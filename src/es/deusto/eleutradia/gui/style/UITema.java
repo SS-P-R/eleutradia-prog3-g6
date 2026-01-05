@@ -334,7 +334,6 @@ public class UITema {
         });
     }
 
-    
     //END IAG
     
     // Método para aplicar ToolTips personalizados a los items de un JComboBox

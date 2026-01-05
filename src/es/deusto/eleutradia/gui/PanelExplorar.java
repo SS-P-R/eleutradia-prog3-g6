@@ -102,7 +102,7 @@ public class PanelExplorar extends JPanel {
         // Título
         JLabel titulo = new JLabel("Descubra nuestra selección de productos de inversión", JLabel.CENTER);
         titulo.setFont(TITULO_MEDIO);
-        titulo.setForeground(AZUL_CLARO);
+        titulo.setForeground(AZUL_OSCURO);
         
         // Panel de búsqueda
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -182,7 +182,8 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.setPreferredSize(new Dimension(150, 0));
         
         JLabel tituloFiltros = new JLabel("- FILTROS -");
-        tituloFiltros.setFont(SUBTITULO_MEDIO);
+        tituloFiltros.setFont(SUBTITULO_GRANDE);
+        tituloFiltros.setForeground(AZUL_OSCURO);
         tituloFiltros.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         tituloFiltros.setHorizontalAlignment(JLabel.CENTER);
         tituloFiltros.setMaximumSize(new Dimension(Integer.MAX_VALUE, tituloFiltros.getPreferredSize().height));
@@ -194,6 +195,7 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectTipoProducto = new JComboBox<>(obtenerTiposProducto());
         selectTipoProducto.setMaximumSize(dimensionSelector);
+        selectTipoProducto.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
         selectTipoProducto.setAlignmentX(LEFT_ALIGNMENT);
         selectTipoProducto.addActionListener(e -> aplicarFiltros());
         UITema.personalizarComboBox(selectTipoProducto);
@@ -206,6 +208,7 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectClaseActivo = new JComboBox<>(obtenerClasesActivo());
         selectClaseActivo.setMaximumSize(dimensionSelector);
+        selectClaseActivo.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
         selectClaseActivo.setAlignmentX(LEFT_ALIGNMENT);
         selectClaseActivo.addActionListener(e -> aplicarFiltros());
         UITema.personalizarComboBox(selectClaseActivo);
@@ -218,6 +221,7 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectRegion = new JComboBox<>(obtenerRegiones());
         selectRegion.setMaximumSize(dimensionSelector);
+        selectRegion.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
         selectRegion.setAlignmentX(LEFT_ALIGNMENT);
         selectRegion.addActionListener(e -> aplicarFiltros());
         UITema.personalizarComboBox(selectRegion);
@@ -233,6 +237,7 @@ public class PanelExplorar extends JPanel {
             "4-Medio", "5-Elevado", "6-Alto", "7-Muy Alto"
         });
         selectRiesgo.setMaximumSize(dimensionSelector);
+        selectRiesgo.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
         selectRiesgo.setAlignmentX(LEFT_ALIGNMENT);
         selectRiesgo.addActionListener(e -> aplicarFiltros());
         UITema.personalizarComboBox(selectRiesgo);
@@ -245,6 +250,7 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.add(Box.createVerticalStrut(5));
         selectGestora = new JComboBox<>(obtenerGestoras());
         selectGestora.setMaximumSize(dimensionSelector);
+        selectGestora.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
         selectGestora.setAlignmentX(LEFT_ALIGNMENT);
         selectGestora.addActionListener(e -> aplicarFiltros());
         UITema.personalizarComboBox(selectGestora);
