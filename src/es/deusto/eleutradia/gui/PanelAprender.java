@@ -25,7 +25,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRootPane;
@@ -36,6 +35,7 @@ import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.Leccion;
 import es.deusto.eleutradia.domain.Modulo;
 import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -113,15 +113,15 @@ public class PanelAprender extends JPanel {
 		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelTodosLosCursos.setBackground(Color.WHITE);
 		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
-		scrollTodos.getVerticalScrollBar().setUI(crearScrollBarUI());
-		scrollTodos.getHorizontalScrollBar().setUI(crearScrollBarUI());
+		scrollTodos.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+		scrollTodos.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
 		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
 		
 		panelMisCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelMisCursos.setBackground(Color.WHITE);
 		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
-		scrollMis.getVerticalScrollBar().setUI(crearScrollBarUI());
-		scrollMis.getHorizontalScrollBar().setUI(crearScrollBarUI());
+		scrollMis.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+		scrollMis.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
 		scrollMis.setBorder(BorderFactory.createEmptyBorder());
 		
 		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
@@ -461,13 +461,10 @@ public class PanelAprender extends JPanel {
 		    botonDesinscribir.setOpaque(true);
 		    botonDesinscribir.setFocusPainted(false);
 		    botonDesinscribir.addActionListener(e -> {
-
-		        int respuesta = JOptionPane.showConfirmDialog(panelCursosInfo,
-		            "¿Estás seguro de que quieres desinscribirte de " + cursoInfo.getNombre() + "?",
-		            "Confirmar desinscripción",
-		            JOptionPane.YES_NO_OPTION);
 		        
-		        if (respuesta == JOptionPane.YES_OPTION) {
+		        if (UITema.mostrarConfirmacion(panelCursosInfo,
+			            "¿Quiere desinscribirse de " + cursoInfo.getNombre() + "?",
+			            "Confirmar desinscripción")) {
 
 		            JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
 		            PanelCargaThreads panelCarga = new PanelCargaThreads();
@@ -482,12 +479,13 @@ public class PanelAprender extends JPanel {
 		                    .desinscribirParticularDeCurso(usuarioLogeado.getDni(), cursoInfo.getId());
 		                
 		                if (exito) {
-		                    JOptionPane.showMessageDialog(panelCursosInfo, 
-		                        "Te has desinscrito de " + cursoInfo.getNombre());
+		                    UITema.mostrarInfo(panelCursosInfo, 
+		                        "Te has desinscrito de " + cursoInfo.getNombre(),
+		                        "Desinscripción exitosa");
 		                } else {
-		                     JOptionPane.showMessageDialog(panelCursosInfo, 
-		                        "Error al conectar con la base de datos.", 
-		                        "Error", JOptionPane.ERROR_MESSAGE);
+		                     UITema.mostrarError(panelCursosInfo, 
+		                        "Error al conectar con la BD.", 
+		                        "Error");
 		                }
 		                
 		                actualizarPanelInfoCurso();
@@ -547,14 +545,15 @@ public class PanelAprender extends JPanel {
 
 			            usuarioLogeado.addCurso(cursoInfo);
 
-			            JOptionPane.showMessageDialog(panelCursosInfo, 
-			                "¡Te has inscrito a " + cursoInfo.getNombre() + "!");
+			            UITema.mostrarInfo(panelCursosInfo, 
+			                "¡Te has inscrito a " + cursoInfo.getNombre() + "!", 
+			                "Inscripción exitosa");
 			            actualizarPanelInfoCurso();
 			            actualizarProgressBar();
 			            actualizarPanelMisCursos();
 			            
 			        } else {
-			            JOptionPane.showMessageDialog(panelCursosInfo, "Error en la BD");
+			            UITema.mostrarError(panelCursosInfo, "Error al conectar con la BD.", "Error");
 			        }
 			    };
 
@@ -651,8 +650,8 @@ public class PanelAprender extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(panelContenido);
 		scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO));
 		
-		scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
-	    scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
+		scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+	    scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
 		
 		return scrollPane;
 	}

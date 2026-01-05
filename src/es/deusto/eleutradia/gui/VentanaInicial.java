@@ -24,7 +24,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
@@ -38,6 +37,7 @@ import javax.swing.text.JTextComponent;
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -446,7 +446,7 @@ public class VentanaInicial extends JFrame {
         JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
         scrollRegistro.setBorder(null); // elimina el borde del scroll
         scrollRegistro.setBackground(Color.WHITE);
-        scrollRegistro.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollRegistro.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         scrollRegistro.getVerticalScrollBar().setUnitIncrement(16); // suaviza el scroll
         scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelDcho.add(scrollRegistro);
@@ -572,7 +572,7 @@ public class VentanaInicial extends JFrame {
         JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
         scrollRegistro.setBorder(null);
         scrollRegistro.setBackground(Color.WHITE);
-        scrollRegistro.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollRegistro.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         scrollRegistro.getVerticalScrollBar().setUnitIncrement(16);
         scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelDcho.add(scrollRegistro);
@@ -648,13 +648,13 @@ public class VentanaInicial extends JFrame {
 	    String password = new String(campoPassword.getPassword());
 
 	    if (id.isBlank() || password.isEmpty()) {
-	        JOptionPane.showMessageDialog(this, "Por favor, rellene ambos campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "Por favor, rellene ambos campos.", "Campos incompletos");
 	        return;
 	    }
 
 	    if (esParticular) {
 	    	if (!id.matches(DNI_REGEX)) {
-	    		JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    		UITema.mostrarError(this, "Formato de DNI inválido.", "Error de formato");
 	    		return;
 	    	}
 	    	
@@ -664,11 +664,11 @@ public class VentanaInicial extends JFrame {
 	            dispose();
 	            return;
 	        }
-	        JOptionPane.showMessageDialog(this, "DNI o contraseña incorrectos.", "Error de Login", JOptionPane.ERROR_MESSAGE);
+	        UITema.mostrarError(this, "DNI o contraseña incorrectos.", "Error de login");
 	        
 	    } else {
 	    	if (!id.matches(NIF_REGEX)) {
-	    		JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    		UITema.mostrarError(this, "Formato de NIF inválido.", "Error de formato");
 	    		return;
 	    	}
 	    	
@@ -678,7 +678,7 @@ public class VentanaInicial extends JFrame {
 	            dispose();
 	            return;
 	        }
-	        JOptionPane.showMessageDialog(this, "NIF o contraseña incorrectos.", "Error de Login", JOptionPane.ERROR_MESSAGE);
+	        UITema.mostrarError(this, "NIF o contraseña incorrectos.", "Error de login");
 	    }
 	}
 	
@@ -693,66 +693,63 @@ public class VentanaInicial extends JFrame {
 	    String conf = new String(campoRegConfirmPassword.getPassword());
 
 	    if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || tlf.isEmpty() || pass.isEmpty() || conf.isEmpty()) {
-	        JOptionPane.showMessageDialog(this, "Rellene todos los campos.", "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "Rellene todos los campos.", "Campos incompletos");
 	        return;
 	    }
 	    if (!nombre.matches(NOMBRE_REGEX)) {
-	        JOptionPane.showMessageDialog(this, "El nombre solo puede contener letras.", "Nombre inválido", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "El nombre solo puede contener letras.", "Nombre inválido");
 	        return;
 	    }
 	    if (esParticular && nombre.split("\\s+").length < 2) {
-	        JOptionPane.showMessageDialog(this, "Introduzca su nombre completo.", "Nombre incompleto", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "Introduzca su nombre completo.", "Nombre incompleto");
 	        return;
 	    }
 	    if (!email.matches(EMAIL_REGEX)) {
-	        JOptionPane.showMessageDialog(this, "Formato de email inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "Formato de email inválido", "Error de formato");
 	        return;
 	    }
 	    if (!tlf.matches(TELEFONO_REGEX)) {
-	        JOptionPane.showMessageDialog(this, "Formato de teléfono inválido", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "Formato de teléfono inválido", "Error de formato");
 	        return;
 	    }
 	    if (pass.length()<8) {
-	        JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "La contraseña debe tener al menos 8 caracteres.", "Contraseña demasiado corta");
 	        return;
 	    }
 	    if (!pass.equals(conf)) {
-	        JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Campos erróneos", JOptionPane.ERROR_MESSAGE);
+	    	UITema.mostrarError(this, "Las contraseñas no coinciden.", "Campos erróneos");
 	        return;
 	    }
 	    if (esParticular) {
 	        if (!id.matches(DNI_REGEX)) {
-	            JOptionPane.showMessageDialog(this, "Formato de DNI inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	        	UITema.mostrarError(this, "Formato de DNI inválido.", "Error de formato");
 	            return;
 	        }
 	    } else {
 	        if (!id.matches(NIF_REGEX)) {
-	            JOptionPane.showMessageDialog(this, "Formato de NIF inválido.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+	        	UITema.mostrarError(this, "Formato de NIF inválido.", "Error de formato");
 	            return;
 	        }
 	    }
 	    
 	    if (dbManager.existeUsuario(id, esParticular)) {
-	        JOptionPane.showMessageDialog(this, 
+	    	UITema.mostrarError(this, 
 	            "Ya existe un usuario con ese " + (esParticular ? "DNI" : "NIF"), 
-	            "Usuario duplicado", 
-	            JOptionPane.ERROR_MESSAGE);
+	            "Usuario duplicado");
 	        return;
 	    }
 	    
 	    if (dbManager.existeEmail(email)) {
-	        JOptionPane.showMessageDialog(this, 
+	    	UITema.mostrarError(this, 
 	            "Ya existe un usuario con ese email", 
-	            "Email duplicado", 
-	            JOptionPane.ERROR_MESSAGE);
+	            "Email duplicado");
 	        return;
 	    }
 	    
 	    if (dbManager.existeTelefono(tlf)) {
-	        JOptionPane.showMessageDialog(this, 
+	        UITema.mostrarError(this, 
 	            "Ya existe un usuario con ese teléfono", 
-	            "Teléfono duplicado", 
-	            JOptionPane.ERROR_MESSAGE);
+	            "Teléfono duplicado");
 	        return;
 	    }
 	    
@@ -775,8 +772,8 @@ public class VentanaInicial extends JFrame {
 	    String domicilioFiscal = campoDomicilioFiscal.getText().trim();
 	
 	    if (tipoDireccion == null || nombreDireccion.isEmpty() || domicilioFiscal.isEmpty()) {
-	        JOptionPane.showMessageDialog(this, "Rellene todos los campos obligatorios.", 
-	                "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	        UITema.mostrarError(this, "Rellene todos los campos obligatorios.", 
+	                "Campos incompletos");
 	        return;
 	    }
 	    
@@ -788,15 +785,15 @@ public class VentanaInicial extends JFrame {
 	        paisResidencia = campoPaisResidencia.getText().trim();
 	        
 	        if (fechaNacimiento.isEmpty() || paisResidencia.isEmpty()) {
-	            JOptionPane.showMessageDialog(this, "Rellene todos los campos obligatorios.", 
-	                    "Campos incompletos", JOptionPane.ERROR_MESSAGE);
+	            UITema.mostrarError(this, "Rellene todos los campos obligatorios.", 
+	                    "Campos incompletos");
 	            return;
 	        }
 	        
 	        // Validar formato de fecha (DD/MM/AAAA)
 	        if (!fechaNacimiento.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
-	            JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use DD/MM/AAAA", 
-	                    "Error de formato", JOptionPane.ERROR_MESSAGE);
+	            UITema.mostrarError(this, "Formato de fecha inválido. Use DD/MM/AAAA", 
+	                    "Error de formato");
 	            return;
 	        }
 	    }
@@ -811,17 +808,16 @@ public class VentanaInicial extends JFrame {
 	    
 	    if (registrado) {
 	        mostrarCarga();
-	        JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
+	        UITema.mostrarInfo(this, "Usuario registrado correctamente.", "Registro exitoso");
 	        layout.show(contenedor, "bienvenida");
 	        setTitle("EleuTradia: Inicio");
 	        
 	        // Limpiar variables temporales
 	        tempId = tempNombre = tempEmail = tempTlf = tempPass = null;
 	    } else {
-	        JOptionPane.showMessageDialog(this, 
+	        UITema.mostrarError(this, 
 	            "Error al registrar el usuario. Inténtelo de nuevo.", 
-	            "Error de registro", 
-	            JOptionPane.ERROR_MESSAGE);
+	            "Error de registro");
 	    }
 	}
     

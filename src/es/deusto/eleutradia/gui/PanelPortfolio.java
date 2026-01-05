@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -83,8 +82,8 @@ public class PanelPortfolio extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
-        scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+        scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(scrollPane, BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
@@ -146,10 +145,7 @@ public class PanelPortfolio extends JPanel {
         panelFormulario.add(new JLabel("Divisa:"));
         panelFormulario.add(comboDivisa);
 
-        int resultado = JOptionPane.showConfirmDialog(this, panelFormulario, 
-                "Nueva Cartera", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (resultado == JOptionPane.OK_OPTION) {
+        if (UITema.mostrarConfirmacionOkCancel(this, "¿Desea crear una nueva cartera?", "Nueva cartera")) {
             try {
                 String nombre = txtNombre.getText().trim();
                 double saldo = Double.parseDouble(txtSaldo.getText().trim());
@@ -157,7 +153,7 @@ public class PanelPortfolio extends JPanel {
                 Divisa divisa = (Divisa) comboDivisa.getSelectedItem();
 
                 if (nombre.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                    UITema.mostrarError(this, "El nombre no puede estar vacío.", "Error");
                     return;
                 }
 
@@ -194,10 +190,10 @@ public class PanelPortfolio extends JPanel {
                 }
 
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "El saldo debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                UITema.mostrarError(this, "El saldo debe ser un número válido.", "Error");
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error al crear la cartera.", "Error", JOptionPane.ERROR_MESSAGE);
+                UITema.mostrarError(this, "Error al crear la cartera.", "Error");
             }
         } else {
             if (carteraSeleccionada != null) {
@@ -393,8 +389,8 @@ public class PanelPortfolio extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(tablePosiciones);
         scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
-        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
-        scrollPane.getHorizontalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+        scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollPane, BorderLayout.CENTER);
         
@@ -416,7 +412,7 @@ public class PanelPortfolio extends JPanel {
         operationsList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         JScrollPane scrollPane = new JScrollPane(operationsList);
         scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.colorBorde));
-        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;

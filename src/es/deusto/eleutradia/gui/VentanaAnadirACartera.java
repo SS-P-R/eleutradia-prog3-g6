@@ -21,7 +21,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
@@ -32,6 +31,7 @@ import es.deusto.eleutradia.domain.Operacion;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -387,16 +387,16 @@ public class VentanaAnadirACartera extends JDialog {
 	private void seleccionarCartera() {
 	    int indexCartera = comboCarteras.getSelectedIndex();
 	    if (indexCartera <= 0) {
-	        JOptionPane.showMessageDialog(this,
+	        UITema.mostrarAdvertencia(this,
 	                "Por favor, seleccione una cartera antes de continuar.",
-	                "Ninguna cartera seleccionada", JOptionPane.WARNING_MESSAGE);
+	                "Ninguna cartera seleccionada");
 	        return;
 	    }
 	    
 	    if (usuario.getCarteras().isEmpty()) {
-	        JOptionPane.showMessageDialog(this, 
+	        UITema.mostrarAdvertencia(this, 
 	                "Debe tener al menos una cartera creada para realizar esta acción.",
-	                "Cartera necesaria", JOptionPane.WARNING_MESSAGE);
+	                "Cartera necesaria");
 	        return;
 	    }
 	    
@@ -407,15 +407,15 @@ public class VentanaAnadirACartera extends JDialog {
 	        Object cantidadDeseada = comboCantidad.getEditor().getItem();
 	        cantidad = Double.parseDouble(cantidadDeseada.toString());
 	        if (cantidad <= 0) {
-	            JOptionPane.showMessageDialog(this, 
+	            UITema.mostrarAdvertencia(this, 
 	                    "La cantidad debe ser mayor que cero.", 
-	                    "Cantidad inválida", JOptionPane.ERROR_MESSAGE);
+	                    "Cantidad inválida");
 	            return;
 	        }
 	    } catch (NumberFormatException ex) {
-	        JOptionPane.showMessageDialog(this, 
+	        	UITema.mostrarAdvertencia(this, 
 	                "Por favor, introduzca una cantidad válida.", 
-	                "Cantidad inválida", JOptionPane.ERROR_MESSAGE);
+	                "Cantidad inválida");
 	        return;
 	    }
 	    
@@ -425,9 +425,9 @@ public class VentanaAnadirACartera extends JDialog {
 	    
 	    double precioProducto = producto.getValorUnitario();
 	    if (precioProducto <= 0) {
-	        JOptionPane.showMessageDialog(this,
+	        UITema.mostrarError(this,
 	                "El producto no tiene un precio válido.",
-	                "Error de precio", JOptionPane.ERROR_MESSAGE);
+	                "Error de precio");
 	        return;
 	    }
 
@@ -439,11 +439,10 @@ public class VentanaAnadirACartera extends JDialog {
 	    
         double costeTotal = cantidadAcciones * precioProducto;
         if (carteraSel.getSaldo() < costeTotal) {
-            JOptionPane.showMessageDialog(this,
+            UITema.mostrarError(this,
         		String.format("Saldo insuficiente.\nCoste: %.2f %s\nSaldo disponible: %.2f %s",
                         costeTotal, carteraSel.getDivisa(), carteraSel.getSaldo(), carteraSel.getDivisa()),
-                "Saldo insuficiente",
-                JOptionPane.ERROR_MESSAGE);
+                "Saldo insuficiente");
             return;
         }
 	        
@@ -456,13 +455,10 @@ public class VentanaAnadirACartera extends JDialog {
                 // Si no existe, confirmar la compra normal
                 String.format("¿Desea comprar %.4f acciones de '%s' por un coste de %.2f %s?",
                     cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa());
-        
-        int confirmacion = JOptionPane.showConfirmDialog(this,
+
+        if (!UITema.mostrarConfirmacion(this,
                 mensajeConfirmacion,
-                "Confirmar operación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-        if (confirmacion != JOptionPane.YES_OPTION) return;
+                "Confirmar operación")) return;
         
         Operacion operacion = new Operacion(producto, cantidadAcciones, LocalDate.now(), true);
             
@@ -480,18 +476,16 @@ public class VentanaAnadirACartera extends JDialog {
                 carteraSel.getId()
             );
             
-            JOptionPane.showMessageDialog(this,
+            UITema.mostrarInfo(this,
                     String.format("Producto añadido correctamente:\n%.4f acciones de %s\nCoste total: %.2f %s", 
                             cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa()),
-                    "Operación exitosa",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    "Operación exitosa");
             dispose();
             
         } else {
-            JOptionPane.showMessageDialog(this,
+            UITema.mostrarError(this,
                     "Error al guardar la operación en la base de datos.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+                    "Error");
         }
     }
 

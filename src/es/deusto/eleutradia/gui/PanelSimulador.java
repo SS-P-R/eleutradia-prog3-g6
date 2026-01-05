@@ -13,9 +13,10 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import es.deusto.eleutradia.gui.style.UITema;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
@@ -248,7 +249,7 @@ public class PanelSimulador extends JPanel {
         }
         
         if (mensaje != null) {
-            JOptionPane.showMessageDialog(this, mensaje);
+            UITema.mostrarInfo(this, mensaje, "Simulación detenida");
         }
     }
 
@@ -256,7 +257,7 @@ public class PanelSimulador extends JPanel {
         double nuevoSaldo = saldoActual + cantidad;
         
         if (cantidad < 0 && nuevoSaldo < 0) {
-            JOptionPane.showMessageDialog(this, "Saldo insuficiente");
+            UITema.mostrarAdvertencia(this, "Saldo insuficiente.", "Transacción no realizada");
             return;
         }
 

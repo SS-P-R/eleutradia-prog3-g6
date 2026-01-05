@@ -71,7 +71,7 @@ public class PanelPerfil extends JPanel {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         add(scrollPane, BorderLayout.CENTER);
     }
     

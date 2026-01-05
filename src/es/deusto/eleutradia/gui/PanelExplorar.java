@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -341,7 +340,7 @@ public class PanelExplorar extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
-        scrollPane.getVerticalScrollBar().setUI(crearScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
         
@@ -533,9 +532,9 @@ public class PanelExplorar extends JPanel {
             new VentanaDetalleProducto(framePadre, producto, true);
             //END IAG
         } else {
-        	JOptionPane.showMessageDialog(this,
+        	UITema.mostrarAdvertencia(this,
         			"Por favor, seleccione un producto para ver sus detalles.",
-        			"Selección necesaria", JOptionPane.WARNING_MESSAGE);
+        			"Selección necesaria");
         }
     }
     
@@ -546,9 +545,9 @@ public class PanelExplorar extends JPanel {
             JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
             new VentanaAnadirACartera(framePadre, usuario, producto, true);
         } else {
-        	JOptionPane.showMessageDialog(this,
+        	UITema.mostrarAdvertencia(this,
         			"Por favor, seleccione un producto para añadirlo a su cartera.",
-        			"Selección necesaria", JOptionPane.WARNING_MESSAGE);
+        			"Selección necesaria");
         }
     }
     
