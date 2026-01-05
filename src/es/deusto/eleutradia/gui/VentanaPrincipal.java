@@ -20,17 +20,14 @@ import javax.swing.border.TitledBorder;
 
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
-import es.deusto.eleutradia.gui.style.TemaActualizable;
-import es.deusto.eleutradia.gui.style.UITema;
 
-import static es.deusto.eleutradia.gui.style.UITema.AZUL_CLARO;
+import static es.deusto.eleutradia.gui.style.UITema.*;
 
 public class VentanaPrincipal extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private Usuario usuario;
-	private UITema uiTema;
 	        
     private CardLayout layout;
     private JPanel contenedor;
@@ -57,7 +54,6 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(Usuario usuario) {
 		super("EleuTradia: Inicio");
 		this.usuario = usuario;
-		this.uiTema = UITema.getInstancia();
 		this.configurarVentana();
 		this.inicializarPaneles();
 		this.construirPanelMenu();
@@ -114,11 +110,10 @@ public class VentanaPrincipal extends JFrame {
 	private void construirPanelMenu() {
 		panelMenu = new JPanel();
 		panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
-		panelMenu.setBackground(uiTema.getColorFondo());
-		Color colorBorde = uiTema.esTemaOscuro() ? Color.WHITE : Color.BLACK;
+		panelMenu.setBackground(MAIN_FONDO);
 		panelMenu.setBorder(BorderFactory.createTitledBorder(
-			    BorderFactory.createLineBorder(colorBorde, 4), "Menú", TitledBorder.CENTER,
-			    TitledBorder.BOTTOM, new Font("Segoe UI", Font.BOLD, 14), colorBorde));
+			    BorderFactory.createLineBorder(Color.BLACK, 4), "Menú", TitledBorder.CENTER,
+			    TitledBorder.BOTTOM, new Font("Segoe UI", Font.BOLD, 14), Color.BLACK));
 	    panelMenu.setPreferredSize(new Dimension(105, 600));
 		
 		panelMenu.add(Box.createVerticalGlue());
@@ -141,7 +136,7 @@ public class VentanaPrincipal extends JFrame {
         try {
         	String colorIcono = "";
         	if (seleccionado) colorIcono = "Azul";
-        	else colorIcono = uiTema.esTemaOscuro() ? "Blanco" : "Negro";
+        	else colorIcono = "Negro";
         	String rutaIcono = "/images/menu/" + nombreIcono + colorIcono + ".png";
             return new ImageIcon(getClass().getResource(rutaIcono));
         } catch (Exception e) {
@@ -150,59 +145,11 @@ public class VentanaPrincipal extends JFrame {
         }
 	}
 	
-	public void actualizarTema() {
-	    // Ventana
-	    getContentPane().setBackground(uiTema.getColorFondo());
-
-	    // Paneles
-	    actualizarPanel(panelInicio);
-	    actualizarPanel(panelExplorar);
-	    actualizarPanel(panelPortfolio);
-	    actualizarPanel(panelAprender);
-	    actualizarPanel(panelPerfil);
-
-	    actualizarIconosBotones();
-
-	    revalidate();
-	    repaint();
-	}
-	
-	private void actualizarPanel(JPanel panel) {
-	    if (panel instanceof TemaActualizable temaPanel) {
-	        temaPanel.refrescarColores();
-	    }
-	}
-	
-	private void actualizarIconosBotones() {
-	    String panelActual = nombresPaneles[indicePanelActual];
-	    
-	    // Resetear todos los botones con los nuevos iconos del tema
-	    resetBoton(botonInicio, INICIO, 
-	        panelActual.equals("Inicio") ? "" : "Inicio");
-	    botonInicio.setIcon(cargarIcono(INICIO, panelActual.equals("Inicio")));
-	    
-	    resetBoton(botonExplorar, EXPLORAR, 
-	        panelActual.equals("Explorar") ? "" : "Explorar");
-	    botonExplorar.setIcon(cargarIcono(EXPLORAR, panelActual.equals("Explorar")));
-	    
-	    resetBoton(botonPortfolio, PORTFOLIO, 
-	        panelActual.equals("Portfolio") ? "" : "Portfolio");
-	    botonPortfolio.setIcon(cargarIcono(PORTFOLIO, panelActual.equals("Portfolio")));
-	    
-	    resetBoton(botonAprender, APRENDER, 
-	        panelActual.equals("Aprender") ? "" : "Aprender");
-	    botonAprender.setIcon(cargarIcono(APRENDER, panelActual.equals("Aprender")));
-	    
-	    resetBoton(botonPerfil, PERFIL, 
-	        panelActual.equals("Perfil") ? "" : "Perfil");
-	    botonPerfil.setIcon(cargarIcono(PERFIL, panelActual.equals("Perfil")));
-	}
-	
 	private JButton crearBotonNavegacion(String texto, ImageIcon icono) {
         JButton boton = new JButton(texto);
         if (icono != null) boton.setIcon(icono);
         
-        boton.setForeground(uiTema.getColorTexto());
+        boton.setForeground(Color.BLACK);
         boton.setVerticalTextPosition(JButton.BOTTOM); 
         boton.setHorizontalTextPosition(JButton.CENTER);
         boton.setAlignmentX(JButton.CENTER_ALIGNMENT);

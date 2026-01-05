@@ -55,7 +55,7 @@ public class VentanaAnadirACartera extends JDialog {
 		this.dbManager = MainEleutradia.getDBManager();
 		this.setSize(700, 600);
 		this.setLocationRelativeTo(padre);
-		this.setBackground(MAIN_FONDO_CLARO);
+		this.setBackground(MAIN_FONDO);
 		this.setLayout(new BorderLayout(0, 0));
 		this.setResizable(false);
         this.construirVentana();
@@ -64,7 +64,7 @@ public class VentanaAnadirACartera extends JDialog {
 	
 	private void construirVentana() {
         JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
-        panelPrincipal.setBackground(MAIN_FONDO_CLARO);
+        panelPrincipal.setBackground(MAIN_FONDO);
         panelPrincipal.setBorder(new EmptyBorder(20, 20, 20, 20));
         panelPrincipal.add(construirPanelProducto(), BorderLayout.NORTH);
         panelPrincipal.add(construirPanelFormulario(), BorderLayout.CENTER);
@@ -76,7 +76,7 @@ public class VentanaAnadirACartera extends JDialog {
 		JPanel panel = new JPanel(new BorderLayout(15, 10));
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1), 
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), 
             new EmptyBorder(15, 20, 15, 20)));
 		
 		JPanel panelLogo = new JPanel(new BorderLayout());
@@ -165,7 +165,7 @@ public class VentanaAnadirACartera extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1), new EmptyBorder(20, 20, 20, 20)));
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), new EmptyBorder(20, 20, 20, 20)));
         
         JLabel tituloSeccion = new JLabel("Configurar operación");
         tituloSeccion.setFont(SUBTITULO_MEDIO);
@@ -243,12 +243,12 @@ public class VentanaAnadirACartera extends JDialog {
 	private JPanel construirPanelInferior() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(MAIN_FONDO_CLARO);
+        panel.setBackground(MAIN_FONDO);
         
         JPanel panelResumen = new JPanel(new GridBagLayout());
         panelResumen.setBackground(Color.WHITE);
         panelResumen.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1), new EmptyBorder(15, 20, 15, 20)));
+            BorderFactory.createLineBorder(MAIN_BORDE, 1), new EmptyBorder(15, 20, 15, 20)));
         panelResumen.setAlignmentX(LEFT_ALIGNMENT);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 15);
@@ -302,7 +302,7 @@ public class VentanaAnadirACartera extends JDialog {
         panel.add(Box.createVerticalStrut(15));
         
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        panelBotones.setBackground(MAIN_FONDO_CLARO);
+        panelBotones.setBackground(MAIN_FONDO);
         panelBotones.setAlignmentX(LEFT_ALIGNMENT);
         
         botonCancelar = new JButton("Cancelar");

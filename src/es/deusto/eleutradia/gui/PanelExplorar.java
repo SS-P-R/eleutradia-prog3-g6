@@ -65,7 +65,7 @@ public class PanelExplorar extends JPanel {
     public PanelExplorar(Usuario usuario) {
     	this.usuario = usuario;
         this.setLayout(new BorderLayout(10, 10));
-        this.setBackground(MAIN_FONDO_CLARO);
+        this.setBackground(MAIN_FONDO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         cargarProductos();
@@ -95,7 +95,7 @@ public class PanelExplorar extends JPanel {
         JPanel mainPanelSuperior = new JPanel(new BorderLayout(10, 10));
         mainPanelSuperior.setBackground(Color.WHITE);
         mainPanelSuperior.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1),
+                BorderFactory.createLineBorder(MAIN_BORDE, 1),
                 BorderFactory.createEmptyBorder(5, 10, 10, 20)
             ));
         
@@ -176,7 +176,7 @@ public class PanelExplorar extends JPanel {
         mainPanelFiltros.setLayout(new BoxLayout(mainPanelFiltros, BoxLayout.Y_AXIS));
         mainPanelFiltros.setBackground(Color.WHITE);
         mainPanelFiltros.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(30, 5, 5, 20)
         ));
         mainPanelFiltros.setPreferredSize(new Dimension(150, 0));
@@ -268,7 +268,7 @@ public class PanelExplorar extends JPanel {
         JPanel mainPanelTabla = new JPanel(new BorderLayout());
         mainPanelTabla.setBackground(Color.WHITE);
         mainPanelTabla.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1),
+                BorderFactory.createLineBorder(MAIN_BORDE, 1),
                 BorderFactory.createEmptyBorder(20, 10, 10, 10)
             ));
         
@@ -288,7 +288,7 @@ public class PanelExplorar extends JPanel {
         
         // Asegurarse de líneas de tabla finas y uniformes
         tablaProductos.setShowGrid(true);
-        tablaProductos.setGridColor(MAIN_BORDE_CLARO);
+        tablaProductos.setGridColor(MAIN_BORDE);
         tablaProductos.setSelectionBackground(new Color(200, 210, 240));
         tablaProductos.setIntercellSpacing(new Dimension(1, 1));
         tablaProductos.setFocusable(false);
@@ -339,7 +339,7 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getColumnModel().getColumn(6).setCellRenderer(new UITema.RendererLogoGestora(productosFiltrados));
         
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
-        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);

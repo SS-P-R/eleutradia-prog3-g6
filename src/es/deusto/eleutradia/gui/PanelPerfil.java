@@ -16,12 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
@@ -29,26 +27,21 @@ import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
-import es.deusto.eleutradia.gui.style.TemaActualizable;
 import es.deusto.eleutradia.gui.style.UITema;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
-public class PanelPerfil extends JPanel implements TemaActualizable {
+public class PanelPerfil extends JPanel {
 	
     private static final long serialVersionUID = 1L;
     
     private EleutradiaDBManager dbManager = new EleutradiaDBManager();
     private Usuario usuario;
-    private VentanaPrincipal ventanaPrincipal;
-    private UITema uiTema;
     
     public PanelPerfil(Usuario usuario, VentanaPrincipal ventanaPrincipal) {
         this.usuario = usuario;
-        this.ventanaPrincipal = ventanaPrincipal;
-        this.uiTema = UITema.getInstancia();
         this.setLayout(new BorderLayout(15, 15));
-        this.setBackground(uiTema.getColorFondo());
+        this.setBackground(MAIN_FONDO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         initComponents();
@@ -56,15 +49,15 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
     
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
-        mainPanel.setBackground(uiTema.getColorFondo());
+        mainPanel.setBackground(MAIN_FONDO);
         mainPanel.add(crearPanelCabecera(), BorderLayout.NORTH);
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-        centerPanel.setBackground(uiTema.getColorFondo());
+        centerPanel.setBackground(MAIN_FONDO);
         centerPanel.add(crearPanelInformacionPersonal());
         centerPanel.add(crearPanelPerfilFinanciero());
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         JPanel bottomPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-        bottomPanel.setBackground(uiTema.getColorFondo());
+        bottomPanel.setBackground(MAIN_FONDO);
         bottomPanel.add(crearPanelConfiguracion());
         bottomPanel.add(crearPanelEstadisticas());
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -81,17 +74,16 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         String inicialNombre = String.valueOf(usuario.getNombre().charAt(0)).toUpperCase();
         String inicialApellido = String.valueOf(usuario.getNombre().split("\\s+")[1].charAt(0)).toUpperCase();
         JLabel lblAvatar = new JLabel(inicialNombre + inicialApellido);
-        lblAvatar.setForeground(uiTema.getColorTexto());
         lblAvatar.setFont(new Font("Segoe UI", Font.BOLD, 56));
         lblAvatar.setHorizontalAlignment(JLabel.CENTER);
         lblAvatar.setPreferredSize(new Dimension(100, 100));
         panel.add(lblAvatar, BorderLayout.WEST);
         JPanel infoPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        infoPanel.setBackground(uiTema.getColorPanel());
+        infoPanel.setBackground(MAIN_PANEL);
         
         JLabel lblNombre = new JLabel(usuario.getNombre());
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        lblNombre.setForeground(uiTema.getColorTexto());
+        lblNombre.setForeground(GRIS_MEDIO);
         
         JLabel lblEmail = new JLabel(usuario.getEmail());
         lblEmail.setFont(CUERPO_GRANDE);
@@ -115,13 +107,12 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Información Personal");
         lblTitulo.setFont(TITULO_MEDIO);
-        lblTitulo.setForeground(uiTema.getColorTexto());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
         
         // Content
         JPanel contentPanel = new JPanel(new GridLayout(5, 1, 0, 15));
-        contentPanel.setBackground(uiTema.getColorPanel());
+        contentPanel.setBackground(MAIN_PANEL);
         
         contentPanel.add(crearCampoInfo("Nombre completo", usuario.getNombre()));
         contentPanel.add(crearCampoInfo("Email", usuario.getEmail()));
@@ -148,7 +139,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         btnEditar.addActionListener(e -> mostrarEditarInformacion());
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setBackground(uiTema.getColorPanel());
+        buttonPanel.setBackground(MAIN_PANEL);
         buttonPanel.add(btnEditar);
         panel.add(buttonPanel, BorderLayout.SOUTH);
         
@@ -160,12 +151,11 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Perfil Financiero");
         lblTitulo.setFont(TITULO_MEDIO);
-        lblTitulo.setForeground(uiTema.getColorTexto());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
         PerfilFinanciero perfil = usuario.getPerfilFinanciero();
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
-        contentPanel.setBackground(uiTema.getColorPanel());
+        contentPanel.setBackground(MAIN_PANEL);
         if (perfil != null) {
         	contentPanel.add(crearCampoInfo("Perfil de riesgo", perfil.getPerfilRiesgo().toString()));
             contentPanel.add(crearCampoInfo("Horizonte temporal", perfil.getHorizonte() + " años"));
@@ -203,16 +193,14 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         panel.setLayout(new BorderLayout(0, 15));
         JLabel lblTitulo = new JLabel("Configuración de Cuenta");
         lblTitulo.setFont(TITULO_MEDIO);
-        lblTitulo.setForeground(uiTema.getColorTexto());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
         JPanel contentPanel = new JPanel(new GridLayout(3, 1, 0, 10));
-        contentPanel.setBackground(uiTema.getColorPanel());
+        contentPanel.setBackground(MAIN_PANEL);
         JPanel panelPassword = new JPanel(new BorderLayout(10, 5));
-        panelPassword.setBackground(uiTema.getColorPanel());
+        panelPassword.setBackground(MAIN_PANEL);
         JLabel lblPassword = new JLabel("Contraseña");
         lblPassword.setFont(SUBTITULO_MEDIO);
-        lblPassword.setForeground(uiTema.getColorTexto());
         JButton btnCambiarPassword = new JButton("Cambiar contraseña");
         btnCambiarPassword.setFont(CUERPO_PEQUENO);
         btnCambiarPassword.setBackground(AZUL_CLARO);
@@ -222,52 +210,27 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         btnCambiarPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCambiarPassword.addActionListener(e -> mostrarDialogoCambiarPassword());
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        panelBoton.setBackground(uiTema.getColorPanel());
+        panelBoton.setBackground(MAIN_PANEL);
         panelBoton.add(btnCambiarPassword);
         panelPassword.add(lblPassword, BorderLayout.WEST);
         panelPassword.add(panelBoton, BorderLayout.EAST);
         contentPanel.add(panelPassword);
-        JPanel panelTema = new JPanel(new BorderLayout(10, 5));
-        panelTema.setBackground(uiTema.getColorPanel());
-        JLabel lblTema = new JLabel("Tema de Interfaz");
-        lblTema.setFont(SUBTITULO_MEDIO);
-        lblTema.setForeground(uiTema.getColorTexto());
-        JToggleButton toggleTema = new JToggleButton(uiTema.esTemaOscuro() ? "Oscuro" : "Claro");
-        toggleTema.setFont(CUERPO_PEQUENO);
-        toggleTema.setBackground(AZUL_CLARO);
-        toggleTema.setForeground(Color.WHITE);
-        toggleTema.setMaximumSize(new Dimension(100, 25));
-        toggleTema.setSelected(uiTema.esTemaOscuro());
-        toggleTema.setFocusPainted(false);
-        toggleTema.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        toggleTema.addActionListener(e -> {
-            uiTema.cambiarTema();
-            toggleTema.setText(uiTema.esTemaOscuro() ? "Oscuro" : "Claro");
-            if (ventanaPrincipal != null) {
-                ventanaPrincipal.actualizarTema();
-            }
-        });
-        panelTema.add(lblTema, BorderLayout.WEST);
-        panelTema.add(toggleTema, BorderLayout.EAST);
-        contentPanel.add(panelTema);
         
         JPanel panelNotif = new JPanel(new BorderLayout(10, 5));
-        panelNotif.setBackground(uiTema.getColorPanel());
+        panelNotif.setBackground(MAIN_PANEL);
         JLabel lblNotif = new JLabel("Notificaciones por email");
         lblNotif.setFont(SUBTITULO_MEDIO);
-        lblNotif.setForeground(uiTema.getColorTexto());
         JCheckBox checkNotif = new JCheckBox("Activar");
         checkNotif.setFont(CUERPO_PEQUENO);
         checkNotif.setSelected(true);
-        checkNotif.setBackground(uiTema.getColorPanel());
-        checkNotif.setForeground(uiTema.getColorTexto());
+        checkNotif.setBackground(MAIN_PANEL);
         checkNotif.setFocusPainted(false);
         checkNotif.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, 
+            UITema.mostrarInfo(this, 
                 "Preferencia guardada (demostración)", 
-                "Notificaciones", 
-                JOptionPane.INFORMATION_MESSAGE);
+                "Notificaciones");
         });
+        
         panelNotif.add(lblNotif, BorderLayout.WEST);
         panelNotif.add(checkNotif, BorderLayout.EAST);
         contentPanel.add(panelNotif);
@@ -283,12 +246,11 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
 
         JLabel lblTitulo = new JLabel("Estadísticas de Cuenta");
         lblTitulo.setFont(TITULO_MEDIO);
-        lblTitulo.setForeground(uiTema.getColorTexto());
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel(new GridLayout(4, 1, 0, 15));
-        contentPanel.setBackground(uiTema.getColorPanel());
+        contentPanel.setBackground(MAIN_PANEL);
 
         int totalCarteras = usuario.getCarteras().size();
         int totalOperaciones = 0;
@@ -316,8 +278,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         lblIcono.setPreferredSize(new Dimension(30, 30));
 
         try {
-        	String colorIcono = uiTema.esTemaOscuro() ? "Blanco" : "Negro";
-        	String iconoPath = "/images/iconos/" + icono + colorIcono + ".png";
+        	String iconoPath = "/images/iconos/" + icono + ".png";
             ImageIcon icon = new ImageIcon(getClass().getResource(iconoPath));
             Image scaled = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
             lblIcono.setIcon(new ImageIcon(scaled));
@@ -329,11 +290,11 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         // --- Text labels ---
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(CUERPO_GRANDE);
-        lblTitulo.setForeground(uiTema.getColorTexto());
-
+        lblTitulo.setForeground(GRIS_MEDIO);
+        
         JLabel lblValor = new JLabel(valor);
         lblValor.setFont(CUERPO_GRANDE);
-        lblValor.setForeground(GRIS_MEDIO);
+        lblValor.setForeground(Color.BLACK);
 
         JPanel textPanel = new JPanel(new GridLayout(2, 1));
         textPanel.setOpaque(false);
@@ -348,7 +309,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
     
     private JPanel crearCampoInfo(String label, String valor) {
         JPanel panel = new JPanel(new BorderLayout(10, 5));
-        panel.setBackground(uiTema.getColorPanel());
+        panel.setBackground(MAIN_PANEL);
         
         JLabel lblLabel = new JLabel(label);
         lblLabel.setFont(CUERPO_PEQUENO);
@@ -356,7 +317,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         
         JLabel lblValor = new JLabel(valor);
         lblValor.setFont(SUBTITULO_MEDIO);
-        lblValor.setForeground(uiTema.getColorTexto());
+        lblValor.setForeground(Color.BLACK);
         
         panel.add(lblLabel, BorderLayout.NORTH);
         panel.add(lblValor, BorderLayout.CENTER);
@@ -366,9 +327,9 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
     
     private JPanel crearEstadistica(String label, String valor, String icono) {
         JPanel panel = new JPanel(new BorderLayout(15, 5));
-        panel.setBackground(uiTema.getColorPanel());
+        panel.setBackground(MAIN_PANEL);
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
         
@@ -376,7 +337,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         lblIcono.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         
         JPanel textPanel = new JPanel(new GridLayout(2, 1, 0, 2));
-        textPanel.setBackground(uiTema.getColorPanel());
+        textPanel.setBackground(MAIN_PANEL);
         
         JLabel lblLabel = new JLabel(label);
         lblLabel.setFont(CUERPO_PEQUENO);
@@ -384,7 +345,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         
         JLabel lblValor = new JLabel(valor);
         lblValor.setFont(SUBTITULO_MEDIO);
-        lblValor.setForeground(uiTema.getColorTexto());
+        lblValor.setForeground(Color.BLACK);
         
         textPanel.add(lblLabel);
         textPanel.add(lblValor);
@@ -397,7 +358,7 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
     
     private void mostrarDialogoCambiarPassword() {
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 
-                                      "Cambiar Contraseña", true);
+                                      "Cambiar contraseña", true);
         dialog.setLayout(new BorderLayout(15, 15));
         dialog.setSize(400, 300);
         dialog.setLocationRelativeTo(this);
@@ -405,19 +366,19 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
         JPanel mainPanel = new JPanel(new GridLayout(4, 1, 10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JPanel panelActual = new JPanel(new BorderLayout(5, 5));
-        panelActual.add(new JLabel("Contraseña Actual:"), BorderLayout.NORTH);
+        panelActual.add(new JLabel("Contraseña actual:"), BorderLayout.NORTH);
         JPasswordField txtActual = new JPasswordField();
         txtActual.setFont(CUERPO_GRANDE);
         panelActual.add(txtActual, BorderLayout.CENTER);
         mainPanel.add(panelActual);
         JPanel panelNueva = new JPanel(new BorderLayout(5, 5));
-        panelNueva.add(new JLabel("Contraseña Nueva:"), BorderLayout.NORTH);
+        panelNueva.add(new JLabel("Contraseña nueva:"), BorderLayout.NORTH);
         JPasswordField txtNueva = new JPasswordField();
         txtNueva.setFont(CUERPO_GRANDE);
         panelNueva.add(txtNueva, BorderLayout.CENTER);
         mainPanel.add(panelNueva);
         JPanel panelConfirmar = new JPanel(new BorderLayout(5, 5));
-        panelConfirmar.add(new JLabel("Confirmar Contraseña:"), BorderLayout.NORTH);
+        panelConfirmar.add(new JLabel("Confirmar contraseña:"), BorderLayout.NORTH);
         JPasswordField txtConfirmar = new JPasswordField();
         txtConfirmar.setFont(CUERPO_GRANDE);
         panelConfirmar.add(txtConfirmar, BorderLayout.CENTER);
@@ -436,25 +397,25 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
             String passConfirm = new String(txtConfirmar.getPassword());
 
             if (!passActual.equals(usuario.getPassword())) {
-                JOptionPane.showMessageDialog(dialog, "La contraseña actual es incorrecta.", "Error", JOptionPane.ERROR_MESSAGE);
+                UITema.mostrarError(dialog, "La contraseña actual es incorrecta.", "Error");
                 return;
             }
             if (!passNueva.equals(passConfirm)) {
-                JOptionPane.showMessageDialog(dialog, "Las contraseñas nuevas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+            	UITema.mostrarError(dialog, "Las contraseñas nuevas no coinciden.", "Error");
                 return;
             }
             if (passNueva.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "La contraseña no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
+            	UITema.mostrarError(dialog, "La contraseña no puede estar vacía.", "Error");
                 return;
             }
             boolean exito = dbManager.editarContrasena(usuario, passNueva);
 
             if (exito) {
                 usuario.setPassword(passNueva); 
-                JOptionPane.showMessageDialog(dialog, "Contraseña cambiada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                UITema.mostrarInfo(dialog, "Contraseña cambiada correctamente.", "Éxito");
                 dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(dialog, "Error al guardar la nueva contraseña en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            	UITema.mostrarError(dialog, "Error al guardar la nueva contraseña en la base de datos.", "Error");
             }
         });
         
@@ -468,9 +429,9 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
     
     private JPanel crearCard() {
         JPanel card = new JPanel();
-        card.setBackground(uiTema.getColorPanel());
+        card.setBackground(MAIN_PANEL);
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         return card;
@@ -538,17 +499,15 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
             boolean exito = dbManager.editarPerfil(usuario);
             
             if (exito) {
-                JOptionPane.showMessageDialog(dialog,
+            	UITema.mostrarInfo(dialog,
                     "Información actualizada y guardada correctamente.",
-                    "Éxito",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    "Éxito");
                 dialog.dispose();
                 refrescarDatos();
             } else {
-                JOptionPane.showMessageDialog(dialog,
+            	UITema.mostrarError(dialog,
                     "Error al guardar los datos en la base de datos.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+                    "Error");
             }
         });
 
@@ -566,11 +525,4 @@ public class PanelPerfil extends JPanel implements TemaActualizable {
 		this.revalidate();
 		this.repaint();
 	}
-	
-	@Override
-	public void refrescarColores() {
-		setBackground(uiTema.getColorFondo());
-	    repaint();
-	}
-    
 }

@@ -32,23 +32,11 @@ import es.deusto.eleutradia.domain.ProductoFinanciero;
 public class UITema {
 	
 	private static UITema instancia;
-	private boolean temaOscuro;
 	
-	// Colores del tema claro
-	public static final Color MAIN_FONDO_CLARO = new Color(250, 250, 250);
-	public static final Color MAIN_PANEL_CLARO = Color.WHITE;
-	public static final Color MAIN_BORDE_CLARO = new Color(220, 220, 230);
-	
-	// Colores del tema oscuro
-    public static final Color MAIN_FONDO_OSCURO = new Color(40, 40, 40);
-    public static final Color MAIN_PANEL_OSCURO = new Color(55, 55, 55);
-    public static final Color MAIN_BORDE_OSCURO = new Color(90, 90, 90);
-	
-    // Colores según el tema actual
-    private Color colorTexto;
-    private Color colorFondo;
-    private Color colorPanel;
-    private Color colorBorde;
+	// Colores del tema
+	public static final Color MAIN_FONDO = new Color(250, 250, 250);
+	public static final Color MAIN_PANEL = Color.WHITE;
+	public static final Color MAIN_BORDE = new Color(220, 220, 230);
     
     // Colores generales
 	public static final Color GRIS_SCROLLBAR = new Color(180, 180, 180);
@@ -133,8 +121,7 @@ public class UITema {
     };
     
     private UITema() {
-    	this.temaOscuro = false;
-    	actualizarColores();
+    	personalizarTooltips();
     }
     
     public static UITema getInstancia() {
@@ -143,81 +130,23 @@ public class UITema {
     	}
     	return instancia;
     }
-    
-    // Getters de los colores según el tema actual
-    public Color getColorTexto() {
-        return colorTexto;
-    }
-
-    public Color getColorFondo() {
-        return colorFondo;
-    }
-
-    public Color getColorPanel() {
-        return colorPanel;
-    }
-
-    public Color getColorBorde() {
-        return colorBorde;
-    }
-    
-    // Métodos para gestionar el tema
-    public boolean esTemaOscuro() {
-    	return this.temaOscuro;
-    }
-    
-	public void cambiarTema() {
-		this.temaOscuro = !this.temaOscuro;
-		actualizarColores();
-	}
-	
-	public void establecerTemaOscuro(boolean oscuro) {
-    	if (this.temaOscuro != oscuro) {
-    		this.temaOscuro = oscuro;
-    		actualizarColores();
-    	}
-    }
-	
-	// Método para actualizar los colores según el tema actual
-	private void actualizarColores() {
-    	if (temaOscuro) {
-    		colorTexto = MAIN_FONDO_CLARO;
-    		colorFondo = MAIN_FONDO_OSCURO;
-    		colorPanel = MAIN_PANEL_OSCURO;
-    		colorBorde = MAIN_BORDE_OSCURO;
-    	} else {
-    		colorTexto = MAIN_FONDO_OSCURO;
-    		colorFondo = MAIN_FONDO_CLARO;
-    		colorPanel = MAIN_PANEL_CLARO;
-    		colorBorde = MAIN_BORDE_CLARO;
-    	}
-    	personalizarTooltips();
-    }
 	
     // Método para crear ToolTips personalizados
     private void personalizarTooltips() {
-    	UIManager.put("ToolTip.background", temaOscuro ? MAIN_PANEL_OSCURO : Color.BLACK);
-    	UIManager.put("ToolTip.foreground", temaOscuro ? MAIN_FONDO_CLARO : Color.WHITE);
-    	UIManager.put("ToolTip.border", BorderFactory.createLineBorder(
-    		temaOscuro ? MAIN_BORDE_OSCURO : Color.DARK_GRAY, 1));
+    	UIManager.put("ToolTip.background", Color.BLACK);
+    	UIManager.put("ToolTip.foreground", Color.WHITE);
+    	UIManager.put("ToolTip.border", BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
     	UIManager.put("ToolTip.font", CUERPO_PEQUENO);
     }
     
-    //IAG (Claude)
-    //ADAPTADO: Diseño adaptado al tema oscuro/claro
-    
     // Método para personalizar los diálogos JOptionPane
-    private static void personalizarDialogs() {
-        UITema tema = UITema.getInstancia();
-        
-        Color fondoBoton = tema.esTemaOscuro() ? GRIS_CLARO : GRIS_MEDIO;
-        
-        UIManager.put("OptionPane.background", tema.esTemaOscuro() ? MAIN_FONDO_OSCURO : MAIN_FONDO_CLARO);
-        UIManager.put("OptionPane.messageForeground", tema.esTemaOscuro() ? MAIN_FONDO_CLARO : MAIN_FONDO_OSCURO);
-        UIManager.put("Panel.background", tema.esTemaOscuro() ? MAIN_FONDO_OSCURO : MAIN_FONDO_CLARO);
-        UIManager.put("Button.background", fondoBoton);
-        UIManager.put("Button.foreground", tema.esTemaOscuro() ? Color.BLACK : Color.WHITE);
-        UIManager.put("Button.select", fondoBoton.darker());
+    private static void personalizarDialogs() {                
+        UIManager.put("OptionPane.background", MAIN_FONDO);
+        UIManager.put("OptionPane.messageForeground", Color.BLACK);
+        UIManager.put("Panel.background", MAIN_FONDO);
+        UIManager.put("Button.background", GRIS_MEDIO);
+        UIManager.put("Button.foreground", Color.WHITE);
+        UIManager.put("Button.select", GRIS_OSCURO);
         UIManager.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
         UIManager.put("Button.border", BorderFactory.createEmptyBorder(5, 15, 5, 15));
         UIManager.put("OptionPane.messageFont", CUERPO_GRANDE);
@@ -308,7 +237,7 @@ public class UITema {
                 this.thumbColor = GRIS_SCROLLBAR;
                 this.thumbDarkShadowColor = GRIS_SCROLLBAR;
                 this.thumbHighlightColor = GRIS_SCROLLBAR;
-                this.trackColor = MAIN_FONDO_CLARO;
+                this.trackColor = MAIN_FONDO;
             }
 
             @Override
@@ -366,39 +295,23 @@ public class UITema {
     
     // Método para aplicar colores de fila personalizados a una JTable
     public static void aplicarColoresHover(DefaultTableCellRenderer renderer, JTable table, 
-            boolean isSelected, int row) {
-        
-        UITema tema = UITema.getInstancia();
-        
+            boolean isSelected, int row) {        
         if (isSelected) {
-            if (tema.esTemaOscuro()) {
-                renderer.setBackground(new Color(70, 80, 100));
-                renderer.setForeground(MAIN_FONDO_CLARO);
-            } else {
-                renderer.setBackground(new Color(200, 210, 240));
-                renderer.setForeground(Color.BLACK);
-            }
+        	renderer.setBackground(new Color(200, 210, 240));
+            renderer.setForeground(Color.BLACK);
         } else {
             // Comprobar si el mouse está sobre la fila
             Point mousePos = table.getMousePosition();
             if (mousePos != null && table.rowAtPoint(mousePos) == row) {
-                // Color hover según el tema
-                if (tema.esTemaOscuro()) {
-                    renderer.setBackground(new Color(65, 65, 75));
-                } else {
-                    renderer.setBackground(new Color(220, 235, 255));
-                }
+            	renderer.setBackground(new Color(220, 235, 255));
             } else {
-                // Colores alternos según el tema
+                // Colores alternos
                 if (row % 2 == 0) {
-                    renderer.setBackground(tema.colorPanel);
+                    renderer.setBackground(MAIN_PANEL);
                 } else {
-                    renderer.setBackground(tema.colorFondo);
+                    renderer.setBackground(MAIN_FONDO);
                 }
             }
-            
-            // Color del texto según el tema (solo si no está seleccionado)
-            renderer.setForeground(tema.colorTexto);
         }
     }
     
@@ -491,8 +404,7 @@ public class UITema {
                         setForeground(Color.BLACK);
                     }
                 } catch (NumberFormatException e) {
-                    // Mantener el color del tema si no se puede parsear
-                	setForeground(UITema.getInstancia().colorTexto);
+                	setForeground(Color.BLACK);
                 }
                 setFont(SUBTITULO_MEDIO);
             }

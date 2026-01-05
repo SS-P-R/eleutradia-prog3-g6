@@ -71,7 +71,7 @@ public class PanelAprender extends JPanel {
 		usuarioLogeado = usuario;
 		
 		this.setLayout(new BorderLayout());
-		this.setBackground(MAIN_FONDO_CLARO);
+		this.setBackground(MAIN_FONDO);
 		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		layoutPanelAprender = new CardLayout();
@@ -80,7 +80,7 @@ public class PanelAprender extends JPanel {
 		JPanel panelCursos = crearPanelCursos();
 		
 		panelCursosInfo = new JPanel(new BorderLayout(20, 20));
-		panelCursosInfo.setBackground(MAIN_FONDO_CLARO);
+		panelCursosInfo.setBackground(MAIN_FONDO);
 		
 		panelAprender.add(panelCursos, "PANEL_CURSOS");
 		panelAprender.add(panelCursosInfo, "PANEL_CURSOS_INFO");
@@ -96,11 +96,11 @@ public class PanelAprender extends JPanel {
 	private JPanel crearPanelCursos() {
 
 		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
-		panelPrincipalPestanasCurso.setBackground(MAIN_FONDO_CLARO);
+		panelPrincipalPestanasCurso.setBackground(MAIN_FONDO);
 		
 		
 		JPanel panelPestanasCursos = new JPanel(new BorderLayout());
-		panelPestanasCursos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
+		panelPestanasCursos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 		JPanel panelPestanas = crearPanelPestanas();
 		panelPestanasCursos.add(panelPestanas, BorderLayout.NORTH);
 		
@@ -133,7 +133,7 @@ public class PanelAprender extends JPanel {
 		
 		JPanel panelDerecho = new JPanel(new BorderLayout());
 		panelDerecho.setBackground(Color.WHITE);
-		panelDerecho.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
+		panelDerecho.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 		panelDerecho.setPreferredSize(new Dimension(160, 0));
 		
 		JPanel panelProgreso = new JPanel();
@@ -332,8 +332,8 @@ public class PanelAprender extends JPanel {
 		JPanel panelCurso = new JPanel(new BorderLayout());
 		panelCurso.setPreferredSize(TAMANO_TARJETA);
 		panelCurso.setMaximumSize(TAMANO_TARJETA);
-		panelCurso.setBackground(MAIN_FONDO_CLARO);
-		panelCurso.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
+		panelCurso.setBackground(MAIN_FONDO);
+		panelCurso.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 		
 		try {
 			//IAG (Gemini)
@@ -350,7 +350,7 @@ public class PanelAprender extends JPanel {
 		
 		JPanel panelInfotexto = new JPanel();
 		panelInfotexto.setLayout(new BoxLayout(panelInfotexto, BoxLayout.Y_AXIS));
-		panelInfotexto.setBackground(MAIN_FONDO_CLARO);
+		panelInfotexto.setBackground(MAIN_FONDO);
 		panelInfotexto.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8));
 		
 		JLabel labelTitulo = new JLabel(curso.getNombre());
@@ -389,7 +389,7 @@ public class PanelAprender extends JPanel {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panelCurso.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO, 1));
+				panelCurso.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 			}
 			
 			@Override
@@ -422,14 +422,14 @@ public class PanelAprender extends JPanel {
 	private JPanel crearPanelLateralAcciones() {
 		
 		JPanel panelLateral = new JPanel(new BorderLayout(0, 10));
-		panelLateral.setBackground(MAIN_FONDO_CLARO);
+		panelLateral.setBackground(MAIN_FONDO);
 		panelLateral.setPreferredSize(new Dimension(160, 0));
 		
 		JPanel panelTexto = new JPanel();
 		panelTexto.setLayout(new BoxLayout(panelTexto, BoxLayout.Y_AXIS));
 		panelTexto.setBackground(Color.WHITE);
 		panelTexto.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(MAIN_BORDE_CLARO),
+				BorderFactory.createLineBorder(MAIN_BORDE),
 				BorderFactory.createEmptyBorder(15, 15, 15, 15)
 		));
 
@@ -567,7 +567,7 @@ public class PanelAprender extends JPanel {
 		}
 
 		JPanel panelVolver = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		panelVolver.setBackground(MAIN_FONDO_CLARO);
+		panelVolver.setBackground(MAIN_FONDO);
 		
 		JButton botonVolver = new JButton("Volver");
 		botonVolver.setMinimumSize(new Dimension(150, 45));
@@ -648,7 +648,7 @@ public class PanelAprender extends JPanel {
 		panelContenido.add(Box.createVerticalGlue());
 		
 		JScrollPane scrollPane = new JScrollPane(panelContenido);
-		scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE_CLARO));
+		scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
 		
 		scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
 	    scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());

@@ -2,7 +2,6 @@ package es.deusto.eleutradia.gui;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.*;
-import es.deusto.eleutradia.gui.style.TemaActualizable;
 import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
@@ -27,14 +26,13 @@ import java.util.List;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
-public class PanelPortfolio extends JPanel implements TemaActualizable {
+public class PanelPortfolio extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private EleutradiaDBManager dbManager;
     private Usuario usuario;
     private Cartera carteraSeleccionada;
-    private UITema uiTema;
     
     private JComboBox<String> comboCarteras;
     private JLabel lblPatrimonioTotalUsuario;
@@ -45,20 +43,21 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     private JLabel lblSaldoDisponible;
     private JLabel lblValorInversiones;
     private JLabel lblGananciasTotal;
+    private JLabel lblRiesgo;
     private JTable tablePosiciones;
     private DefaultTableModel tableModel;
     private DefaultListModel<String> operationsListModel;
+    private JButton btnActualizar;
     
     public PanelPortfolio(Usuario usuario) {
         this.usuario = usuario;
         this.dbManager = MainEleutradia.getDBManager();
-        this.uiTema = UITema.getInstancia();
         if (!usuario.getCarteras().isEmpty()) {
             this.carteraSeleccionada = usuario.getCarteras().get(0);
         }
         
         this.setLayout(new BorderLayout(15, 15));
-        this.setBackground(uiTema.getColorFondo());
+        this.setBackground(MAIN_FONDO);
         this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         inicializarPaneles();
@@ -68,15 +67,15 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     
     private void inicializarPaneles() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
-        mainPanel.setBackground(uiTema.getColorFondo());
+        mainPanel.setBackground(MAIN_FONDO);
         JPanel topPanel = new JPanel(new BorderLayout(15, 15));
-        topPanel.setBackground(uiTema.getColorFondo());
+        topPanel.setBackground(MAIN_FONDO);
         topPanel.add(crearPanelSelector(), BorderLayout.NORTH);
         topPanel.add(crearPanelResumenUsuario(), BorderLayout.CENTER);
         mainPanel.add(topPanel, BorderLayout.NORTH);  
         mainPanel.add(crearPanelResumenCartera(), BorderLayout.CENTER);
         JPanel bottomContainer = new JPanel(new BorderLayout(15, 15));
-        bottomContainer.setBackground(uiTema.getColorFondo());
+        bottomContainer.setBackground(MAIN_FONDO);
         bottomContainer.add(crearPanelPosiciones(), BorderLayout.CENTER);  
         bottomContainer.add(crearPanelOperacionesRecientes(), BorderLayout.SOUTH);
         mainPanel.add(bottomContainer, BorderLayout.SOUTH);
@@ -100,6 +99,7 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
         comboCarteras = new JComboBox<>();
         comboCarteras.setFont(CUERPO_GRANDE);
         comboCarteras.setPreferredSize(new Dimension(250, 35));
+        aplicarEstiloComboBox(comboCarteras);
         
         // 1. Añadimos las carteras existentes
         for (Cartera cartera : usuario.getCarteras()) {
@@ -130,13 +130,24 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
         panel.add(comboCarteras, BorderLayout.EAST);
         return panel;
     }
+    
+    private void aplicarEstiloComboBox(JComboBox<?> combo) {
+        combo.setBackground(MAIN_PANEL);
+        aplicarScrollBarCombo(combo);
+    }
+    
     private void abrirDialogoCrearCartera() {
         JPanel panelFormulario = new JPanel(new GridLayout(0, 1));
+        panelFormulario.setBackground(MAIN_PANEL);
+        
         JTextField txtNombre = new JTextField();
         JTextField txtSaldo = new JTextField("0.0");
         JComboBox<PerfilRiesgo> comboPerfil = new JComboBox<>(PerfilRiesgo.values());
         JComboBox<Divisa> comboDivisa = new JComboBox<>(Divisa.values());
 
+        aplicarEstiloComboBox(comboPerfil);
+        aplicarEstiloComboBox(comboDivisa);
+        
         panelFormulario.add(new JLabel("Nombre de la Cartera:"));
         panelFormulario.add(txtNombre);
         panelFormulario.add(new JLabel("Saldo Inicial:"));
@@ -206,7 +217,7 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     private JPanel crearPanelResumenUsuario() {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
-        panelPrincipal.setBackground(uiTema.getColorFondo());
+        panelPrincipal.setBackground(MAIN_FONDO);
         
         // Patrimonio total
         JPanel card1 = crearCard();
@@ -254,7 +265,7 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     private JPanel crearPanelResumenCartera() {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.X_AXIS));
-        panelPrincipal.setBackground(uiTema.getColorFondo());
+        panelPrincipal.setBackground(MAIN_FONDO);
         panelPrincipal.add(crearCardPatrimonioCartera());
         panelPrincipal.add(Box.createRigidArea(new Dimension(15, 0)));
         panelPrincipal.add(crearCardDesgloseCartera());
@@ -264,18 +275,21 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     private JPanel crearCardPatrimonioCartera() {
         JPanel card = crearCard();
         card.setLayout(new BorderLayout(10, 10));
+        
         lblNombreCartera = new JLabel("Cartera seleccionada");
         lblNombreCartera.setFont(SUBTITULO_GRANDE);
         lblNombreCartera.setForeground(AZUL_CLARO);
         card.add(lblNombreCartera, BorderLayout.NORTH);
+        
         lblPatrimonioCartera = new JLabel("0,00 €", JLabel.CENTER);
         lblPatrimonioCartera.setFont(new Font("Arial", Font.BOLD, 36));
-        lblPatrimonioCartera.setForeground(GRIS_OSCURO);
         card.add(lblPatrimonioCartera, BorderLayout.CENTER);
+        
         lblGananciasTotal = new JLabel("▲ +0,00 € (0,00%)", JLabel.CENTER);
         lblGananciasTotal.setFont(SUBTITULO_MEDIO);
         lblGananciasTotal.setForeground(VERDE_OSCURO);
         card.add(lblGananciasTotal, BorderLayout.SOUTH);
+        
         return card;
     }
     
@@ -306,7 +320,7 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
         // Perfil de riesgo
         JPanel panelRiesgo = crearItemDesglose("Perfil de riesgo");
         panelRiesgo.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-        JLabel lblRiesgo = new JLabel("-", JLabel.RIGHT);
+        lblRiesgo = new JLabel("-", JLabel.RIGHT);
         lblRiesgo.setFont(SUBTITULO_GRANDE);
         panelRiesgo.add(lblRiesgo);
         card.add(panelRiesgo);
@@ -316,10 +330,9 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     
     private JPanel crearItemDesglose(String titulo) {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBackground(uiTema.getColorPanel());
+        panel.setBackground(MAIN_PANEL);
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(CUERPO_PEQUENO);
-        lblTitulo.setForeground(GRIS_MEDIO);
         panel.add(lblTitulo, BorderLayout.NORTH);
         
         return panel;
@@ -347,26 +360,7 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
         };
         
         tablePosiciones = new JTable(tableModel);
-        tablePosiciones.setFont(CUERPO_PEQUENO);
-        tablePosiciones.setRowHeight(35);
-        
-        tablePosiciones.setShowGrid(true);
-        tablePosiciones.setGridColor(uiTema.getColorBorde());
-        tablePosiciones.setSelectionBackground(new Color(200, 210, 240));
-        tablePosiciones.setSelectionForeground(Color.BLACK);
-        tablePosiciones.setIntercellSpacing(new Dimension(1, 1));
-        tablePosiciones.setFocusable(false);
-        
-        tablePosiciones.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        
-        JTableHeader header = tablePosiciones.getTableHeader();
-        header.setFont(SUBTITULO_MEDIO);
-        header.setBackground(uiTema.esTemaOscuro() ? GRIS_MEDIO : AZUL_OSCURO);
-        header.setForeground(uiTema.esTemaOscuro() ? GRIS_SUAVE : Color.WHITE);
-        header.setOpaque(true);
-        header.setReorderingAllowed(false);
-        header.setResizingAllowed(false);
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, uiTema.getColorBorde()));
+        aplicarEstiloTabla(tablePosiciones);
         
         tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(150); // Producto
         tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(50);  // Cantidad
@@ -389,13 +383,35 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
         tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(rentRenderer);
         
         JScrollPane scrollPane = new JScrollPane(tablePosiciones);
-        scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.getColorBorde()));
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;
+    }
+    
+    private void aplicarEstiloTabla(JTable table) {
+        table.setFont(CUERPO_PEQUENO);
+        table.setRowHeight(35);
+        table.setBackground(MAIN_PANEL);
+        table.setShowGrid(true);
+        table.setGridColor(MAIN_BORDE);
+        table.setSelectionBackground(new Color(200, 210, 240));
+        table.setSelectionForeground(Color.BLACK);
+        table.setIntercellSpacing(new Dimension(1, 1));
+        table.setFocusable(false);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        JTableHeader header = table.getTableHeader();
+        header.setFont(SUBTITULO_MEDIO);
+        header.setBackground(AZUL_OSCURO);
+        header.setForeground(Color.WHITE);
+        header.setOpaque(true);
+        header.setReorderingAllowed(false);
+        header.setResizingAllowed(false);
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, MAIN_BORDE));
     }
     
     private JPanel crearPanelOperacionesRecientes() {
@@ -408,28 +424,37 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
         panel.add(lblTitulo, BorderLayout.NORTH);
         operationsListModel = new DefaultListModel<>();
         JList<String> operationsList = new JList<>(operationsListModel);
-        operationsList.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        operationsList.setFixedCellHeight(30);
-        operationsList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        aplicarEstiloLista(operationsList);
+        
         JScrollPane scrollPane = new JScrollPane(operationsList);
-        scrollPane.setBorder(BorderFactory.createLineBorder(uiTema.getColorBorde()));
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;
     }
     
+    private void aplicarEstiloLista(JList<?> lista) {
+        lista.setFont(CUERPO_PEQUENO);
+        lista.setFixedCellHeight(30);
+        lista.setBackground(MAIN_PANEL);
+        lista.setSelectionBackground(new Color(200, 210, 240));
+        lista.setSelectionForeground(Color.BLACK);
+        lista.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    }
+    
     private JPanel crearPanelBotones() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panel.setBackground(uiTema.getColorFondo());
+        panel.setBackground(MAIN_FONDO);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        JButton btnActualizar = new JButton("Actualizar Datos");
+        btnActualizar = new JButton("Actualizar datos");
         btnActualizar.setFont(SUBTITULO_MEDIO);
         btnActualizar.setBackground(AZUL_CLARO);
         btnActualizar.setForeground(Color.WHITE);
         btnActualizar.setFocusPainted(false);
         btnActualizar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         btnActualizar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnActualizar.addMouseListener(myAdapterAzul);
         btnActualizar.addActionListener(e -> cargarDatosPortfolio());
         panel.add(btnActualizar);
         
@@ -438,9 +463,9 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     
     private JPanel crearCard() {
         JPanel card = new JPanel();
-        card.setBackground(uiTema.getColorPanel());
+        card.setBackground(MAIN_PANEL);
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(uiTema.getColorBorde(), 1),
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         return card;
@@ -461,6 +486,7 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
             lblSaldoDisponible.setText("0,00 €");
             lblValorInversiones.setText("0,00 €");
             lblGananciasTotal.setText("N/A");
+            lblRiesgo.setText("-");
             tableModel.setRowCount(0);
             operationsListModel.clear();
             return;
@@ -535,10 +561,4 @@ public class PanelPortfolio extends JPanel implements TemaActualizable {
     public void refrescarDatos() {
         cargarDatosPortfolio();
     }
-
-	@Override
-	public void refrescarColores() {
-		setBackground(uiTema.getColorFondo());
-	    repaint();
-	}
 }
