@@ -213,7 +213,7 @@ public class UITema {
      * Muestra un diálogo de confirmación personalizado
      * @return true si el usuario acepta, false si cancela
      */
-    public static boolean mostrarConfirmacion(Component parent, String mensaje, String titulo) {
+    public static boolean mostrarConfirmacion(Component parent, Object mensaje, String titulo) {
         int resultado = JOptionPane.showConfirmDialog(parent, mensaje, titulo,
             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return resultado == JOptionPane.YES_OPTION;
@@ -223,7 +223,7 @@ public class UITema {
      * Muestra un diálogo de confirmación con opciones Aceptar/Cancelar
      * @return true si el usuario acepta, false si cancela
      */
-    public static boolean mostrarConfirmacionOkCancel(Component parent, String mensaje, String titulo) {
+    public static boolean mostrarConfirmacionOkCancel(Component parent, Object mensaje, String titulo) {
         int resultado = JOptionPane.showConfirmDialog(parent, mensaje, titulo,
             JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         return resultado == JOptionPane.OK_OPTION;
@@ -233,7 +233,7 @@ public class UITema {
      * Muestra un diálogo de entrada de texto personalizado
      * @return el texto ingresado o null si se cancela
      */
-    public static String mostrarInputTexto(Component parent, String mensaje, String titulo, String valorInicial) {
+    public static String mostrarInputTexto(Component parent, Object mensaje, String titulo, String valorInicial) {
         return (String) JOptionPane.showInputDialog(parent, mensaje, titulo,
             JOptionPane.PLAIN_MESSAGE, null, null, valorInicial);
     }
@@ -284,19 +284,56 @@ public class UITema {
         };
     }
 
-    // Método para aplicar el método anterior a un JComboBox
-    public static void aplicarScrollBarCombo(JComboBox<?> combo) {
+    // Método para personalizar JComboBoxes
+    public static void personalizarComboBox(JComboBox<?> combo) {
         combo.setUI(new BasicComboBoxUI() {
+
+            @Override
+            protected JButton createArrowButton() {
+                JButton arrowButton = new JButton();
+
+                arrowButton.setBackground(GRIS_MEDIO);
+                arrowButton.setBorder(BorderFactory.createEmptyBorder());
+                arrowButton.setFocusPainted(false);
+                arrowButton.setOpaque(true);
+                arrowButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                // Colores propios (independientes de Button.select)
+                arrowButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        arrowButton.setBackground(GRIS_OSCURO);
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        arrowButton.setBackground(GRIS_MEDIO);
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        arrowButton.setBackground(GRIS_OSCURO);
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        arrowButton.setBackground(GRIS_MEDIO);
+                    }
+                });
+
+                return arrowButton;
+            }
 
             @Override
             protected BasicComboPopup createPopup() {
                 BasicComboPopup popup = (BasicComboPopup) super.createPopup();
-                JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
-                scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+                JScrollPane scroll = (JScrollPane) popup.getComponent(0);
+                scroll.getVerticalScrollBar().setUI(personalizarScrollBarUI());
                 return popup;
             }
         });
     }
+
     
     //END IAG
     

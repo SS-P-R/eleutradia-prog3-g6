@@ -309,12 +309,12 @@ public class VentanaInicial extends JFrame {
 		JPanel panelDcho = new JPanel();
         panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
         panelDcho.setBackground(Color.WHITE);
-        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 20));
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 45, 25, 25));
         
         JLabel tituloReg = new JLabel("Abra su cuenta (1/2):");
         tituloReg.setFont(TITULO_GRANDE);
         tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         panelDcho.add(tituloReg);
         
 	    JPanel panelRegistro = new JPanel();
@@ -403,13 +403,12 @@ public class VentanaInicial extends JFrame {
         
         JPasswordField campoRegConfirmPassword = (JPasswordField) crearCampo(true);
         panelRegistro.add(campoRegConfirmPassword);
-        panelRegistro.add(Box.createVerticalStrut(20));
 
         // Botones
-        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 10, 0));;
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 10, 0));
         panelBotones.setBackground(Color.WHITE);
-        panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-        panelBotones.setMaximumSize(new Dimension(300, 25));
+        panelBotones.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+        panelBotones.setMaximumSize(new Dimension(350, 50));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JButton botonCancelar = new JButton("Cancelar");
@@ -436,13 +435,11 @@ public class VentanaInicial extends JFrame {
         botonContinuar.setContentAreaFilled(false);
         botonContinuar.setOpaque(true);
         botonContinuar.setFocusPainted(false);
-        botonContinuar.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        botonContinuar.setAlignmentX(JButton.RIGHT_ALIGNMENT);
         panelBotones.add(botonContinuar);
         botonContinuar.addActionListener(e -> validarYContinuar(radioParticular.isSelected(), 
         		campoRegId, campoRegNombre, campoRegEmail, campoRegTlf, campoRegPassword, campoRegConfirmPassword));
         botonContinuar.addMouseListener(myAdapterAzul);
-        
-        panelRegistro.add(panelBotones);
         
         JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
         scrollRegistro.setBorder(null); // elimina el borde del scroll
@@ -451,6 +448,8 @@ public class VentanaInicial extends JFrame {
         scrollRegistro.getVerticalScrollBar().setUnitIncrement(16); // suaviza el scroll
         scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelDcho.add(scrollRegistro);
+        
+        panelDcho.add(panelBotones);
         
         JPanel panelIzdo = construirPanelImagen();
         
@@ -466,12 +465,12 @@ public class VentanaInicial extends JFrame {
 		JPanel panelDcho = new JPanel();
         panelDcho.setLayout(new BoxLayout(panelDcho, BoxLayout.Y_AXIS));
         panelDcho.setBackground(Color.WHITE);
-        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 50, 10, 20));
+        panelDcho.setBorder(BorderFactory.createEmptyBorder(30, 45, 25, 25));
         
         JLabel tituloReg = new JLabel("Abra su cuenta (2/2):");
         tituloReg.setFont(TITULO_GRANDE);
         tituloReg.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        tituloReg.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         panelDcho.add(tituloReg);
         
 	    JPanel panelRegistro = new JPanel();
@@ -486,8 +485,9 @@ public class VentanaInicial extends JFrame {
         String[] tiposDireccion = {"Plaza", "Calle", "Avenida", "Paseo", "Ronda", "Camino"};
         JComboBox<String> comboTipoDireccion = new JComboBox<>(tiposDireccion);
         comboTipoDireccion.setFont(CUERPO_GRANDE);
-        comboTipoDireccion.setMaximumSize(new Dimension(300, 50));
+        comboTipoDireccion.setMaximumSize(new Dimension(300, 30));
         comboTipoDireccion.setAlignmentX(LEFT_ALIGNMENT);
+        UITema.personalizarComboBox(comboTipoDireccion);
         panelRegistro.add(comboTipoDireccion);
         panelRegistro.add(Box.createVerticalStrut(20));
         
@@ -527,15 +527,14 @@ public class VentanaInicial extends JFrame {
         panelCamposParticular.add(labelPaisResidencia);
         panelCamposParticular.add(Box.createVerticalStrut(10));
         panelCamposParticular.add(campoPaisResidencia);
-        panelCamposParticular.add(Box.createVerticalStrut(20));
         
         panelRegistro.add(panelCamposParticular);
 
         // Botones
         JPanel panelBotones = new JPanel(new GridLayout(1, 2, 10, 0));
         panelBotones.setBackground(Color.WHITE);
-        panelBotones.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-        panelBotones.setMaximumSize(new Dimension(300, 25));
+        panelBotones.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+        panelBotones.setMaximumSize(new Dimension(350, 50));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         JButton botonVolver = new JButton("Volver");
@@ -561,15 +560,12 @@ public class VentanaInicial extends JFrame {
         botonConfirmar.setContentAreaFilled(false);
         botonConfirmar.setOpaque(true);
         botonConfirmar.setFocusPainted(false);
-        botonConfirmar.setAlignmentX(JButton.LEFT_ALIGNMENT);
+        botonConfirmar.setAlignmentX(JButton.RIGHT_ALIGNMENT);
         panelBotones.add(botonConfirmar);
         botonConfirmar.addActionListener(e -> procesarRegistro(comboTipoDireccion, campoNombreDireccion,
         		campoDomicilioFiscal, campoFechaNacimiento, campoPaisResidencia));
         botonConfirmar.addMouseListener(myAdapterAzul);
-        
-        panelRegistro.add(Box.createVerticalStrut(60));
-        panelRegistro.add(panelBotones, JPanel.BOTTOM_ALIGNMENT);
-        
+                
         JScrollPane scrollRegistro = new JScrollPane(panelRegistro);
         scrollRegistro.setBorder(null);
         scrollRegistro.setBackground(Color.WHITE);
@@ -577,6 +573,8 @@ public class VentanaInicial extends JFrame {
         scrollRegistro.getVerticalScrollBar().setUnitIncrement(16);
         scrollRegistro.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelDcho.add(scrollRegistro);
+        
+        panelDcho.add(panelBotones);
         
         JPanel panelIzdo = construirPanelImagen();
         

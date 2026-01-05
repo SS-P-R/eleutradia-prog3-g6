@@ -196,7 +196,7 @@ public class PanelExplorar extends JPanel {
         selectTipoProducto.setMaximumSize(dimensionSelector);
         selectTipoProducto.setAlignmentX(LEFT_ALIGNMENT);
         selectTipoProducto.addActionListener(e -> aplicarFiltros());
-        aplicarScrollBarCombo(selectTipoProducto);
+        UITema.personalizarComboBox(selectTipoProducto);
         aplicarTooltipPorItem(selectTipoProducto);
         mainPanelFiltros.add(selectTipoProducto);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
@@ -208,7 +208,7 @@ public class PanelExplorar extends JPanel {
         selectClaseActivo.setMaximumSize(dimensionSelector);
         selectClaseActivo.setAlignmentX(LEFT_ALIGNMENT);
         selectClaseActivo.addActionListener(e -> aplicarFiltros());
-        aplicarScrollBarCombo(selectClaseActivo);
+        UITema.personalizarComboBox(selectClaseActivo);
         aplicarTooltipPorItem(selectClaseActivo);
         mainPanelFiltros.add(selectClaseActivo);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
@@ -220,7 +220,7 @@ public class PanelExplorar extends JPanel {
         selectRegion.setMaximumSize(dimensionSelector);
         selectRegion.setAlignmentX(LEFT_ALIGNMENT);
         selectRegion.addActionListener(e -> aplicarFiltros());
-        aplicarScrollBarCombo(selectRegion);
+        UITema.personalizarComboBox(selectRegion);
         aplicarTooltipPorItem(selectRegion);
         mainPanelFiltros.add(selectRegion);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
@@ -235,7 +235,7 @@ public class PanelExplorar extends JPanel {
         selectRiesgo.setMaximumSize(dimensionSelector);
         selectRiesgo.setAlignmentX(LEFT_ALIGNMENT);
         selectRiesgo.addActionListener(e -> aplicarFiltros());
-        aplicarScrollBarCombo(selectRiesgo);
+        UITema.personalizarComboBox(selectRiesgo);
         aplicarTooltipPorItem(selectRiesgo);
         mainPanelFiltros.add(selectRiesgo);
         mainPanelFiltros.add(Box.createVerticalStrut(15));
@@ -247,7 +247,7 @@ public class PanelExplorar extends JPanel {
         selectGestora.setMaximumSize(dimensionSelector);
         selectGestora.setAlignmentX(LEFT_ALIGNMENT);
         selectGestora.addActionListener(e -> aplicarFiltros());
-        aplicarScrollBarCombo(selectGestora);
+        UITema.personalizarComboBox(selectGestora);
         aplicarTooltipPorItem(selectGestora);
         mainPanelFiltros.add(selectGestora);
         

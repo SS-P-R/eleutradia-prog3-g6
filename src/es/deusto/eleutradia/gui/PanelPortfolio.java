@@ -99,7 +99,7 @@ public class PanelPortfolio extends JPanel {
         comboCarteras = new JComboBox<>();
         comboCarteras.setFont(CUERPO_GRANDE);
         comboCarteras.setPreferredSize(new Dimension(250, 35));
-        aplicarEstiloComboBox(comboCarteras);
+        UITema.personalizarComboBox(comboCarteras);
         
         // 1. Añadimos las carteras existentes
         for (Cartera cartera : usuario.getCarteras()) {
@@ -131,22 +131,17 @@ public class PanelPortfolio extends JPanel {
         return panel;
     }
     
-    private void aplicarEstiloComboBox(JComboBox<?> combo) {
-        combo.setBackground(MAIN_PANEL);
-        aplicarScrollBarCombo(combo);
-    }
-    
     private void abrirDialogoCrearCartera() {
         JPanel panelFormulario = new JPanel(new GridLayout(0, 1));
-        panelFormulario.setBackground(MAIN_PANEL);
+        panelFormulario.setBackground(MAIN_FONDO);
         
         JTextField txtNombre = new JTextField();
         JTextField txtSaldo = new JTextField("0.0");
         JComboBox<PerfilRiesgo> comboPerfil = new JComboBox<>(PerfilRiesgo.values());
         JComboBox<Divisa> comboDivisa = new JComboBox<>(Divisa.values());
 
-        aplicarEstiloComboBox(comboPerfil);
-        aplicarEstiloComboBox(comboDivisa);
+        UITema.personalizarComboBox(comboPerfil);;
+        UITema.personalizarComboBox(comboDivisa);
         
         panelFormulario.add(new JLabel("Nombre de la cartera:"));
         panelFormulario.add(txtNombre);
@@ -156,8 +151,13 @@ public class PanelPortfolio extends JPanel {
         panelFormulario.add(comboPerfil);
         panelFormulario.add(new JLabel("Divisa:"));
         panelFormulario.add(comboDivisa);
+        
+        JPanel contenedor = new JPanel(new BorderLayout());
+        contenedor.setBackground(MAIN_FONDO);
+        contenedor.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        contenedor.add(panelFormulario, BorderLayout.CENTER);
 
-        if (UITema.mostrarConfirmacionOkCancel(this, "¿Desea crear una nueva cartera?", "Nueva cartera")) {
+        if (UITema.mostrarConfirmacionOkCancel(this, contenedor, "Nueva cartera")) {
             try {
                 String nombre = txtNombre.getText().trim();
                 double saldo = Double.parseDouble(txtSaldo.getText().trim());
