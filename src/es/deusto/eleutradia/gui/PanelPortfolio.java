@@ -148,11 +148,11 @@ public class PanelPortfolio extends JPanel {
         aplicarEstiloComboBox(comboPerfil);
         aplicarEstiloComboBox(comboDivisa);
         
-        panelFormulario.add(new JLabel("Nombre de la Cartera:"));
+        panelFormulario.add(new JLabel("Nombre de la cartera:"));
         panelFormulario.add(txtNombre);
-        panelFormulario.add(new JLabel("Saldo Inicial:"));
+        panelFormulario.add(new JLabel("Saldo inicial:"));
         panelFormulario.add(txtSaldo);
-        panelFormulario.add(new JLabel("Perfil de Riesgo:"));
+        panelFormulario.add(new JLabel("Perfil de riesgo:"));
         panelFormulario.add(comboPerfil);
         panelFormulario.add(new JLabel("Divisa:"));
         panelFormulario.add(comboDivisa);
@@ -492,38 +492,48 @@ public class PanelPortfolio extends JPanel {
             return;
         }
         
+        Divisa divisaCartera = carteraSeleccionada.getDivisa();
+        String simboloDivisa = divisaCartera.getSimbolo();
+        
         double patrimonio = carteraSeleccionada.calcularPatrimonio();
         double saldo = carteraSeleccionada.getSaldo();
         double inversiones = carteraSeleccionada.calcularValorInversiones();
+        
         lblNombreCartera.setText(carteraSeleccionada.getNombre());
-        lblPatrimonioCartera.setText(String.format("%,.2f %s", patrimonio, carteraSeleccionada.getDivisa()));
-        lblSaldoDisponible.setText(String.format("%,.2f %s", saldo, carteraSeleccionada.getDivisa()));
-        lblValorInversiones.setText(String.format("%,.2f %s", inversiones, carteraSeleccionada.getDivisa()));
+        lblPatrimonioCartera.setText(String.format("%,.2f %s", patrimonio, simboloDivisa));
+        lblSaldoDisponible.setText(String.format("%,.2f %s", saldo, simboloDivisa));
+        lblValorInversiones.setText(String.format("%,.2f %s", inversiones, simboloDivisa));
+        lblRiesgo.setText(carteraSeleccionada.getPerfilRiesgo().toString());
+        
         List<Posicion> posiciones = carteraSeleccionada.obtenerPosicionesActuales();
         double gananciaTotal = 0;
         double inversionTotal = 0;
         for (Posicion pos : posiciones) {
             gananciaTotal += pos.getGanancia();
-            inversionTotal += pos.getCantidadTotal() * pos.getPrecioMedioCompra();
+            inversionTotal += pos.getCosteTotal();
         }
         
         double porcentajeGanancia = inversionTotal > 0 ? (gananciaTotal / inversionTotal) * 100 : 0;
         String simbolo = gananciaTotal >= 0 ? "▲" : "▼";
         String signo = gananciaTotal >= 0 ? "+" : "";
         lblGananciasTotal.setText(String.format("%s %s%,.2f %s (%s%.2f%%)", 
-            simbolo, signo, gananciaTotal, carteraSeleccionada.getDivisa(), signo, porcentajeGanancia));
+            simbolo, signo, gananciaTotal, simboloDivisa, signo, porcentajeGanancia));
         lblGananciasTotal.setForeground(gananciaTotal >= 0 ? VERDE_OSCURO : ROJO_CLARO);
         tableModel.setRowCount(0);
         
         for (Posicion posicion : posiciones) {
             ProductoFinanciero producto = posicion.getProducto();
+            
+            double precioMedio = posicion.getPrecioMedioCompra();
+            double precioActual = posicion.getPrecioActualEnDivisaReferencia();
+            
             Object[] row = {
-                producto.getNombre(),
+        		producto.getNombre() + " (" + producto.getDivisa().getSimbolo() + ")",
                 String.format("%.2f", posicion.getCantidadTotal()),
-                String.format("%.2f %s", posicion.getPrecioMedioCompra(), posicion.getProducto().getDivisa().getSimbolo()),
-                String.format("%.2f %s", producto.getValorUnitario(), posicion.getProducto().getDivisa().getSimbolo()),
-                String.format("%.2f %s", posicion.getValorTotal(), posicion.getProducto().getDivisa().getSimbolo()),
-                String.format("%.2f %s", posicion.getGanancia(), posicion.getProducto().getDivisa().getSimbolo()),
+                String.format("%.2f %s", precioMedio, simboloDivisa),
+                String.format("%.2f %s", precioActual, simboloDivisa),
+                String.format("%.2f %s", posicion.getValorTotal(), simboloDivisa),
+                String.format("%.2f %s", posicion.getGanancia(), simboloDivisa),
                 String.format("%.2f%%", posicion.getPorcentajeGanancia())
             };
             tableModel.addRow(row);
@@ -536,6 +546,7 @@ public class PanelPortfolio extends JPanel {
             tableModel.addRow(row);
         }
         
+        // Operaciones recientes
         operationsListModel.clear();
         List<Operacion> ops = carteraSeleccionada.getOperaciones();
         int start = Math.max(0, ops.size() - 10);
@@ -544,12 +555,17 @@ public class PanelPortfolio extends JPanel {
             Operacion op = ops.get(i);
             String tipo = op.getTipoOp() ? "COMPRA" : "VENTA ";
             String simboloOp = op.getTipoOp() ? "↑" : "↓";
+            
+            String simboloDivisaProducto = op.getProdFinanciero().getDivisa().getSimbolo();
+            
             operationsListModel.addElement(String.format("%s %s | %s | %.2f unidades de %s",
                 simboloOp,
                 op.getFechaOp().toString(),
                 tipo,
                 op.getCantidad(),
-                op.getProdFinanciero().getNombre()
+                op.getProdFinanciero().getNombre(),
+                op.getProdFinanciero().getValorUnitario(),
+                simboloDivisaProducto
             ));
         }
         

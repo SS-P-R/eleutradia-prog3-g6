@@ -1,5 +1,6 @@
 package es.deusto.eleutradia.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Operacion {
@@ -11,8 +12,8 @@ public class Operacion {
 
 	public Operacion(ProductoFinanciero prodFinanciero, double cantidad, LocalDate fechaOp, boolean tipoOp) {
 		this.id = 0;
-		this.cantidad = cantidad;
 		this.prodFinanciero = prodFinanciero;
+		this.cantidad = cantidad;
 		this.fechaOp = fechaOp;
 		this.tipoOp = tipoOp;
 	}
@@ -60,6 +61,23 @@ public class Operacion {
 
 	public void setTipoOp(boolean tipoOp) {
 		this.tipoOp = tipoOp;
+	}
+	
+	/**
+	 * Calcula el coste/ingreso total de esta operación en la divisa del producto
+	 */
+	public double getImporteTotal() {
+		return cantidad * prodFinanciero.getValorUnitario();
+	}
+
+	/**
+	 * Calcula el importe total convertido a la divisa especificada
+	 */
+	public double getImporteTotalEnDivisa(Divisa divisaObjetivo) {
+		BigDecimal importeEnDivisaProducto = BigDecimal.valueOf(getImporteTotal());
+		BigDecimal importeConvertido = prodFinanciero.getDivisa()
+			.convertirA(importeEnDivisaProducto, divisaObjetivo);
+		return importeConvertido.doubleValue();
 	}
 
 	@Override

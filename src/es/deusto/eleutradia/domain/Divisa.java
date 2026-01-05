@@ -1,5 +1,6 @@
 package es.deusto.eleutradia.domain;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public enum Divisa {
 	
@@ -11,6 +12,12 @@ public enum Divisa {
     JPY("Yen japonés", new BigDecimal("153.77"), "¥"),
     HKD("Dólar de Hong Kong", new BigDecimal("7.77"), "HK$"),
     CNY("Yuan chino", new BigDecimal("7.11"), "¥");
+	
+	//IAG (Claude)
+	//SIN MODIFICAR: Configuración de precisión para cálculos financieros
+	private static final int ESCALA_DECIMAL = 6; // Precisión para cálculos intermedios
+	private static final RoundingMode MODO_REDONDEO = RoundingMode.HALF_UP;
+	//END IAG
 	
 	private final String nombre;
 	private final BigDecimal tasaCambioUSD;
@@ -36,12 +43,18 @@ public enum Divisa {
     
     // Convierte una cantidad de cierta divisa a USD
     public BigDecimal convertirAUSD(BigDecimal cantidad) {
-        return cantidad.divide(tasaCambioUSD);
+    	if (cantidad == null) {
+			throw new IllegalArgumentException("La cantidad no puede ser nula.");
+		}
+        return cantidad.divide(tasaCambioUSD, ESCALA_DECIMAL, MODO_REDONDEO);
     }
 
     // Convierte una cantidad de USD a cierta divisa
     public BigDecimal convertirDesdeUSD(BigDecimal cantidadEnUSD) {
-        return cantidadEnUSD.multiply(tasaCambioUSD);
+    	if (cantidadEnUSD == null) {
+			throw new IllegalArgumentException("La cantidad no puede ser nula.");
+		}
+        return cantidadEnUSD.multiply(tasaCambioUSD).setScale(ESCALA_DECIMAL, MODO_REDONDEO);
     }
 
     // Convierte una cantidad de cierta divisa a otra

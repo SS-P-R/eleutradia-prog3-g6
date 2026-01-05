@@ -2,6 +2,7 @@ package es.deusto.eleutradia.domain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,15 +95,22 @@ public class Cartera {
         posiciones.add(pos);
     }
 
+	/**
+	 * Calcula el valor total de todas las inversiones en la divisa de la cartera
+	 */
 	public double calcularValorInversiones() {
 	    double total = 0.0;
 	    List<Posicion> posiciones = obtenerPosicionesActuales();
 	    for (Posicion posicion : posiciones) {
-	        total += posicion.getValorTotal();
+	        total += posicion.getValorTotalEnDivisa(this.divisa);
 	    }
 	    return total;
 	}
 	
+	/**
+	 * Obtiene las posiciones actuales con cálculo correcto del precio medio
+	 * considerando conversiones de divisa
+	 */
 	public List<Posicion> obtenerPosicionesActuales() {
 	    Map<String, DatosPosicion> posicionesMap = new HashMap<>();
 	    
@@ -116,12 +124,20 @@ public class Cartera {
 	        DatosPosicion datos = posicionesMap.get(nombreProducto);
 	        
 	        if (op.getTipoOp()) { // COMPRA
-	            double costoTotal = datos.cantidadTotal * datos.precioMedioCompra;
-	            costoTotal += op.getCantidad() * op.getProdFinanciero().getValorUnitario();
-	            datos.cantidadTotal += op.getCantidad();
-	            if (datos.cantidadTotal > 0) {
-	                datos.precioMedioCompra = costoTotal / datos.cantidadTotal;
-	            }
+	        	// Convertimos el coste de la operación a la divisa de la cartera
+				double costoOperacionEnDivisaCartera = op.getImporteTotalEnDivisa(this.divisa);
+				
+				// Acumulamos el coste total en divisa de la cartera
+				double costoTotalAcumulado = datos.cantidadTotal * datos.precioMedioCompraEnDivisaCartera;
+				costoTotalAcumulado += costoOperacionEnDivisaCartera;
+				
+				// Actualizamos la cantidad
+				datos.cantidadTotal += op.getCantidad();
+				
+				// Recalculamos el precio medio en divisa de la cartera
+				if (datos.cantidadTotal > 0) {
+					datos.precioMedioCompraEnDivisaCartera = costoTotalAcumulado / datos.cantidadTotal;
+				}
 	        } else { // VENTA
 	            datos.cantidadTotal -= op.getCantidad();
 	        }
@@ -130,32 +146,55 @@ public class Cartera {
 	    List<Posicion> posiciones = new ArrayList<>();
 	    for (DatosPosicion datos : posicionesMap.values()) {
 	        if (datos.cantidadTotal > 0) {
-	            posiciones.add(new Posicion(datos.producto, datos.cantidadTotal, datos.precioMedioCompra));
+	            posiciones.add(new Posicion(datos.producto, datos.cantidadTotal, datos.precioMedioCompraEnDivisaCartera));
 	        }
 	    }
 	    
 	    return posiciones;
 	}
 	
+	/**
+	 * Calcula el patrimonio total (saldo + inversiones) en la divisa de la cartera
+	 */
 	public double calcularPatrimonio() {
 	    return saldo + calcularValorInversiones();
 	}
 	
+	/**
+	 * Añade un producto a la cartera realizando una compra
+	 */
 	public boolean addProducto(ProductoFinanciero producto, double cantidad) {
-	    if (producto == null || cantidad <= 0) {
-	        return false;
-	    }
-	    
-	    double coste = cantidad * producto.getValorUnitario();
-	    if (coste > saldo) {
-	        return false;
-	    }
+		if (producto == null || cantidad <= 0) {
+			return false;
+		}
 
-	    this.operaciones.add(new Operacion(producto, cantidad, LocalDate.now(), true));
-	    saldo -= coste;
-	    return true;
+		// Convertimos el coste del producto a la divisa de la cartera
+		double precioUnitario = producto.getValorUnitario();
+		BigDecimal precioEnDivisaProducto = BigDecimal.valueOf(precioUnitario);
+		BigDecimal precioEnDivisaCartera = producto.getDivisa()
+			.convertirA(precioEnDivisaProducto, this.divisa);
+		
+		double costeEnDivisaCartera = precioEnDivisaCartera.doubleValue() * cantidad;
+
+		if (costeEnDivisaCartera > saldo) {
+			return false;
+		}
+
+		// Creamos la operación con el precio unitario original del producto
+		this.operaciones.add(new Operacion(
+			producto, 
+			cantidad, 
+			LocalDate.now(), 
+			true
+		));
+		
+		saldo -= costeEnDivisaCartera;
+		return true;
 	}
 	
+	/**
+	 * Verifica si la cartera cierto producto financiero
+	 */
 	public boolean contieneProducto(ProductoFinanciero producto) {
 	    for (Operacion op : this.operaciones) {
 	        ProductoFinanciero p = op.getProdFinanciero();
@@ -175,15 +214,17 @@ public class Cartera {
 	            + ", divisa=" + divisa
 	            + ", operaciones=" + operaciones.size() + "]";
 	}
+	
+	// Clase interna para almacenar datos intermedios de posiciones
 	private class DatosPosicion {
 	    ProductoFinanciero producto;
 	    double cantidadTotal;
-	    double precioMedioCompra;
+	    double precioMedioCompraEnDivisaCartera;
 	    
 	    DatosPosicion(ProductoFinanciero producto) {
 	        this.producto = producto;
 	        this.cantidadTotal = 0;
-	        this.precioMedioCompra = 0;
+	        this.precioMedioCompraEnDivisaCartera = 0;
 	    }
 	}
     
