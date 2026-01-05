@@ -146,7 +146,7 @@ public class Cartera {
 	    List<Posicion> posiciones = new ArrayList<>();
 	    for (DatosPosicion datos : posicionesMap.values()) {
 	        if (datos.cantidadTotal > 0) {
-	            posiciones.add(new Posicion(datos.producto, datos.cantidadTotal, datos.precioMedioCompraEnDivisaCartera));
+	            posiciones.add(new Posicion(datos.producto, datos.cantidadTotal, datos.precioMedioCompraEnDivisaCartera, this.divisa));
 	        }
 	    }
 	    
@@ -183,7 +183,8 @@ public class Cartera {
 		// Creamos la operación con el precio unitario original del producto
 		this.operaciones.add(new Operacion(
 			producto, 
-			cantidad, 
+			cantidad,
+			precioUnitario,
 			LocalDate.now(), 
 			true
 		));

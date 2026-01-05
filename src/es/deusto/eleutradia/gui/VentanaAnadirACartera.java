@@ -460,7 +460,7 @@ public class VentanaAnadirACartera extends JDialog {
                 mensajeConfirmacion,
                 "Confirmar operación")) return;
         
-        Operacion operacion = new Operacion(producto, cantidadAcciones, LocalDate.now(), true);
+        Operacion operacion = new Operacion(producto, cantidadAcciones, producto.getValorUnitario(), LocalDate.now(), true);
             
         // Guardar en base de datos
         boolean exito = dbManager.insertOperacion(operacion, carteraSel.getId());

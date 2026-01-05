@@ -486,7 +486,7 @@ public class PanelPortfolio extends JPanel {
             lblSaldoDisponible.setText("0,00 €");
             lblValorInversiones.setText("0,00 €");
             lblGananciasTotal.setText("N/A");
-            lblRiesgo.setText("-");
+            lblRiesgo.setText("N/A");
             tableModel.setRowCount(0);
             operationsListModel.clear();
             return;
@@ -564,7 +564,7 @@ public class PanelPortfolio extends JPanel {
                 tipo,
                 op.getCantidad(),
                 op.getProdFinanciero().getNombre(),
-                op.getProdFinanciero().getValorUnitario(),
+                op.getPrecioUnitario(),
                 simboloDivisaProducto
             ));
         }

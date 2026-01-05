@@ -322,6 +322,7 @@ public class EleutradiaDBManager {
 						    id INTEGER PRIMARY KEY AUTOINCREMENT,
 						    prodFinanciero INTEGER NOT NULL,
 						    cantidad REAL NOT NULL,
+						    precioUnitario REAL NOT NULL,
 						    fechaOp TEXT NOT NULL,
 						    tipoOp INTEGER NOT NULL, -- 1 = compra, 0 = venta
 						    cartera INTEGER NOT NULL,
@@ -338,6 +339,7 @@ public class EleutradiaDBManager {
 						    prodFinanciero INTEGER NOT NULL,
 						    cantidadTotal REAL NOT NULL,
 						    precioMedio REAL NOT NULL,
+						    divisaReferencia INTEGER NOT NULL,
 						    cartera INTEGER NOT NULL,
 						    
 						    FOREIGN KEY (prodFinanciero) REFERENCES ProductoFinanciero(id),
@@ -895,7 +897,7 @@ public class EleutradiaDBManager {
 	}
 	
 	public boolean insertOperacion(Operacion operacion, int idCartera) {
-	    String sql = "INSERT INTO Operacion (prodFinanciero, cantidad, fechaOp, tipoOp, cartera) " +
+	    String sql = "INSERT INTO Operacion (prodFinanciero, cantidad, precioUnitario, fechaOp, tipoOp, cartera) " +
 	                 "VALUES (?, ?, ?, ?, ?)";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -903,9 +905,10 @@ public class EleutradiaDBManager {
 	        
 	        pstmt.setInt(1, operacion.getProdFinanciero().getId());
 	        pstmt.setDouble(2, operacion.getCantidad());
-	        pstmt.setString(3, operacion.getFechaOp().toString());
-	        pstmt.setInt(4, operacion.getTipoOp() ? 1 : 0);
-	        pstmt.setInt(5, idCartera);
+	        pstmt.setDouble(3, operacion.getPrecioUnitario());
+	        pstmt.setString(4, operacion.getFechaOp().toString());
+	        pstmt.setInt(5, operacion.getTipoOp() ? 1 : 0);
+	        pstmt.setInt(6, idCartera);
 	        
 	        int rows = pstmt.executeUpdate();
 
@@ -918,7 +921,19 @@ public class EleutradiaDBManager {
 	                
 	                if (rs.next()) {
 	                    double saldoActual = rs.getDouble("saldo");
-	                    double costoOperacion = operacion.getCantidad() * operacion.getProdFinanciero().getValorUnitario();
+	                    
+	                    String sqlDivisa = "SELECT divisa FROM Cartera WHERE id = ?";
+	                    Divisa divisaCartera = null;
+	                    try (PreparedStatement pstmtDivisa = conn.prepareStatement(sqlDivisa)) {
+	                        pstmtDivisa.setInt(1, idCartera);
+	                        ResultSet rsDivisa = pstmtDivisa.executeQuery();
+	                        if (rsDivisa.next()) {
+	                            divisaCartera = Divisa.values()[rsDivisa.getInt("divisa")];
+	                        }
+	                        rsDivisa.close();
+	                    }
+	                    
+	                    double costoOperacion = operacion.getImporteTotalEnDivisa(divisaCartera);
 	                    
 	                    // Si es compra (true), resta del saldo. Si es venta (false), suma al saldo
 	                    double nuevoSaldo = operacion.getTipoOp() ? 
@@ -1357,8 +1372,8 @@ public class EleutradiaDBManager {
 	
 	public boolean actualizarPosicion(Posicion posicion, int idCartera) {
 	    String sqlCheck = "SELECT id FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
-	    String sqlUpdate = "UPDATE Posicion SET cantidadTotal = ?, precioMedio = ? WHERE id = ?";
-	    String sqlInsert = "INSERT INTO Posicion (prodFinanciero, cantidadTotal, precioMedio, cartera) VALUES (?, ?, ?, ?)";
+	    String sqlUpdate = "UPDATE Posicion SET cantidadTotal = ?, precioMedio = ?, divisaReferencia = ? WHERE id = ?";
+	    String sqlInsert = "INSERT INTO Posicion (prodFinanciero, cantidadTotal, precioMedio, divisaReferencia, cartera) VALUES (?, ?, ?, ?, ?)";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
 	        
@@ -1380,7 +1395,8 @@ public class EleutradiaDBManager {
 	            try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
 	                pstmt.setDouble(1, posicion.getCantidadTotal());
 	                pstmt.setDouble(2, posicion.getPrecioMedioCompra());
-	                pstmt.setInt(3, posicionId);
+	                pstmt.setInt(3, posicion.getDivisaReferencia().ordinal());
+	                pstmt.setInt(4, posicionId);
 	                return pstmt.executeUpdate() > 0;
 	            }
 	        } else {
@@ -1389,7 +1405,8 @@ public class EleutradiaDBManager {
 	                pstmt.setInt(1, posicion.getProducto().getId());
 	                pstmt.setDouble(2, posicion.getCantidadTotal());
 	                pstmt.setDouble(3, posicion.getPrecioMedioCompra());
-	                pstmt.setInt(4, idCartera);
+	                pstmt.setInt(4, posicion.getDivisaReferencia().ordinal());
+	                pstmt.setInt(5, idCartera);
 	                return pstmt.executeUpdate() > 0;
 	            }
 	        }
@@ -1798,11 +1815,13 @@ public class EleutradiaDBManager {
 	            
 	            if (producto != null) {
 	                Operacion operacion = new Operacion(
+	                	rs.getInt("id"),
 	                    producto,
 	                    rs.getDouble("cantidad"),
+	                    rs.getDouble("precioUnitario"),
 	                    LocalDate.parse(rs.getString("fechaOp")),
 	                    rs.getInt("tipoOp") == 1
-	                );
+	                );	
 	                operaciones.add(operacion);
 	            }
 	        }
@@ -1826,9 +1845,11 @@ public class EleutradiaDBManager {
 	            
 	            if (producto != null) {
 	                Posicion posicion = new Posicion(
+	                	rs.getInt("id"),
 	                    producto,
 	                    rs.getDouble("cantidadTotal"),
-	                    rs.getDouble("precioMedio")
+	                    rs.getDouble("precioMedio"),
+	                    Divisa.values()[rs.getInt("divisaReferencia")]
 	                );
 	                posiciones.add(posicion);
 	            }

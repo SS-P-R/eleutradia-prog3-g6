@@ -7,22 +7,25 @@ public class Operacion {
 	private final int id;
 	private ProductoFinanciero prodFinanciero;
 	private double cantidad;
+	private double precioUnitario;
 	private LocalDate fechaOp;
 	private boolean tipoOp; // true = compra, false = venta
 
-	public Operacion(ProductoFinanciero prodFinanciero, double cantidad, LocalDate fechaOp, boolean tipoOp) {
+	public Operacion(ProductoFinanciero prodFinanciero, double cantidad, double precioUnitario, LocalDate fechaOp, boolean tipoOp) {
 		this.id = 0;
 		this.prodFinanciero = prodFinanciero;
 		this.cantidad = cantidad;
+		this.precioUnitario = precioUnitario;
 		this.fechaOp = fechaOp;
 		this.tipoOp = tipoOp;
 	}
 	
-	public Operacion(int id, ProductoFinanciero prodFinanciero, double cantidad, LocalDate fechaOp, boolean tipoOp) {
+	public Operacion(int id, ProductoFinanciero prodFinanciero, double cantidad, double precioUnitario, LocalDate fechaOp, boolean tipoOp) {
         if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
         this.id = id;
         this.prodFinanciero = prodFinanciero;
         this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
         this.fechaOp = fechaOp;
         this.tipoOp = tipoOp;
     }
@@ -46,6 +49,14 @@ public class Operacion {
 	public void setCantidad(double cantidad) {
 		this.cantidad = cantidad;
 	}
+	
+	public double getPrecioUnitario() {
+		return precioUnitario;
+	}
+
+	public void setPrecioUnitario(double precioUnitario) {
+		this.precioUnitario = precioUnitario;
+	}
 
 	public LocalDate getFechaOp() {
 		return fechaOp;
@@ -67,7 +78,7 @@ public class Operacion {
 	 * Calcula el coste/ingreso total de esta operación en la divisa del producto
 	 */
 	public double getImporteTotal() {
-		return cantidad * prodFinanciero.getValorUnitario();
+		return cantidad * precioUnitario;
 	}
 
 	/**
@@ -82,7 +93,8 @@ public class Operacion {
 
 	@Override
 	public String toString() {
-		return "Operacion [ID=" + id + ", prodFinanciero=" + prodFinanciero + ", cantidad=" + cantidad
+		return "Operacion [ID=" + id + ", prodFinanciero=" + prodFinanciero.getNombre() 
+				+ ", cantidad=" + cantidad + ", precioUnitario=" + precioUnitario
 				+ ", fechaOp=" + fechaOp + ", tipoOp=" + (tipoOp ? "COMPRA" : "VENTA") + "]";
 	}
 }
