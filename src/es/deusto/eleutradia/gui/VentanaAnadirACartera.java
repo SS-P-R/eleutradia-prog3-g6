@@ -441,7 +441,8 @@ public class VentanaAnadirACartera extends JDialog {
         if (carteraSel.getSaldo() < costeTotal) {
             UITema.mostrarError(this,
         		String.format("Saldo insuficiente.\nCoste: %.2f %s\nSaldo disponible: %.2f %s",
-                        costeTotal, carteraSel.getDivisa(), carteraSel.getSaldo(), carteraSel.getDivisa()),
+                        costeTotal, carteraSel.getDivisa().getSimbolo(), 
+                        carteraSel.getSaldo(), carteraSel.getDivisa().getSimbolo()),
                 "Saldo insuficiente");
             return;
         }
@@ -451,10 +452,10 @@ public class VentanaAnadirACartera extends JDialog {
         String mensajeConfirmacion = productoExiste ?
         		// Si existe, preguntar si desea añadir más acciones
         		String.format("Esta cartera ya contiene el producto '%s'.\n¿Desea añadir %.4f acciones adicionales por un coste de %.2f %s?",
-                    producto.getNombre(), cantidadAcciones, costeTotal, carteraSel.getDivisa()) :
+                    producto.getNombre(), cantidadAcciones, costeTotal, carteraSel.getDivisa().getSimbolo()) :
                 // Si no existe, confirmar la compra normal
                 String.format("¿Desea comprar %.4f acciones de '%s' por un coste de %.2f %s?",
-                    cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa());
+                    cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa().getSimbolo());
 
         if (!UITema.mostrarConfirmacion(this,
                 mensajeConfirmacion,
@@ -468,17 +469,11 @@ public class VentanaAnadirACartera extends JDialog {
         if (exito) {
             carteraSel.addProducto(producto, cantidadAcciones);
             
-            dbManager.actualizarPosicion(
-                carteraSel.obtenerPosicionesActuales().stream()
-                    .filter(p -> p.getProducto().getId() == producto.getId())
-                    .findFirst()
-                    .orElse(null),
-                carteraSel.getId()
-            );
+            carteraSel.addOperacion(operacion);
             
             UITema.mostrarInfo(this,
                     String.format("Producto añadido correctamente:\n%.4f acciones de %s\nCoste total: %.2f %s", 
-                            cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa()),
+                            cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa().getSimbolo()),
                     "Operación exitosa");
             dispose();
             

@@ -541,7 +541,7 @@ public class PanelPortfolio extends JPanel {
         
         if (posiciones.isEmpty()) {
             Object[] row = {
-                "No hay posiciones activas en esta cartera", "", "", "", "", "", ""
+                "No hay posiciones activas", "", "", "", "", "", ""
             };
             tableModel.addRow(row);
         }

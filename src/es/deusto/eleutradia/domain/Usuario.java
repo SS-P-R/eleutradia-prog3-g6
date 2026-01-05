@@ -1,5 +1,6 @@
 package es.deusto.eleutradia.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,34 +95,68 @@ public abstract class Usuario {
 	    carteras.remove(cartera);
 	}
 
+	/**
+	 * Calcula el patrimonio líquido (saldo disponible) total del usuario
+	 * convirtiendo todas las carteras a EUR
+	 */
 	public double calcularPatrimonioLiquido() {
 	    double total = 0.0;
+	    Divisa divisaReferencia = Divisa.EUR;
+	    
 	    for (Cartera cartera : this.getCarteras()) {
-	        total += cartera.getSaldo();
+	    	double saldoCartera = cartera.getSaldo();
+	    	BigDecimal saldo = BigDecimal.valueOf(saldoCartera);
+	        BigDecimal saldoEUR = cartera.getDivisa()
+	            .convertirA(saldo, divisaReferencia);
+	        
+	        total += saldoEUR.doubleValue();
 	    }
 	    return total;
 	}
 	
+	/**
+	 * Calcula el valor total de todas las inversiones del usuario
+	 * convirtiendo todas las carteras a EUR
+	 */
 	public double calcularPatrimonioInvertido() {
 	    double total = 0.0;
+	    Divisa divisaReferencia = Divisa.EUR;
+	    
 	    for (Cartera cartera : this.getCarteras()) {
-	        total += cartera.calcularValorInversiones();
+	    	double inversionesCartera = cartera.calcularValorInversiones();
+	    	BigDecimal inversiones = BigDecimal.valueOf(inversionesCartera);
+	        BigDecimal inversionesEUR = cartera.getDivisa()
+	            .convertirA(inversiones, divisaReferencia);
+	        
+	        total += inversionesEUR.doubleValue();
 	    }
 	    return total;
 	}
 	
+	/**
+	 * Calcula el patrimonio total del usuario (saldo + inversiones)
+	 * convirtiendo todas las carteras a EUR
+	 */
 	public double calcularPatrimonioTotal() {
 	    double total = 0.0;
+	    Divisa divisaReferencia = Divisa.EUR;
+	    
 	    for (Cartera cartera : this.getCarteras()) {
-	        total += cartera.calcularPatrimonio();
+	    	double patrimonioCartera = cartera.calcularPatrimonio();
+	    	BigDecimal patrimonio = BigDecimal.valueOf(patrimonioCartera);
+	        BigDecimal patrimonioEUR = cartera.getDivisa()
+	            .convertirA(patrimonio, divisaReferencia);
+	        
+	        total += patrimonioEUR.doubleValue();
 	    }
 	    return total;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [nombre=" + nombre + ", email=" + email + ", password=" + password + ", telefono=" + telefono + ", direccion=" + direccion
-				+ ", domicilioFiscal=" + domicilioFiscal + ", perfilFinanciero=" + perfilFinanciero + ", carteras=" + carteras + "]";
+		return "Usuario [nombre=" + nombre + ", email=" + email + ", password=" + password + 
+				", telefono=" + telefono + ", direccion=" + direccion + ", domicilioFiscal=" + domicilioFiscal +
+				", perfilFinanciero=" + perfilFinanciero + ", carteras=" + carteras + "]";
 	}
     
 }
