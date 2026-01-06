@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -29,7 +30,9 @@ import javax.swing.border.EmptyBorder;
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Divisa;
+import es.deusto.eleutradia.domain.Empresa;
 import es.deusto.eleutradia.domain.Operacion;
+import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
@@ -194,6 +197,7 @@ public class VentanaAnadirACartera extends JDialog {
         comboCarteras = new JComboBox<>();
         comboCarteras.setFont(CUERPO_MEDIO);
         comboCarteras.setPreferredSize(new Dimension(300, 35));
+        UITema.personalizarComboBox(comboCarteras);
         comboCarteras.addItem("-- Seleccione una cartera --");
         if (usuario.getCarteras().isEmpty()) {
             comboCarteras.setEnabled(false);
@@ -205,7 +209,10 @@ public class VentanaAnadirACartera extends JDialog {
             }
             comboCarteras.setToolTipText("Seleccione la cartera donde desea añadir el producto");
         }
-        comboCarteras.addActionListener(e -> actualizarCalculos());
+        comboCarteras.addActionListener(e -> {
+        	actualizarTipoCantidad();
+        	actualizarCalculos();
+        });
         panelCampos.add(comboCarteras, gbc);
         
         // CANTIDAD
@@ -221,6 +228,7 @@ public class VentanaAnadirACartera extends JDialog {
         comboCantidad.setFont(CUERPO_MEDIO);
         comboCantidad.setEditable(true);
         comboCantidad.setPreferredSize(new Dimension(150, 35));
+        UITema.personalizarComboBox(comboCantidad);
         comboCantidad.setToolTipText("Ingrese o seleccione la cantidad que desea comprar");
         comboCantidad.addActionListener(e -> actualizarCalculos());
         comboCantidad.getEditor().getEditorComponent().addKeyListener(
@@ -230,17 +238,35 @@ public class VentanaAnadirACartera extends JDialog {
         panelCampos.add(comboCantidad, gbc);
         
         gbc.gridx = 2; gbc.weightx = 0.5;
-        String[] tiposCantidad = {"Acciones", "Euros (€)"};
-        comboTipoCantidad = new JComboBox<>(tiposCantidad);
+        comboTipoCantidad = new JComboBox<>();
         comboTipoCantidad.setFont(CUERPO_MEDIO);
         comboTipoCantidad.setPreferredSize(new Dimension(130, 35));
+        UITema.personalizarComboBox(comboTipoCantidad);
         comboTipoCantidad.setToolTipText("Seleccione si desea comprar por acciones o por importe");
+        comboTipoCantidad.addItem("Acciones");
         comboTipoCantidad.addActionListener(e -> actualizarCalculos());
         panelCampos.add(comboTipoCantidad, gbc);
         
         panel.add(panelCampos);
         return panel;
     }
+	
+	private void actualizarTipoCantidad() {
+	    int index = comboCarteras.getSelectedIndex();
+
+	    comboTipoCantidad.removeAllItems();
+	    comboTipoCantidad.addItem("Acciones");
+
+	    if (index <= 0) return;
+
+	    Cartera carteraSeleccionada = usuario.getCarteras().get(index - 1);
+	    Divisa divisa = carteraSeleccionada.getDivisa();
+	    String textoDivisa = String.format("%s (%s)", 
+	            divisa.toString(),
+	            divisa.getSimbolo());
+	    comboTipoCantidad.addItem(textoDivisa);
+	    comboTipoCantidad.setSelectedIndex(0);
+	}
 	
 	private JPanel construirPanelInferior() {
         JPanel panel = new JPanel();
@@ -370,8 +396,8 @@ public class VentanaAnadirACartera extends JDialog {
             BigDecimal precioEnDivisaCartera = divisaProducto.convertirA(precioProducto, divisaCartera);
             double precioConvertido = precioEnDivisaCartera.doubleValue();
             
-            String tipoCantidad = (String) comboTipoCantidad.getSelectedItem();
-            double costoTotal = tipoCantidad.equals("Euros (€)") ? cantidadIngresada 
+            boolean porImporte = comboTipoCantidad.getSelectedIndex() == 1;
+            double costoTotal = porImporte ? cantidadIngresada 
                 : cantidadIngresada * precioConvertido;
             double saldoRestante = carteraSeleccionada.getSaldo() - costoTotal;
             labelCostoTotal.setText(String.format("%.2f %s", costoTotal, carteraSeleccionada.getDivisa().getSimbolo()));
@@ -429,8 +455,7 @@ public class VentanaAnadirACartera extends JDialog {
 	        return;
 	    }
 	    
-	    // Convertir a acciones si se ingresa en euros
-	    String tipoCantidad = (String) comboTipoCantidad.getSelectedItem();
+	    // Convertir a acciones si se ingresa en importe
 	    double cantidadAcciones;
 	    
 	    Divisa divisaProducto = producto.getDivisa();
@@ -445,14 +470,15 @@ public class VentanaAnadirACartera extends JDialog {
 	                "Error de precio");
 	        return;
 	    }
-
-	    if (tipoCantidad.equals("Euros (€)")) {
+	    
+	    boolean porImporte = comboTipoCantidad.getSelectedIndex() == 1;
+	    if (porImporte) {
 	        cantidadAcciones = cantidad / precioConvertido;
 	    } else {
 	        cantidadAcciones = cantidad;
 	    }
-	    
-        double costeTotal = cantidadAcciones * precioConvertido;
+        
+	    double costeTotal = cantidadAcciones * precioConvertido;
         if (carteraSel.getSaldo() < costeTotal) {
             UITema.mostrarError(this,
         		String.format("Saldo insuficiente.\nCoste: %.2f %s\nSaldo disponible: %.2f %s",
@@ -482,14 +508,26 @@ public class VentanaAnadirACartera extends JDialog {
         boolean exito = dbManager.insertOperacion(operacion, carteraSel.getId());
         
         if (exito) {
-            double nuevoSaldo = carteraSel.getSaldo() - costeTotal;
-            carteraSel.setSaldo(nuevoSaldo);
             
-            carteraSel.addProducto(producto, cantidadAcciones);
-            carteraSel.addOperacion(operacion);
+        	String idUsuario;
+            boolean esParticular;
             
-            carteraSel.addOperacion(operacion);
+            if (usuario instanceof Particular) {
+                idUsuario = ((Particular) usuario).getDni();
+                esParticular = true;
+            } else {
+                idUsuario = ((Empresa) usuario).getNif();
+                esParticular = false;
+            }
             
+            // Recargar carteras actualizadas desde la BD
+            List<Cartera> carterasActualizadas = dbManager.getCarterasPorUsuario(idUsuario, esParticular);
+            
+            usuario.getCarteras().clear();
+            for (Cartera c : carterasActualizadas) {
+                usuario.addCartera(c);
+            }
+                        
             UITema.mostrarInfo(this,
                     String.format("Producto añadido correctamente:\n%.4f acciones de %s\nCoste total: %.2f %s", 
                             cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa().getSimbolo()),

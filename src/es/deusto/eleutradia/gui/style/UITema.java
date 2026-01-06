@@ -28,6 +28,9 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 
@@ -537,4 +540,28 @@ public class UITema {
         int altoNuevo = (int)(altoOriginal * ratio);
         return new ImageIcon(img.getScaledInstance(anchoNuevo, altoNuevo, Image.SCALE_SMOOTH));
     }
+	
+	//IAG (ChatGPT)
+	//SIN MODIFICAR: Método para forzar mayúsculas en campos de texto
+	public static class UppercaseDocumentFilter extends DocumentFilter {
+
+	    @Override
+	    public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr)
+	            throws BadLocationException {
+	        if (text != null) {
+	            text = text.toUpperCase();
+	        }
+	        super.insertString(fb, offset, text, attr);
+	    }
+
+	    @Override
+	    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+	            throws BadLocationException {
+	        if (text != null) {
+	            text = text.toUpperCase();
+	        }
+	        super.replace(fb, offset, length, text, attrs);
+	    }
+	}
+	//END IAG
 }

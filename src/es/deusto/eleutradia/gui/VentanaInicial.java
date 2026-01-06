@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.JTextComponent;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
@@ -55,7 +56,7 @@ public class VentanaInicial extends JFrame {
     // Expresiones para validar identificadores
     //IAG (ChatGPT)
     //SIN MODIFICAR
-    private static final String DNI_REGEX = "^[0-9]{8}[A-Za-z]$";
+    private static final String DNI_REGEX = "^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$";
     private static final String NIF_REGEX = "^[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-Z]$";
     private static final String NOMBRE_REGEX = "[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]+";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -233,6 +234,8 @@ public class VentanaInicial extends JFrame {
         panelAcceso.add(Box.createVerticalStrut(10));
 
         JTextField campoId = (JTextField) crearCampo(false);
+        ((AbstractDocument) campoId.getDocument())
+        .setDocumentFilter(new UppercaseDocumentFilter());
         panelAcceso.add(campoId);
         panelAcceso.add(Box.createVerticalStrut(20));
         
@@ -351,6 +354,8 @@ public class VentanaInicial extends JFrame {
         panelRegistro.add(Box.createVerticalStrut(10));
         
         JTextField campoRegId = (JTextField) crearCampo(false);
+        ((AbstractDocument) campoRegId.getDocument())
+        .setDocumentFilter(new UppercaseDocumentFilter());
         panelRegistro.add(campoRegId);
         panelRegistro.add(Box.createVerticalStrut(20));
         
@@ -643,7 +648,7 @@ public class VentanaInicial extends JFrame {
 	}
 	
 	private void procesarLogin(boolean esParticular, JTextField campoId, JPasswordField campoPassword) {
-	    String id = campoId.getText().trim();
+	    String id = campoId.getText().trim().toUpperCase();
 	    String password = new String(campoPassword.getPassword());
 
 	    if (id.isBlank() || password.isEmpty()) {
@@ -684,7 +689,7 @@ public class VentanaInicial extends JFrame {
 	private void validarYContinuar(boolean esParticular, JTextField campoRegId, JTextField campoRegNombre, 
 	        JTextField campoRegEmail, JTextField campoRegTlf, JPasswordField campoRegPassword, 
 	        JPasswordField campoRegConfirmPassword) {
-	    String id = campoRegId.getText().trim();
+	    String id = campoRegId.getText().trim().toUpperCase();
 	    String nombre = campoRegNombre.getText().trim();
 	    String email = campoRegEmail.getText().trim();
 	    String tlf = campoRegTlf.getText().trim();
@@ -822,7 +827,7 @@ public class VentanaInicial extends JFrame {
     
     private void mostrarCarga() {
         // Diálogo modal que bloquea al usuario pero no al EDT
-        JDialog dialogoCarga = new JDialog(this, "Procesando registro...", true);
+        JDialog dialogoCarga = new JDialog(this, "Procesando registro...", false);
         dialogoCarga.setSize(200, 120);
         dialogoCarga.setLocationRelativeTo(this);
         dialogoCarga.setResizable(false);

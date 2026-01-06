@@ -575,6 +575,36 @@ public class PanelPortfolio extends JPanel {
     }
     
     public void refrescarDatos() {
+    	String idUsuario;
+        boolean esParticular;
+        
+        if (usuario instanceof Particular) {
+            idUsuario = ((Particular) usuario).getDni();
+            esParticular = true;
+        } else {
+            idUsuario = ((Empresa) usuario).getNif();
+            esParticular = false;
+        }
+        
+        // Obtener las carteras actualizadas
+        List<Cartera> carterasActualizadas = dbManager.getCarterasPorUsuario(idUsuario, esParticular);
+        
+        // Actualizar la lista de carteras del usuario
+        usuario.getCarteras().clear();
+        for (Cartera c : carterasActualizadas) {
+            usuario.addCartera(c);
+        }
+        
+        // Si hay una cartera seleccionada, buscar su versión actualizada
+        if (carteraSeleccionada != null) {
+            int idCarteraSeleccionada = carteraSeleccionada.getId();
+            carteraSeleccionada = usuario.getCarteras().stream()
+                .filter(c -> c.getId() == idCarteraSeleccionada)
+                .findFirst()
+                .orElse(usuario.getCarteras().isEmpty() ? null : usuario.getCarteras().get(0));
+        }
+        
+        // Finalmente, recargar los datos en el panel
         cargarDatosPortfolio();
     }
 }
