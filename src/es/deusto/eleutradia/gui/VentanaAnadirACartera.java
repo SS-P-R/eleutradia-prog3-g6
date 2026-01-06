@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
@@ -27,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
+import es.deusto.eleutradia.domain.Divisa;
 import es.deusto.eleutradia.domain.Operacion;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
@@ -348,6 +350,7 @@ public class VentanaAnadirACartera extends JDialog {
                 labelSaldoRestante.setForeground(GRIS_MEDIO);
                 return;
             }
+            
             Cartera carteraSeleccionada = usuario.getCarteras().get(indiceCartera - 1);
             Object cantidadObj = comboCantidad.getEditor().getItem();
             double cantidadIngresada = Double.parseDouble(cantidadObj.toString());
@@ -360,9 +363,16 @@ public class VentanaAnadirACartera extends JDialog {
                 labelSaldoRestante.setForeground(VERDE_CLARO);
                 return;
             }
+            
+            Divisa divisaProducto = producto.getDivisa();
+            Divisa divisaCartera = carteraSeleccionada.getDivisa();
+            BigDecimal precioProducto = BigDecimal.valueOf(producto.getValorUnitario());
+            BigDecimal precioEnDivisaCartera = divisaProducto.convertirA(precioProducto, divisaCartera);
+            double precioConvertido = precioEnDivisaCartera.doubleValue();
+            
             String tipoCantidad = (String) comboTipoCantidad.getSelectedItem();
             double costoTotal = tipoCantidad.equals("Euros (€)") ? cantidadIngresada 
-                : cantidadIngresada * producto.getValorUnitario();
+                : cantidadIngresada * precioConvertido;
             double saldoRestante = carteraSeleccionada.getSaldo() - costoTotal;
             labelCostoTotal.setText(String.format("%.2f %s", costoTotal, carteraSeleccionada.getDivisa().getSimbolo()));
             labelSaldoDisponible.setText(String.format("%.2f %s", 
@@ -423,8 +433,13 @@ public class VentanaAnadirACartera extends JDialog {
 	    String tipoCantidad = (String) comboTipoCantidad.getSelectedItem();
 	    double cantidadAcciones;
 	    
-	    double precioProducto = producto.getValorUnitario();
-	    if (precioProducto <= 0) {
+	    Divisa divisaProducto = producto.getDivisa();
+	    Divisa divisaCartera = carteraSel.getDivisa();
+	    BigDecimal precioProducto = BigDecimal.valueOf(producto.getValorUnitario());
+	    BigDecimal precioEnDivisaCartera = divisaProducto.convertirA(precioProducto, divisaCartera);
+	    double precioConvertido = precioEnDivisaCartera.doubleValue();
+	    
+	    if (precioConvertido <= 0) {
 	        UITema.mostrarError(this,
 	                "El producto no tiene un precio válido.",
 	                "Error de precio");
@@ -432,12 +447,12 @@ public class VentanaAnadirACartera extends JDialog {
 	    }
 
 	    if (tipoCantidad.equals("Euros (€)")) {
-	        cantidadAcciones = cantidad / precioProducto;
+	        cantidadAcciones = cantidad / precioConvertido;
 	    } else {
 	        cantidadAcciones = cantidad;
 	    }
 	    
-        double costeTotal = cantidadAcciones * precioProducto;
+        double costeTotal = cantidadAcciones * precioConvertido;
         if (carteraSel.getSaldo() < costeTotal) {
             UITema.mostrarError(this,
         		String.format("Saldo insuficiente.\nCoste: %.2f %s\nSaldo disponible: %.2f %s",
@@ -447,13 +462,13 @@ public class VentanaAnadirACartera extends JDialog {
             return;
         }
 	        
-        // Verificar si el producto ya existe en la cartera
+        // Comprobamos si el producto ya existe en la cartera
         boolean productoExiste = carteraSel.contieneProducto(producto);
         String mensajeConfirmacion = productoExiste ?
-        		// Si existe, preguntar si desea añadir más acciones
+        		// Si existe, preguntamos si desea añadir más acciones
         		String.format("Esta cartera ya contiene el producto '%s'.\n¿Desea añadir %.4f acciones adicionales por un coste de %.2f %s?",
                     producto.getNombre(), cantidadAcciones, costeTotal, carteraSel.getDivisa().getSimbolo()) :
-                // Si no existe, confirmar la compra normal
+                // Si no existe, confirmamos la compra normal
                 String.format("¿Desea comprar %.4f acciones de '%s' por un coste de %.2f %s?",
                     cantidadAcciones, producto.getNombre(), costeTotal, carteraSel.getDivisa().getSimbolo());
 
@@ -463,7 +478,7 @@ public class VentanaAnadirACartera extends JDialog {
         
         Operacion operacion = new Operacion(producto, cantidadAcciones, producto.getValorUnitario(), LocalDate.now(), true);
             
-        // Guardar en base de datos
+        // Guardamos en base de datos
         boolean exito = dbManager.insertOperacion(operacion, carteraSel.getId());
         
         if (exito) {
