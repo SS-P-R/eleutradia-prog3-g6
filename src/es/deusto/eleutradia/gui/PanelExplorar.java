@@ -80,7 +80,6 @@ public class PanelExplorar extends JPanel {
         this.add(panelTabla, BorderLayout.CENTER);
 
         actualizarTabla(productosTotales);
-        
     }
     
     private void cargarProductos() {
@@ -181,7 +180,7 @@ public class PanelExplorar extends JPanel {
         ));
         mainPanelFiltros.setPreferredSize(new Dimension(150, 0));
         
-        JLabel tituloFiltros = new JLabel("- FILTROS -");
+        JLabel tituloFiltros = new JLabel("-  FILTROS  -");
         tituloFiltros.setFont(SUBTITULO_GRANDE);
         tituloFiltros.setForeground(AZUL_OSCURO);
         tituloFiltros.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -351,8 +350,17 @@ public class PanelExplorar extends JPanel {
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
         
         // Panel inferior con botones de acción
-        JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         panelAcciones.setBackground(Color.WHITE);
+        
+        JButton botonOpciones = new JButton("¡Sorpréndeme!");
+        botonOpciones.setFont(CUERPO_PEQUENO);
+        botonOpciones.setBackground(NARANJA_CLARO);
+        botonOpciones.setForeground(Color.WHITE);
+        botonOpciones.setBorderPainted(false);
+        botonOpciones.setContentAreaFilled(false);
+        botonOpciones.setOpaque(true);
+        botonOpciones.setFocusPainted(false);
         
         JButton botonVerDetalle = new JButton("Ver detalle");
         botonVerDetalle.setFont(CUERPO_PEQUENO);
@@ -372,16 +380,19 @@ public class PanelExplorar extends JPanel {
         botonAnadirACartera.setOpaque(true);
         botonAnadirACartera.setFocusPainted(false);
         
+        panelAcciones.add(botonOpciones);
         panelAcciones.add(botonVerDetalle);
         panelAcciones.add(botonAnadirACartera);
         
         mainPanelTabla.add(panelAcciones, BorderLayout.SOUTH);
         
         // Action Listeners
+        botonOpciones.addActionListener(e -> verOpciones());
         botonVerDetalle.addActionListener(e -> verDetalleProducto());
         botonAnadirACartera.addActionListener(e -> anadirACartera());
         
         // Mouse Listener visual para entrada en los botones
+        botonOpciones.addMouseListener(myAdapterNaranja);
         botonVerDetalle.addMouseListener(myAdapterAzul);
         botonAnadirACartera.addMouseListener(myAdapterVerde);
         
@@ -526,6 +537,18 @@ public class PanelExplorar extends JPanel {
             return "---";
         }
         return String.format("%.2f%%", rentabilidad);
+    }
+    
+    private void verOpciones() {
+    	if (usuario.getCarteras().isEmpty()) {
+            UITema.mostrarWarning(this,
+                "Debe tener al menos una cartera creada para ver opciones de inversión.",
+                "Cartera necesaria");
+            return;
+        }
+        
+        JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
+        new VentanaVerOpciones(framePadre, usuario, productosTotales, true);
     }
     
     private void verDetalleProducto() {

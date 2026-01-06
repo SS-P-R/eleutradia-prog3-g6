@@ -198,7 +198,7 @@ public class VentanaAnadirACartera extends JDialog {
         comboCarteras.setFont(CUERPO_MEDIO);
         comboCarteras.setPreferredSize(new Dimension(300, 35));
         UITema.personalizarComboBox(comboCarteras);
-        comboCarteras.addItem("-- Seleccione una cartera --");
+        comboCarteras.addItem("Seleccione una cartera...");
         if (usuario.getCarteras().isEmpty()) {
             comboCarteras.setEnabled(false);
             comboCarteras.setToolTipText("No tiene carteras disponibles. Cree una cartera primero.");
@@ -337,7 +337,7 @@ public class VentanaAnadirACartera extends JDialog {
         botonCancelar.setFont(CUERPO_MEDIO);
         botonCancelar.setBackground(GRIS_MEDIO);
         botonCancelar.setForeground(Color.WHITE);
-        botonCancelar.setPreferredSize(new Dimension(110, 35));
+        botonCancelar.setPreferredSize(new Dimension(100, 30));
         botonCancelar.setBorderPainted(false);
         botonCancelar.setContentAreaFilled(false);
         botonCancelar.setOpaque(true);
@@ -348,7 +348,7 @@ public class VentanaAnadirACartera extends JDialog {
         botonConfirmar.setFont(CUERPO_MEDIO);
         botonConfirmar.setBackground(AZUL_CLARO);
         botonConfirmar.setForeground(Color.WHITE);
-        botonConfirmar.setPreferredSize(new Dimension(160, 35));
+        botonConfirmar.setPreferredSize(new Dimension(140, 30));
         botonConfirmar.setBorderPainted(false);
         botonConfirmar.setContentAreaFilled(false);
         botonConfirmar.setOpaque(true);

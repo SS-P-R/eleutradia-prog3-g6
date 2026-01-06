@@ -57,6 +57,7 @@ public class UITema {
 	public static final Color ROSA_OSCURO = new Color(180, 50, 100);
 	public static final Color ROJO_CLARO = new Color(220, 50, 50);
 	public static final Color NARANJA_CLARO = new Color(255, 140, 0);
+	public static final Color NARANJA_OSCURO = new Color(200, 100, 0);
     
 	// Fuentes generales
 	public static final Font TITULO_GRANDE = new Font("Segoe UI", Font.BOLD, 20);
@@ -112,6 +113,17 @@ public class UITema {
 		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(ROSA_OSCURO);}
 		@Override
 		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(ROSA_CLARO);}
+    };
+    
+    public static MouseAdapter myAdapterNaranja = new MouseAdapter() {
+    	@Override
+		public void mouseEntered(MouseEvent e) {e.getComponent().setBackground(NARANJA_OSCURO);}
+		@Override
+		public void mouseExited(MouseEvent e) {e.getComponent().setBackground(NARANJA_CLARO);}
+		@Override
+		public void mousePressed(MouseEvent e) {e.getComponent().setBackground(NARANJA_OSCURO);}
+		@Override
+		public void mouseReleased(MouseEvent e) {e.getComponent().setBackground(NARANJA_CLARO);}
     };
     
     public static MouseAdapter myAdapterRegistro = new MouseAdapter() {

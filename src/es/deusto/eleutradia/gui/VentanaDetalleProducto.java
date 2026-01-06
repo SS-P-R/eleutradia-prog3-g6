@@ -310,7 +310,7 @@ public class VentanaDetalleProducto extends JDialog {
         botonCerrar.setFont(CUERPO_MEDIO);
         botonCerrar.setBackground(GRIS_MEDIO);
         botonCerrar.setForeground(Color.WHITE);
-        botonCerrar.setPreferredSize(new Dimension(110, 35));
+        botonCerrar.setPreferredSize(new Dimension(90, 30));
         botonCerrar.setBorderPainted(false);
         botonCerrar.setContentAreaFilled(false);
         botonCerrar.setOpaque(true);
