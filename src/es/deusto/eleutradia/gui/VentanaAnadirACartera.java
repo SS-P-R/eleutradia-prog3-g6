@@ -482,7 +482,11 @@ public class VentanaAnadirACartera extends JDialog {
         boolean exito = dbManager.insertOperacion(operacion, carteraSel.getId());
         
         if (exito) {
+            double nuevoSaldo = carteraSel.getSaldo() - costeTotal;
+            carteraSel.setSaldo(nuevoSaldo);
+            
             carteraSel.addProducto(producto, cantidadAcciones);
+            carteraSel.addOperacion(operacion);
             
             carteraSel.addOperacion(operacion);
             
