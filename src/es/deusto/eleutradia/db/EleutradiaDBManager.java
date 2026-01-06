@@ -898,7 +898,7 @@ public class EleutradiaDBManager {
 	
 	public boolean insertOperacion(Operacion operacion, int idCartera) {
 	    String sql = "INSERT INTO Operacion (prodFinanciero, cantidad, precioUnitario, fechaOp, tipoOp, cartera) " +
-	                 "VALUES (?, ?, ?, ?, ?)";
+	                 "VALUES (?, ?, ?, ?, ?, ?)";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
