@@ -76,6 +76,7 @@ public class EleutradiaDBManager {
 	    if (properties.getProperty("db.clean", "false").equals("true") 
 	            && properties.getProperty("db.loadCSV", "false").equals("true")) {
 	        System.out.println("Limpiando base de datos...");
+	        
 	        File db = new File(dbPath).getAbsoluteFile();
 	        if (db.exists()) {
 	            if (db.delete()) {
