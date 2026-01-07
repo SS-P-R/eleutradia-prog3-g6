@@ -881,7 +881,7 @@ public class EleutradiaDBManager {
 	            ResultSet rs = pstmt.getGeneratedKeys();
 	            if (rs.next()) {
 	                int id = rs.getInt(1);
-	                cartera.setId(id); // Asume que Cartera tiene un método setId
+	                cartera.setId(id);
 	                rs.close();
 	                return true;
 	            }
