@@ -15,6 +15,7 @@ public class Cartera {
     private Divisa divisa;
     private List<Operacion> operaciones;
     private List<Posicion> posiciones;
+    private List<Cartera> subCarteras;
     
     public Cartera(String nombre, double saldo, PerfilRiesgo perfilRiesgo, Divisa divisa) {
 		this.id = 0;
@@ -24,6 +25,7 @@ public class Cartera {
 		this.divisa = divisa;
 		this.operaciones = new ArrayList<>();
 		this.posiciones = new ArrayList<>();
+		this.subCarteras = new ArrayList<>();
 	}
 
 	public Cartera(int id, String nombre, double saldo, PerfilRiesgo perfilRiesgo, Divisa divisa) {
@@ -34,6 +36,7 @@ public class Cartera {
 		this.divisa = divisa;
 		this.operaciones = new ArrayList<>();
 		this.posiciones = new ArrayList<>();
+		this.subCarteras = new ArrayList<>();
 	}
 	
 	public int getId() {
@@ -100,10 +103,24 @@ public class Cartera {
 	 */
 	public double calcularValorInversiones() {
 	    double total = 0.0;
+
 	    List<Posicion> posiciones = obtenerPosicionesActuales();
 	    for (Posicion posicion : posiciones) {
 	        total += posicion.getValorTotalEnDivisa(this.divisa);
 	    }
+	    for (Cartera sub : subCarteras) {
+	        // Calculamos el patrimonio TOTAL de la hija (saldo + sus inversiones)
+	        double valorSub = sub.calcularPatrimonio(); 
+
+	        // TODO: Hay que convertir la divisa si es diferente
+	        // (Asumimos que tienes un método auxiliar o usas la lógica de BigDecimal de antes)
+	        // Por simplicidad ahora: total += valorSub; 
+	        // Pero lo ideal es: total += convertir(valorSub, sub.getDivisa(), this.divisa);
+	         BigDecimal val = BigDecimal.valueOf(valorSub);
+	         BigDecimal valConvertido = sub.getDivisa().convertirA(val, this.divisa);
+	         total += valConvertido.doubleValue();
+	    }
+
 	    return total;
 	}
 	
