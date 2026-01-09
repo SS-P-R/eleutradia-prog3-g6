@@ -97,6 +97,20 @@ public class Cartera {
 	public void addPosicion(Posicion pos) {
         posiciones.add(pos);
     }
+	
+	/**
+	 * Lógica de las sub carteras
+	 */
+
+	public List<Cartera> getSubCarteras() {
+	    return subCarteras;
+	}
+
+	public void addSubCartera(Cartera cartera) {
+	    if (cartera != null && !this.subCarteras.contains(cartera)) {
+	        this.subCarteras.add(cartera);
+	    }
+	}
 
 	/**
 	 * Calcula el valor total de todas las inversiones en la divisa de la cartera
