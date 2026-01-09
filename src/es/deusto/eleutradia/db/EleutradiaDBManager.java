@@ -297,24 +297,27 @@ public class EleutradiaDBManager {
 				
 				// Tabla: Cartera
 				stmt.execute("""
-						CREATE TABLE IF NOT EXISTS Cartera (
-							id INTEGER PRIMARY KEY AUTOINCREMENT,
-							nombre TEXT NOT NULL,
-							saldo REAL NOT NULL,
-							perfilRiesgo INTEGER NOT NULL,
-							divisa INTEGER NOT NULL,
-							idParticular TEXT,
-							idEmpresa TEXT,
-							
-							FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
-							FOREIGN KEY (divisa) REFERENCES Divisa(id),
-							FOREIGN KEY (idParticular) REFERENCES Particular(dni),
-							FOREIGN KEY (idEmpresa) REFERENCES Empresa(nif),
-							CHECK (
-								(idParticular IS NOT NULL AND idEmpresa IS NULL) OR
-								(idParticular IS NULL AND idEmpresa IS NOT NULL)
-							)
-						);
+				    CREATE TABLE IF NOT EXISTS Cartera (
+				        id INTEGER PRIMARY KEY AUTOINCREMENT,
+				        nombre TEXT NOT NULL,
+				        saldo REAL NOT NULL,
+				        perfilRiesgo INTEGER NOT NULL,
+				        divisa INTEGER NOT NULL,
+				        idParticular TEXT,
+				        idEmpresa TEXT,
+				        carteraMadre INTEGER, -- <--- NUEVA COLUMNA PARA RECURSIVIDAD
+				        
+				        FOREIGN KEY (perfilRiesgo) REFERENCES PerfilRiesgo(id),
+				        FOREIGN KEY (divisa) REFERENCES Divisa(id),
+				        FOREIGN KEY (idParticular) REFERENCES Particular(dni),
+				        FOREIGN KEY (idEmpresa) REFERENCES Empresa(nif),
+				        FOREIGN KEY (carteraMadre) REFERENCES Cartera(id), -- <--- AUTO-REFERENCIA
+				        CHECK (
+				            (idParticular IS NOT NULL AND idEmpresa IS NULL) OR
+				            (idParticular IS NULL AND idEmpresa IS NOT NULL) OR
+				            (carteraMadre IS NOT NULL) -- Permite sub-carteras sin dueño directo
+				        )
+				    );
 				""");
 				
 				// Tabla: Operacion
@@ -1369,6 +1372,58 @@ public class EleutradiaDBManager {
 	    }
 	    
 	    return carteras;
+	}
+	
+	// Método para recuperar la estructura de árbol completa de las carteras
+	public List<Cartera> getCarterasCompletas() {
+	    List<Cartera> carterasRaiz = new ArrayList<>();
+	    Map<Integer, Cartera> mapaCarteras = new java.util.HashMap<>();
+	    Map<Integer, Integer> relacionesMadre = new java.util.HashMap<>(); 
+
+	    String sql = "SELECT * FROM Cartera";
+
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            String nombre = rs.getString("nombre");
+	            double saldo = rs.getDouble("saldo");
+	            int perfilRiesgoId = rs.getInt("perfilRiesgo");
+	            int divisaId = rs.getInt("divisa");
+
+	            PerfilRiesgo pr = PerfilRiesgo.values()[perfilRiesgoId];
+	            Divisa div = Divisa.values()[divisaId];
+
+	            Cartera c = new Cartera(id, nombre, saldo, pr, div);
+
+	            mapaCarteras.put(id, c);
+
+	            int idMadre = rs.getInt("carteraMadre");
+	            if (!rs.wasNull()) {
+	                relacionesMadre.put(id, idMadre);
+	            } else {
+	                carterasRaiz.add(c);
+	            }
+	        }
+	    } catch (Exception ex) {
+	        System.err.println("Error al cargar carteras: " + ex.getMessage());
+	        ex.printStackTrace();
+	    }
+
+	    for (Map.Entry<Integer, Integer> entrada : relacionesMadre.entrySet()) {
+	        int idHijo = entrada.getKey();
+	        int idPadre = entrada.getValue();
+
+	        Cartera hijo = mapaCarteras.get(idHijo);
+	        Cartera padre = mapaCarteras.get(idPadre);
+
+	        if (hijo != null && padre != null) {
+	            padre.addSubCartera(hijo);
+	        }
+	    }
+
+	    return carterasRaiz; 
 	}
 	
 	public boolean actualizarPosicion(Posicion posicion, int idCartera) {
