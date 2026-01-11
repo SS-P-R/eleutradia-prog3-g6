@@ -8,6 +8,7 @@ public class Curso {
 	private String nombre;
 	private List<Modulo> modulos;
 	private NivelConocimiento nivelRecomendado;
+	private List<Curso> requisitos;
 	
 	public Curso(int id, String nombre, NivelConocimiento nivelRecomendado) {
 		if (id < 0) throw new IllegalArgumentException("El ID no puede ser negativo");
@@ -17,6 +18,7 @@ public class Curso {
 		this.nombre = nombre;
 		this.modulos = new ArrayList<>();
 		this.nivelRecomendado = nivelRecomendado;
+		this.requisitos = new ArrayList<>();
 	}
 	
 	public int getId() {
@@ -64,6 +66,16 @@ public class Curso {
 		return String.format("/images/cursos/curso%d.png", id);
 	}
 	
+	public List<Curso> getRequistos(){
+		return List.copyOf(requisitos);
+	}
+	
+	public void addRequisito (Curso curso) {
+		if(curso != null && !requisitos.contains(curso)) {
+			requisitos.add(curso);
+		}
+	}
+	
 	public static Curso parseCSV(String linea) {
 		if (linea == null || linea.isBlank()) return null;
 		
@@ -75,7 +87,59 @@ public class Curso {
 		
 		return new Curso(0, nombre, nivelRecomendado);
 	}
+	
+	
+	//Métodos recursivos
+	public boolean cursoListo(List<Curso> cursosCompletados) {
+		//Caso base
+		if(requisitos.isEmpty()) {
+			return true;
+		}
+		
+		//Caso recursivo
+		for (Curso r: requisitos) {
+			if(!cursosCompletados.contains(r)) {
+				if(!r.cursoListo(cursosCompletados)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
+	//Encontrar todos los cursos que son requisitos
+	public List<Curso> getAllRequisitos(){
+		List<Curso> todos = new ArrayList<>();
+		getAllRequisitosRecursivo(todos);
+		return todos;
+	}
+	
+	private void getAllRequisitosRecursivo(List<Curso> todos) {
+		for (Curso r : requisitos) {
+			if(!todos.contains(r)) {
+				todos.add(r);
+				getAllRequisitosRecursivo(todos);
+			}
+		}
+	}
+	
+	//Generar planes de estudio para los usuarios
+	public List<Curso> planDeEstudio(){
+		List<Curso> plan = new ArrayList<>();
+		planDeEstudioRecursivo(plan);
+		plan.add(this);
+		return plan;
+	}
+	
+	private void planDeEstudioRecursivo(List<Curso> plan) {
+		for(Curso r : requisitos) {
+			if(!plan.contains(r)) {
+				r.planDeEstudioRecursivo(plan);
+				plan.add(r);
+			}
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "Curso [id=" + id + ", nombre=" + nombre + ", modulos=" + modulos
