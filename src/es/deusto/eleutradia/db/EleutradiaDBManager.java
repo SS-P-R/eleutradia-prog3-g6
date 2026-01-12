@@ -46,6 +46,7 @@ public class EleutradiaDBManager {
 	private static final String CSV_GESTORAS = "resources/data/gestoras.csv";
 	private static final String CSV_PRODUCTOS = "resources/data/productos.csv";
 	private static final String CSV_CURSOS = "resources/data/cursos.csv";
+	private static final String CSV_REQUISITOS = "resources/data/requisitos.csv";
 	private static final String CSV_MODULOS = "resources/data/modulos.csv";
 	private static final String CSV_LECCIONES = "resources/data/lecciones.csv";
 	
@@ -104,7 +105,8 @@ public class EleutradiaDBManager {
 	        List<Curso> cursos = this.loadCSV(CSV_CURSOS, Curso::parseCSV);
 	        this.insertCursos(cursos.toArray(new Curso[0]));
 	        
-	        this.cargarRequisitosDesdeCSV();
+	        List<String[]> requisitosData = this.loadCSV(CSV_REQUISITOS, this::parseRequisitosCSV);
+	        this.insertRequisitosDesdeCSV(requisitosData);
 	        
 	        List<String[]> modulosData = this.loadCSV(CSV_MODULOS, Modulo::parseCSV);
 	        this.insertModulos(modulosData);
@@ -764,53 +766,36 @@ public class EleutradiaDBManager {
 	    } 
 	}	
 	
-	private void cargarRequisitosDesdeCSV() {
-	    try (BufferedReader br = new BufferedReader(new FileReader(CSV_CURSOS));
-	         Connection conn = DriverManager.getConnection(connectionUrl)) {
-	        
-	        br.readLine(); // Saltar cabecera
-	        String linea;
-	        
-	        while ((linea = br.readLine()) != null) {
-	        	String[] datos = Curso.parseCSV(linea);
-	            if (datos != null && datos.length > 2 && !datos[2].isEmpty()) {
-	                String nombreCurso = datos[0];
-	                String requisitosStr = datos[2];
-	                
-	                int cursoId = getCursoIdByNombre(conn, nombreCurso);
-	                if (cursoId == -1) {
-	                    System.err.println("Curso no encontrado: " + nombreCurso);
-	                    continue;
-	                }
-	                
-	                String[] nombresRequisitos = requisitosStr.split(",");
-	                List<Integer> requisitosIds = new ArrayList<>();
-	                
-	                for (String nombreReq : nombresRequisitos) {
-	                    nombreReq = nombreReq.trim();
-	                    if (!nombreReq.isEmpty()) {
-	                        int requisitoId = getCursoIdByNombre(conn, nombreReq);
-	                        if (requisitoId != -1) {
-	                            requisitosIds.add(requisitoId);
-	                        } else {
-	                            System.err.println("Requisito no encontrado: " + nombreReq);
-	                        }
-	                    }
-	                }
-	                
-	                if (!requisitosIds.isEmpty()) {
-	                    int[] idsArray = requisitosIds.stream().mapToInt(Integer::intValue).toArray();
-	                    insertRequisitos(cursoId, idsArray);
-	                }
+	private String[] parseRequisitosCSV(String linea) {
+	    if (linea == null || linea.isBlank()) {
+	    	return null;
+	    }else {
+		    return linea.split(";");
+	    }
+	}
+
+	public void insertRequisitosDesdeCSV(List<String[]> requisitosData) {
+	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+	    	
+	        for (String[] data : requisitosData) {
+	            if (!(data == null || data.length < 2)) {
+		            String nombreCurso = data[0].trim();
+		            String nombreRequisito = data[1].trim();
+		            
+		            int cursoId = getCursoIdByNombre(conn, nombreCurso);
+		            int requisitoId = getCursoIdByNombre(conn, nombreRequisito);
+		            
+		            if (cursoId != -1 && requisitoId != -1) {
+		                insertRequisitos(cursoId, requisitoId);
+		            }
 	            }
 	        }
 	        
 	    } catch (Exception ex) {
-	        System.err.format("Error cargando requisitos desde CSV: %s%n", ex.getMessage());
+	        System.err.format("Error insertando requisitos: %s%n", ex.getMessage());
 	        ex.printStackTrace();
 	    }
 	}
-
 	
 	public void insertModulos(List<String[]> modulosData) {
 	    String sql = "INSERT OR IGNORE INTO Modulo (nombre, posicion, curso) VALUES (?, ?, ?);";
@@ -1307,6 +1292,15 @@ public class EleutradiaDBManager {
 	                curso.addModulo(m);
 	            }
 	            
+	            // Cargar los requisitos del curso
+	            List<Integer> requisitosIds = getRequisitosIds(cursoId);
+	            for (Integer requisitoId : requisitosIds) {
+	                Curso requisito = getCursoById(requisitoId, conn);
+	                if (requisito != null) {
+	                    curso.addRequisito(requisito);
+	                }
+	            }
+	            
 	            cursos.add(curso);
 	        }
 	        
@@ -1436,6 +1430,15 @@ public class EleutradiaDBManager {
 	            List<Modulo> modulos = getModulosByCursoId(cursoId, conn);
 	            for (Modulo m : modulos) {
 	                curso.addModulo(m);
+	            }
+	            
+	            // Cargar los requisitos del curso
+	            List<Integer> requisitosIds = getRequisitosIds(cursoId);
+	            for (Integer requisitoId : requisitosIds) {
+	                Curso requisito = getCursoById(requisitoId, conn);
+	                if (requisito != null) {
+	                    curso.addRequisito(requisito);
+	                }
 	            }
 	            
 	            cursos.add(curso);
@@ -1722,6 +1725,30 @@ public class EleutradiaDBManager {
 	    }
 	    
 	    return -1;
+	}
+	
+	private Curso getCursoById(int cursoId, Connection conn) throws Exception {
+	    String sql = "SELECT * FROM Curso WHERE id = ?";
+	    
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, cursoId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            Curso curso = new Curso(
+	                rs.getInt("id"),
+	                rs.getString("nombre"),
+	                NivelConocimiento.values()[rs.getInt("nivelRecomendado")]
+	            );
+	            rs.close();
+	            return curso;
+	        }
+	        rs.close();
+	    }catch (Exception ex) {
+	        System.err.format("Error buscando curso '%s': %s%n", cursoId, ex.getMessage());
+		}
+	    
+	    return null;
 	}
 
 	private int getModuloIdByNombre(Connection conn, String nombreModulo) {

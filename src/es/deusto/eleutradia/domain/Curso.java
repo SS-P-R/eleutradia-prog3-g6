@@ -88,6 +88,10 @@ public class Curso {
 		return new Curso(0, nombre, nivelRecomendado);
 	}
 	
+	public static String[] parseRequisitosCSV(String linea) {
+	    if (linea == null || linea.trim().isEmpty()) return null;
+	    return linea.split(",");
+	}
 	
 	//Métodos recursivos
 	public boolean cursoListo(List<Curso> cursosCompletados) {
