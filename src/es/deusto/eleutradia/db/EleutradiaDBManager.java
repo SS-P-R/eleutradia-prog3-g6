@@ -104,6 +104,8 @@ public class EleutradiaDBManager {
 	        List<Curso> cursos = this.loadCSV(CSV_CURSOS, Curso::parseCSV);
 	        this.insertCursos(cursos.toArray(new Curso[0]));
 	        
+	        this.cargarRequisitosDesdeCSV();
+	        
 	        List<String[]> modulosData = this.loadCSV(CSV_MODULOS, Modulo::parseCSV);
 	        this.insertModulos(modulosData);
 	        
@@ -361,6 +363,17 @@ public class EleutradiaDBManager {
 						    FOREIGN KEY (nivelRecomendado) REFERENCES NivelConocimiento(id)
 						);
 				""");
+				
+				// Tabla: Requisitos
+				stmt.execute("""
+						CREATE TABLE IF NOT EXISTS CursoRequisitos (
+						    curso_id INTEGER NOT NULL,
+						    requisito_id INTEGER NOT NULL,
+						    PRIMARY KEY (curso_id, requisito_id),	
+						    FOREIGN KEY (curso_id) REFERENCES Curso(id) ON DELETE CASCADE,
+							FOREIGN KEY (requisito_id) REFERENCES Curso(id) ON DELETE CASCADE
+						);
+						""");
 				
 				// Tabla: Módulo
 				stmt.execute("""
@@ -732,6 +745,72 @@ public class EleutradiaDBManager {
 			ex.printStackTrace();
 		}
 	}
+	
+	public void insertRequisitos(int cursoId, int... requisitosIds) {
+	    String sql = "INSERT OR IGNORE INTO CursoRequisitos (curso_id, requisito_id) VALUES (?, ?)";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        for (int r : requisitosIds) {
+	            pStmt.setInt(1, cursoId);
+	            pStmt.setInt(2, r);
+	            pStmt.executeUpdate();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando requisitos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    } 
+	}	
+	
+	private void cargarRequisitosDesdeCSV() {
+	    try (BufferedReader br = new BufferedReader(new FileReader(CSV_CURSOS));
+	         Connection conn = DriverManager.getConnection(connectionUrl)) {
+	        
+	        br.readLine(); // Saltar cabecera
+	        String linea;
+	        
+	        while ((linea = br.readLine()) != null) {
+	        	String[] datos = Curso.parseCSV(linea);
+	            if (datos != null && datos.length > 2 && !datos[2].isEmpty()) {
+	                String nombreCurso = datos[0];
+	                String requisitosStr = datos[2];
+	                
+	                int cursoId = getCursoIdByNombre(conn, nombreCurso);
+	                if (cursoId == -1) {
+	                    System.err.println("Curso no encontrado: " + nombreCurso);
+	                    continue;
+	                }
+	                
+	                String[] nombresRequisitos = requisitosStr.split(",");
+	                List<Integer> requisitosIds = new ArrayList<>();
+	                
+	                for (String nombreReq : nombresRequisitos) {
+	                    nombreReq = nombreReq.trim();
+	                    if (!nombreReq.isEmpty()) {
+	                        int requisitoId = getCursoIdByNombre(conn, nombreReq);
+	                        if (requisitoId != -1) {
+	                            requisitosIds.add(requisitoId);
+	                        } else {
+	                            System.err.println("Requisito no encontrado: " + nombreReq);
+	                        }
+	                    }
+	                }
+	                
+	                if (!requisitosIds.isEmpty()) {
+	                    int[] idsArray = requisitosIds.stream().mapToInt(Integer::intValue).toArray();
+	                    insertRequisitos(cursoId, idsArray);
+	                }
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error cargando requisitos desde CSV: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	}
+
 	
 	public void insertModulos(List<String[]> modulosData) {
 	    String sql = "INSERT OR IGNORE INTO Modulo (nombre, posicion, curso) VALUES (?, ?, ?);";
@@ -1238,6 +1317,30 @@ public class EleutradiaDBManager {
 	    
 	    return cursos;
 	}
+	
+	public List<Integer> getRequisitosIds(int cursoId) {
+	    List<Integer> requisitosIds = new ArrayList<>();
+	    String sql = "SELECT requisito_id FROM CursoRequisitos WHERE curso_id = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        pStmt.setInt(1, cursoId);
+	        ResultSet rs = pStmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            requisitosIds.add(rs.getInt("requisito_id"));
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error obteniendo requisitos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return requisitosIds;
+	}
+
 	
 	// MÉTODOS DE INSCRIPCIÓN A CURSOS
 	
