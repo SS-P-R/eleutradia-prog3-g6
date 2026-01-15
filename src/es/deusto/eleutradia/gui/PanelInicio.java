@@ -94,35 +94,6 @@ public class PanelInicio extends JPanel{
         // Panel lateral, estadísticas
         JPanel panelLateral = crearPanelLateral();
         this.add(panelLateral, BorderLayout.EAST);
-
-		
-//		//Cargar paneles
-//		JPanel panelSaludo = construirPanelSaludo();
-//		JPanel panelCursos = construirPanelCursos(); 
-//		JPanel panelLecciones = construirPanelLecciones();
-//		JPanel panelActivos = construirPanelActivos();
-//		JPanel panelGraficos = construirPanelGraficos();
-//		JPanel panelNoticias = panelTitularesNoticias();
-//		JPanel panelSuperior = new JPanel();
-//		
-//		panelSuperior.setLayout(new BorderLayout());
-//		panelSuperior.add(panelSaludo, BorderLayout.WEST);
-//		panelSuperior.add(panelNoticias, BorderLayout.EAST);
-//		//Paneles accesorios con saludo incial y recordatorios
-//		setVisible(true);
-//		panelSuperior.setBackground(MAIN_FONDO);
-//		add(panelSuperior, BorderLayout.NORTH);
-//		
-//		//Panel central
-//		JPanel centro = new JPanel(new GridLayout(2, 2, 10, 10));
-//		centro.setBackground(getBackground());
-//		centro.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-//		centro.add(panelCursos);
-//		centro.add(panelLecciones);
-//		centro.add(panelActivos);
-//		centro.add(panelGraficos);
-//		add(centro, BorderLayout.CENTER);
-		
 	}
 	
 	private JPanel crearPanelBienvenida() {
@@ -641,7 +612,14 @@ public class PanelInicio extends JPanel{
 	                       
 	
 	private JPanel crearPanelLateral() {
-		return null;
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(MAIN_FONDO);
+        panel.setPreferredSize(new Dimension(200, 0));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+        
+        // TODO
+        return panel;
 	}
 
     private JPanel crearFilaEstadistica(String etiqueta, String valor, Color colorValor) {
