@@ -308,6 +308,7 @@ public class UITema {
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBorder(null);
+        scrollPane.setFocusable(false);
         return scrollPane;
     }
 
@@ -401,6 +402,36 @@ public class UITema {
                 }
             }
         }
+    }
+    
+    // Método para aplicar efecto hover en tablas y listas
+    public static void aplicarEfectoHover(JComponent comp) {
+    	comp.addMouseMotionListener(new MouseAdapter() {
+            private int lastIndex = -1;
+            
+            @Override
+            public void mouseMoved(MouseEvent e) {
+            	int index = -1;
+            	
+            	if (comp instanceof JTable) {
+                    index = ((JTable) comp).rowAtPoint(e.getPoint());
+                } else if (comp instanceof JList) {
+                    index = ((JList<?>) comp).locationToIndex(e.getPoint());
+                }
+            	
+                if (index != lastIndex) {
+                    lastIndex = index;
+                    comp.repaint();
+                }
+            }
+        });
+        
+    	comp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	comp.repaint();
+            }
+        });
     }
     
     public static class RendererHover extends DefaultTableCellRenderer {
