@@ -345,7 +345,7 @@ public class PanelAprender extends JPanel {
 			panelCurso.add(labelImagen, BorderLayout.NORTH);
 			
 		} catch (Exception e) {
-			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
+			System.err.println("Error al cargar la imagen: " + curso.getRutaImagen());
 		}
 		
 		JPanel panelInfotexto = new JPanel();
@@ -609,7 +609,7 @@ public class PanelAprender extends JPanel {
 
 			panelContenido.add(labelImagen);
 		} catch (Exception e) {
-			System.out.println("Error al cargar la imagen: " + curso.getRutaImagen());
+			System.err.println("Error al cargar la imagen: " + curso.getRutaImagen());
 		}
 		
 		JLabel labelCurso = new JLabel(curso.getNombre());

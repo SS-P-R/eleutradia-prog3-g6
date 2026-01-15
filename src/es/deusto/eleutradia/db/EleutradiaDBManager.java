@@ -13,6 +13,7 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -1270,6 +1271,58 @@ public class EleutradiaDBManager {
 	    return productos;
 	}
 	
+	// Método para recuperar la estructura de árbol completa de las carteras
+	public List<Cartera> getCarteras() {
+	    List<Cartera> carteras = new ArrayList<>();
+	    Map<Integer, Cartera> mapaCarteras = new HashMap<>();
+	    Map<Integer, Integer> relacionesMadre = new HashMap<>(); 
+
+	    String sql = "SELECT * FROM Cartera";
+
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            String nombre = rs.getString("nombre");
+	            double saldo = rs.getDouble("saldo");
+	            int perfilRiesgoId = rs.getInt("perfilRiesgo");
+	            int divisaId = rs.getInt("divisa");
+
+	            PerfilRiesgo pr = PerfilRiesgo.values()[perfilRiesgoId];
+	            Divisa div = Divisa.values()[divisaId];
+
+	            Cartera c = new Cartera(id, nombre, saldo, pr, div);
+
+	            mapaCarteras.put(id, c);
+
+	            int idMadre = rs.getInt("carteraMadre");
+	            if (!rs.wasNull()) {
+	                relacionesMadre.put(id, idMadre);
+	            } else {
+	                carteras.add(c);
+	            }
+	        }
+	    } catch (Exception ex) {
+	        System.err.println("Error al cargar carteras: " + ex.getMessage());
+	        ex.printStackTrace();
+	    }
+
+	    for (Map.Entry<Integer, Integer> entrada : relacionesMadre.entrySet()) {
+	        int idHijo = entrada.getKey();
+	        int idPadre = entrada.getValue();
+
+	        Cartera hijo = mapaCarteras.get(idHijo);
+	        Cartera padre = mapaCarteras.get(idPadre);
+
+	        if (hijo != null && padre != null) {
+	            padre.addSubCartera(hijo);
+	        }
+	    }
+
+	    return carteras; 
+	}
+	
 	public List<Curso> getCursos() {
 	    List<Curso> cursos = new ArrayList<>();
 	    String sql = "SELECT * FROM Curso";
@@ -1478,58 +1531,6 @@ public class EleutradiaDBManager {
 	    }
 	    
 	    return carteras;
-	}
-	
-	// Método para recuperar la estructura de árbol completa de las carteras
-	public List<Cartera> getCarterasCompletas() {
-	    List<Cartera> carterasRaiz = new ArrayList<>();
-	    Map<Integer, Cartera> mapaCarteras = new java.util.HashMap<>();
-	    Map<Integer, Integer> relacionesMadre = new java.util.HashMap<>(); 
-
-	    String sql = "SELECT * FROM Cartera";
-
-	    try (Connection conn = DriverManager.getConnection(connectionUrl);
-	         Statement stmt = conn.createStatement();
-	         ResultSet rs = stmt.executeQuery(sql)) {
-	        while (rs.next()) {
-	            int id = rs.getInt("id");
-	            String nombre = rs.getString("nombre");
-	            double saldo = rs.getDouble("saldo");
-	            int perfilRiesgoId = rs.getInt("perfilRiesgo");
-	            int divisaId = rs.getInt("divisa");
-
-	            PerfilRiesgo pr = PerfilRiesgo.values()[perfilRiesgoId];
-	            Divisa div = Divisa.values()[divisaId];
-
-	            Cartera c = new Cartera(id, nombre, saldo, pr, div);
-
-	            mapaCarteras.put(id, c);
-
-	            int idMadre = rs.getInt("carteraMadre");
-	            if (!rs.wasNull()) {
-	                relacionesMadre.put(id, idMadre);
-	            } else {
-	                carterasRaiz.add(c);
-	            }
-	        }
-	    } catch (Exception ex) {
-	        System.err.println("Error al cargar carteras: " + ex.getMessage());
-	        ex.printStackTrace();
-	    }
-
-	    for (Map.Entry<Integer, Integer> entrada : relacionesMadre.entrySet()) {
-	        int idHijo = entrada.getKey();
-	        int idPadre = entrada.getValue();
-
-	        Cartera hijo = mapaCarteras.get(idHijo);
-	        Cartera padre = mapaCarteras.get(idPadre);
-
-	        if (hijo != null && padre != null) {
-	            padre.addSubCartera(hijo);
-	        }
-	    }
-
-	    return carterasRaiz; 
 	}
 	
 	public boolean actualizarPosicion(Posicion posicion, int idCartera) {

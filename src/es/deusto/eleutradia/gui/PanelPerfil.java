@@ -129,13 +129,13 @@ public class PanelPerfil extends JPanel {
         panel.add(contentPanel, BorderLayout.CENTER);
         JButton btnEditar = new JButton("Editar información");
         btnEditar.setFont(SUBTITULO_MEDIO);
-        btnEditar.setBackground(GRIS_MEDIO);
+        btnEditar.setBackground(VERDE_CLARO);
         btnEditar.setForeground(Color.WHITE);
         btnEditar.setFocusPainted(false);
         btnEditar.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         btnEditar.setEnabled(true);
         btnEditar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnEditar.setBackground(AZUL_CLARO);
+        btnEditar.addMouseListener(myAdapterVerde);
         btnEditar.setToolTipText("Editar información personal");
 
         btnEditar.addActionListener(e -> mostrarEditarInformacion());
@@ -508,6 +508,7 @@ public class PanelPerfil extends JPanel {
 
         btnCancelar.addActionListener(e -> dialog.dispose());
         btnGuardar.addActionListener(e -> {
+        	usuario.setNombre(txtNombre.getText());
             usuario.setEmail(txtEmail.getText());
             usuario.setTelefono(txtTelefono.getText());
             usuario.setDireccion(txtDireccion.getText());
