@@ -1,5 +1,7 @@
 package es.deusto.eleutradia.gui.style;
 
+import static es.deusto.eleutradia.gui.style.UITema.MAIN_BORDE;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -303,6 +305,7 @@ public class UITema {
     // Método para configurar la ScrollBar de cualquier componente
     public static JScrollPane configurarScrollPane(JComponent contenido) {
         JScrollPane scrollPane = new JScrollPane(contenido);
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
@@ -497,42 +500,6 @@ public class UITema {
         }
     }
     
-    public static class RendererRentabilidad extends DefaultTableCellRenderer {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                boolean isSelected, boolean hasFocus, int row, int column) {
-            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            
-            aplicarColoresHover(this, table, isSelected, row);
-            setFont(SUBTITULO_MEDIO);
-            
-            if (value != null && !value.toString().isEmpty()) {
-                String strValue = value.toString();
-                
-                try {
-                    strValue = strValue.replace("%", "").replace("€", "").replace("$", "")
-                                       .replace("USD", "").replace("EUR", "").trim();
-                    double numValue = Double.parseDouble(strValue);
-                    
-                    if (numValue > 0) {
-                        setForeground(VERDE_OSCURO);
-                    } else if (numValue < 0) {
-                        setForeground(ROJO_CLARO);
-                    } else {
-                        setForeground(Color.BLACK);
-                    }
-                } catch (NumberFormatException e) {
-                	setForeground(Color.BLACK);
-                }
-            }
-            
-            setHorizontalAlignment(JLabel.CENTER);
-            return this;
-        }
-    }
-    
     public static class RendererLogoGestora extends RendererImagen {
 		private static final long serialVersionUID = 1L;
 		
@@ -579,6 +546,76 @@ public class UITema {
                 }
             }
             
+            return this;
+        }
+    }
+    
+    public static class RendererRentabilidad extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            aplicarColoresHover(this, table, isSelected, row);
+            setFont(SUBTITULO_MEDIO);
+            
+            if (value != null && !value.toString().isEmpty()) {
+                String strValue = value.toString();
+                
+                try {
+                    strValue = strValue.replace("%", "").replace("€", "").replace("$", "")
+                                       .replace("USD", "").replace("EUR", "").trim();
+                    double numValue = Double.parseDouble(strValue);
+                    
+                    if (numValue > 0) {
+                        setForeground(VERDE_OSCURO);
+                    } else if (numValue < 0) {
+                        setForeground(ROJO_CLARO);
+                    } else {
+                        setForeground(Color.BLACK);
+                    }
+                } catch (NumberFormatException e) {
+                	setForeground(Color.BLACK);
+                }
+            }
+            
+            setHorizontalAlignment(JLabel.CENTER);
+            return this;
+        }
+    }
+    
+    public static class ListRendererHover extends DefaultListCellRenderer {
+        private static final long serialVersionUID = 1L;
+        
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            
+            setFont(CUERPO_PEQUENO);
+            
+            if (isSelected) {
+                setBackground(new Color(200, 210, 240));
+                setForeground(Color.BLACK);
+            } else {
+                // Comprobar si el mouse está sobre este item
+                Point mousePos = list.getMousePosition();
+                if (mousePos != null && list.locationToIndex(mousePos) == index) {
+                    setBackground(new Color(220, 235, 255));
+                } else {
+                    // Colores alternos
+                    if (index % 2 == 0) {
+                        setBackground(MAIN_PANEL);
+                    } else {
+                        setBackground(MAIN_FONDO);
+                    }
+                }
+                setForeground(Color.BLACK);
+            }
+            
+            setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
             return this;
         }
     }
