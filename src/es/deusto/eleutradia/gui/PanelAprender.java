@@ -98,10 +98,12 @@ public class PanelAprender extends JPanel {
 		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
 		panelPrincipalPestanasCurso.setBackground(MAIN_FONDO);
 		
+		
 		JPanel panelPestanasCursos = new JPanel(new BorderLayout());
 		panelPestanasCursos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 		JPanel panelPestanas = crearPanelPestanas();
 		panelPestanasCursos.add(panelPestanas, BorderLayout.NORTH);
+		
 		
 		layoutContenedorCentro = new CardLayout();
 		panelContenedorCentro = new JPanel(layoutContenedorCentro);
@@ -110,11 +112,20 @@ public class PanelAprender extends JPanel {
 		
 		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelTodosLosCursos.setBackground(MAIN_PANEL);
+		JScrollPane scrollTodos = configurarScrollPane(panelTodosLosCursos);
+		scrollTodos.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollTodos.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
+		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
+		
 		panelMisCursos = new JPanel(new GridLayout(0, 2, 20, 20));
 		panelMisCursos.setBackground(MAIN_PANEL);
+		JScrollPane scrollMis = configurarScrollPane(panelMisCursos);
+		scrollMis.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollMis.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
+		scrollMis.setBorder(BorderFactory.createEmptyBorder());
 		
-		panelContenedorCentro.add(configurarScrollPane(botonTodosLosCursos), "TODOS_LOS_CURSOS");
-		panelContenedorCentro.add(configurarScrollPane(panelMisCursos), "MIS_CURSOS");
+		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
+		panelContenedorCentro.add(scrollMis, "MIS_CURSOS");
 		
 		panelPestanasCursos.add(panelContenedorCentro, BorderLayout.CENTER);
 		
@@ -143,7 +154,7 @@ public class PanelAprender extends JPanel {
 		panelProgreso.add(progressBarRacha);
 		
 		JPanel panelBotonAbajo = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		panelBotonAbajo.setBackground(Color.WHITE);
+		panelBotonAbajo.setBackground(MAIN_PANEL);
 		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
 		JButton botonSimulacion = new JButton("Simulación");
@@ -685,8 +696,11 @@ public class PanelAprender extends JPanel {
 		
 		panelContenido.add(Box.createVerticalGlue());
 		
-		JScrollPane scrollPane = configurarScrollPane(panelContenido);
+		JScrollPane scrollPane = new JScrollPane(panelContenido);
 		scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
+		
+		scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+	    scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
 		
 		return scrollPane;
 	}
