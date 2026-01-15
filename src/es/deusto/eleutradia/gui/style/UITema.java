@@ -463,8 +463,9 @@ public class UITema {
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             
             aplicarColoresHover(this, table, isSelected, row);
+            setFont(SUBTITULO_MEDIO);
             
-            if (!isSelected && value != null && !value.toString().isEmpty()) {
+            if (value != null && !value.toString().isEmpty()) {
                 String strValue = value.toString();
                 
                 try {
@@ -482,7 +483,6 @@ public class UITema {
                 } catch (NumberFormatException e) {
                 	setForeground(Color.BLACK);
                 }
-                setFont(SUBTITULO_MEDIO);
             }
             
             setHorizontalAlignment(JLabel.CENTER);

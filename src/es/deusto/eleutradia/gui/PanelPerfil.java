@@ -128,15 +128,16 @@ public class PanelPerfil extends JPanel {
         
         panel.add(contentPanel, BorderLayout.CENTER);
         JButton btnEditar = new JButton("Editar información");
-        btnEditar.setFont(SUBTITULO_MEDIO);
+        btnEditar.setFont(SUBTITULO_PEQUENO);
         btnEditar.setBackground(VERDE_CLARO);
         btnEditar.setForeground(Color.WHITE);
+        btnEditar.setPreferredSize(new Dimension(140, 35));
         btnEditar.setFocusPainted(false);
         btnEditar.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         btnEditar.setEnabled(true);
         btnEditar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnEditar.addMouseListener(myAdapterVerde);
-        btnEditar.setToolTipText("Editar información personal");
+        btnEditar.setToolTipText("Pulse aquí para editar su información personal");
 
         btnEditar.addActionListener(e -> mostrarEditarInformacion());
         
@@ -204,21 +205,23 @@ public class PanelPerfil extends JPanel {
         JPanel contentPanel = new JPanel(new GridLayout(2, 1, 0, 10));
         contentPanel.setBackground(MAIN_PANEL);
         
-        	// Cambiar contraseña
+        // Cambiar contraseña
         JPanel panelPassword = new JPanel(new BorderLayout(10, 5));
         panelPassword.setBackground(MAIN_PANEL);
         JLabel lblPassword = new JLabel("Contraseña");
         lblPassword.setFont(SUBTITULO_MEDIO);
         
-        JButton btnCambiarPassword = new JButton("Cambiar contraseña");
-        btnCambiarPassword.setFont(CUERPO_PEQUENO);
-        btnCambiarPassword.setBackground(AZUL_CLARO);
+        JButton btnCambiarPassword = new JButton("Cambiar");
+        btnCambiarPassword.setFont(SUBTITULO_PEQUENO);
+        btnCambiarPassword.setBackground(VERDE_CLARO);
         btnCambiarPassword.setForeground(Color.WHITE);
-        btnCambiarPassword.setPreferredSize(new Dimension(140, 25));
+        btnCambiarPassword.setPreferredSize(new Dimension(100, 35));
         btnCambiarPassword.setVerticalAlignment(JButton.CENTER);
         btnCambiarPassword.setFocusPainted(false);
         btnCambiarPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnCambiarPassword.addMouseListener(myAdapterVerde);
         btnCambiarPassword.addActionListener(e -> mostrarDialogoCambiarPassword());
+        btnCambiarPassword.setToolTipText("Pulse para cambiar su contraseña actual");
         JPanel panelBoton = new JPanel();
         panelBoton.setLayout(new BoxLayout(panelBoton, BoxLayout.Y_AXIS));
         panelBoton.setBackground(MAIN_PANEL);
