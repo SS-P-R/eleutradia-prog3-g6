@@ -98,47 +98,36 @@ public class PanelAprender extends JPanel {
 		JPanel panelPrincipalPestanasCurso = new JPanel(new BorderLayout(20, 20));
 		panelPrincipalPestanasCurso.setBackground(MAIN_FONDO);
 		
-		
 		JPanel panelPestanasCursos = new JPanel(new BorderLayout());
 		panelPestanasCursos.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 		JPanel panelPestanas = crearPanelPestanas();
 		panelPestanasCursos.add(panelPestanas, BorderLayout.NORTH);
 		
-		
 		layoutContenedorCentro = new CardLayout();
 		panelContenedorCentro = new JPanel(layoutContenedorCentro);
-		panelContenedorCentro.setBackground(Color.WHITE);
+		panelContenedorCentro.setBackground(MAIN_PANEL);
 		panelContenedorCentro.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		
 		panelTodosLosCursos = new JPanel(new GridLayout(0, 2, 20, 20));
-		panelTodosLosCursos.setBackground(Color.WHITE);
-		JScrollPane scrollTodos = new JScrollPane(panelTodosLosCursos);
-		scrollTodos.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-		scrollTodos.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
-		scrollTodos.setBorder(BorderFactory.createEmptyBorder());
-		
+		panelTodosLosCursos.setBackground(MAIN_PANEL);
 		panelMisCursos = new JPanel(new GridLayout(0, 2, 20, 20));
-		panelMisCursos.setBackground(Color.WHITE);
-		JScrollPane scrollMis = new JScrollPane(panelMisCursos);
-		scrollMis.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-		scrollMis.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
-		scrollMis.setBorder(BorderFactory.createEmptyBorder());
+		panelMisCursos.setBackground(MAIN_PANEL);
 		
-		panelContenedorCentro.add(scrollTodos, "TODOS_LOS_CURSOS");
-		panelContenedorCentro.add(scrollMis, "MIS_CURSOS");
+		panelContenedorCentro.add(configurarScrollPane(botonTodosLosCursos), "TODOS_LOS_CURSOS");
+		panelContenedorCentro.add(configurarScrollPane(panelMisCursos), "MIS_CURSOS");
 		
 		panelPestanasCursos.add(panelContenedorCentro, BorderLayout.CENTER);
 		
 		panelPrincipalPestanasCurso.add(panelPestanasCursos, BorderLayout.CENTER);
 		
 		JPanel panelDerecho = new JPanel(new BorderLayout());
-		panelDerecho.setBackground(Color.WHITE);
+		panelDerecho.setBackground(MAIN_PANEL);
 		panelDerecho.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 		panelDerecho.setPreferredSize(new Dimension(160, 0));
 		
 		JPanel panelProgreso = new JPanel();
 		panelProgreso.setLayout(new BoxLayout(panelProgreso, BoxLayout.Y_AXIS));
-		panelProgreso.setBackground(Color.WHITE);
+		panelProgreso.setBackground(MAIN_PANEL);
 		panelProgreso.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
 		
 		JLabel labelProgreso = new JLabel("Progreso Cursos");
@@ -696,11 +685,8 @@ public class PanelAprender extends JPanel {
 		
 		panelContenido.add(Box.createVerticalGlue());
 		
-		JScrollPane scrollPane = new JScrollPane(panelContenido);
+		JScrollPane scrollPane = configurarScrollPane(panelContenido);
 		scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
-		
-		scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-	    scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
 		
 		return scrollPane;
 	}

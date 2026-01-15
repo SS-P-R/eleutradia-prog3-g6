@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -80,12 +79,7 @@ public class PanelPortfolio extends JPanel {
         bottomContainer.add(crearPanelOperacionesRecientes(), BorderLayout.SOUTH);
         mainPanel.add(bottomContainer, BorderLayout.SOUTH);
         
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-        scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        add(scrollPane, BorderLayout.CENTER);
+        add(configurarScrollPane(mainPanel), BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
     }
     private JPanel crearPanelSelector() {
@@ -382,12 +376,7 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.getColumnModel().getColumn(5).setCellRenderer(rentRenderer);
         tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(rentRenderer);
         
-        JScrollPane scrollPane = new JScrollPane(tablePosiciones);
-        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
-        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-        scrollPane.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(configurarScrollPane(tablePosiciones), BorderLayout.CENTER);
         
         return panel;
     }
@@ -426,10 +415,7 @@ public class PanelPortfolio extends JPanel {
         JList<String> operationsList = new JList<>(operationsListModel);
         aplicarEstiloLista(operationsList);
         
-        JScrollPane scrollPane = new JScrollPane(operationsList);
-        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE));
-        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(configurarScrollPane(operationsList), BorderLayout.CENTER);
         
         return panel;
     }

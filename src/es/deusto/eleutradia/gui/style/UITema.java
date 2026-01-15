@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -297,6 +298,17 @@ public class UITema {
                 return button;
             }
         };
+    }
+    
+    // Método para configurar la ScrollBar de cualquier componente
+    public static JScrollPane configurarScrollPane(JComponent contenido) {
+        JScrollPane scrollPane = new JScrollPane(contenido);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(null);
+        return scrollPane;
     }
 
     // Método para personalizar JComboBoxes

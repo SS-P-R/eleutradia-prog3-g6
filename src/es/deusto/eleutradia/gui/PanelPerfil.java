@@ -20,7 +20,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -63,11 +62,8 @@ public class PanelPerfil extends JPanel {
         bottomPanel.add(crearPanelConfiguracion());
         bottomPanel.add(crearPanelEstadisticas());
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
-        scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-        add(scrollPane, BorderLayout.CENTER);
+
+        add(configurarScrollPane(mainPanel), BorderLayout.CENTER);
     }
     
     private JPanel crearPanelCabecera() {

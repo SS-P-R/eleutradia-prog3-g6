@@ -343,9 +343,8 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getColumnModel().getColumn(5).setCellRenderer(new UITema.CenterRendererHover());
         tablaProductos.getColumnModel().getColumn(6).setCellRenderer(new UITema.RendererLogoGestora(productosFiltrados));
         
-        JScrollPane scrollPane = new JScrollPane(tablaProductos);
+        JScrollPane scrollPane = configurarScrollPane(tablaProductos);
         scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
-        scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());
         
         mainPanelTabla.add(scrollPane, BorderLayout.CENTER);
         
@@ -558,7 +557,7 @@ public class PanelExplorar extends JPanel {
             //IAG (ChatGPT)
             //SIN CAMBIOS
             JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
-            new VentanaDetalleProducto(framePadre, producto, true);
+            new VentanaVerDetalle(framePadre, producto, true);
             //END IAG
         } else {
         	UITema.mostrarWarning(this,

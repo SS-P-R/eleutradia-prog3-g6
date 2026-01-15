@@ -32,12 +32,12 @@ import es.deusto.eleutradia.domain.TipoProducto;
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
 
-public class VentanaDetalleProducto extends JDialog {
+public class VentanaVerDetalle extends JDialog {
 
     private static final long serialVersionUID = 1L;
     private ProductoFinanciero producto;
 
-    public VentanaDetalleProducto(JFrame padre, ProductoFinanciero producto, boolean modal) {
+    public VentanaVerDetalle(JFrame padre, ProductoFinanciero producto, boolean modal) {
         super(padre, "Detalles del producto", modal);
         this.producto = producto;
         this.setSize(700, 600);
@@ -58,7 +58,7 @@ public class VentanaDetalleProducto extends JDialog {
         panelPrincipal.add(construirPanelDetalles(), BorderLayout.CENTER);
         panelPrincipal.add(construirPanelInferior(), BorderLayout.SOUTH);
         
-        this.add(panelPrincipal);
+        this.add(configurarScrollPane(panelPrincipal));
     }
     
     private JPanel construirPanelProducto() {
