@@ -586,17 +586,17 @@ public class PanelInicio extends JPanel{
 	                }
 	            }
 	            
-	            // Valor total
+	            //Valor total
 	            JPanel panelTotal = crearFilaEstadistica("Valor Total:", formatoMoneda.format(valorTotal) + " €", AZUL_OSCURO);
 	            panelContenido.add(panelTotal);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            // Número de carteras
+	            //Número de carteras
 	            JPanel panelNumero = crearFilaEstadistica("Carteras:", String.valueOf(carteras.size()), GRIS_MEDIO);
 	            panelContenido.add(panelNumero);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            // Mayor cartera
+	            //Mejor cartera
 	            if (carteraMayor != null) {
 	                JPanel panelMayor = crearFilaEstadistica("Mayor:", carteraMayor.getNombre(), VERDE_CLARO);
 	                panelContenido.add(panelMayor);
@@ -612,7 +612,7 @@ public class PanelInicio extends JPanel{
 	        panel.add(panelEncabezado, BorderLayout.NORTH);
 	        panel.add(panelContenido, BorderLayout.CENTER);
 	        
-	        // Efecto hover y click
+	        //Focus y click
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
