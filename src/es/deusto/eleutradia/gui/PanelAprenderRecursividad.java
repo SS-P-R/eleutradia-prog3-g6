@@ -14,6 +14,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import es.deusto.eleutradia.domain.NivelConocimiento;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
@@ -25,6 +28,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	private JComboBox<String> comboNivelObjetivo;
 	private JButton btnBuscarRuta;
 	private JButton btnVolver;
+	private JPanel panelResultado;
 	private ActionListener accionVolver;
 	
 	public PanelAprenderRecursividad() {
@@ -38,6 +42,10 @@ public class PanelAprenderRecursividad extends JPanel {
 		
 		JPanel panelCentral = crearPanelFormulario();
 		add(panelCentral, BorderLayout.CENTER);
+		
+		panelResultado = new JPanel(new BorderLayout());
+		panelResultado.setBackground(MAIN_FONDO);
+		add(panelResultado, BorderLayout.SOUTH);
 		
 		JPanel panelBotones = crearPanelBotones();
 		add(panelBotones, BorderLayout.EAST);
@@ -109,14 +117,14 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnBuscarRuta.setPreferredSize(new Dimension(300, 50));
 		btnBuscarRuta.setMaximumSize(new Dimension(300, 50));
 		btnBuscarRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnBuscarRuta.addActionListener(e -> buscarRutaAprendizaje());
 		panel.add(btnBuscarRuta);
 
 
 		
 		return panel;
 	}
-	
-	
+
 	private JPanel crearPanelBotones() {
 
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -142,6 +150,37 @@ public class PanelAprenderRecursividad extends JPanel {
 		
 		return panel;
 
+	}
+	
+	private void buscarRutaAprendizaje() {
+		String nivelObjetivoStr = (String) comboNivelObjetivo.getSelectedItem();
+		NivelConocimiento nivelObjetivo = NivelConocimiento.valueOf(nivelObjetivoStr);
+		
+		new Thread(() -> {
+			SwingUtilities.invokeLater(() -> {
+				panelResultado.removeAll();
+				JLabel labelCargando = new JLabel("Buscando rutas de aprendizaje...");
+				labelCargando.setFont(CUERPO_GRANDE);
+				labelCargando.setForeground(AZUL_CLARO);
+				labelCargando.setHorizontalAlignment(JLabel.CENTER);
+				panelResultado.add(labelCargando, BorderLayout.CENTER);
+				panelResultado.revalidate();
+				panelResultado.repaint();
+			});
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			SwingUtilities.invokeLater(() -> {
+				panelResultado.removeAll();
+				panelResultado.revalidate();
+				panelResultado.repaint();
+			});
+			
+		}).start();
 	}
 
 
