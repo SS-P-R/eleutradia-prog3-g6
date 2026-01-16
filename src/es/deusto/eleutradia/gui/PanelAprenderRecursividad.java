@@ -185,6 +185,8 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnVolver.setBackground(GRIS_MEDIO);
 		btnVolver.setForeground(Color.WHITE);
 		btnVolver.setPreferredSize(new Dimension(150, 45));
+		btnVolver.setMinimumSize(new Dimension(150, 45));
+		btnVolver.setMaximumSize(new Dimension(150, 45));
 		btnVolver.setBorderPainted(false);
 		btnVolver.setContentAreaFilled(false);
 		btnVolver.setOpaque(true);
