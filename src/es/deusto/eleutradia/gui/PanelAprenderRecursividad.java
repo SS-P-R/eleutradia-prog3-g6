@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -16,7 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.NivelConocimiento;
+import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
@@ -174,6 +178,9 @@ public class PanelAprenderRecursividad extends JPanel {
 				e.printStackTrace();
 			}
 			
+			List<List<Curso>> rutas = busquedaRecursivaRutas(nivelObjetivo);
+
+			
 			SwingUtilities.invokeLater(() -> {
 				panelResultado.removeAll();
 				panelResultado.revalidate();
@@ -181,6 +188,24 @@ public class PanelAprenderRecursividad extends JPanel {
 			});
 			
 		}).start();
+	}
+	
+	private List<List<Curso>> busquedaRecursivaRutas(NivelConocimiento nivelObjetivo) {
+
+		List<Curso> todosCursos = MainEleutradia.listaCursos;
+
+		List<List<Curso>> result = new ArrayList<>();
+
+		busquedaRecursivaAux(result, new ArrayList<>(), NivelConocimiento.PRINCIPIANTE, 
+				nivelObjetivo, todosCursos);
+		
+		return result;
+	}
+	
+	private void busquedaRecursivaAux(List<List<Curso>> result, List<Curso> rutaActual,
+			NivelConocimiento nivelActual, NivelConocimiento nivelObjetivo, 
+			List<Curso> todosCursos) {
+
 	}
 
 
