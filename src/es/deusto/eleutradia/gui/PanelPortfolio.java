@@ -5,6 +5,7 @@ import es.deusto.eleutradia.domain.*;
 import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
+import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -62,6 +63,13 @@ public class PanelPortfolio extends JPanel {
         
         inicializarPaneles();
         cargarDatosPortfolio();
+        
+        Timer timerMercado = new javax.swing.Timer(5000, e -> {
+            if (this.isVisible()) {
+                refrescarDatos(); 
+            }
+        });
+        timerMercado.start();
     }
 
     
