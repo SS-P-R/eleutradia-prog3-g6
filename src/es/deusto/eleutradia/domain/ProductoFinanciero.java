@@ -26,10 +26,7 @@ public class ProductoFinanciero {
 		this.nombre = nombre;
 		this.ticker = ticker;
 		this.plazo = plazo;
-		//IAG (ChatGPT)
-		//SIN MODIFICAR
-		this.rentabilidades = Collections.unmodifiableMap(new EnumMap<>(rentabilidades));
-		//END IAG
+		this.rentabilidades = new EnumMap<>(rentabilidades);
 		this.valorUnitario = valorUnitario;
 		this.tipoProducto = tipoProducto;
 		this.regionGeografica = regionGeografica;
@@ -133,6 +130,20 @@ public class ProductoFinanciero {
 				+ ", rentabilidades=" + rentabilidades + ", valorUnitario=" + valorUnitario
 				+ ", tipoProducto=" + tipoProducto + ", regionGeografica=" + regionGeografica
 				+ ", perPago=" + perPago + ", divisa=" + divisa + ", gestora=" + gestora + "]";
+	}
+	
+
+	public void actualizarPrecioYRentabilidad(double nuevoPrecio) {
+	    if (this.valorUnitario > 0) {
+	        double variacion = ((nuevoPrecio - this.valorUnitario) / this.valorUnitario) * 100;
+	        BigDecimal rentYTD = this.rentabilidades.getOrDefault(
+	            PlazoRentabilidad.YTD, 
+	            BigDecimal.ZERO
+	        );
+	        BigDecimal nuevaRentabilidad = rentYTD.add(BigDecimal.valueOf(variacion));
+	        this.rentabilidades.put(PlazoRentabilidad.YTD, nuevaRentabilidad);
+	    }
+	    this.valorUnitario = nuevoPrecio;
 	}
 	
 }

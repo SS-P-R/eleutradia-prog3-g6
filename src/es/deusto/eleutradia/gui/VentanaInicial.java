@@ -55,7 +55,7 @@ public class VentanaInicial extends JFrame {
     
     // Expresiones para validar identificadores
     //IAG (ChatGPT)
-    //SIN MODIFICAR
+    //SIN CAMBIOS
     private static final String DNI_REGEX = "^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$";
     private static final String NIF_REGEX = "^[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-Z]$";
     private static final String NOMBRE_REGEX = "[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]+";

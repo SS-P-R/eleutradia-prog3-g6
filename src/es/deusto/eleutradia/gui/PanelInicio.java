@@ -2,11 +2,14 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -27,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Curso;
@@ -50,7 +54,6 @@ public class PanelInicio extends JPanel {
 	private DecimalFormat formatoPorcentaje = new DecimalFormat("0.00");
 	private JFrame frame;
 	
-    //private static final Dimension TAMANO_TARJETA_PEQUENA = new Dimension(140, 100);
     private List<ProductoFinanciero> productos;
     private int indiceProductoActual = 0;
 
@@ -71,15 +74,15 @@ public class PanelInicio extends JPanel {
 			productos = new ArrayList<>();
 		}
 		
-        // Panel superior, bienvenida
+        // Panel superior: bienvenida
         JPanel panelSuperior = crearPanelBienvenida();
         this.add(panelSuperior, BorderLayout.NORTH);
         
-        // Panel central, info general
+        // Panel central: información general
         JPanel panelCentral = crearPanelCentral();
         this.add(configurarScrollPane(panelCentral), BorderLayout.CENTER);
         
-        // Panel lateral, estadísticas
+        // Panel lateral: estadísticas
         JPanel panelInferior = crearPanelInferior();
         this.add(panelInferior, BorderLayout.SOUTH);
 	}
@@ -92,7 +95,7 @@ public class PanelInicio extends JPanel {
             BorderFactory.createEmptyBorder(20, 25, 20, 25)
         ));
         
-        // Panel saludo
+        // Panel de saludo
         JPanel panelSaludo = new JPanel();
         panelSaludo.setLayout(new BoxLayout(panelSaludo, BoxLayout.Y_AXIS));
         panelSaludo.setBackground(Color.WHITE);
@@ -104,17 +107,17 @@ public class PanelInicio extends JPanel {
         JLabel labelFecha = new JLabel(fechaFormateada);
         labelFecha.setFont(CUERPO_PEQUENO);
         labelFecha.setForeground(GRIS_CLARO);
-        labelFecha.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelFecha.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         
         JLabel labelBienvenida = new JLabel("¡Hola, " + usuario.getNombre().split(" ")[0] + "!");
         labelBienvenida.setFont(TITULO_GRANDE);
         labelBienvenida.setForeground(Color.BLACK);
-        labelBienvenida.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelBienvenida.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         
         JLabel labelSubtitulo = new JLabel("Visión general");
         labelSubtitulo.setFont(SUBTITULO_MEDIO);
         labelSubtitulo.setForeground(GRIS_MEDIO);
-        labelSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelSubtitulo.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         
         panelSaludo.add(labelFecha);
         panelSaludo.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -122,7 +125,7 @@ public class PanelInicio extends JPanel {
         panelSaludo.add(Box.createRigidArea(new Dimension(0, 3)));
         panelSaludo.add(labelSubtitulo);
         
-        // Panel noticias
+        // Panel de noticias
         JPanel panelNoticias = crearPanelNoticias();
         
         panel.add(panelSaludo, BorderLayout.WEST);
@@ -144,7 +147,7 @@ public class PanelInicio extends JPanel {
         JLabel labelTitulo = new JLabel("Noticias Financieras");
         labelTitulo.setFont(SUBTITULO_MEDIO);
         labelTitulo.setForeground(AZUL_OSCURO);
-        labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelTitulo.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         
         List<Noticia> noticias = new ArrayList<>();
         noticias.add(new Noticia( "IBEX 35 sube un 3% tras datos de inflación positivos",     
@@ -193,14 +196,14 @@ public class PanelInicio extends JPanel {
         areaNoticia.setWrapStyleWord(true);
         areaNoticia.setEditable(false);
         areaNoticia.setOpaque(false);
-        areaNoticia.setAlignmentX(Component.LEFT_ALIGNMENT);
+        areaNoticia.setAlignmentX(JTextArea.LEFT_ALIGNMENT);
         areaNoticia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         areaNoticia.setBorder(null);
         areaNoticia.setBackground(GRIS_SUAVE);
         
         final int[] indice = {0};
         
-        //Hilo noticias
+        // Hilo de noticias
         Thread hiloNoticias = new Thread(() -> {
             try {
                 while (true) {
@@ -272,13 +275,12 @@ public class PanelInicio extends JPanel {
         ventana.setVisible(true);
     }
     
-    
 	private JPanel crearPanelCentral() {
         JPanel panel = new JPanel(new GridLayout(2, 2, 20, 20));
         panel.setBackground(MAIN_FONDO);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         
-        //Cargar paneles
+        // Cargar paneles
         panel.add(crearPanelCursos());
         panel.add(crearPanelLecciones());
         panel.add(crearPanelCartera());
@@ -292,7 +294,7 @@ public class PanelInicio extends JPanel {
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
         
-        //Encabezado
+        // Encabezado
         JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelEncabezado.setBackground(Color.WHITE);
         panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -302,7 +304,7 @@ public class PanelInicio extends JPanel {
         labelTitulo.setForeground(AZUL_OSCURO);
         panelEncabezado.add(labelTitulo);
         
-        //Contenido
+        // Contenido
         JPanel panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         panelContenido.setBackground(Color.WHITE);
@@ -316,14 +318,14 @@ public class PanelInicio extends JPanel {
                 JLabel labelVacio = new JLabel("Aún no tiene cursos activos");
                 labelVacio.setFont(CUERPO_GRANDE);
                 labelVacio.setForeground(GRIS_CLARO);
-                labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
+                labelVacio.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                 panelContenido.add(labelVacio);
                 panelContenido.add(Box.createRigidArea(new Dimension(0, 10)));
                 
                 JLabel labelAnimacion = new JLabel("¡Es hora de empezar!");
                 labelAnimacion.setFont(CUERPO_MEDIO);
                 labelAnimacion.setForeground(AZUL_CLARO);
-                labelAnimacion.setAlignmentX(Component.LEFT_ALIGNMENT);
+                labelAnimacion.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                 panelContenido.add(labelAnimacion);
                 
             } else {
@@ -334,7 +336,7 @@ public class PanelInicio extends JPanel {
                     JLabel labelCurso = new JLabel("- " + curso.getNombre());
                     labelCurso.setFont(CUERPO_GRANDE);
                     labelCurso.setForeground(Color.BLACK);
-                    labelCurso.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    labelCurso.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                     panelContenido.add(labelCurso);
                     panelContenido.add(Box.createRigidArea(new Dimension(0, 5)));
                     contador++;
@@ -344,7 +346,7 @@ public class PanelInicio extends JPanel {
                     JLabel labelMas = new JLabel("... y " + (cursosActivos.size() - 4) + " más");
                     labelMas.setFont(CUERPO_PEQUENO);
                     labelMas.setForeground(GRIS_CLARO);
-                    labelMas.setAlignmentX(Component.LEFT_ALIGNMENT);
+                    labelMas.setAlignmentX(JLabel.LEFT_ALIGNMENT);
                     panelContenido.add(labelMas);
                 }
             }
@@ -352,14 +354,14 @@ public class PanelInicio extends JPanel {
             JLabel labelNoDisponible = new JLabel("Función no disponible para empresas");
             labelNoDisponible.setFont(CUERPO_GRANDE);
             labelNoDisponible.setForeground(GRIS_CLARO);
-            labelNoDisponible.setAlignmentX(Component.LEFT_ALIGNMENT);
+            labelNoDisponible.setAlignmentX(JLabel.LEFT_ALIGNMENT);
             panelContenido.add(labelNoDisponible);
         }
         
         panel.add(panelEncabezado, BorderLayout.NORTH);
         panel.add(panelContenido, BorderLayout.CENTER);
         
-        //Focus y click
+        // Focus y click
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -382,41 +384,42 @@ public class PanelInicio extends JPanel {
     }
 	
 	private JPanel crearPanelLecciones() {
-	        JPanel panel = new JPanel(new BorderLayout(10, 10));
-	        panel.setBackground(Color.WHITE);
-	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+		JPanel panel = new JPanel(new BorderLayout(10, 10));
+	    panel.setBackground(Color.WHITE);
+	    panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        // Encabezado
-	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	        panelEncabezado.setBackground(Color.WHITE);
-	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
+	    // Encabezado
+	    JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    panelEncabezado.setBackground(Color.WHITE);
+	    panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("Próximas lecciones");
-	        labelTitulo.setFont(SUBTITULO_GRANDE);
-	        labelTitulo.setForeground(AZUL_OSCURO);
-	        panelEncabezado.add(labelTitulo);
+	    JLabel labelTitulo = new JLabel("Próximas lecciones");
+	    labelTitulo.setFont(SUBTITULO_GRANDE);
+	    labelTitulo.setForeground(AZUL_OSCURO);
+	    panelEncabezado.add(labelTitulo);
 	        
-	        // Contenido
-	        JPanel panelContenido = new JPanel();
-	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
-	        panelContenido.setBackground(Color.WHITE);
-	        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 15, 15));
+	    // Contenido
+	    JPanel panelContenido = new JPanel();
+	    panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+	    panelContenido.setBackground(Color.WHITE);
+	    panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 15, 15));
 	        
-	        if (usuario instanceof Particular) {
-	            Particular particular = (Particular) usuario;
-	            List<Curso> cursosActivos = particular.getCursos();
-	            List<Curso> todosCursos = MainEleutradia.listaCursos;
+	    if (usuario instanceof Particular) {
+	    	Particular particular = (Particular) usuario;
+	    	List<Curso> cursosActivos = particular.getCursos();
+	    	List<Curso> todosCursos = MainEleutradia.listaCursos;
 	            
-	            if (todosCursos == null || todosCursos.isEmpty()) {
+	    	if (todosCursos == null || todosCursos.isEmpty()) {
 	                JLabel labelError = new JLabel("No hay cursos disponibles");
 	                labelError.setFont(CUERPO_GRANDE);
 	                labelError.setForeground(GRIS_CLARO);
-	                labelError.setAlignmentX(Component.LEFT_ALIGNMENT);
+	                labelError.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	                panelContenido.add(labelError);
-	            } else {
-	                List<Leccion> leccionesRecomendadas = new ArrayList<>();
 	                
-	                // Buscar primeras lecciones de cursos no inscritos
+	    	} else {
+	               	List<Leccion> leccionesRecomendadas = new ArrayList<>();
+	                
+	                // Primeras lecciones de cursos no inscritos
 	                for (Curso curso : todosCursos) {
 	                    if (!cursosActivos.contains(curso)) {
 	                        if (curso.getModulos() != null && !curso.getModulos().isEmpty()) {
@@ -431,23 +434,23 @@ public class PanelInicio extends JPanel {
 	                
 	                if (leccionesRecomendadas.isEmpty()) {
 	                    if (cursosActivos.size() == todosCursos.size()) {
-	                        JLabel labelFelicitacion = new JLabel("¡Ha completado todos los cursos! 🏆");
+	                        JLabel labelFelicitacion = new JLabel("¡Ha completado todos los cursos!");
 	                        labelFelicitacion.setFont(CUERPO_GRANDE);
 	                        labelFelicitacion.setForeground(VERDE_CLARO);
-	                        labelFelicitacion.setAlignmentX(Component.LEFT_ALIGNMENT);
+	                        labelFelicitacion.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	                        panelContenido.add(labelFelicitacion);
 	                    } else {
 	                        JLabel labelVacio = new JLabel("No hay lecciones nuevas disponibles");
 	                        labelVacio.setFont(CUERPO_GRANDE);
 	                        labelVacio.setForeground(GRIS_CLARO);
-	                        labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
+	                        labelVacio.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	                        panelContenido.add(labelVacio);
 	                    }
 	                } else {
 	                    JLabel labelSubtitulo = new JLabel("Nuestras recomendaciones:");
 	                    labelSubtitulo.setFont(CUERPO_PEQUENO);
 	                    labelSubtitulo.setForeground(GRIS_MEDIO);
-	                    labelSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+	                    labelSubtitulo.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	                    panelContenido.add(labelSubtitulo);
 	                    panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	                    
@@ -455,7 +458,7 @@ public class PanelInicio extends JPanel {
 	                        JLabel labelLeccion = new JLabel("- " + leccion.getTitulo());
 	                        labelLeccion.setFont(CUERPO_GRANDE);
 	                        labelLeccion.setForeground(Color.BLACK);
-	                        labelLeccion.setAlignmentX(Component.LEFT_ALIGNMENT);
+	                        labelLeccion.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	                        panelContenido.add(labelLeccion);
 	                        panelContenido.add(Box.createRigidArea(new Dimension(0, 5)));
 	                    }
@@ -465,14 +468,14 @@ public class PanelInicio extends JPanel {
 	            JLabel labelNoDisponible = new JLabel("Función no disponible para empresas");
 	            labelNoDisponible.setFont(CUERPO_GRANDE);
 	            labelNoDisponible.setForeground(GRIS_CLARO);
-	            labelNoDisponible.setAlignmentX(Component.LEFT_ALIGNMENT);
+	            labelNoDisponible.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	            panelContenido.add(labelNoDisponible);
 	        }
 	        
 	        panel.add(panelEncabezado, BorderLayout.NORTH);
 	        panel.add(panelContenido, BorderLayout.CENTER);
 	        
-	        //Focus y click
+	        // Focus y click
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
@@ -494,12 +497,12 @@ public class PanelInicio extends JPanel {
 	        return panel;
 	    }
 	  
-	  private JPanel crearPanelCartera() {
+	private JPanel crearPanelCartera() {
 	        JPanel panel = new JPanel(new BorderLayout(10, 10));
 	        panel.setBackground(Color.WHITE);
 	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        //Encabezado
+	        // Encabezado
 	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	        panelEncabezado.setBackground(Color.WHITE);
 	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -509,7 +512,7 @@ public class PanelInicio extends JPanel {
 	        labelTitulo.setForeground(AZUL_OSCURO);
 	        panelEncabezado.add(labelTitulo);
 	        
-	        //Contenido
+	        // Contenido
 	        JPanel panelContenido = new JPanel();
 	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 	        panelContenido.setBackground(Color.WHITE);
@@ -521,7 +524,7 @@ public class PanelInicio extends JPanel {
 	            JLabel labelVacio = new JLabel("No tiene carteras creadas");
 	            labelVacio.setFont(CUERPO_GRANDE);
 	            labelVacio.setForeground(GRIS_CLARO);
-	            labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
+	            labelVacio.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	            panelContenido.add(labelVacio);
 	            
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -529,7 +532,7 @@ public class PanelInicio extends JPanel {
 	            JLabel labelAnimacion = new JLabel("¡Cree su primera cartera!");
 	            labelAnimacion.setFont(CUERPO_MEDIO);
 	            labelAnimacion.setForeground(AZUL_CLARO);
-	            labelAnimacion.setAlignmentX(Component.LEFT_ALIGNMENT);
+	            labelAnimacion.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	            panelContenido.add(labelAnimacion);
 	            
 	        } else {
@@ -557,7 +560,7 @@ public class PanelInicio extends JPanel {
 	            panelContenido.add(panelNumero);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            // Mejor cartera
+	            //Mejor cartera
 	            if (carteraMayor != null) {
 	                JPanel panelMayor = crearFilaEstadistica("Mayor:", carteraMayor.getNombre(), VERDE_CLARO);
 	                panelContenido.add(panelMayor);
@@ -565,7 +568,7 @@ public class PanelInicio extends JPanel {
 	                JLabel labelValorMayor = new JLabel("   " + formatoMoneda.format(valorMaximo) + " €");
 	                labelValorMayor.setFont(CUERPO_PEQUENO);
 	                labelValorMayor.setForeground(GRIS_CLARO);
-	                labelValorMayor.setAlignmentX(Component.LEFT_ALIGNMENT);
+	                labelValorMayor.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	                panelContenido.add(labelValorMayor);
 	            }
 	        }
@@ -595,52 +598,51 @@ public class PanelInicio extends JPanel {
 	        return panel;
 	    }
 	
-	    private JPanel crearPanelGrafico() {
-	        JPanel panel = new JPanel(new BorderLayout(10, 10));
-	        panel.setBackground(Color.WHITE);
-	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+	private JPanel crearPanelGrafico() {
+		JPanel panel = new JPanel(new BorderLayout(10, 10));
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        // Encabezado
-	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	        panelEncabezado.setBackground(Color.WHITE);
-	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
+		// Encabezado
+		JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelEncabezado.setBackground(Color.WHITE);
+		panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("Producto destacado");
-	        labelTitulo.setFont(SUBTITULO_GRANDE);
-	        labelTitulo.setForeground(AZUL_OSCURO);
-	        panelEncabezado.add(labelTitulo);
+		JLabel labelTitulo = new JLabel("Producto destacado");
+		labelTitulo.setFont(SUBTITULO_GRANDE);
+		labelTitulo.setForeground(AZUL_OSCURO);
+		panelEncabezado.add(labelTitulo);
+    
+		// Contenido
+		JPanel panelContenido = new JPanel();
+		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+		panelContenido.setBackground(Color.WHITE);
+		panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
 	        
-	        // Contenido
-	        JPanel panelContenido = new JPanel();
-	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
-	        panelContenido.setBackground(Color.WHITE);
-	        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
-	        
-	        if (productos == null || productos.isEmpty()) {
-	            JLabel labelVacio = new JLabel("No hay productos disponibles");
-	            labelVacio.setFont(CUERPO_GRANDE);
-	            labelVacio.setForeground(GRIS_CLARO);
-	            labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
-	            panelContenido.add(labelVacio);
-	        } else {
-	        // Información del producto
+		if (productos == null || productos.isEmpty()) {
+			JLabel labelVacio = new JLabel("No hay productos disponibles");
+			labelVacio.setFont(CUERPO_GRANDE);
+			labelVacio.setForeground(GRIS_CLARO);
+			labelVacio.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			panelContenido.add(labelVacio);
+		} else {
 	        JLabel labelNombreProducto = new JLabel();
             labelNombreProducto.setFont(CUERPO_GRANDE);
             labelNombreProducto.setForeground(Color.BLACK);
-            labelNombreProducto.setAlignmentX(Component.LEFT_ALIGNMENT);
+            labelNombreProducto.setAlignmentX(JLabel.LEFT_ALIGNMENT);
             panelContenido.add(labelNombreProducto);
             panelContenido.add(Box.createRigidArea(new Dimension(0, 5)));
             
             JLabel labelPrecioProducto = new JLabel();
             labelPrecioProducto.setFont(SUBTITULO_MEDIO);
             labelPrecioProducto.setForeground(AZUL_OSCURO);
-            labelPrecioProducto.setAlignmentX(Component.LEFT_ALIGNMENT);
+            labelPrecioProducto.setAlignmentX(JLabel.LEFT_ALIGNMENT);
             panelContenido.add(labelPrecioProducto);
             panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
             
             JLabel labelVariacionProducto = new JLabel();
             labelVariacionProducto.setFont(CUERPO_PEQUENO);
-            labelVariacionProducto.setAlignmentX(Component.LEFT_ALIGNMENT);
+            labelVariacionProducto.setAlignmentX(JLabel.LEFT_ALIGNMENT);
             panelContenido.add(labelVariacionProducto);
             
             JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -660,11 +662,11 @@ public class PanelInicio extends JPanel {
             panelBoton.add(botonSiguiente);
             panelContenido.add(panelBoton);
 
-            //Actualizar producto
+            // Actualizar producto
             Runnable actualizarProducto = () -> {
                 ProductoFinanciero productoActual = productos.get(indiceProductoActual);
 
-                //Aleatorio
+                // Aleatorio
                 Random random = new Random();
                 double variacion = (random.nextDouble() * 6) - 3;
 
@@ -745,59 +747,208 @@ public class PanelInicio extends JPanel {
 	    return panel;
 	}
 	    
-	    private JPanel crearPanelDetallesProducto() {
-	        JPanel panel = new JPanel(new BorderLayout(15, 15));
-	        panel.setBackground(Color.WHITE);
-	        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+	private JPanel crearPanelDetallesProducto() {
+		JPanel panel = new JPanel(new BorderLayout(15, 15));
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 	        
-	        ProductoFinanciero producto = productos.get(indiceProductoActual);
+		ProductoFinanciero producto = productos.get(indiceProductoActual);
 	        
-	        JLabel labelTitulo = new JLabel(producto.getNombre());
-	        labelTitulo.setFont(TITULO_GRANDE);
-	        labelTitulo.setForeground(AZUL_OSCURO);
+		JLabel labelTitulo = new JLabel(producto.getNombre());
+		labelTitulo.setFont(TITULO_GRANDE);
+		labelTitulo.setForeground(AZUL_OSCURO);
 	        
-	        JPanel panelInfo = new JPanel();
-	        panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
-	        panelInfo.setBackground(Color.WHITE);
-	        panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		JPanel panelInfo = new JPanel();
+		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
+		panelInfo.setBackground(Color.WHITE);
+		panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 	        
-	        JLabel labelPrecio = new JLabel("Precio actual: " + formatoMoneda.format(producto.getValorUnitario()) + " €");
-	        labelPrecio.setFont(SUBTITULO_GRANDE);
-	        labelPrecio.setForeground(Color.BLACK);
-	        labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JLabel labelPrecio = new JLabel("Precio actual: " + formatoMoneda.format(producto.getValorUnitario()) + " €");
+		labelPrecio.setFont(SUBTITULO_GRANDE);
+		labelPrecio.setForeground(Color.BLACK);
+		labelPrecio.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	        
-	        JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero. " +
-	        "Aquí se mostraría datos históricos, análisis técnico, recomendaciones y más detalles relevantes.");
-	        areaDescripcion.setFont(CUERPO_GRANDE);
-	        areaDescripcion.setForeground(GRIS_MEDIO);
-	        areaDescripcion.setLineWrap(true);
-	        areaDescripcion.setWrapStyleWord(true);
-	        areaDescripcion.setEditable(false);
-	        areaDescripcion.setOpaque(false);
-	        areaDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
-	        areaDescripcion.setBorder(null);
+		JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero.");
+		areaDescripcion.setFont(CUERPO_GRANDE);
+		areaDescripcion.setForeground(GRIS_MEDIO);
+		areaDescripcion.setLineWrap(true);
+		areaDescripcion.setWrapStyleWord(true);
+		areaDescripcion.setEditable(false);
+		areaDescripcion.setOpaque(false);
+		areaDescripcion.setAlignmentX(JTextArea.LEFT_ALIGNMENT);
+		areaDescripcion.setBorder(null);
 	        
-	        panelInfo.add(labelPrecio);
-	        panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
-	        panelInfo.add(areaDescripcion);
+		panelInfo.add(labelPrecio);
+		panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
+		panelInfo.add(areaDescripcion);
+		panelInfo.add(Box.createRigidArea(new Dimension(0, 20)));
 	        
-	        panel.add(labelTitulo, BorderLayout.NORTH);
-	        panel.add(panelInfo, BorderLayout.CENTER);
+		// Panel con gráfico de evolución
+		JPanel panelGrafico = crearGrafico(producto);
+		panelGrafico.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+		panelInfo.add(panelGrafico);
+
 	        
-	        return panel;
+		panel.add(labelTitulo, BorderLayout.NORTH);
+		panel.add(panelInfo, BorderLayout.CENTER);
+	        
+		return panel;
 	    }
-                       
+	
+	private JPanel crearGrafico (ProductoFinanciero producto) {
+		JPanel panel = new JPanel(new BorderLayout(10,10));
+		panel.setBackground(Color.WHITE);
+		Border borde1 = BorderFactory.createLineBorder(MAIN_BORDE,1);
+		Border borde2 = BorderFactory.createEmptyBorder(15,15,15,15);
+		panel.setBorder(BorderFactory.createCompoundBorder(borde1,borde2));
+		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
+		
+		JLabel labelTitulo = new JLabel("Evolución del producto durante los últimos 7 días");
+		labelTitulo.setFont(SUBTITULO_MEDIO);
+		labelTitulo.setForeground(AZUL_OSCURO);
+		
+        Random random = new Random();
+        double precioBase = producto.getValorUnitario();
+        List<Double> valores = new ArrayList<>();
+        List<String> fechas = new ArrayList<>();
+        
+        for (int i = 6; i >= 0; i--) {
+            double variacion = (random.nextDouble() * 0.1 - 0.05);
+            double precio = precioBase * (1 + variacion);
+            valores.add(precio);
+            
+            LocalDate fecha = LocalDate.now().minusDays(i);
+            fechas.add(fecha.format(DateTimeFormatter.ofPattern("dd/MM")));
+        }
+        
+        // Gráfico
+        JPanel panelGrafico = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                dibujarGrafico(g, valores, fechas);
+            }
+        };
+        panelGrafico.setBackground(Color.WHITE);
+        panelGrafico.setPreferredSize(new Dimension(700, 250));
+        
+        panel.add(labelTitulo, BorderLayout.NORTH);
+        panel.add(panelGrafico, BorderLayout.CENTER);
+
+		
+		return panel;
+	}
+	
+	
+	//IAG (ChatGPT)
+	//SIN CAMBIOS
+    private void dibujarGrafico(Graphics g, List<Double> valores, List<String> fechas) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        int width = g2d.getClipBounds().width;
+        int height = g2d.getClipBounds().height;
+        int padding = 40;
+        int ejeYPadding = 60;
+        int labelPadding = 20;
+        
+        // Calcular valores máximos y mínimos
+        double maxValor = valores.stream().max(Double::compare).orElse(100.0);
+        double minValor = valores.stream().min(Double::compare).orElse(0.0);
+        double rango = maxValor - minValor;
+        if (rango == 0) rango = 1;
+        
+        // Dibujar ejes
+        g2d.setColor(GRIS_CLARO);
+        g2d.drawLine(ejeYPadding, height - padding, width - padding, height - padding); // Eje X
+        g2d.drawLine(ejeYPadding, padding, ejeYPadding, height - padding); // Eje Y
+        
+        // Dibujar líneas de cuadrícula horizontales
+        g2d.setColor(new Color(230, 230, 230));
+        for (int i = 0; i < 5; i++) {
+            int y = padding + (height - 2 * padding) * i / 4;
+            g2d.drawLine(ejeYPadding, y, width - padding, y);
+        }
+        
+        // Dibujar etiquetas del eje Y
+        g2d.setColor(GRIS_MEDIO);
+        g2d.setFont(CUERPO_PEQUENO);
+        for (int i = 0; i < 5; i++) {
+            double valor = maxValor - (rango * i / 4);
+            String label = String.format("%.2f€", valor);
+            int y = padding + (height - 2 * padding) * i / 4;
+            FontMetrics fm = g2d.getFontMetrics();
+            int labelWidth = fm.stringWidth(label);
+            g2d.drawString(label, ejeYPadding - labelWidth - 8, y + fm.getAscent() / 2);
+        }
+        
+        // Dibujar puntos y líneas
+        int espacioX = (width - ejeYPadding - padding) / (valores.size() - 1);
+        
+        // Dibujar la línea
+        g2d.setColor(AZUL_CLARO);
+        g2d.setStroke(new java.awt.BasicStroke(2f));
+        for (int i = 0; i < valores.size() - 1; i++) {
+            int x1 = ejeYPadding  + i * espacioX;
+            int x2 = ejeYPadding  + (i + 1) * espacioX;
+            
+            int y1 = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
+            int y2 = height - padding - (int)((valores.get(i + 1) - minValor) / rango * (height - 2 * padding));
+            
+            g2d.drawLine(x1, y1, x2, y2);
+        }
+        
+        // Dibujar puntos
+        for (int i = 0; i < valores.size(); i++) {
+            int x = ejeYPadding + i * espacioX;
+            int y = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
+            
+            // Punto
+            g2d.setColor(AZUL_OSCURO);
+            g2d.fillOval(x - 4, y - 4, 8, 8);
+            
+            // Borde del punto
+            g2d.setColor(Color.WHITE);
+            g2d.setStroke(new java.awt.BasicStroke(2f));
+            g2d.drawOval(x - 4, y - 4, 8, 8);
+            
+            // Etiqueta fecha
+            g2d.setColor(GRIS_MEDIO);
+            g2d.setFont(CUERPO_PEQUENO);
+            FontMetrics fm = g2d.getFontMetrics();
+            int labelWidth = fm.stringWidth(fechas.get(i));
+            g2d.drawString(fechas.get(i), x - labelWidth / 2, height - padding + labelPadding);
+        }
+        
+        // Dibujar área bajo la curva (efecto de relleno)
+        g2d.setColor(new Color(AZUL_CLARO.getRed(), AZUL_CLARO.getGreen(), AZUL_CLARO.getBlue(), 30));
+        int[] xPoints = new int[valores.size() + 2];
+        int[] yPoints = new int[valores.size() + 2];
+        
+        for (int i = 0; i < valores.size(); i++) {
+            xPoints[i] = ejeYPadding  + i * espacioX;
+            yPoints[i] = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
+        }
+        xPoints[valores.size()] = ejeYPadding + (valores.size() - 1) * espacioX;
+        yPoints[valores.size()] = height - padding;
+        xPoints[valores.size() + 1] = ejeYPadding;
+        yPoints[valores.size() + 1] = height - padding;
+        
+        g2d.fillPolygon(xPoints, yPoints, valores.size() + 2);
+    }
+
+    //END IAG                   
 	
 	private JPanel crearPanelInferior() {
         JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0));
         panel.setBackground(MAIN_FONDO);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         
-        //Algunas estadísticas
+        // Algunas estadísticas
         JPanel tarjetaEstadisticas = crearPanelEstadisticasBasicas();
         panel.add(tarjetaEstadisticas);
         
-        //Algunas acciones
+        // Algunas acciones
         JPanel tarjetaAcciones = crearPanelAccionesBasicas();
         panel.add(tarjetaAcciones);
         
@@ -816,12 +967,12 @@ public class PanelInicio extends JPanel {
         JLabel labelTitulo = new JLabel("Estadísticas:");
         labelTitulo.setFont(SUBTITULO_MEDIO);
         labelTitulo.setForeground(AZUL_OSCURO);
-        labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelTitulo.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         
         panel.add(labelTitulo);
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        //Últimas operaciones
+        // Últimas operaciones
         int numOperaciones = 0;
         for (Cartera c : usuario.getCarteras()) {
             if (c.getOperaciones() != null) {
@@ -832,7 +983,7 @@ public class PanelInicio extends JPanel {
         panel.add(panelOperaciones);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         
-        //Cursos activos
+        // Cursos activos
         if (usuario instanceof Particular) {
             Particular particular = (Particular) usuario;
             int numCursos = particular.getCursos().size();
@@ -852,19 +1003,19 @@ public class PanelInicio extends JPanel {
             BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         
-        JLabel labelTitulo = new JLabel("Continua aprendiendo e invirtiendo");
+        JLabel labelTitulo = new JLabel("Continúe aprendiendo e invirtiendo");
         labelTitulo.setFont(SUBTITULO_MEDIO);
         labelTitulo.setForeground(AZUL_OSCURO);
-        labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelTitulo.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         panel.add(labelTitulo);
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        JButton btnNuevaCartera = new JButton("Nueva Cartera");
+        JButton btnNuevaCartera = new JButton("Nueva cartera");
         btnNuevaCartera.setFont(CUERPO_MEDIO);
         btnNuevaCartera.setBackground(AZUL_CLARO);
         btnNuevaCartera.setForeground(Color.WHITE);
         btnNuevaCartera.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-        btnNuevaCartera.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnNuevaCartera.setAlignmentX(JButton.LEFT_ALIGNMENT);
         btnNuevaCartera.setBorderPainted(false);
         btnNuevaCartera.setContentAreaFilled(false);
         btnNuevaCartera.setOpaque(true);
@@ -875,12 +1026,12 @@ public class PanelInicio extends JPanel {
         
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JButton btnNuevoCurso = new JButton("Explorar Cursos");
+        JButton btnNuevoCurso = new JButton("Explorar cursos");
         btnNuevoCurso.setFont(CUERPO_MEDIO);
         btnNuevoCurso.setBackground(AZUL_CLARO);
         btnNuevoCurso.setForeground(Color.WHITE);
         btnNuevoCurso.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-        btnNuevoCurso.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnNuevoCurso.setAlignmentX(JButton.LEFT_ALIGNMENT);
         btnNuevoCurso.setBorderPainted(false);
         btnNuevoCurso.setContentAreaFilled(false);
         btnNuevoCurso.setOpaque(true);

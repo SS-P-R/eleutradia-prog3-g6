@@ -188,7 +188,7 @@ public class VentanaPrincipal extends JFrame {
 	    });
 
 	    //IAG (ChatGPT)
-	    //SIN MODIFICAR
+	    //SIN CAMBIOS
 	    // Guarda la referencia para resetBotones()
 	    switch (nombrePanel) {
 	        case "Inicio" -> botonInicio = boton;

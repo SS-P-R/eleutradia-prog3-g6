@@ -48,7 +48,6 @@ public class MarketDataService implements Runnable {
         while (running.get()) {
             try {
                 List<ProductoFinanciero> productos = db.getProductos();
-                System.out.println(productos);
                 for (ProductoFinanciero p : productos) {
                     if (p.getTicker() == null || p.getTicker().equals("UNKNOWN") || p.getTipoProducto() == null) {
                         continue;
@@ -104,7 +103,7 @@ public class MarketDataService implements Runnable {
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.out.println("[MarketDataService] Hilo interrumpido. Cerrando.");
+                System.out.println("[MarketDataService] Motor detenido.");
             } catch (Exception e) {
                 System.err.println("[MarketDataService] Error crítico: " + e.getMessage());
                 e.printStackTrace();

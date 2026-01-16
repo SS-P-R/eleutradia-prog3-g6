@@ -8,8 +8,10 @@ import java.awt.Image;
 import java.math.BigDecimal;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -26,7 +28,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.ClaseActivo;
 import es.deusto.eleutradia.domain.Gestora;
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
@@ -57,6 +61,7 @@ public class PanelExplorar extends JPanel {
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     
+    private EleutradiaDBManager dbManager = new EleutradiaDBManager();
     private List<ProductoFinanciero> productosTotales;
     private List<ProductoFinanciero> productosFiltrados;
     
@@ -78,6 +83,12 @@ public class PanelExplorar extends JPanel {
         this.add(panelTabla, BorderLayout.CENTER);
 
         actualizarTabla(productosTotales);
+        Timer timerExplorar = new Timer(5000, e -> {
+            if (this.isVisible()) {
+                sincronizarPreciosYRefrescar();
+            }
+        });
+        timerExplorar.start();
     }
     
     private void cargarProductos() {
@@ -470,7 +481,7 @@ public class PanelExplorar extends JPanel {
             if (iconoGestora != null) {
                 Image imagen = iconoGestora.getImage();
                 //IAG (ChatGPT)
-                //ADAPTADO: Calcular proporción de anchura deseada
+                //ADAPTADO (Calcular proporción de anchura deseada)
                 int altoDeseado = 25;
                 int anchoOriginal = imagen.getWidth(null);
                 int altoOriginal = imagen.getHeight(null);
@@ -511,6 +522,28 @@ public class PanelExplorar extends JPanel {
             };
             modeloTabla.addRow(fila);
         }
+    }
+    
+    private void sincronizarPreciosYRefrescar() {
+        if (dbManager == null) dbManager = new EleutradiaDBManager();
+        List<ProductoFinanciero> productosActualizados = dbManager.getProductos();
+        Map<String, Double> mapaPrecios = new HashMap<>();
+        
+        for (ProductoFinanciero p : productosActualizados) {
+            if (p.getTicker() != null) {
+                mapaPrecios.put(p.getTicker(), p.getValorUnitario());
+            }
+        }
+        if (productosTotales != null) {
+            for (ProductoFinanciero pLocal : productosTotales) {
+                if (pLocal.getTicker() != null && mapaPrecios.containsKey(pLocal.getTicker())) {
+                    
+                    double nuevoPrecio = mapaPrecios.get(pLocal.getTicker());
+                    pLocal.actualizarPrecioYRentabilidad(nuevoPrecio);
+                }
+            }
+        }
+        aplicarFiltros();
     }
     
     private String formatearRentabilidad(BigDecimal rentabilidad) {
