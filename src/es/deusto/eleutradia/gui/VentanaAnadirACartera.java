@@ -523,7 +523,7 @@ public class VentanaAnadirACartera extends JDialog {
             }
             
             // Recargar carteras actualizadas desde la BD
-            List<Cartera> carterasActualizadas = dbManager.getCarterasPorUsuario(idUsuario, esParticular);
+            List<Cartera> carterasActualizadas = dbManager.getCarterasByUsuario(idUsuario, esParticular);
             
             usuario.getCarteras().clear();
             for (Cartera c : carterasActualizadas) {

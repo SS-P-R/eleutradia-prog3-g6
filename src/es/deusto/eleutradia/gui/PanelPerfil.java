@@ -422,7 +422,7 @@ public class PanelPerfil extends JPanel {
             	UITema.mostrarError(dialog, "La contraseña no puede estar vacía.", "Error");
                 return;
             }
-            boolean exito = dbManager.editarContrasena(usuario, passNueva);
+            boolean exito = dbManager.updateContrasena(usuario, passNueva);
 
             if (exito) {
                 usuario.setPassword(passNueva); 
@@ -511,7 +511,7 @@ public class PanelPerfil extends JPanel {
             usuario.setEmail(txtEmail.getText());
             usuario.setTelefono(txtTelefono.getText());
             usuario.setDireccion(txtDireccion.getText());
-            boolean exito = dbManager.editarPerfil(usuario);
+            boolean exito = dbManager.updateUsuario(usuario);
             
             if (exito) {
             	UITema.mostrarInfo(dialog,

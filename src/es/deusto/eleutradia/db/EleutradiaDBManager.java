@@ -966,20 +966,66 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
-	public boolean actualizarSaldoCartera(int idCartera, double nuevoSaldo) {
-	    String sql = "UPDATE Cartera SET saldo = ? WHERE id = ?";
+	// MÉTODOS DE INSCRIPCIÓN A CURSOS
+	
+	public boolean inscribirParticularACurso(String dni, int idCurso) {
+	    // Verificar si ya está inscrito
+	    String sqlCheck = "SELECT COUNT(*) FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmtCheck = conn.prepareStatement(sqlCheck)) {
+	        
+	        pstmtCheck.setString(1, dni);
+	        pstmtCheck.setInt(2, idCurso);
+	        ResultSet rs = pstmtCheck.executeQuery();
+	        
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            System.out.println("El usuario ya está inscrito a este curso");
+	            rs.close();
+	            return false; // Ya inscrito
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al verificar inscripción: %s%n", ex.getMessage());
+	        return false;
+	    }
+	    
+	    // Si no está inscrito, inscribir
+	    String sql = "INSERT INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	        
-	        pstmt.setDouble(1, nuevoSaldo);
-	        pstmt.setInt(2, idCartera);
-	        
+	        pstmt.setString(1, dni);
+	        pstmt.setInt(2, idCurso);
 	        int rows = pstmt.executeUpdate();
+	        
+	        System.out.println("Usuario inscrito correctamente al curso");
 	        return rows > 0;
 	        
 	    } catch (Exception ex) {
-	        System.err.format("Error al actualizar saldo de cartera: %s%n", ex.getMessage());
+	        System.err.format("Error al inscribir particular a curso: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+
+	public boolean desinscribirParticularDeCurso(String dni, int idCurso) {
+	    String sql = "DELETE FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, dni);
+	        pstmt.setInt(2, idCurso);
+	        int rows = pstmt.executeUpdate();
+	        
+	        return rows > 0;
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al desinscribir particular de curso: %s%n", ex.getMessage());
 	        ex.printStackTrace();
 	    }
 	    
@@ -1291,75 +1337,9 @@ public class EleutradiaDBManager {
 	    return cursos;
 	}
 	
-	// MÉTODOS DE INSCRIPCIÓN A CURSOS
-	
-	public boolean inscribirParticularACurso(String dni, int idCurso) {
-	    // Verificar si ya está inscrito
-	    String sqlCheck = "SELECT COUNT(*) FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
-	    
-	    try (Connection conn = DriverManager.getConnection(connectionUrl);
-	         PreparedStatement pstmtCheck = conn.prepareStatement(sqlCheck)) {
-	        
-	        pstmtCheck.setString(1, dni);
-	        pstmtCheck.setInt(2, idCurso);
-	        ResultSet rs = pstmtCheck.executeQuery();
-	        
-	        if (rs.next() && rs.getInt(1) > 0) {
-	            System.out.println("El usuario ya está inscrito a este curso");
-	            rs.close();
-	            return false; // Ya inscrito
-	        }
-	        rs.close();
-	        
-	    } catch (Exception ex) {
-	        System.err.format("Error al verificar inscripción: %s%n", ex.getMessage());
-	        return false;
-	    }
-	    
-	    // Si no está inscrito, inscribir
-	    String sql = "INSERT INTO ParticularCurso (dniParticular, idCurso) VALUES (?, ?)";
-	    
-	    try (Connection conn = DriverManager.getConnection(connectionUrl);
-	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        
-	        pstmt.setString(1, dni);
-	        pstmt.setInt(2, idCurso);
-	        int rows = pstmt.executeUpdate();
-	        
-	        System.out.println("Usuario inscrito correctamente al curso");
-	        return rows > 0;
-	        
-	    } catch (Exception ex) {
-	        System.err.format("Error al inscribir particular a curso: %s%n", ex.getMessage());
-	        ex.printStackTrace();
-	    }
-	    
-	    return false;
-	}
-
-	public boolean desinscribirParticularDeCurso(String dni, int idCurso) {
-	    String sql = "DELETE FROM ParticularCurso WHERE dniParticular = ? AND idCurso = ?";
-	    
-	    try (Connection conn = DriverManager.getConnection(connectionUrl);
-	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        
-	        pstmt.setString(1, dni);
-	        pstmt.setInt(2, idCurso);
-	        int rows = pstmt.executeUpdate();
-	        
-	        return rows > 0;
-	        
-	    } catch (Exception ex) {
-	        System.err.format("Error al desinscribir particular de curso: %s%n", ex.getMessage());
-	        ex.printStackTrace();
-	    }
-	    
-	    return false;
-	}
-	
 	// MÉTODOS DE CONSULTA CONDICIONALES
 	
-	public List<Curso> getCursosPorParticular(String dni) {
+	public List<Curso> getCursosByParticular(String dni) {
 	    List<Curso> cursos = new ArrayList<>();
 	    String sql = """
 	        SELECT c.* FROM Curso c
@@ -1399,7 +1379,7 @@ public class EleutradiaDBManager {
 	    return cursos;
 	}
 	
-	public List<Cartera> getCarterasPorUsuario(String idUsuario, boolean esParticular) {
+	public List<Cartera> getCarterasByUsuario(String idUsuario, boolean esParticular) {
 	    List<Cartera> carteras = new ArrayList<>();
 	    String campo = esParticular ? "idParticular" : "idEmpresa";
 	    String sql = "SELECT * FROM Cartera WHERE " + campo + " = ?";
@@ -1428,7 +1408,7 @@ public class EleutradiaDBManager {
 	
 	// MÉTODOS DE ACTUALIZACIÓN
 	
-	public boolean actualizarPosicion(Posicion posicion, int idCartera) {
+	public boolean updatePosicion(Posicion posicion, int idCartera) {
 	    String sqlCheck = "SELECT id FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
 	    String sqlUpdate = "UPDATE Posicion SET cantidadTotal = ?, precioMedio = ?, divisaReferencia = ? WHERE id = ?";
 	    String sqlInsert = "INSERT INTO Posicion (prodFinanciero, cantidadTotal, precioMedio, divisaReferencia, cartera) VALUES (?, ?, ?, ?, ?)";
@@ -1477,7 +1457,7 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
-	public boolean eliminarPosicion(int idProducto, int idCartera) {
+	public boolean deletePosicion(int idProducto, int idCartera) {
 	    String sql = "DELETE FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -1496,9 +1476,27 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
-	// MÉTODOS PARA EDITAR EL PERFIL Y LA CONTRASEÑA
-	
-	public boolean editarPerfil(Object usuario) {
+	public boolean updateSaldoCartera(int idCartera, double nuevoSaldo) {
+	    String sql = "UPDATE Cartera SET saldo = ? WHERE id = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setDouble(1, nuevoSaldo);
+	        pstmt.setInt(2, idCartera);
+	        
+	        int rows = pstmt.executeUpdate();
+	        return rows > 0;
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error al actualizar saldo de cartera: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+		
+	public boolean updateUsuario(Object usuario) {
 	    String sql;
 	    String id;
 	    String email, telefono, direccion;
@@ -1538,7 +1536,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 
-	public boolean editarContrasena(Object usuario, String nuevaPassword) {
+	public boolean updateContrasena(Object usuario, String nuevaPassword) {
 	    String sql;
 	    String id;
 
@@ -1664,12 +1662,12 @@ public class EleutradiaDBManager {
 	        (perfilId > 0) ? getPerfilFinancieroById(perfilId, conn) : null
 	    );
 	    
-	    List<Curso> cursos = getCursosPorParticular(dni);
+	    List<Curso> cursos = getCursosByParticular(dni);
 	    for (Curso curso : cursos) {
 	        p.addCurso(curso);
 	    }
 	    
-	    List<Cartera> carteras = getCarterasPorUsuario(dni, true);
+	    List<Cartera> carteras = getCarterasByUsuario(dni, true);
 	    for (Cartera cartera : carteras) {
 	        p.addCartera(cartera);
 	    }
@@ -1694,7 +1692,7 @@ public class EleutradiaDBManager {
 	        (perfilId > 0) ? getPerfilFinancieroById(perfilId, conn) : null
 	    );
 	    
-	    List<Cartera> carteras = getCarterasPorUsuario(nif, false);
+	    List<Cartera> carteras = getCarterasByUsuario(nif, false);
 	    for (Cartera cartera : carteras) {
 	        e.addCartera(cartera);
 	    }

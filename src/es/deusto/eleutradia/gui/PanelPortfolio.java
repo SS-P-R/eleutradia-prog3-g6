@@ -581,7 +581,7 @@ public class PanelPortfolio extends JPanel {
         }
         
         // Obtener las carteras actualizadas
-        List<Cartera> carterasActualizadas = dbManager.getCarterasPorUsuario(idUsuario, esParticular);
+        List<Cartera> carterasActualizadas = dbManager.getCarterasByUsuario(idUsuario, esParticular);
         
         // Actualizar la lista de carteras del usuario
         usuario.getCarteras().clear();
