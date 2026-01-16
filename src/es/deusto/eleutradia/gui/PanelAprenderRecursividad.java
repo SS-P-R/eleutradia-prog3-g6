@@ -60,7 +60,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		
 		panelResultado = new JPanel(new BorderLayout());
 		panelResultado.setBackground(MAIN_FONDO);
-		add(panelResultado, BorderLayout.SOUTH);
+		add(panelResultado, BorderLayout.CENTER);
 		
 		JPanel panelBotones = crearPanelBotones();
 		add(panelBotones, BorderLayout.EAST);
