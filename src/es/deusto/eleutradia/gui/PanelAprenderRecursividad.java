@@ -371,23 +371,19 @@ public class PanelAprenderRecursividad extends JPanel {
 			                texto = userObject.toString();
 			            }
 
-			            // 🔹 RUTA
 			            if (texto.startsWith("Ruta ")) {
 			                setForeground(AZUL_OSCURO);
 			                setFont(SUBTITULO_MEDIO);
 			                setIcon(iconRuta);
 
-			            // 🔹 PASO
 			            } else if (texto.startsWith("Paso ")) {
 			                setForeground(AZUL_CLARO);
 			                setIcon(iconPaso);
 
-			            // 🔹 NIVEL INICIAL
 			            } else if (texto.startsWith("Nivel inicial")) {
 			                setForeground(VERDE_CLARO);
 			                setIcon(null);
 
-			            // 🔹 CABECERA
 			            } else if (texto.startsWith("Rutas encontradas")) {
 			                setForeground(GRIS_OSCURO);
 			                setFont(SUBTITULO_GRANDE);
@@ -533,6 +529,8 @@ public class PanelAprenderRecursividad extends JPanel {
 		this.accionVolver = listener;
 	}
 	
+	//IAG (Gemini)
+	//NO MODIFICADO
 	private static class RutaInfo {
 		String nombre;
 		List<Curso> cursos;
@@ -547,5 +545,6 @@ public class PanelAprenderRecursividad extends JPanel {
 			return nombre;
 		}
 	}
+	//END IAG
 
 }
