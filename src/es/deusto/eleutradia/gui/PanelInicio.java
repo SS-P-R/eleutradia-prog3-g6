@@ -190,7 +190,7 @@ public class PanelInicio extends JPanel{
         	      + "que continúa beneficiándose del entorno actual de tipos de interés."));
         
 		//IAG (ChatGPT)
-        JLabel labelNoticia = new JLabel("<html><div style='width:300px'>" + noticias.get(0) + "</div></html>");
+        JLabel labelNoticia = new JLabel("<html><div style='width:300px'>" + noticias.get(0).getTitular() + "</div></html>");
         //END-IAG
         labelNoticia.setFont(CUERPO_PEQUENO);
         labelNoticia.setForeground(GRIS_CLARO);
@@ -207,7 +207,7 @@ public class PanelInicio extends JPanel{
                     indice[0] = (indice[0] + 1) % noticias.size();
                     SwingUtilities.invokeLater(() -> {
             			//IAG (ChatGPT)
-                        labelNoticia.setText("<html><div style='width:300px'>" + noticias.get(0).getTitular() + "</div></html>");
+                        labelNoticia.setText("<html><div style='width:300px'>" + noticias.get(indice[0]).getTitular() + "</div></html>");
                         //END-IAG
                     });
                 }
