@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import es.deusto.eleutradia.domain.Particular;
@@ -92,23 +93,48 @@ public class VentanaPrincipal extends JFrame {
 		this.panelExplorar = new PanelExplorar(usuario);
 		this.panelPortfolio = new PanelPortfolio(usuario);
 		this.panelPerfil = new PanelPerfil(usuario, this);
-        if (usuario instanceof Particular) {
-        	Particular pUsuario = (Particular) usuario;
-        	this.panelAprender = new PanelAprender(pUsuario);
-        } else {
-        	this.panelAprender = (PanelAprender) new JPanel();
-        	this.panelAprender.add(new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares."), JLabel.CENTER);
-        	JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
-        	botonCrearParticular.setBackground(Color.WHITE);
-        	botonCrearParticular.setForeground(AZUL_CLARO);
-        	botonCrearParticular.setBorderPainted(false);
-        	botonCrearParticular.setFocusPainted(false);
-        	panelAprender.add(botonCrearParticular);
-        	botonCrearParticular.addActionListener(e -> {
-    			new VentanaInicial().setVisible(true);
-    			dispose();
-        	});
-        }
+		if (usuario instanceof Particular) {
+		    Particular pUsuario = (Particular) usuario;
+		    this.panelAprender = new PanelAprender(pUsuario);
+		} else {
+		    // Crear un panel simple para empresas (sin cast incorrecto)
+		    this.panelAprender = new PanelAprender(null) {
+		        // Panel vacío personalizado
+		        {
+		            this.removeAll();
+		            this.setLayout(new java.awt.BorderLayout());
+		            this.setBackground(MAIN_FONDO);
+		            
+		            JPanel panelCentro = new JPanel();
+		            panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
+		            panelCentro.setBackground(Color.WHITE);
+		            panelCentro.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+		            
+		            JLabel mensaje = new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares.");
+		            mensaje.setFont(SUBTITULO_GRANDE);
+		            mensaje.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		            panelCentro.add(mensaje);
+		            panelCentro.add(Box.createVerticalStrut(20));
+		            
+		            JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
+		            botonCrearParticular.setBackground(AZUL_CLARO);
+		            botonCrearParticular.setForeground(Color.WHITE);
+		            botonCrearParticular.setBorderPainted(false);
+		            botonCrearParticular.setContentAreaFilled(false);
+		            botonCrearParticular.setOpaque(true);
+		            botonCrearParticular.setFocusPainted(false);
+		            botonCrearParticular.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		            botonCrearParticular.addActionListener(e -> {
+		                new VentanaInicial().setVisible(true);
+		                ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+		            });
+		            botonCrearParticular.addMouseListener(myAdapterAzul);
+		            panelCentro.add(botonCrearParticular);
+		            
+		            this.add(panelCentro, java.awt.BorderLayout.CENTER);
+		        }
+		    };
+		}
         
         contenedor.add(this.panelInicio, "Inicio");
         contenedor.add(this.panelExplorar, "Explorar");
