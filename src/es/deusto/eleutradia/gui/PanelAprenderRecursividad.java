@@ -2,12 +2,16 @@ package es.deusto.eleutradia.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -26,10 +30,37 @@ public class PanelAprenderRecursividad extends JPanel {
 		setBackground(MAIN_FONDO);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
+		JPanel panelTitulo = crearPanelTitulo();
+		add(panelTitulo, BorderLayout.NORTH);
+		
 		JPanel panelBotones = crearPanelBotones();
 		add(panelBotones, BorderLayout.EAST);
 
 	}
+	
+	private JPanel crearPanelTitulo() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(MAIN_FONDO);
+		panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		
+		JLabel labelTitulo = new JLabel("La forma mas rápida para Aprender");
+		labelTitulo.setFont(TITULO_GRANDE);
+		labelTitulo.setForeground(AZUL_OSCURO);
+		labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JLabel labelSubtitulo = new JLabel("Encuentra el camino óptimo desde PRINCIPIANTE hasta tu nivel objetivo");
+		labelSubtitulo.setFont(CUERPO_GRANDE);
+		labelSubtitulo.setForeground(GRIS_CLARO);
+		labelSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		panel.add(labelTitulo);
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(labelSubtitulo);
+		
+		return panel;
+	}
+
 	
 	
 	private JPanel crearPanelBotones() {
