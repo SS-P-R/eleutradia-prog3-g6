@@ -33,6 +33,9 @@ public class PanelAprenderRecursividad extends JPanel {
 		JPanel panelTitulo = crearPanelTitulo();
 		add(panelTitulo, BorderLayout.NORTH);
 		
+		JPanel panelCentral = crearPanelFormulario();
+		add(panelCentral, BorderLayout.CENTER);
+		
 		JPanel panelBotones = crearPanelBotones();
 		add(panelBotones, BorderLayout.EAST);
 
@@ -60,7 +63,23 @@ public class PanelAprenderRecursividad extends JPanel {
 		
 		return panel;
 	}
-
+	
+	private JPanel crearPanelFormulario() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(BorderFactory.createCompoundBorder(
+		        BorderFactory.createLineBorder(MAIN_BORDE, 1),
+		        BorderFactory.createEmptyBorder(30, 30, 30, 30)
+		));
+		JLabel labelNivel = new JLabel("Selecciona tu nivel objetivo:");
+		labelNivel.setFont(SUBTITULO_MEDIO);
+		labelNivel.setForeground(Color.BLACK);
+		labelNivel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(labelNivel);
+		
+		return panel;
+	}
 	
 	
 	private JPanel crearPanelBotones() {
