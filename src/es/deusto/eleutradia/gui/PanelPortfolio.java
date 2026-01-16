@@ -82,6 +82,7 @@ public class PanelPortfolio extends JPanel {
         add(configurarScrollPane(mainPanel), BorderLayout.CENTER);
         add(crearPanelBotones(), BorderLayout.SOUTH);
     }
+    
     private JPanel crearPanelSelector() {
         JPanel panel = crearCard();
         panel.setLayout(new BorderLayout(15, 10));
@@ -328,7 +329,7 @@ public class PanelPortfolio extends JPanel {
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(CUERPO_PEQUENO);
         panel.add(lblTitulo, BorderLayout.NORTH);
-        
+        	
         return panel;
     }
     
@@ -356,6 +357,9 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones = new JTable(tableModel);
         aplicarEstiloTabla(tablePosiciones);
         
+        // Iluminar filas al pasar el cursor por encima
+        aplicarEfectoHover(tablePosiciones);
+        
         tablePosiciones.getColumnModel().getColumn(0).setPreferredWidth(150); // Producto
         tablePosiciones.getColumnModel().getColumn(1).setPreferredWidth(50);  // Cantidad
         tablePosiciones.getColumnModel().getColumn(2).setPreferredWidth(80);  // Precio Medio
@@ -363,6 +367,9 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.getColumnModel().getColumn(4).setPreferredWidth(60);  // Valor
         tablePosiciones.getColumnModel().getColumn(5).setPreferredWidth(70);  // Rentabilidad
         tablePosiciones.getColumnModel().getColumn(6).setPreferredWidth(60);  // Porcentaje
+        
+        DefaultTableCellRenderer leftRenderer = new UITema.RendererHover();
+        tablePosiciones.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
         
         DefaultTableCellRenderer centerRenderer = new UITema.CenterRendererHover();
         tablePosiciones.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
@@ -411,22 +418,16 @@ public class PanelPortfolio extends JPanel {
         lblTitulo.setFont(SUBTITULO_GRANDE);
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(lblTitulo, BorderLayout.NORTH);
+        
         operationsListModel = new DefaultListModel<>();
         JList<String> operationsList = new JList<>(operationsListModel);
-        aplicarEstiloLista(operationsList);
+        
+        operationsList.setCellRenderer(new UITema.ListRendererHover());        
+        aplicarEfectoHover(operationsList);
         
         panel.add(configurarScrollPane(operationsList), BorderLayout.CENTER);
         
         return panel;
-    }
-    
-    private void aplicarEstiloLista(JList<?> lista) {
-        lista.setFont(CUERPO_PEQUENO);
-        lista.setFixedCellHeight(30);
-        lista.setBackground(MAIN_PANEL);
-        lista.setSelectionBackground(new Color(200, 210, 240));
-        lista.setSelectionForeground(Color.BLACK);
-        lista.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
     
     private JPanel crearPanelBotones() {

@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.time.Year;
 import java.util.ArrayList;
@@ -307,24 +305,8 @@ public class PanelExplorar extends JPanel {
         tablaProductos.getTableHeader().setReorderingAllowed(false); // No mover columnas
         tablaProductos.getTableHeader().setResizingAllowed(false);   // No redimensionar columnas
         
-        // Iluminar fila al pasar el cursor por encima
-        tablaProductos.addMouseMotionListener(new MouseAdapter() {
-            private int lastRow = -1;
-            
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                int row = tablaProductos.rowAtPoint(e.getPoint());
-                if (row != lastRow) {
-                    lastRow = row;
-                    tablaProductos.repaint();
-                }
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                tablaProductos.repaint();
-            }
-        });
+        // Iluminar filas al pasar el cursor por encima
+        aplicarEfectoHover(tablaProductos);
         
         // Ajustar anchos de columna
         tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(120); // Nombre
