@@ -39,6 +39,7 @@ import static es.deusto.eleutradia.gui.style.UITema.*;
 public class VentanaVerOpciones extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
+	
     private Usuario usuario;
     private List<ProductoFinanciero> productosDisponibles;
     private JComboBox<String> comboCarteras;

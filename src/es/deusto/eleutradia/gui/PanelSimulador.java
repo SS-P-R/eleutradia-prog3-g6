@@ -23,6 +23,7 @@ import static es.deusto.eleutradia.gui.style.UITema.*;
 public class PanelSimulador extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    
     private static final int NUM_PRODUCTOS = 4;
     private static final double SALDO_INICIAL = 1000.0;
 
