@@ -153,9 +153,29 @@ public class PanelAprender extends JPanel {
 		panelProgreso.add(Box.createRigidArea(new Dimension(0, 10)));
 		panelProgreso.add(progressBarRacha);
 		
-		JPanel panelBotonAbajo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel panelBotonAbajo = new JPanel();
+		panelBotonAbajo.setLayout(new BoxLayout(panelBotonAbajo, BoxLayout.Y_AXIS));
 		panelBotonAbajo.setBackground(MAIN_PANEL);
-		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
+		
+		// Botón de práctica de recursividad
+		JButton botonRecursividad = new JButton("Práctica Recursividad");
+		botonRecursividad.setMinimumSize(new Dimension(140, 45));
+		botonRecursividad.setPreferredSize(new Dimension(140, 45));
+		botonRecursividad.setMaximumSize(new Dimension(140, 45));
+		botonRecursividad.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonRecursividad.setBackground(VERDE_CLARO);
+		botonRecursividad.setForeground(Color.WHITE);
+		botonRecursividad.setFont(SUBTITULO_MEDIO);
+		botonRecursividad.setBorderPainted(false);
+		botonRecursividad.setContentAreaFilled(false);
+		botonRecursividad.setOpaque(true);
+		botonRecursividad.setFocusPainted(false);
+		
+		botonRecursividad.addMouseListener(myAdapterVerde);
+		
+		panelBotonAbajo.add(botonRecursividad);
+		panelBotonAbajo.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		JButton botonSimulacion = new JButton("Simulación");
 		botonSimulacion.setPreferredSize(new Dimension(150, 45));
