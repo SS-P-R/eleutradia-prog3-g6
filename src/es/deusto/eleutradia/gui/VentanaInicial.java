@@ -662,7 +662,7 @@ public class VentanaInicial extends JFrame {
 	    		return;
 	    	}
 	    	
-	    	Particular p = dbManager.buscarParticular(id, password);
+	    	Particular p = dbManager.getParticularByDatos(id, password);
 	        if (p != null) {
 	            new VentanaPrincipal(p);
 	            dispose();
@@ -676,7 +676,7 @@ public class VentanaInicial extends JFrame {
 	    		return;
 	    	}
 	    	
-	    	Empresa e = dbManager.buscarEmpresa(id, password);
+	    	Empresa e = dbManager.getEmpresaByDatos(id, password);
 	        if (e != null) {
 	            new VentanaPrincipal(e);
 	            dispose();

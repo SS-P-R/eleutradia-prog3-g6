@@ -1034,7 +1034,7 @@ public class EleutradiaDBManager {
 	
 	// MÉTODOS DE AUTENTICACIÓN Y REGISTRO
 	
-	public Particular buscarParticular(String dni, String password) {
+	public Particular getParticularByDatos(String dni, String password) {
 	    String sql = "SELECT * FROM Particular WHERE dni = ? AND password = ?";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
@@ -1059,7 +1059,7 @@ public class EleutradiaDBManager {
 	    return null;
 	}
 	
-	public Empresa buscarEmpresa(String nif, String password) {
+	public Empresa getEmpresaByDatos(String nif, String password) {
 	    String sql = "SELECT * FROM Empresa WHERE nif = ? AND password = ?";
 	    
 	    try (Connection conn = DriverManager.getConnection(connectionUrl);
