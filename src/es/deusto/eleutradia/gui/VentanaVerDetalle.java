@@ -42,13 +42,15 @@ public class VentanaVerDetalle extends JDialog {
     
     private ProductoFinanciero producto;
     private JLabel labelPrecio;
-    private Map<PlazoRentabilidad, JLabel> mapaLabelsRentabilidad = new HashMap<>();
+    private Map<String, JLabel> mapaLabelsRentabilidad = new HashMap<>();
     private Timer timerDetalle;
-    private EleutradiaDBManager dbManager = new EleutradiaDBManager();
+    private EleutradiaDBManager dbManager;
 
-    public VentanaVerDetalle(JFrame padre, ProductoFinanciero producto, boolean modal) {
+    public VentanaVerDetalle(JFrame padre, ProductoFinanciero producto, EleutradiaDBManager dbManager, boolean modal) {
         super(padre, "Detalles del producto", modal);
         this.producto = producto;
+        this.dbManager = dbManager; 
+        
         this.setSize(700, 600);
         this.setLocationRelativeTo(padre);
         this.setBackground(MAIN_FONDO);
@@ -57,7 +59,6 @@ public class VentanaVerDetalle extends JDialog {
         this.construirVentana();
         iniciarActualizacionEnTiempoReal();
         this.setVisible(true);
-        
     }
 
     private void construirVentana() {
@@ -279,7 +280,8 @@ public class VentanaVerDetalle extends JDialog {
         
         int fila = 0;
         for (Map.Entry<PlazoRentabilidad, BigDecimal> entry : producto.getRentabilidades().entrySet()) {
-            String plazo = entry.getKey().getDefinicion();
+        	String plazo = entry.getKey().getDefinicion();
+            String plazoTexto = entry.getKey().getDefinicion().trim(); 
             BigDecimal valor = entry.getValue();
             gbc.gridx = 0; gbc.gridy = fila; gbc.weightx = 0.4;
             panelGrid.add(crearLabelInfo(plazo + ":"), gbc);
@@ -303,9 +305,9 @@ public class VentanaVerDetalle extends JDialog {
                 labelValor.setText("No disponible");
                 labelValor.setForeground(GRIS_OSCURO);
             }
-            mapaLabelsRentabilidad.put(entry.getKey(), labelValor);
-            panelGrid.add(labelValor, gbc);
+            mapaLabelsRentabilidad.put(plazoTexto, labelValor); 
             
+            panelGrid.add(labelValor, gbc);
             fila++;
         }
         
@@ -347,18 +349,38 @@ public class VentanaVerDetalle extends JDialog {
         label.setForeground(AZUL_OSCURO);
         return label;
     }
+    
+    private void actualizarEstiloLabelRentabilidad(JLabel label, BigDecimal valor) {
+        if (valor != null) {
+            String textoValor = String.format("%.2f%%", valor);
+            
+            if (valor.compareTo(BigDecimal.ZERO) > 0) {
+                label.setForeground(VERDE_OSCURO);
+                label.setText("▲ " + textoValor);
+            } else if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                label.setForeground(ROJO_CLARO);
+                label.setText("▼ " + textoValor);
+            } else {
+                label.setForeground(GRIS_OSCURO);
+                label.setText("― " + textoValor);
+            }
+        } else {
+            label.setText("No disponible");
+            label.setForeground(GRIS_OSCURO);
+        }
+    }
 
     private void iniciarActualizacionEnTiempoReal() {
         timerDetalle = new Timer(2000, e -> {
-            
             List<ProductoFinanciero> todos = dbManager.getProductos(); 
             
+            boolean encontrado = false;
             for (ProductoFinanciero pFresco : todos) {
                 if (pFresco.getId() == this.producto.getId()) {
+                    encontrado = true;
                     double precioNuevo = pFresco.getValorUnitario();
                     if (labelPrecio != null) {
                         labelPrecio.setText(String.format("%.2f %s", precioNuevo, pFresco.getDivisa()));
-                        
                         if (precioNuevo > this.producto.getValorUnitario()) {
                             labelPrecio.setForeground(new Color(0, 180, 0));
                         } else if (precioNuevo < this.producto.getValorUnitario()) {
@@ -366,28 +388,21 @@ public class VentanaVerDetalle extends JDialog {
                         }
                     }
                     for (Map.Entry<PlazoRentabilidad, BigDecimal> entry : pFresco.getRentabilidades().entrySet()) {
-                        PlazoRentabilidad plazo = entry.getKey();
+                        // Usamos trim() para asegurar match con la clave guardada
+                        String clavePlazo = entry.getKey().getDefinicion().trim(); 
                         BigDecimal valorNuevo = entry.getValue();
                         
-                        if (mapaLabelsRentabilidad.containsKey(plazo)) {
-                            JLabel labelAActualizar = mapaLabelsRentabilidad.get(plazo);
-                            String textoValor = String.format("%.2f%%", valorNuevo);
-                            
-                            if (valorNuevo.compareTo(BigDecimal.ZERO) > 0) {
-                                labelAActualizar.setForeground(VERDE_OSCURO); 
-                                labelAActualizar.setText("▲ " + textoValor);
-                            } else if (valorNuevo.compareTo(BigDecimal.ZERO) < 0) {
-                                labelAActualizar.setForeground(ROJO_CLARO);
-                                labelAActualizar.setText("▼ " + textoValor);
-                            } else {
-                                labelAActualizar.setForeground(GRIS_OSCURO);
-                                labelAActualizar.setText("― " + textoValor);
-                            }
+                        if (mapaLabelsRentabilidad.containsKey(clavePlazo)) {
+                            JLabel labelAActualizar = mapaLabelsRentabilidad.get(clavePlazo);
+                            actualizarEstiloLabelRentabilidad(labelAActualizar, valorNuevo);
                         }
                     }
                     this.producto = pFresco;
                     break;
                 }
+            }
+            if (!encontrado) {
+                System.out.println("Warning: Producto ID " + this.producto.getId() + " no encontrado en el manager actual.");
             }
         });
         timerDetalle.start();

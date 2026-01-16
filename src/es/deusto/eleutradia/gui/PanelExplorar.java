@@ -572,7 +572,7 @@ public class PanelExplorar extends JPanel {
             //IAG (ChatGPT)
             //SIN CAMBIOS
             JFrame framePadre = (JFrame) SwingUtilities.getWindowAncestor(this);
-            new VentanaVerDetalle(framePadre, producto, true);
+            new VentanaVerDetalle(framePadre, producto, this.dbManager, true);
             //END IAG
         } else {
         	UITema.mostrarWarning(this,
