@@ -185,13 +185,18 @@ public class PanelInicio extends JPanel {
         	      + "Estos resultados refuerzan la percepción positiva del sector, "
         	      + "que continúa beneficiándose del entorno actual de tipos de interés."));
         
-		//IAG (ChatGPT)
-        JLabel labelNoticia = new JLabel("<html><div style='width:300px'>" + noticias.get(0).getTitular() + "</div></html>");
-        //END-IAG
-        labelNoticia.setFont(CUERPO_PEQUENO);
-        labelNoticia.setForeground(GRIS_CLARO);
-        labelNoticia.setAlignmentX(Component.LEFT_ALIGNMENT);
-        labelNoticia.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JTextArea areaNoticia = new JTextArea();
+        areaNoticia.setText(noticias.get(0).getTitular());
+        areaNoticia.setFont(CUERPO_PEQUENO);
+        areaNoticia.setForeground(GRIS_CLARO);
+        areaNoticia.setLineWrap(true);
+        areaNoticia.setWrapStyleWord(true);
+        areaNoticia.setEditable(false);
+        areaNoticia.setOpaque(false);
+        areaNoticia.setAlignmentX(Component.LEFT_ALIGNMENT);
+        areaNoticia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        areaNoticia.setBorder(null);
+        areaNoticia.setBackground(GRIS_SUAVE);
         
         final int[] indice = {0};
         
@@ -202,9 +207,7 @@ public class PanelInicio extends JPanel {
                     Thread.sleep(5000);
                     indice[0] = (indice[0] + 1) % noticias.size();
                     SwingUtilities.invokeLater(() -> {
-            			//IAG (ChatGPT)
-                        labelNoticia.setText("<html><div style='width:300px'>" + noticias.get(indice[0]).getTitular() + "</div></html>");
-                        //END-IAG
+                        areaNoticia.setText(noticias.get(indice[0]).getTitular());
                     });
                 }
             } catch (InterruptedException e) {
@@ -214,7 +217,7 @@ public class PanelInicio extends JPanel {
         hiloNoticias.setDaemon(true);
         hiloNoticias.start();
         
-        labelNoticia.addMouseListener(new MouseAdapter() {
+        areaNoticia.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mostrarVentanaNoticia(noticias.get(indice[0]));
@@ -222,18 +225,18 @@ public class PanelInicio extends JPanel {
             
             @Override
             public void mouseEntered(MouseEvent e) {
-                labelNoticia.setForeground(AZUL_CLARO);
+            	areaNoticia.setForeground(AZUL_CLARO);
             }
             
             @Override
             public void mouseExited(MouseEvent e) {
-                labelNoticia.setForeground(GRIS_CLARO);
+            	areaNoticia.setForeground(GRIS_CLARO);
             }
         });
         
         panel.add(labelTitulo);
         panel.add(Box.createRigidArea(new Dimension(0, 8)));
-        panel.add(labelNoticia);
+        panel.add(areaNoticia);
         
         return panel;
     }
@@ -763,17 +766,20 @@ public class PanelInicio extends JPanel {
 	        labelPrecio.setForeground(Color.BLACK);
 	        labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
 	        
-	        //IAG (Chatgpt)
-	        JLabel labelDescripcion = new JLabel("<html><div style='width:700px'>Información detallada del producto financiero. " +
-	            "Aquí se mostraría datos históricos, análisis técnico, recomendaciones y más detalles relevantes.</div></html>");
-	        //END-IAG
-	        labelDescripcion.setFont(CUERPO_GRANDE);
-	        labelDescripcion.setForeground(GRIS_MEDIO);
-	        labelDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero. " +
+	        "Aquí se mostraría datos históricos, análisis técnico, recomendaciones y más detalles relevantes.");
+	        areaDescripcion.setFont(CUERPO_GRANDE);
+	        areaDescripcion.setForeground(GRIS_MEDIO);
+	        areaDescripcion.setLineWrap(true);
+	        areaDescripcion.setWrapStyleWord(true);
+	        areaDescripcion.setEditable(false);
+	        areaDescripcion.setOpaque(false);
+	        areaDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        areaDescripcion.setBorder(null);
 	        
 	        panelInfo.add(labelPrecio);
 	        panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
-	        panelInfo.add(labelDescripcion);
+	        panelInfo.add(areaDescripcion);
 	        
 	        panel.add(labelTitulo, BorderLayout.NORTH);
 	        panel.add(panelInfo, BorderLayout.CENTER);
