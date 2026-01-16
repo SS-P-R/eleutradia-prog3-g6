@@ -29,7 +29,7 @@ public class MarketDataService implements Runnable {
         running.set(true);
         workerThread = new Thread(this, "Hilo-MarketData");
         workerThread.start();
-        System.out.println(">>> Motor de Datos de Mercado: INICIADO 🚀");
+        System.out.println(">>> Motor de Datos de Mercado: INICIADO");
     }
 
     public void stopService() {
