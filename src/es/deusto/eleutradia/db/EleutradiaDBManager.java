@@ -1357,7 +1357,7 @@ public class EleutradiaDBManager {
 	    return false;
 	}
 	
-	// MÉTODOS DE CONSULTA DE CURSOS Y CARTERAS POR USUARIO
+	// MÉTODOS DE CONSULTA CONDICIONALES
 	
 	public List<Curso> getCursosPorParticular(String dni) {
 	    List<Curso> cursos = new ArrayList<>();
@@ -1425,6 +1425,8 @@ public class EleutradiaDBManager {
 	    
 	    return carteras;
 	}
+	
+	// MÉTODOS DE ACTUALIZACIÓN
 	
 	public boolean actualizarPosicion(Posicion posicion, int idCartera) {
 	    String sqlCheck = "SELECT id FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
@@ -1564,7 +1566,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	// MÉTODOS AUXILIARES DE RECUPERACIÓN
+	// MÉTODOS DE CONSULTA AUXILIARES
 	
 	private int getPaisIdByNombre(Connection conn, String nombrePais) {
 	    String sql = "SELECT id FROM Pais WHERE nombre = ?;";
@@ -1618,30 +1620,6 @@ public class EleutradiaDBManager {
 	    }
 	    
 	    return -1;
-	}
-	
-	private Curso getCursoById(int cursoId, Connection conn) throws Exception {
-	    String sql = "SELECT * FROM Curso WHERE id = ?";
-	    
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	        pstmt.setInt(1, cursoId);
-	        ResultSet rs = pstmt.executeQuery();
-	        
-	        if (rs.next()) {
-	            Curso curso = new Curso(
-	                rs.getInt("id"),
-	                rs.getString("nombre"),
-	                NivelConocimiento.values()[rs.getInt("nivelRecomendado")]
-	            );
-	            rs.close();
-	            return curso;
-	        }
-	        rs.close();
-	    }catch (Exception ex) {
-	        System.err.format("Error buscando curso '%s': %s%n", cursoId, ex.getMessage());
-		}
-	    
-	    return null;
 	}
 
 	private int getModuloIdByNombre(Connection conn, String nombreModulo) {
@@ -1941,7 +1919,7 @@ public class EleutradiaDBManager {
 	
 	private Map<PlazoRentabilidad, BigDecimal> getRentabilidadesByProductoId(
 	        int productoId, Connection conn) throws Exception {
-	    Map<PlazoRentabilidad, BigDecimal> rentabilidades = new java.util.HashMap<>();
+	    Map<PlazoRentabilidad, BigDecimal> rentabilidades = new HashMap<>();
 	    String sql = "SELECT plazoRentabilidad, porcentaje FROM Rentabilidad WHERE productoFinanciero = ?";
 	    
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

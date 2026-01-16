@@ -42,7 +42,9 @@ import es.deusto.eleutradia.main.MainEleutradia;
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
 public class VentanaAnadirACartera extends JDialog {
+	
 	private static final long serialVersionUID = 1L;
+	
 	private EleutradiaDBManager dbManager;
 	private Usuario usuario;
 	private ProductoFinanciero producto;

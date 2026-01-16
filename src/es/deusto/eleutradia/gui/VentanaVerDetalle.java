@@ -35,6 +35,7 @@ import static es.deusto.eleutradia.gui.style.UITema.*;
 public class VentanaVerDetalle extends JDialog {
 
     private static final long serialVersionUID = 1L;
+    
     private ProductoFinanciero producto;
 
     public VentanaVerDetalle(JFrame padre, ProductoFinanciero producto, boolean modal) {
