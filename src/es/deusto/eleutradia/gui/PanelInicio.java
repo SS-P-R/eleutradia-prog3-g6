@@ -55,7 +55,6 @@ public class PanelInicio extends JPanel {
 	private DecimalFormat formatoPorcentaje = new DecimalFormat("0.00");
 	private JFrame frame;
 	
-    //private static final Dimension TAMANO_TARJETA_PEQUENA = new Dimension(140, 100);
     private List<ProductoFinanciero> productos;
     private int indiceProductoActual = 0;
 
@@ -76,15 +75,15 @@ public class PanelInicio extends JPanel {
 			productos = new ArrayList<>();
 		}
 		
-        // Panel superior, bienvenida
+        // Panel superior: bienvenida
         JPanel panelSuperior = crearPanelBienvenida();
         this.add(panelSuperior, BorderLayout.NORTH);
         
-        // Panel central, info general
+        // Panel central: información general
         JPanel panelCentral = crearPanelCentral();
         this.add(configurarScrollPane(panelCentral), BorderLayout.CENTER);
         
-        // Panel lateral, estadísticas
+        // Panel lateral: estadísticas
         JPanel panelInferior = crearPanelInferior();
         this.add(panelInferior, BorderLayout.SOUTH);
 	}
@@ -97,7 +96,7 @@ public class PanelInicio extends JPanel {
             BorderFactory.createEmptyBorder(20, 25, 20, 25)
         ));
         
-        // Panel saludo
+        // Panel de saludo
         JPanel panelSaludo = new JPanel();
         panelSaludo.setLayout(new BoxLayout(panelSaludo, BoxLayout.Y_AXIS));
         panelSaludo.setBackground(Color.WHITE);
@@ -127,7 +126,7 @@ public class PanelInicio extends JPanel {
         panelSaludo.add(Box.createRigidArea(new Dimension(0, 3)));
         panelSaludo.add(labelSubtitulo);
         
-        // Panel noticias
+        // Panel de noticias
         JPanel panelNoticias = crearPanelNoticias();
         
         panel.add(panelSaludo, BorderLayout.WEST);
@@ -205,7 +204,7 @@ public class PanelInicio extends JPanel {
         
         final int[] indice = {0};
         
-        //Hilo noticias
+        // Hilo de noticias
         Thread hiloNoticias = new Thread(() -> {
             try {
                 while (true) {
@@ -277,13 +276,12 @@ public class PanelInicio extends JPanel {
         ventana.setVisible(true);
     }
     
-    
 	private JPanel crearPanelCentral() {
         JPanel panel = new JPanel(new GridLayout(2, 2, 20, 20));
         panel.setBackground(MAIN_FONDO);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         
-        //Cargar paneles
+        // Cargar paneles
         panel.add(crearPanelCursos());
         panel.add(crearPanelLecciones());
         panel.add(crearPanelCartera());
@@ -297,7 +295,7 @@ public class PanelInicio extends JPanel {
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
         
-        //Encabezado
+        // Encabezado
         JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelEncabezado.setBackground(Color.WHITE);
         panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -307,7 +305,7 @@ public class PanelInicio extends JPanel {
         labelTitulo.setForeground(AZUL_OSCURO);
         panelEncabezado.add(labelTitulo);
         
-        //Contenido
+        // Contenido
         JPanel panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         panelContenido.setBackground(Color.WHITE);
@@ -364,7 +362,7 @@ public class PanelInicio extends JPanel {
         panel.add(panelEncabezado, BorderLayout.NORTH);
         panel.add(panelContenido, BorderLayout.CENTER);
         
-        //Focus y click
+        // Focus y click
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -391,7 +389,7 @@ public class PanelInicio extends JPanel {
 	    panel.setBackground(Color.WHITE);
 	    panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	    //Encabezado
+	    // Encabezado
 	    JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    panelEncabezado.setBackground(Color.WHITE);
 	    panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -401,7 +399,7 @@ public class PanelInicio extends JPanel {
 	    labelTitulo.setForeground(AZUL_OSCURO);
 	    panelEncabezado.add(labelTitulo);
 	        
-	    //Contenido
+	    // Contenido
 	    JPanel panelContenido = new JPanel();
 	    panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 	    panelContenido.setBackground(Color.WHITE);
@@ -422,7 +420,7 @@ public class PanelInicio extends JPanel {
 	    	} else {
 	               	List<Leccion> leccionesRecomendadas = new ArrayList<>();
 	                
-	                //Primeras lecciones de cursos no inscritos
+	                // Primeras lecciones de cursos no inscritos
 	                for (Curso curso : todosCursos) {
 	                    if (!cursosActivos.contains(curso)) {
 	                        if (curso.getModulos() != null && !curso.getModulos().isEmpty()) {
@@ -437,7 +435,7 @@ public class PanelInicio extends JPanel {
 	                
 	                if (leccionesRecomendadas.isEmpty()) {
 	                    if (cursosActivos.size() == todosCursos.size()) {
-	                        JLabel labelFelicitacion = new JLabel("¡Ha completado todos los cursos! 🏆");
+	                        JLabel labelFelicitacion = new JLabel("¡Ha completado todos los cursos!");
 	                        labelFelicitacion.setFont(CUERPO_GRANDE);
 	                        labelFelicitacion.setForeground(VERDE_CLARO);
 	                        labelFelicitacion.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -478,7 +476,7 @@ public class PanelInicio extends JPanel {
 	        panel.add(panelEncabezado, BorderLayout.NORTH);
 	        panel.add(panelContenido, BorderLayout.CENTER);
 	        
-	        //Focus y click
+	        // Focus y click
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
@@ -505,7 +503,7 @@ public class PanelInicio extends JPanel {
 	        panel.setBackground(Color.WHITE);
 	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        //Encabezado
+	        // Encabezado
 	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	        panelEncabezado.setBackground(Color.WHITE);
 	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -515,7 +513,7 @@ public class PanelInicio extends JPanel {
 	        labelTitulo.setForeground(AZUL_OSCURO);
 	        panelEncabezado.add(labelTitulo);
 	        
-	        //Contenido
+	        // Contenido
 	        JPanel panelContenido = new JPanel();
 	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 	        panelContenido.setBackground(Color.WHITE);
@@ -553,12 +551,12 @@ public class PanelInicio extends JPanel {
 	                }
 	            }
 	            
-	            //Valor total
+	            // Valor total
 	            JPanel panelTotal = crearFilaEstadistica("Valor total:", formatoMoneda.format(valorTotal) + " €", AZUL_OSCURO);
 	            panelContenido.add(panelTotal);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            //Número de carteras
+	            // Número de carteras
 	            JPanel panelNumero = crearFilaEstadistica("Carteras:", String.valueOf(carteras.size()), GRIS_MEDIO);
 	            panelContenido.add(panelNumero);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
@@ -579,7 +577,7 @@ public class PanelInicio extends JPanel {
 	        panel.add(panelEncabezado, BorderLayout.NORTH);
 	        panel.add(panelContenido, BorderLayout.CENTER);
 	        
-	        //Focus y click
+	        // Focus y click
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
@@ -606,7 +604,7 @@ public class PanelInicio extends JPanel {
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-		//Encabezado
+		// Encabezado
 		JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelEncabezado.setBackground(Color.WHITE);
 		panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -616,7 +614,7 @@ public class PanelInicio extends JPanel {
 		labelTitulo.setForeground(AZUL_OSCURO);
 		panelEncabezado.add(labelTitulo);
     
-		//Contenido
+		// Contenido
 		JPanel panelContenido = new JPanel();
 		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 		panelContenido.setBackground(Color.WHITE);
@@ -665,11 +663,11 @@ public class PanelInicio extends JPanel {
             panelBoton.add(botonSiguiente);
             panelContenido.add(panelBoton);
 
-            //Actualizar producto
+            // Actualizar producto
             Runnable actualizarProducto = () -> {
                 ProductoFinanciero productoActual = productos.get(indiceProductoActual);
 
-                //Aleatorio
+                // Aleatorio
                 Random random = new Random();
                 double variacion = (random.nextDouble() * 6) - 3;
 
@@ -786,9 +784,9 @@ public class PanelInicio extends JPanel {
 		panelInfo.add(areaDescripcion);
 		panelInfo.add(Box.createRigidArea(new Dimension(0, 20)));
 	        
-		//Panel con gráfico de evolución
+		// Panel con gráfico de evolución
 		JPanel panelGrafico = crearGrafico(producto);
-		panelGrafico.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelGrafico.setAlignmentX(JPanel.LEFT_ALIGNMENT);
 		panelInfo.add(panelGrafico);
 
 	        
@@ -824,7 +822,7 @@ public class PanelInicio extends JPanel {
             fechas.add(fecha.format(DateTimeFormatter.ofPattern("dd/MM")));
         }
         
-        //Gráfico
+        // Gráfico
         JPanel panelGrafico = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -844,6 +842,7 @@ public class PanelInicio extends JPanel {
 	
 	
 	//IAG (ChatGPT)
+	//SIN CAMBIOS
     private void dibujarGrafico(Graphics g, List<Double> valores, List<String> fechas) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -939,18 +938,18 @@ public class PanelInicio extends JPanel {
         g2d.fillPolygon(xPoints, yPoints, valores.size() + 2);
     }
 
-    //END-IAG                   
+    //END IAG                   
 	
 	private JPanel crearPanelInferior() {
         JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0));
         panel.setBackground(MAIN_FONDO);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         
-        //Algunas estadísticas
+        // Algunas estadísticas
         JPanel tarjetaEstadisticas = crearPanelEstadisticasBasicas();
         panel.add(tarjetaEstadisticas);
         
-        //Algunas acciones
+        // Algunas acciones
         JPanel tarjetaAcciones = crearPanelAccionesBasicas();
         panel.add(tarjetaAcciones);
         
@@ -974,7 +973,7 @@ public class PanelInicio extends JPanel {
         panel.add(labelTitulo);
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        //Últimas operaciones
+        // Últimas operaciones
         int numOperaciones = 0;
         for (Cartera c : usuario.getCarteras()) {
             if (c.getOperaciones() != null) {
@@ -985,7 +984,7 @@ public class PanelInicio extends JPanel {
         panel.add(panelOperaciones);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         
-        //Cursos activos
+        // Cursos activos
         if (usuario instanceof Particular) {
             Particular particular = (Particular) usuario;
             int numCursos = particular.getCursos().size();
@@ -1005,14 +1004,14 @@ public class PanelInicio extends JPanel {
             BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         
-        JLabel labelTitulo = new JLabel("Continua aprendiendo e invirtiendo");
+        JLabel labelTitulo = new JLabel("Continúe aprendiendo e invirtiendo");
         labelTitulo.setFont(SUBTITULO_MEDIO);
         labelTitulo.setForeground(AZUL_OSCURO);
         labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(labelTitulo);
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        JButton btnNuevaCartera = new JButton("Nueva Cartera");
+        JButton btnNuevaCartera = new JButton("Nueva cartera");
         btnNuevaCartera.setFont(CUERPO_MEDIO);
         btnNuevaCartera.setBackground(AZUL_CLARO);
         btnNuevaCartera.setForeground(Color.WHITE);
@@ -1028,7 +1027,7 @@ public class PanelInicio extends JPanel {
         
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JButton btnNuevoCurso = new JButton("Explorar Cursos");
+        JButton btnNuevoCurso = new JButton("Explorar cursos");
         btnNuevoCurso.setFont(CUERPO_MEDIO);
         btnNuevoCurso.setBackground(AZUL_CLARO);
         btnNuevoCurso.setForeground(Color.WHITE);
