@@ -538,17 +538,14 @@ public class PanelInicio extends JPanel {
 	        } else {
 	            double valorTotal = 0;
 	            Cartera carteraMayor = null;
-	            double valorMaximo = 0;
 	            
 	            for (Cartera c : carteras) {
-	                double saldo = c.getSaldo();
-	                valorTotal += saldo;
-	                
-	                if (carteraMayor == null || saldo > valorMaximo) {
-	                    valorMaximo = saldo;
-	                    carteraMayor = c;
-	                }
+	                valorTotal += c.getSaldo();
 	            }
+	            
+	            carteraMayor = encontrarCarteraMayor(carteras);
+	            double valorMaximo = (carteraMayor != null) ? carteraMayor.getSaldo() : 0;
+
 	            
 	            // Valor total
 	            JPanel panelTotal = crearFilaEstadistica("Valor total:", formatoMoneda.format(valorTotal) + " €", AZUL_OSCURO);
@@ -1062,5 +1059,32 @@ public class PanelInicio extends JPanel {
         
         return panel;
     }
-
+    
+	/**
+	 * Encontrar la cartera con mayor saldo
+	 */
+	private Cartera encontrarCarteraMayor(List<Cartera> carteras) {
+		if (carteras == null || carteras.isEmpty()) {
+			return null;
+		}
+		return encontrarCarteraMayorRecursivo(carteras, 0, null, Double.MIN_VALUE);
+	}
+	
+	private Cartera encontrarCarteraMayorRecursivo(List<Cartera> carteras, int indice, 
+            Cartera mayorActual, double saldoMayor) {
+		// Caso base
+		if (indice >= carteras.size()) {
+		return mayorActual;
+		}
+		
+		Cartera actual = carteras.get(indice);
+		double saldoActual = actual.getSaldo();
+		
+		//Caso recursivo
+		if (saldoActual > saldoMayor) {
+			return encontrarCarteraMayorRecursivo(carteras, indice + 1, actual, saldoActual);
+		} else {
+			return encontrarCarteraMayorRecursivo(carteras, indice + 1, mayorActual, saldoMayor);
+		}
+	}
 }
