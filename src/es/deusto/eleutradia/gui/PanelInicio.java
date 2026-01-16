@@ -859,11 +859,38 @@ public class PanelInicio extends JPanel{
         labelTitulo.setFont(SUBTITULO_MEDIO);
         labelTitulo.setForeground(AZUL_OSCURO);
         labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
         panel.add(labelTitulo);
         panel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        //TODO
+        JButton btnNuevaCartera = new JButton("Nueva Cartera");
+        btnNuevaCartera.setFont(CUERPO_MEDIO);
+        btnNuevaCartera.setBackground(AZUL_CLARO);
+        btnNuevaCartera.setForeground(Color.WHITE);
+        btnNuevaCartera.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        btnNuevaCartera.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnNuevaCartera.setBorderPainted(false);
+        btnNuevaCartera.setContentAreaFilled(false);
+        btnNuevaCartera.setOpaque(true);
+        btnNuevaCartera.setFocusPainted(false);
+        btnNuevaCartera.addMouseListener(myAdapterAzul);
+        btnNuevaCartera.addActionListener(e -> ventanaPrincipal.mostrarPanel("Portfolio"));
+        panel.add(btnNuevaCartera);
+        
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JButton btnNuevoCurso = new JButton("Explorar Cursos");
+        btnNuevoCurso.setFont(CUERPO_MEDIO);
+        btnNuevoCurso.setBackground(AZUL_CLARO);
+        btnNuevoCurso.setForeground(Color.WHITE);
+        btnNuevoCurso.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        btnNuevoCurso.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnNuevoCurso.setBorderPainted(false);
+        btnNuevoCurso.setContentAreaFilled(false);
+        btnNuevoCurso.setOpaque(true);
+        btnNuevoCurso.setFocusPainted(false);
+        btnNuevoCurso.addMouseListener(myAdapterAzul);
+        btnNuevoCurso.addActionListener(e -> ventanaPrincipal.mostrarPanel("Aprender"));
+        panel.add(btnNuevoCurso);
         
         return panel;
     }
