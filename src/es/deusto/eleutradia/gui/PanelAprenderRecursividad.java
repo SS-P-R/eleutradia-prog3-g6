@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -21,6 +22,7 @@ public class PanelAprenderRecursividad extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
+	private JComboBox<String> comboNivelObjetivo;
 	private JButton btnVolver;
 	private ActionListener accionVolver;
 	
@@ -65,6 +67,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	}
 	
 	private JPanel crearPanelFormulario() {
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);
@@ -72,11 +75,25 @@ public class PanelAprenderRecursividad extends JPanel {
 		        BorderFactory.createLineBorder(MAIN_BORDE, 1),
 		        BorderFactory.createEmptyBorder(30, 30, 30, 30)
 		));
+		
 		JLabel labelNivel = new JLabel("Selecciona tu nivel objetivo:");
 		labelNivel.setFont(SUBTITULO_MEDIO);
 		labelNivel.setForeground(Color.BLACK);
 		labelNivel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(labelNivel);
+
+		panel.add(Box.createVerticalStrut(15));
+		
+		comboNivelObjetivo = new JComboBox<>();
+		comboNivelObjetivo.addItem("INTERMEDIO");
+		comboNivelObjetivo.addItem("PROFESIONAL");
+		comboNivelObjetivo.addItem("AVANZADO");
+		comboNivelObjetivo.setFont(CUERPO_GRANDE);
+		comboNivelObjetivo.setPreferredSize(new Dimension(300, 40));
+		comboNivelObjetivo.setMaximumSize(new Dimension(300, 40));
+		comboNivelObjetivo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(comboNivelObjetivo);
+
 		
 		return panel;
 	}
