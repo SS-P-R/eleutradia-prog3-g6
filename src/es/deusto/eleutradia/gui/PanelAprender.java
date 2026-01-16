@@ -172,7 +172,7 @@ public class PanelAprender extends JPanel {
 		botonRecursividad.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//MODIFICADO
+		//ADAPTADO (ActionListener personalizado)
 		botonRecursividad.addActionListener(e -> {
 			JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
 			
@@ -218,7 +218,7 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//MODIFICADO
+		//ADAPTADO (ActionListener personalizado)
 		botonSimulacion.addActionListener(e -> {
             
             JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -387,7 +387,7 @@ public class PanelAprender extends JPanel {
 		
 		try {
 			//IAG (Gemini)
-			//SIN MODIFICAR
+			//SIN CAMBIOS
 			ImageIcon icono = new ImageIcon(getClass().getResource(curso.getRutaImagen()));
 			Image imagen = icono.getImage().getScaledInstance(TAMANO_TARJETA.width, ALTURA_IMAGEN, Image.SCALE_SMOOTH);
 			//END IAG
@@ -579,7 +579,7 @@ public class PanelAprender extends JPanel {
 			    if (yaInscrito) { return; }
 			    
 			    //IAG (Gemini)
-				//SIN MODIFICAR
+				//SIN CAMBIOS
 			    JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
 			    PanelCargaThreads panelCarga = new PanelCargaThreads();
 			    rootPane.setGlassPane(panelCarga);

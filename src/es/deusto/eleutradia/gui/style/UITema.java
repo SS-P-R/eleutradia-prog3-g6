@@ -198,6 +198,9 @@ public class UITema {
             }
         });
     }
+    
+    //IAG (Claude)
+    //ADAPTADO (Personalización de colores y fuentes de diferentes componentes)
 	
     // Método para crear ToolTips personalizados
     private void personalizarTooltips() {
@@ -287,7 +290,7 @@ public class UITema {
     //END IAG
     
     //IAG (Claude)
-    //ADAPTADO: Diseño adaptado al tema oscuro/claro
+    //ADAPTADO (Diseño adaptado al tema claro)
     
     // Método para crear ScrollBars personalizadas
     public static BasicScrollBarUI personalizarScrollBarUI() {
@@ -651,7 +654,8 @@ public class UITema {
     }
 	
 	//IAG (ChatGPT)
-	//SIN MODIFICAR: Método para forzar mayúsculas en campos de texto
+	//SIN CAMBIOS
+	// Método para forzar mayúsculas en campos de texto
 	public static class UppercaseDocumentFilter extends DocumentFilter {
 
 	    @Override
