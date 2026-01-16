@@ -114,7 +114,7 @@ public class PanelInicio extends JPanel{
         labelBienvenida.setForeground(Color.BLACK);
         labelBienvenida.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JLabel labelSubtitulo = new JLabel("Resumen de tu actividad financiera");
+        JLabel labelSubtitulo = new JLabel("Visión general");
         labelSubtitulo.setFont(SUBTITULO_MEDIO);
         labelSubtitulo.setForeground(GRIS_MEDIO);
         labelSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -392,7 +392,7 @@ public class PanelInicio extends JPanel{
 	        panelEncabezado.setBackground(Color.WHITE);
 	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("📖 Próximas Lecciones");
+	        JLabel labelTitulo = new JLabel("Próximas Lecciones");
 	        labelTitulo.setFont(SUBTITULO_GRANDE);
 	        labelTitulo.setForeground(AZUL_OSCURO);
 	        panelEncabezado.add(labelTitulo);
