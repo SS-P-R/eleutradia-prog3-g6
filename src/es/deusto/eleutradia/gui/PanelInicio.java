@@ -850,6 +850,7 @@ public class PanelInicio extends JPanel {
         int width = g2d.getClipBounds().width;
         int height = g2d.getClipBounds().height;
         int padding = 40;
+        int ejeYPadding = 60;
         int labelPadding = 20;
         
         // Calcular valores máximos y mínimos
@@ -860,14 +861,14 @@ public class PanelInicio extends JPanel {
         
         // Dibujar ejes
         g2d.setColor(GRIS_CLARO);
-        g2d.drawLine(padding, height - padding, width - padding, height - padding); // Eje X
-        g2d.drawLine(padding, padding, padding, height - padding); // Eje Y
+        g2d.drawLine(ejeYPadding, height - padding, width - padding, height - padding); // Eje X
+        g2d.drawLine(ejeYPadding, padding, ejeYPadding, height - padding); // Eje Y
         
         // Dibujar líneas de cuadrícula horizontales
         g2d.setColor(new Color(230, 230, 230));
         for (int i = 0; i < 5; i++) {
             int y = padding + (height - 2 * padding) * i / 4;
-            g2d.drawLine(padding, y, width - padding, y);
+            g2d.drawLine(ejeYPadding, y, width - padding, y);
         }
         
         // Dibujar etiquetas del eje Y
@@ -877,18 +878,20 @@ public class PanelInicio extends JPanel {
             double valor = maxValor - (rango * i / 4);
             String label = String.format("%.2f€", valor);
             int y = padding + (height - 2 * padding) * i / 4;
-            g2d.drawString(label, 5, y + 5);
+            FontMetrics fm = g2d.getFontMetrics();
+            int labelWidth = fm.stringWidth(label);
+            g2d.drawString(label, ejeYPadding - labelWidth - 8, y + fm.getAscent() / 2);
         }
         
         // Dibujar puntos y líneas
-        int espacioX = (width - 2 * padding) / (valores.size() - 1);
+        int espacioX = (width - ejeYPadding - padding) / (valores.size() - 1);
         
         // Dibujar la línea
         g2d.setColor(AZUL_CLARO);
         g2d.setStroke(new java.awt.BasicStroke(2f));
         for (int i = 0; i < valores.size() - 1; i++) {
-            int x1 = padding + i * espacioX;
-            int x2 = padding + (i + 1) * espacioX;
+            int x1 = ejeYPadding  + i * espacioX;
+            int x2 = ejeYPadding  + (i + 1) * espacioX;
             
             int y1 = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
             int y2 = height - padding - (int)((valores.get(i + 1) - minValor) / rango * (height - 2 * padding));
@@ -898,7 +901,7 @@ public class PanelInicio extends JPanel {
         
         // Dibujar puntos
         for (int i = 0; i < valores.size(); i++) {
-            int x = padding + i * espacioX;
+            int x = ejeYPadding + i * espacioX;
             int y = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
             
             // Punto
@@ -924,12 +927,12 @@ public class PanelInicio extends JPanel {
         int[] yPoints = new int[valores.size() + 2];
         
         for (int i = 0; i < valores.size(); i++) {
-            xPoints[i] = padding + i * espacioX;
+            xPoints[i] = ejeYPadding  + i * espacioX;
             yPoints[i] = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
         }
-        xPoints[valores.size()] = padding + (valores.size() - 1) * espacioX;
+        xPoints[valores.size()] = ejeYPadding + (valores.size() - 1) * espacioX;
         yPoints[valores.size()] = height - padding;
-        xPoints[valores.size() + 1] = padding;
+        xPoints[valores.size() + 1] = ejeYPadding;
         yPoints[valores.size() + 1] = height - padding;
         
         g2d.fillPolygon(xPoints, yPoints, valores.size() + 2);
