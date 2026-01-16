@@ -61,6 +61,7 @@ public class MarketDataService implements Runnable {
                             volatilidad = 0.08;
                             break;
                         
+                            
                         // ALTO RIESGO 
                         case ACC: // Acciones
                         case PEQ: // Private Equity
