@@ -1431,6 +1431,51 @@ public class EleutradiaDBManager {
 	
 	// MÉTODOS DE ACTUALIZACIÓN
 	
+	//Métodos market service (borrar si no funciona)
+	public List<es.deusto.eleutradia.domain.ProductoFinanciero> obtenerTodosLosProductos() {
+	    List<es.deusto.eleutradia.domain.ProductoFinanciero> lista = new ArrayList<>();
+	    String sql = "SELECT * FROM ProductoFinanciero";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            es.deusto.eleutradia.domain.TipoProducto tipo = es.deusto.eleutradia.domain.TipoProducto.values()[rs.getInt("tipoProducto")];
+
+	             es.deusto.eleutradia.domain.ProductoFinanciero p = new es.deusto.eleutradia.domain.ProductoFinanciero(
+	                rs.getInt("id"),
+	                rs.getString("nombre"),
+	                rs.getString("ticker"),
+	                null, // Plazo
+	                new java.util.HashMap<>(), 
+	                rs.getDouble("valorUnitario"),
+	                tipo,
+	                null, null, null, null 
+	            );
+	            lista.add(p);
+	        }
+	    } catch (Exception ex) {
+	        System.err.println("Error al obtener productos para mercado: " + ex.getMessage());
+	    }
+	    return lista;
+	}
+	public void actualizarPrecioProducto(int idProducto, double nuevoPrecio) {
+	    String sql = "UPDATE ProductoFinanciero SET valorUnitario = ? WHERE id = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        pstmt.setDouble(1, nuevoPrecio);
+	        pstmt.setInt(2, idProducto);
+	        pstmt.executeUpdate();
+	        
+	    } catch (Exception ex) {
+	        System.err.println("Error actualizando precio prod " + idProducto + ": " + ex.getMessage());
+	    }
+	}
+	//Fin de metodos market service
+	
 	public boolean updatePosicion(Posicion posicion, int idCartera) {
 	    String sqlCheck = "SELECT id FROM Posicion WHERE prodFinanciero = ? AND cartera = ?";
 	    String sqlUpdate = "UPDATE Posicion SET cantidadTotal = ?, precioMedio = ?, divisaReferencia = ? WHERE id = ?";
