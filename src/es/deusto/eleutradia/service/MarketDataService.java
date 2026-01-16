@@ -48,6 +48,7 @@ public class MarketDataService implements Runnable {
         while (running.get()) {
             try {
                 List<ProductoFinanciero> productos = db.obtenerTodosLosProductos();
+                System.out.println(productos);
                 for (ProductoFinanciero p : productos) {
                     if (p.getTicker() == null || p.getTicker().equals("UNKNOWN") || p.getTipoProducto() == null) {
                         continue;
