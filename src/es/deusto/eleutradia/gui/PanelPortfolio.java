@@ -436,8 +436,7 @@ public class PanelPortfolio extends JPanel {
         operationsListModel = new DefaultListModel<>();
         JList<String> operationsList = new JList<>(operationsListModel);
         
-        operationsList.setCellRenderer(new UITema.ListRendererHover());        
-        aplicarEfectoHover(operationsList);
+        operationsList.setCellRenderer(new UITema.ListRendererSimple());        
         
         JScrollPane scrollPane = configurarScrollPane(operationsList);
         scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
@@ -560,8 +559,8 @@ public class PanelPortfolio extends JPanel {
         }
         
         // Operaciones recientes
-        operationsListModel.clear();
-        List<Operacion> ops = carteraSeleccionada.getOperaciones();
+        
+    	List<Operacion> ops = carteraSeleccionada.getOperaciones();
         int start = Math.max(0, ops.size() - 10);
         
         List<String> nuevasOperaciones = new ArrayList<>();

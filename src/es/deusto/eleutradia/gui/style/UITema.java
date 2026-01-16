@@ -622,27 +622,30 @@ public class UITema {
                 setForeground(Color.BLACK);
             } else {
                 // Comprobar si el mouse está sobre este item
-                Point mousePos = null;
                 int hoverIndex = -1;
                 
                 try {
-                	mousePos = list.getMousePosition();
-                	if (mousePos != null) {
+                	Point mousePos = list.getMousePosition();
+                	if (mousePos != null  && list.getModel().getSize() > 0) {
                         hoverIndex = list.locationToIndex(mousePos);
                         
                         // Verificar que el índice está dentro del rango
-                        if (hoverIndex < 0 || hoverIndex >= list.getModel().getSize()) {
+                        if (hoverIndex < 0 || hoverIndex >= list.getModel().getSize() || 
+                        		index < 0 || index >= list.getModel().getSize()) {
                             hoverIndex = -1;
-                        }
-                        
-                        // Verificar que el punto realmente está sobre una celda válida
-                        Rectangle cellBounds = list.getCellBounds(hoverIndex, hoverIndex);
-                        if (cellBounds == null || !cellBounds.contains(mousePos)) {
-                            hoverIndex = -1;
+                        } else {
+                            // Verificar que el punto realmente está sobre una celda válida
+                            Rectangle cellBounds = list.getCellBounds(hoverIndex, hoverIndex);
+                            if (cellBounds == null || !cellBounds.contains(mousePos)) {
+                                hoverIndex = -1;
+                            }
                         }
                     }
-                } catch (Exception e) {
+                } catch (ArrayIndexOutOfBoundsException | NullPointerException | IllegalArgumentException e) {
                     // Si ocurre cualquier excepción, ignorar el efecto hover
+                    hoverIndex = -1;
+                } catch (Exception e) {
+                    // Cualquier otra excepción
                     hoverIndex = -1;
                 }
 
@@ -655,6 +658,34 @@ public class UITema {
                     } else {
                         setBackground(MAIN_FONDO);
                     }
+                }
+                setForeground(Color.BLACK);
+            }
+            
+            setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            return this;
+        }
+    }
+    
+    public static class ListRendererSimple extends DefaultListCellRenderer {
+        private static final long serialVersionUID = 1L;
+        
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            
+            setFont(CUERPO_PEQUENO);
+            
+            if (isSelected) {
+                setBackground(new Color(200, 210, 240));
+                setForeground(Color.BLACK);
+            } else {
+                // Colores alternos SIN hover
+                if (index % 2 == 0) {
+                    setBackground(MAIN_PANEL);
+                } else {
+                    setBackground(MAIN_FONDO);
                 }
                 setForeground(Color.BLACK);
             }
