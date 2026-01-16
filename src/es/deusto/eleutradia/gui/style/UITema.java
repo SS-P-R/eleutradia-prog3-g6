@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -152,7 +153,7 @@ public class UITema {
     
     public static void personalizarRadioButton(JRadioButton radio) {
         radio.setFont(CUERPO_MEDIO);
-        radio.setBackground(Color.WHITE);
+        radio.setBackground(MAIN_PANEL);
         radio.setForeground(GRIS_OSCURO);
         radio.setFocusPainted(false);
         radio.setBorderPainted(false);
@@ -178,6 +179,25 @@ public class UITema {
         });
     }
 
+    public static void personalizarCheckBox(JCheckBox check) {
+    	check.setFont(CUERPO_MEDIO);
+    	check.setBackground(MAIN_PANEL);
+    	check.setForeground(GRIS_OSCURO);
+    	check.setFocusPainted(false);
+    	check.setBorderPainted(false);
+    	check.setSelected(true);
+    	check.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                check.setForeground(AZUL_CLARO);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                check.setForeground(GRIS_OSCURO);
+            }
+        });
+    }
 	
     // Método para crear ToolTips personalizados
     private void personalizarTooltips() {

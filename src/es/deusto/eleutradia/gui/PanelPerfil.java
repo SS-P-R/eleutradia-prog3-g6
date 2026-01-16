@@ -235,10 +235,7 @@ public class PanelPerfil extends JPanel {
         JLabel lblNotif = new JLabel("Notificaciones por email");
         lblNotif.setFont(SUBTITULO_MEDIO);
         JCheckBox checkNotif = new JCheckBox("Activar");
-        checkNotif.setFont(CUERPO_PEQUENO);
-        checkNotif.setSelected(true);
-        checkNotif.setBackground(MAIN_PANEL);
-        checkNotif.setFocusPainted(false);
+        personalizarCheckBox(checkNotif);
         checkNotif.addActionListener(e -> {
             UITema.mostrarInfo(this, 
                 "Preferencia guardada (simulación)", 
@@ -335,37 +332,6 @@ public class PanelPerfil extends JPanel {
         
         panel.add(lblLabel, BorderLayout.NORTH);
         panel.add(lblValor, BorderLayout.CENTER);
-        
-        return panel;
-    }
-    
-    private JPanel crearEstadistica(String label, String valor, String icono) {
-        JPanel panel = new JPanel(new BorderLayout(15, 5));
-        panel.setBackground(MAIN_PANEL);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(MAIN_BORDE, 1),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        
-        JLabel lblIcono = new JLabel(icono);
-        lblIcono.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        
-        JPanel textPanel = new JPanel(new GridLayout(2, 1, 0, 2));
-        textPanel.setBackground(MAIN_PANEL);
-        
-        JLabel lblLabel = new JLabel(label);
-        lblLabel.setFont(CUERPO_PEQUENO);
-        lblLabel.setForeground(GRIS_MEDIO);
-        
-        JLabel lblValor = new JLabel(valor);
-        lblValor.setFont(SUBTITULO_MEDIO);
-        lblValor.setForeground(Color.BLACK);
-        
-        textPanel.add(lblLabel);
-        textPanel.add(lblValor);
-        
-        panel.add(lblIcono, BorderLayout.WEST);
-        panel.add(textPanel, BorderLayout.CENTER);
         
         return panel;
     }
