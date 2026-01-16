@@ -11,8 +11,10 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
+import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.PlazoRentabilidad;
 import es.deusto.eleutradia.domain.ProductoFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
@@ -37,6 +40,10 @@ public class VentanaVerDetalle extends JDialog {
     private static final long serialVersionUID = 1L;
     
     private ProductoFinanciero producto;
+    private JLabel labelPrecio;
+    private JLabel lblRentabilidadYTD;
+    private Timer timerDetalle;
+    private EleutradiaDBManager dbManager = new EleutradiaDBManager();
 
     public VentanaVerDetalle(JFrame padre, ProductoFinanciero producto, boolean modal) {
         super(padre, "Detalles del producto", modal);
@@ -47,7 +54,9 @@ public class VentanaVerDetalle extends JDialog {
         this.setLayout(new BorderLayout(0, 0));
         this.setResizable(false);
         this.construirVentana();
+        iniciarActualizacionEnTiempoReal();
         this.setVisible(true);
+        
     }
 
     private void construirVentana() {
@@ -110,7 +119,7 @@ public class VentanaVerDetalle extends JDialog {
         panelPrecio.setBackground(Color.WHITE);
         panelPrecio.setAlignmentX(LEFT_ALIGNMENT);
         
-        JLabel labelPrecio = new JLabel(String.format("%.2f", producto.getValorUnitario()));
+        labelPrecio = crearLabelValor(String.format("%.2f %s", producto.getValorUnitario(), producto.getDivisa()));
         labelPrecio.setFont(SUBTITULO_GRANDE);
         labelPrecio.setForeground(AZUL_OSCURO);
         JLabel labelDivisa = new JLabel(" " + producto.getDivisa().getSimbolo() + "/acción");
@@ -271,9 +280,19 @@ public class VentanaVerDetalle extends JDialog {
         for (Map.Entry<PlazoRentabilidad, BigDecimal> entry : producto.getRentabilidades().entrySet()) {
             String plazo = entry.getKey().getDefinicion();
             BigDecimal valor = entry.getValue();
+            JLabel lblValorRent = new JLabel(entry.getValue() + "%");
             
             gbc.gridx = 0; gbc.gridy = fila; gbc.weightx = 0.4;
             panelGrid.add(crearLabelInfo(plazo + ":"), gbc);
+            
+            if (entry.getKey() == PlazoRentabilidad.YTD) {
+                lblRentabilidadYTD = lblValorRent; 
+                if (entry.getValue().doubleValue() >= 0) {
+                    lblRentabilidadYTD.setForeground(new Color(0, 150, 60));
+                } else {
+                    lblRentabilidadYTD.setForeground(Color.RED);
+                }
+            }
             
             gbc.gridx = 1; gbc.weightx = 0.6;
             if (valor != null) {
@@ -336,6 +355,49 @@ public class VentanaVerDetalle extends JDialog {
         label.setFont(CUERPO_MEDIO);
         label.setForeground(AZUL_OSCURO);
         return label;
+    }
+
+ // Método iniciarActualizacionEnTiempoReal()
+
+    private void iniciarActualizacionEnTiempoReal() {
+        timerDetalle = new Timer(2000, e -> {
+            List<ProductoFinanciero> todos = dbManager.getProductos();
+            
+            for (ProductoFinanciero pFresco : todos) {
+                if (pFresco.getId() == this.producto.getId()) {
+                    double precioNuevo = pFresco.getValorUnitario();
+                    labelPrecio.setText(String.format("%.2f %s", precioNuevo, pFresco.getDivisa()));
+                    
+                    if (precioNuevo > this.producto.getValorUnitario()) {
+                    	labelPrecio.setForeground(new Color(0, 180, 0));
+                    } else if (precioNuevo < this.producto.getValorUnitario()) {
+                    	labelPrecio.setForeground(Color.RED);
+                    }
+                    if (lblRentabilidadYTD != null && pFresco.getRentabilidades().containsKey(PlazoRentabilidad.YTD)) {
+                        BigDecimal nuevaRent = pFresco.getRentabilidades().get(PlazoRentabilidad.YTD);
+                        lblRentabilidadYTD.setText(String.format("%.2f %%", nuevaRent));
+                        
+                        if (nuevaRent.doubleValue() >= 0) {
+                            lblRentabilidadYTD.setForeground(new Color(0, 150, 60));
+                        } else {
+                            lblRentabilidadYTD.setForeground(Color.RED);
+                        }
+                    }
+                    
+                    this.producto = pFresco;
+                    break;
+                }
+            }
+        });
+        timerDetalle.start(); 
+    }
+    
+    @Override
+    public void dispose() {
+        if (timerDetalle != null && timerDetalle.isRunning()) {
+            timerDetalle.stop();
+        }
+        super.dispose();
     }
     
     MouseAdapter myAdapterGris = new MouseAdapter() {
