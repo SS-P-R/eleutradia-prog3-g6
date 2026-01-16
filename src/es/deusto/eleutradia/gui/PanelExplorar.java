@@ -481,7 +481,7 @@ public class PanelExplorar extends JPanel {
             if (iconoGestora != null) {
                 Image imagen = iconoGestora.getImage();
                 //IAG (ChatGPT)
-                //ADAPTADO: Calcular proporción de anchura deseada
+                //ADAPTADO (Calcular proporción de anchura deseada)
                 int altoDeseado = 25;
                 int anchoOriginal = imagen.getWidth(null);
                 int altoOriginal = imagen.getHeight(null);
