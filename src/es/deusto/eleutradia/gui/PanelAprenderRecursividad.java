@@ -23,6 +23,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private JComboBox<String> comboNivelObjetivo;
+	private JButton btnBuscarRuta;
 	private JButton btnVolver;
 	private ActionListener accionVolver;
 	
@@ -93,6 +94,23 @@ public class PanelAprenderRecursividad extends JPanel {
 		comboNivelObjetivo.setMaximumSize(new Dimension(300, 40));
 		comboNivelObjetivo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(comboNivelObjetivo);
+		
+		panel.add(Box.createVerticalStrut(25));
+		
+		btnBuscarRuta = new JButton("Buscar Ruta de Aprendizaje");
+		btnBuscarRuta.setFont(SUBTITULO_MEDIO);
+		btnBuscarRuta.setBackground(AZUL_CLARO);
+		btnBuscarRuta.setForeground(Color.WHITE);
+		btnBuscarRuta.setBorderPainted(false);
+		btnBuscarRuta.setContentAreaFilled(false);
+		btnBuscarRuta.setOpaque(true);
+		btnBuscarRuta.setFocusPainted(false);
+		btnBuscarRuta.addMouseListener(myAdapterAzul);
+		btnBuscarRuta.setPreferredSize(new Dimension(300, 50));
+		btnBuscarRuta.setMaximumSize(new Dimension(300, 50));
+		btnBuscarRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(btnBuscarRuta);
+
 
 		
 		return panel;
