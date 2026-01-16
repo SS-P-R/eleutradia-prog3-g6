@@ -5,6 +5,7 @@ import es.deusto.eleutradia.domain.*;
 import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -64,9 +65,9 @@ public class PanelPortfolio extends JPanel {
         inicializarPaneles();
         cargarDatosPortfolio();
         
-        Timer timerMercado = new javax.swing.Timer(5000, e -> {
+        Timer timerMercado = new Timer(5000, e -> {
             if (this.isVisible()) {
-                refrescarDatos(); 
+                SwingUtilities.invokeLater(() -> refrescarDatos());
             }
         });
         timerMercado.start();
@@ -474,6 +475,15 @@ public class PanelPortfolio extends JPanel {
     }
     
     private void cargarDatosPortfolio() {
+    	//IAG (Claude)
+    	//SIN CAMBIOS
+    	// Condición para que la actualización de la UI ocurra en el EDT
+    	if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(this::cargarDatosPortfolio);
+            return;
+        }
+    	//END IAG
+    	
         double patrimonioTotal = usuario.calcularPatrimonioTotal();
         double patrimonioLiquido = usuario.calcularPatrimonioLiquido();
         double patrimonioInvertido = usuario.calcularPatrimonioInvertido();
