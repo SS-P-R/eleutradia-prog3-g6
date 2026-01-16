@@ -6,7 +6,11 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -27,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Curso;
@@ -766,8 +771,7 @@ public class PanelInicio extends JPanel {
 	        labelPrecio.setForeground(Color.BLACK);
 	        labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
 	        
-	        JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero. " +
-	        "Aquí se mostraría datos históricos, análisis técnico, recomendaciones y más detalles relevantes.");
+	        JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero.");
 	        areaDescripcion.setFont(CUERPO_GRANDE);
 	        areaDescripcion.setForeground(GRIS_MEDIO);
 	        areaDescripcion.setLineWrap(true);
@@ -780,13 +784,158 @@ public class PanelInicio extends JPanel {
 	        panelInfo.add(labelPrecio);
 	        panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
 	        panelInfo.add(areaDescripcion);
+	        panelInfo.add(Box.createRigidArea(new Dimension(0, 20)));
+	        
+	        // Panel con gráfico de evolución
+	        JPanel panelGrafico = crearGrafico(producto);
+	        panelGrafico.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        panelInfo.add(panelGrafico);
+
 	        
 	        panel.add(labelTitulo, BorderLayout.NORTH);
 	        panel.add(panelInfo, BorderLayout.CENTER);
 	        
 	        return panel;
 	    }
-                       
+	
+	private JPanel crearGrafico (ProductoFinanciero producto) {
+		JPanel panel = new JPanel(new BorderLayout(10,10));
+		panel.setBackground(Color.WHITE);
+		Border borde1 = BorderFactory.createLineBorder(MAIN_BORDE,1);
+		Border borde2 = BorderFactory.createEmptyBorder(15,15,15,15);
+		panel.setBorder(BorderFactory.createCompoundBorder(borde1,borde2));
+		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
+		
+		JLabel labelTitulo = new JLabel("Evolución del producto durante los últimos 7 días");
+		labelTitulo.setFont(SUBTITULO_MEDIO);
+		labelTitulo.setForeground(AZUL_OSCURO);
+		
+        Random random = new Random();
+        double precioBase = producto.getValorUnitario();
+        List<Double> valores = new ArrayList<>();
+        List<String> fechas = new ArrayList<>();
+        
+        for (int i = 6; i >= 0; i--) {
+            double variacion = (random.nextDouble() * 0.1 - 0.05);
+            double precio = precioBase * (1 + variacion);
+            valores.add(precio);
+            
+            LocalDate fecha = LocalDate.now().minusDays(i);
+            fechas.add(fecha.format(DateTimeFormatter.ofPattern("dd/MM")));
+        }
+        
+        //Gráfico
+        JPanel panelGrafico = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                dibujarGrafico(g, valores, fechas);
+            }
+        };
+        panelGrafico.setBackground(Color.WHITE);
+        panelGrafico.setPreferredSize(new Dimension(700, 250));
+        
+        panel.add(labelTitulo, BorderLayout.NORTH);
+        panel.add(panelGrafico, BorderLayout.CENTER);
+
+		
+		return panel;
+	}
+	
+	//IAG (ChatGPT)
+    private void dibujarGrafico(Graphics g, List<Double> valores, List<String> fechas) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        int width = g2d.getClipBounds().width;
+        int height = g2d.getClipBounds().height;
+        int padding = 40;
+        int labelPadding = 20;
+        
+        // Calcular valores máximos y mínimos
+        double maxValor = valores.stream().max(Double::compare).orElse(100.0);
+        double minValor = valores.stream().min(Double::compare).orElse(0.0);
+        double rango = maxValor - minValor;
+        if (rango == 0) rango = 1;
+        
+        // Dibujar ejes
+        g2d.setColor(GRIS_CLARO);
+        g2d.drawLine(padding, height - padding, width - padding, height - padding); // Eje X
+        g2d.drawLine(padding, padding, padding, height - padding); // Eje Y
+        
+        // Dibujar líneas de cuadrícula horizontales
+        g2d.setColor(new Color(230, 230, 230));
+        for (int i = 0; i < 5; i++) {
+            int y = padding + (height - 2 * padding) * i / 4;
+            g2d.drawLine(padding, y, width - padding, y);
+        }
+        
+        // Dibujar etiquetas del eje Y
+        g2d.setColor(GRIS_MEDIO);
+        g2d.setFont(CUERPO_PEQUENO);
+        for (int i = 0; i < 5; i++) {
+            double valor = maxValor - (rango * i / 4);
+            String label = String.format("%.2f€", valor);
+            int y = padding + (height - 2 * padding) * i / 4;
+            g2d.drawString(label, 5, y + 5);
+        }
+        
+        // Dibujar puntos y líneas
+        int espacioX = (width - 2 * padding) / (valores.size() - 1);
+        
+        // Dibujar la línea
+        g2d.setColor(AZUL_CLARO);
+        g2d.setStroke(new java.awt.BasicStroke(2f));
+        for (int i = 0; i < valores.size() - 1; i++) {
+            int x1 = padding + i * espacioX;
+            int x2 = padding + (i + 1) * espacioX;
+            
+            int y1 = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
+            int y2 = height - padding - (int)((valores.get(i + 1) - minValor) / rango * (height - 2 * padding));
+            
+            g2d.drawLine(x1, y1, x2, y2);
+        }
+        
+        // Dibujar puntos
+        for (int i = 0; i < valores.size(); i++) {
+            int x = padding + i * espacioX;
+            int y = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
+            
+            // Punto
+            g2d.setColor(AZUL_OSCURO);
+            g2d.fillOval(x - 4, y - 4, 8, 8);
+            
+            // Borde del punto
+            g2d.setColor(Color.WHITE);
+            g2d.setStroke(new java.awt.BasicStroke(2f));
+            g2d.drawOval(x - 4, y - 4, 8, 8);
+            
+            // Etiqueta fecha
+            g2d.setColor(GRIS_MEDIO);
+            g2d.setFont(CUERPO_PEQUENO);
+            FontMetrics fm = g2d.getFontMetrics();
+            int labelWidth = fm.stringWidth(fechas.get(i));
+            g2d.drawString(fechas.get(i), x - labelWidth / 2, height - padding + labelPadding);
+        }
+        
+        // Dibujar área bajo la curva (efecto de relleno)
+        g2d.setColor(new Color(AZUL_CLARO.getRed(), AZUL_CLARO.getGreen(), AZUL_CLARO.getBlue(), 30));
+        int[] xPoints = new int[valores.size() + 2];
+        int[] yPoints = new int[valores.size() + 2];
+        
+        for (int i = 0; i < valores.size(); i++) {
+            xPoints[i] = padding + i * espacioX;
+            yPoints[i] = height - padding - (int)((valores.get(i) - minValor) / rango * (height - 2 * padding));
+        }
+        xPoints[valores.size()] = padding + (valores.size() - 1) * espacioX;
+        yPoints[valores.size()] = height - padding;
+        xPoints[valores.size() + 1] = padding;
+        yPoints[valores.size() + 1] = height - padding;
+        
+        g2d.fillPolygon(xPoints, yPoints, valores.size() + 2);
+    }
+
+    //END-IAG                   
 	
 	private JPanel crearPanelInferior() {
         JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0));
