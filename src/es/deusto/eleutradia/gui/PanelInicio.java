@@ -387,41 +387,42 @@ public class PanelInicio extends JPanel {
     }
 	
 	private JPanel crearPanelLecciones() {
-	        JPanel panel = new JPanel(new BorderLayout(10, 10));
-	        panel.setBackground(Color.WHITE);
-	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+		JPanel panel = new JPanel(new BorderLayout(10, 10));
+	    panel.setBackground(Color.WHITE);
+	    panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        // Encabezado
-	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	        panelEncabezado.setBackground(Color.WHITE);
-	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
+	    //Encabezado
+	    JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    panelEncabezado.setBackground(Color.WHITE);
+	    panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("Próximas lecciones");
-	        labelTitulo.setFont(SUBTITULO_GRANDE);
-	        labelTitulo.setForeground(AZUL_OSCURO);
-	        panelEncabezado.add(labelTitulo);
+	    JLabel labelTitulo = new JLabel("Próximas lecciones");
+	    labelTitulo.setFont(SUBTITULO_GRANDE);
+	    labelTitulo.setForeground(AZUL_OSCURO);
+	    panelEncabezado.add(labelTitulo);
 	        
-	        // Contenido
-	        JPanel panelContenido = new JPanel();
-	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
-	        panelContenido.setBackground(Color.WHITE);
-	        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 15, 15));
+	    //Contenido
+	    JPanel panelContenido = new JPanel();
+	    panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+	    panelContenido.setBackground(Color.WHITE);
+	    panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 15, 15));
 	        
-	        if (usuario instanceof Particular) {
-	            Particular particular = (Particular) usuario;
-	            List<Curso> cursosActivos = particular.getCursos();
-	            List<Curso> todosCursos = MainEleutradia.listaCursos;
+	    if (usuario instanceof Particular) {
+	    	Particular particular = (Particular) usuario;
+	    	List<Curso> cursosActivos = particular.getCursos();
+	    	List<Curso> todosCursos = MainEleutradia.listaCursos;
 	            
-	            if (todosCursos == null || todosCursos.isEmpty()) {
+	    	if (todosCursos == null || todosCursos.isEmpty()) {
 	                JLabel labelError = new JLabel("No hay cursos disponibles");
 	                labelError.setFont(CUERPO_GRANDE);
 	                labelError.setForeground(GRIS_CLARO);
 	                labelError.setAlignmentX(Component.LEFT_ALIGNMENT);
 	                panelContenido.add(labelError);
-	            } else {
-	                List<Leccion> leccionesRecomendadas = new ArrayList<>();
 	                
-	                // Buscar primeras lecciones de cursos no inscritos
+	    	} else {
+	               	List<Leccion> leccionesRecomendadas = new ArrayList<>();
+	                
+	                //Primeras lecciones de cursos no inscritos
 	                for (Curso curso : todosCursos) {
 	                    if (!cursosActivos.contains(curso)) {
 	                        if (curso.getModulos() != null && !curso.getModulos().isEmpty()) {
@@ -499,7 +500,7 @@ public class PanelInicio extends JPanel {
 	        return panel;
 	    }
 	  
-	  private JPanel crearPanelCartera() {
+	private JPanel crearPanelCartera() {
 	        JPanel panel = new JPanel(new BorderLayout(10, 10));
 	        panel.setBackground(Color.WHITE);
 	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
@@ -552,17 +553,17 @@ public class PanelInicio extends JPanel {
 	                }
 	            }
 	            
-	            // Valor total
+	            //Valor total
 	            JPanel panelTotal = crearFilaEstadistica("Valor total:", formatoMoneda.format(valorTotal) + " €", AZUL_OSCURO);
 	            panelContenido.add(panelTotal);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            // Número de carteras
+	            //Número de carteras
 	            JPanel panelNumero = crearFilaEstadistica("Carteras:", String.valueOf(carteras.size()), GRIS_MEDIO);
 	            panelContenido.add(panelNumero);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            // Mejor cartera
+	            //Mejor cartera
 	            if (carteraMayor != null) {
 	                JPanel panelMayor = crearFilaEstadistica("Mayor:", carteraMayor.getNombre(), VERDE_CLARO);
 	                panelContenido.add(panelMayor);
@@ -578,7 +579,7 @@ public class PanelInicio extends JPanel {
 	        panel.add(panelEncabezado, BorderLayout.NORTH);
 	        panel.add(panelContenido, BorderLayout.CENTER);
 	        
-	        // Focus y click
+	        //Focus y click
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
@@ -600,35 +601,34 @@ public class PanelInicio extends JPanel {
 	        return panel;
 	    }
 	
-	    private JPanel crearPanelGrafico() {
-	        JPanel panel = new JPanel(new BorderLayout(10, 10));
-	        panel.setBackground(Color.WHITE);
-	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+	private JPanel crearPanelGrafico() {
+		JPanel panel = new JPanel(new BorderLayout(10, 10));
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        // Encabezado
-	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	        panelEncabezado.setBackground(Color.WHITE);
-	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
+		//Encabezado
+		JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelEncabezado.setBackground(Color.WHITE);
+		panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("Producto destacado");
-	        labelTitulo.setFont(SUBTITULO_GRANDE);
-	        labelTitulo.setForeground(AZUL_OSCURO);
-	        panelEncabezado.add(labelTitulo);
+		JLabel labelTitulo = new JLabel("Producto destacado");
+		labelTitulo.setFont(SUBTITULO_GRANDE);
+		labelTitulo.setForeground(AZUL_OSCURO);
+		panelEncabezado.add(labelTitulo);
+    
+		//Contenido
+		JPanel panelContenido = new JPanel();
+		panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+		panelContenido.setBackground(Color.WHITE);
+		panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
 	        
-	        // Contenido
-	        JPanel panelContenido = new JPanel();
-	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
-	        panelContenido.setBackground(Color.WHITE);
-	        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
-	        
-	        if (productos == null || productos.isEmpty()) {
-	            JLabel labelVacio = new JLabel("No hay productos disponibles");
-	            labelVacio.setFont(CUERPO_GRANDE);
-	            labelVacio.setForeground(GRIS_CLARO);
-	            labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
-	            panelContenido.add(labelVacio);
-	        } else {
-	        // Información del producto
+		if (productos == null || productos.isEmpty()) {
+			JLabel labelVacio = new JLabel("No hay productos disponibles");
+			labelVacio.setFont(CUERPO_GRANDE);
+			labelVacio.setForeground(GRIS_CLARO);
+			labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
+			panelContenido.add(labelVacio);
+		} else {
 	        JLabel labelNombreProducto = new JLabel();
             labelNombreProducto.setFont(CUERPO_GRANDE);
             labelNombreProducto.setForeground(Color.BLACK);
@@ -750,52 +750,52 @@ public class PanelInicio extends JPanel {
 	    return panel;
 	}
 	    
-	    private JPanel crearPanelDetallesProducto() {
-	        JPanel panel = new JPanel(new BorderLayout(15, 15));
-	        panel.setBackground(Color.WHITE);
-	        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+	private JPanel crearPanelDetallesProducto() {
+		JPanel panel = new JPanel(new BorderLayout(15, 15));
+		panel.setBackground(Color.WHITE);
+		panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 	        
-	        ProductoFinanciero producto = productos.get(indiceProductoActual);
+		ProductoFinanciero producto = productos.get(indiceProductoActual);
 	        
-	        JLabel labelTitulo = new JLabel(producto.getNombre());
-	        labelTitulo.setFont(TITULO_GRANDE);
-	        labelTitulo.setForeground(AZUL_OSCURO);
+		JLabel labelTitulo = new JLabel(producto.getNombre());
+		labelTitulo.setFont(TITULO_GRANDE);
+		labelTitulo.setForeground(AZUL_OSCURO);
 	        
-	        JPanel panelInfo = new JPanel();
-	        panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
-	        panelInfo.setBackground(Color.WHITE);
-	        panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		JPanel panelInfo = new JPanel();
+		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
+		panelInfo.setBackground(Color.WHITE);
+		panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 	        
-	        JLabel labelPrecio = new JLabel("Precio actual: " + formatoMoneda.format(producto.getValorUnitario()) + " €");
-	        labelPrecio.setFont(SUBTITULO_GRANDE);
-	        labelPrecio.setForeground(Color.BLACK);
-	        labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JLabel labelPrecio = new JLabel("Precio actual: " + formatoMoneda.format(producto.getValorUnitario()) + " €");
+		labelPrecio.setFont(SUBTITULO_GRANDE);
+		labelPrecio.setForeground(Color.BLACK);
+		labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
 	        
-	        JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero.");
-	        areaDescripcion.setFont(CUERPO_GRANDE);
-	        areaDescripcion.setForeground(GRIS_MEDIO);
-	        areaDescripcion.setLineWrap(true);
-	        areaDescripcion.setWrapStyleWord(true);
-	        areaDescripcion.setEditable(false);
-	        areaDescripcion.setOpaque(false);
-	        areaDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
-	        areaDescripcion.setBorder(null);
+		JTextArea areaDescripcion = new JTextArea("Información detallada del producto financiero.");
+		areaDescripcion.setFont(CUERPO_GRANDE);
+		areaDescripcion.setForeground(GRIS_MEDIO);
+		areaDescripcion.setLineWrap(true);
+		areaDescripcion.setWrapStyleWord(true);
+		areaDescripcion.setEditable(false);
+		areaDescripcion.setOpaque(false);
+		areaDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
+		areaDescripcion.setBorder(null);
 	        
-	        panelInfo.add(labelPrecio);
-	        panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
-	        panelInfo.add(areaDescripcion);
-	        panelInfo.add(Box.createRigidArea(new Dimension(0, 20)));
+		panelInfo.add(labelPrecio);
+		panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
+		panelInfo.add(areaDescripcion);
+		panelInfo.add(Box.createRigidArea(new Dimension(0, 20)));
 	        
-	        // Panel con gráfico de evolución
-	        JPanel panelGrafico = crearGrafico(producto);
-	        panelGrafico.setAlignmentX(Component.LEFT_ALIGNMENT);
-	        panelInfo.add(panelGrafico);
+		//Panel con gráfico de evolución
+		JPanel panelGrafico = crearGrafico(producto);
+		panelGrafico.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelInfo.add(panelGrafico);
 
 	        
-	        panel.add(labelTitulo, BorderLayout.NORTH);
-	        panel.add(panelInfo, BorderLayout.CENTER);
+		panel.add(labelTitulo, BorderLayout.NORTH);
+		panel.add(panelInfo, BorderLayout.CENTER);
 	        
-	        return panel;
+		return panel;
 	    }
 	
 	private JPanel crearGrafico (ProductoFinanciero producto) {
@@ -841,6 +841,7 @@ public class PanelInicio extends JPanel {
 		
 		return panel;
 	}
+	
 	
 	//IAG (ChatGPT)
     private void dibujarGrafico(Graphics g, List<Double> valores, List<String> fechas) {
