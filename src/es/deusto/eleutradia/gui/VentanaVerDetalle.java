@@ -348,10 +348,9 @@ public class VentanaVerDetalle extends JDialog {
     }
 
     private void iniciarActualizacionEnTiempoReal() {
-        // Usamos javax.swing.Timer
-        timerDetalle = new javax.swing.Timer(2000, e -> {
+        timerDetalle = new Timer(2000, e -> {
             
-            java.util.List<ProductoFinanciero> todos = dbManager.getProductos(); 
+            List<ProductoFinanciero> todos = dbManager.getProductos(); 
             
             for (ProductoFinanciero pFresco : todos) {
                 if (pFresco.getId() == this.producto.getId()) {
