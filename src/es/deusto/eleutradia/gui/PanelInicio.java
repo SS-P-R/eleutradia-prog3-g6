@@ -58,12 +58,12 @@ public class PanelInicio extends JPanel{
 		this.usuario = usuario;
 		this.ventanaPrincipal = ventanaPrincipal;
 		
-		//Fondo
+		// Fondo
 		this.setLayout(new BorderLayout(10,10));
 		this.setBackground(MAIN_FONDO);
 		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
-		//Lista productos
+		// Lista productos
 		if (MainEleutradia.listaProductos!=null) {
 			productos = new ArrayList<>(MainEleutradia.listaProductos);
 		}else {
@@ -130,7 +130,6 @@ public class PanelInicio extends JPanel{
         return panel;
     }
 	
-	
     private JPanel crearPanelNoticias() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -191,7 +190,7 @@ public class PanelInicio extends JPanel{
         labelNoticia.setFont(CUERPO_PEQUENO);
         labelNoticia.setForeground(GRIS_CLARO);
         labelNoticia.setAlignmentX(Component.LEFT_ALIGNMENT);
-        labelNoticia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelNoticia.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         final int[] indice = {0};
         
@@ -248,7 +247,7 @@ public class PanelInicio extends JPanel{
         panelContenido.setBackground(Color.WHITE);
         panelContenido.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        JLabel labelTitulo = new JLabel("Noticia Financiera");
+        JLabel labelTitulo = new JLabel("Noticia financiera");
         labelTitulo.setFont(TITULO_GRANDE);
         labelTitulo.setForeground(AZUL_OSCURO);
         
@@ -310,7 +309,7 @@ public class PanelInicio extends JPanel{
             List<Curso> cursosActivos = particular.getCursos();
             
             if (cursosActivos.isEmpty()) {
-                JLabel labelVacio = new JLabel("Aún no tienes cursos activos");
+                JLabel labelVacio = new JLabel("Aún no tiene cursos activos");
                 labelVacio.setFont(CUERPO_GRANDE);
                 labelVacio.setForeground(GRIS_CLARO);
                 labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -360,8 +359,8 @@ public class PanelInicio extends JPanel{
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 2));
-                panel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 1));
+                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
             
             @Override
@@ -388,7 +387,7 @@ public class PanelInicio extends JPanel{
 	        panelEncabezado.setBackground(Color.WHITE);
 	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("Próximas Lecciones");
+	        JLabel labelTitulo = new JLabel("Próximas lecciones");
 	        labelTitulo.setFont(SUBTITULO_GRANDE);
 	        labelTitulo.setForeground(AZUL_OSCURO);
 	        panelEncabezado.add(labelTitulo);
@@ -428,7 +427,7 @@ public class PanelInicio extends JPanel{
 	                
 	                if (leccionesRecomendadas.isEmpty()) {
 	                    if (cursosActivos.size() == todosCursos.size()) {
-	                        JLabel labelFelicitacion = new JLabel("¡Has completado todos los cursos! 🏆");
+	                        JLabel labelFelicitacion = new JLabel("¡Ha completado todos los cursos! 🏆");
 	                        labelFelicitacion.setFont(CUERPO_GRANDE);
 	                        labelFelicitacion.setForeground(VERDE_CLARO);
 	                        labelFelicitacion.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -441,7 +440,7 @@ public class PanelInicio extends JPanel{
 	                        panelContenido.add(labelVacio);
 	                    }
 	                } else {
-	                    JLabel labelSubtitulo = new JLabel("Recomendadas para ti:");
+	                    JLabel labelSubtitulo = new JLabel("Nuestras recomendaciones:");
 	                    labelSubtitulo.setFont(CUERPO_PEQUENO);
 	                    labelSubtitulo.setForeground(GRIS_MEDIO);
 	                    labelSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -473,8 +472,8 @@ public class PanelInicio extends JPanel{
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
-	                panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 2));
-	                panel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+	                panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 1));
+	                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	            }
 	            
 	            @Override
@@ -501,7 +500,7 @@ public class PanelInicio extends JPanel{
 	        panelEncabezado.setBackground(Color.WHITE);
 	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
 	        
-	        JLabel labelTitulo = new JLabel("Resumen de tu cartera:");
+	        JLabel labelTitulo = new JLabel("Resumen de su cartera:");
 	        labelTitulo.setFont(SUBTITULO_GRANDE);
 	        labelTitulo.setForeground(AZUL_OSCURO);
 	        panelEncabezado.add(labelTitulo);
@@ -515,7 +514,7 @@ public class PanelInicio extends JPanel{
 	        List<Cartera> carteras = usuario.getCarteras();
 	        
 	        if (carteras == null || carteras.isEmpty()) {
-	            JLabel labelVacio = new JLabel("No tienes carteras creadas");
+	            JLabel labelVacio = new JLabel("No tiene carteras creadas");
 	            labelVacio.setFont(CUERPO_GRANDE);
 	            labelVacio.setForeground(GRIS_CLARO);
 	            labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -523,7 +522,7 @@ public class PanelInicio extends JPanel{
 	            
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 10)));
 	            
-	            JLabel labelAnimacion = new JLabel("¡Crea tu primera cartera!");
+	            JLabel labelAnimacion = new JLabel("¡Cree su primera cartera!");
 	            labelAnimacion.setFont(CUERPO_MEDIO);
 	            labelAnimacion.setForeground(AZUL_CLARO);
 	            labelAnimacion.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -544,17 +543,17 @@ public class PanelInicio extends JPanel{
 	                }
 	            }
 	            
-	            //Valor total
-	            JPanel panelTotal = crearFilaEstadistica("Valor Total:", formatoMoneda.format(valorTotal) + " €", AZUL_OSCURO);
+	            // Valor total
+	            JPanel panelTotal = crearFilaEstadistica("Valor total:", formatoMoneda.format(valorTotal) + " €", AZUL_OSCURO);
 	            panelContenido.add(panelTotal);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            //Número de carteras
+	            // Número de carteras
 	            JPanel panelNumero = crearFilaEstadistica("Carteras:", String.valueOf(carteras.size()), GRIS_MEDIO);
 	            panelContenido.add(panelNumero);
 	            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
 	            
-	            //Mejor cartera
+	            // Mejor cartera
 	            if (carteraMayor != null) {
 	                JPanel panelMayor = crearFilaEstadistica("Mayor:", carteraMayor.getNombre(), VERDE_CLARO);
 	                panelContenido.add(panelMayor);
@@ -570,12 +569,12 @@ public class PanelInicio extends JPanel{
 	        panel.add(panelEncabezado, BorderLayout.NORTH);
 	        panel.add(panelContenido, BorderLayout.CENTER);
 	        
-	        //Focus y click
+	        // Focus y click
 	        panel.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseEntered(MouseEvent e) {
-	                panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 2));
-	                panel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+	                panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 1));
+	                panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	            }
 	            
 	            @Override
@@ -597,7 +596,7 @@ public class PanelInicio extends JPanel{
 	        panel.setBackground(Color.WHITE);
 	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 	        
-	        //Encabezado
+	        // Encabezado
 	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	        panelEncabezado.setBackground(Color.WHITE);
 	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
@@ -607,7 +606,7 @@ public class PanelInicio extends JPanel{
 	        labelTitulo.setForeground(AZUL_OSCURO);
 	        panelEncabezado.add(labelTitulo);
 	        
-	        //Contenido
+	        // Contenido
 	        JPanel panelContenido = new JPanel();
 	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
 	        panelContenido.setBackground(Color.WHITE);
@@ -682,13 +681,13 @@ public class PanelInicio extends JPanel{
                 labelVariacionProducto.setForeground(colorVariacion);
             };
 
-            //Botón para actualizar el producto
+            // Botón para actualizar el producto
             botonSiguiente.addActionListener(e -> {
                 indiceProductoActual = (indiceProductoActual + 1) % productos.size();
                 SwingUtilities.invokeLater(actualizarProducto);
             });
 
-            //Hilo para rotar de manera automática sin pulsar el botón
+            // Hilo para rotar de manera automática sin pulsar el botón
             Thread hiloProductos = new Thread(() -> {
                 try {
                     while (true) {
@@ -709,7 +708,7 @@ public class PanelInicio extends JPanel{
 	    panel.add(panelEncabezado, BorderLayout.NORTH);
 	    panel.add(panelContenido, BorderLayout.CENTER);
         
-        //Focus y click
+        // Focus y click
 	    panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
