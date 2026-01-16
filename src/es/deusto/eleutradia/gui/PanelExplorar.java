@@ -526,20 +526,20 @@ public class PanelExplorar extends JPanel {
     
     private void sincronizarPreciosYRefrescar() {
         if (dbManager == null) dbManager = new EleutradiaDBManager();
-        
         List<ProductoFinanciero> productosActualizados = dbManager.getProductos();
         Map<String, Double> mapaPrecios = new HashMap<>();
+        
         for (ProductoFinanciero p : productosActualizados) {
             if (p.getTicker() != null) {
                 mapaPrecios.put(p.getTicker(), p.getValorUnitario());
             }
         }
-
         if (productosTotales != null) {
             for (ProductoFinanciero pLocal : productosTotales) {
                 if (pLocal.getTicker() != null && mapaPrecios.containsKey(pLocal.getTicker())) {
+                    
                     double nuevoPrecio = mapaPrecios.get(pLocal.getTicker());
-                    pLocal.setValorUnitario(nuevoPrecio);
+                    pLocal.actualizarPrecioYRentabilidad(nuevoPrecio);
                 }
             }
         }
