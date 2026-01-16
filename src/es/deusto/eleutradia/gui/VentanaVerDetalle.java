@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class VentanaVerDetalle extends JDialog {
     
     private ProductoFinanciero producto;
     private JLabel labelPrecio;
-    private Map<PlazoRentabilidad, javax.swing.JLabel> mapaLabelsRentabilidad = new java.util.HashMap<>();
+    private Map<PlazoRentabilidad, JLabel> mapaLabelsRentabilidad = new HashMap<>();
     private Timer timerDetalle;
     private EleutradiaDBManager dbManager = new EleutradiaDBManager();
 
@@ -369,7 +370,7 @@ public class VentanaVerDetalle extends JDialog {
                         BigDecimal valorNuevo = entry.getValue();
                         
                         if (mapaLabelsRentabilidad.containsKey(plazo)) {
-                            javax.swing.JLabel labelAActualizar = mapaLabelsRentabilidad.get(plazo);
+                            JLabel labelAActualizar = mapaLabelsRentabilidad.get(plazo);
                             String textoValor = String.format("%.2f%%", valorNuevo);
                             
                             if (valorNuevo.compareTo(BigDecimal.ZERO) > 0) {
