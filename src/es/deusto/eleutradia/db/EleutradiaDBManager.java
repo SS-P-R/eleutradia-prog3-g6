@@ -1241,9 +1241,9 @@ public class EleutradiaDBManager {
 	         ResultSet rs = stmt.executeQuery(sql)) {
 	        
 	        while (rs.next()) {
-	            TipoProducto tipo = es.deusto.eleutradia.domain.TipoProducto.values()[rs.getInt("tipoProducto")];
+	            TipoProducto tipo = TipoProducto.values()[rs.getInt("tipoProducto")];
 
-	             ProductoFinanciero p = new es.deusto.eleutradia.domain.ProductoFinanciero(
+	             ProductoFinanciero p = new ProductoFinanciero(
 	                rs.getInt("id"),
 	                rs.getString("nombre"),
 	                rs.getString("ticker"),
