@@ -44,11 +44,19 @@ public class PanelAprenderRecursividad extends JPanel {
 		setBackground(MAIN_FONDO);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
+		JPanel panelSuperior = new JPanel();
+        panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.Y_AXIS));
+        panelSuperior.setBackground(MAIN_FONDO);
+		
 		JPanel panelTitulo = crearPanelTitulo();
-		add(panelTitulo, BorderLayout.NORTH);
+		panelSuperior.add(panelTitulo);
+        
+		panelSuperior.add(Box.createVerticalStrut(15));
 		
 		JPanel panelCentral = crearPanelFormulario();
-		add(panelCentral, BorderLayout.CENTER);
+		panelSuperior.add(panelCentral);
+		
+		add(panelSuperior, BorderLayout.NORTH);
 		
 		panelResultado = new JPanel(new BorderLayout());
 		panelResultado.setBackground(MAIN_FONDO);
