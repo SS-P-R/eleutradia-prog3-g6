@@ -172,6 +172,29 @@ public class PanelAprender extends JPanel {
 		botonRecursividad.setOpaque(true);
 		botonRecursividad.setFocusPainted(false);
 		
+		botonRecursividad.addActionListener(e -> {
+			JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
+			
+			if (ventanaPrincipal != null) {
+				Container vistaOriginalCompleta = ventanaPrincipal.getContentPane();
+				
+				PanelAprenderRecursividad panelRecursividad = new PanelAprenderRecursividad();
+				
+				panelRecursividad.addAccionVolver(eventoVolver -> {
+					ventanaPrincipal.setContentPane(vistaOriginalCompleta);
+					ventanaPrincipal.revalidate();
+					ventanaPrincipal.repaint();
+					
+					botonRecursividad.setFocusable(false);
+					botonRecursividad.setFocusable(true);
+				});
+				
+				ventanaPrincipal.setContentPane(panelRecursividad);
+				ventanaPrincipal.revalidate();
+				ventanaPrincipal.repaint();
+			}
+		});
+		
 		botonRecursividad.addMouseListener(myAdapterVerde);
 		
 		panelBotonAbajo.add(botonRecursividad);
