@@ -67,30 +67,66 @@ public class PanelAprender extends JPanel {
 	private JProgressBar progressBarRacha;
 		
 	public PanelAprender(Particular usuario) {
-		
-		usuarioLogeado = usuario;
-		
-		this.setLayout(new BorderLayout());
-		this.setBackground(MAIN_FONDO);
-		this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		
-		layoutPanelAprender = new CardLayout();
-		panelAprender = new JPanel(layoutPanelAprender);
-		
-		JPanel panelCursos = crearPanelCursos();
-		
-		panelCursosInfo = new JPanel(new BorderLayout(20, 20));
-		panelCursosInfo.setBackground(MAIN_FONDO);
-		
-		panelAprender.add(panelCursos, "PANEL_CURSOS");
-		panelAprender.add(panelCursosInfo, "PANEL_CURSOS_INFO");
-		
-		this.add(panelAprender, BorderLayout.CENTER);
-		
-		actualizarPanelTodosLosCursos();
-		actualizarProgressBar();
-		layoutPanelAprender.show(panelAprender, "PANEL_CURSOS");
-				
+    
+	    usuarioLogeado = usuario;
+	    
+	    this.setLayout(new BorderLayout());
+	    this.setBackground(MAIN_FONDO);
+	    this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+	    
+	    // Verificar si es null (Empresa)
+	    if (usuario == null) {
+	        JPanel panelMensaje = new JPanel();
+	        panelMensaje.setLayout(new BoxLayout(panelMensaje, BoxLayout.Y_AXIS));
+	        panelMensaje.setBackground(Color.WHITE);
+	        panelMensaje.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+	        
+	        JLabel mensaje = new JLabel("El módulo 'Aprender' solo está disponible para cuentas de particulares.");
+	        mensaje.setFont(SUBTITULO_GRANDE);
+	        mensaje.setForeground(GRIS_CLARO);
+	        mensaje.setAlignmentX(CENTER_ALIGNMENT);
+	        panelMensaje.add(mensaje);
+	        panelMensaje.add(Box.createVerticalStrut(20));
+	        
+	        JButton botonCrearParticular = new JButton("¡Quiero acceder a esta función!");
+	        botonCrearParticular.setBackground(AZUL_CLARO);
+	        botonCrearParticular.setForeground(Color.WHITE);
+	        botonCrearParticular.setBorderPainted(false);
+	        botonCrearParticular.setContentAreaFilled(false);
+	        botonCrearParticular.setOpaque(true);
+	        botonCrearParticular.setFocusPainted(false);
+	        botonCrearParticular.setAlignmentX(CENTER_ALIGNMENT);
+	        botonCrearParticular.addActionListener(e -> {
+	            new VentanaInicial().setVisible(true);
+	            JFrame ventana = (JFrame) SwingUtilities.getWindowAncestor(this);
+	            if (ventana != null) {
+	                ventana.dispose();
+	            }
+	        });
+	        botonCrearParticular.addMouseListener(myAdapterAzul);
+	        
+	        panelMensaje.add(botonCrearParticular);
+	        
+	        this.add(panelMensaje, BorderLayout.CENTER);
+	        return;
+	    }
+	
+	    layoutPanelAprender = new CardLayout();
+	    panelAprender = new JPanel(layoutPanelAprender);
+	    
+	    JPanel panelCursos = crearPanelCursos();
+	    
+	    panelCursosInfo = new JPanel(new BorderLayout(20, 20));
+	    panelCursosInfo.setBackground(MAIN_FONDO);
+	    
+	    panelAprender.add(panelCursos, "PANEL_CURSOS");
+	    panelAprender.add(panelCursosInfo, "PANEL_CURSOS_INFO");
+	    
+	    this.add(panelAprender, BorderLayout.CENTER);
+	    
+	    actualizarPanelTodosLosCursos();
+	    actualizarProgressBar();
+	    layoutPanelAprender.show(panelAprender, "PANEL_CURSOS");
 	}
 
 	private JPanel crearPanelCursos() {
