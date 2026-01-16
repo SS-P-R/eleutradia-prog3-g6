@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,7 @@ import javax.swing.tree.TreePath;
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.NivelConocimiento;
 import es.deusto.eleutradia.domain.Particular;
+import es.deusto.eleutradia.gui.style.UITema;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -53,14 +53,12 @@ public class PanelAprenderRecursividad extends JPanel {
 	private ActionListener accionVolver;
 	
 	private Particular usuarioLogeado;
-	private List<List<Curso>> rutasEncontradas;
 	private List<Curso> rutaSeleccionada;
 	private JTree treeResultados;
 	
 	public PanelAprenderRecursividad(Particular usuario) {
 		
 		this.usuarioLogeado = usuario;
-		this.rutasEncontradas = new ArrayList<>();
 		this.rutaSeleccionada = null;
 		
 		setLayout(new BorderLayout(20, 20));
@@ -95,12 +93,12 @@ public class PanelAprenderRecursividad extends JPanel {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(MAIN_FONDO);
 		
-		JLabel labelTitulo = new JLabel("La forma mas rápida para Aprender");
+		JLabel labelTitulo = new JLabel("La forma más rápida para aprender");
 		labelTitulo.setFont(TITULO_GRANDE);
 		labelTitulo.setForeground(AZUL_OSCURO);
 		labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JLabel labelSubtitulo = new JLabel("Encuentra el camino óptimo desde PRINCIPIANTE hasta tu nivel objetivo");
+		JLabel labelSubtitulo = new JLabel("Encuentre el camino adecuado desde PRINCIPIANTE hasta su nivel objetivo.");
 		labelSubtitulo.setFont(CUERPO_GRANDE);
 		labelSubtitulo.setForeground(GRIS_CLARO);
 		labelSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -137,12 +135,13 @@ public class PanelAprenderRecursividad extends JPanel {
 		comboNivelObjetivo.setFont(CUERPO_GRANDE);
 		comboNivelObjetivo.setPreferredSize(new Dimension(300, 40));
 		comboNivelObjetivo.setMaximumSize(new Dimension(300, 40));
-		comboNivelObjetivo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		comboNivelObjetivo.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
+		UITema.personalizarComboBox(comboNivelObjetivo);
 		panel.add(comboNivelObjetivo);
 		
 		panel.add(Box.createVerticalStrut(20));
 		
-		btnBuscarRuta = new JButton("Buscar Ruta de Aprendizaje");
+		btnBuscarRuta = new JButton("Buscar ruta de aprendizaje");
 		btnBuscarRuta.setFont(SUBTITULO_MEDIO);
 		btnBuscarRuta.setBackground(AZUL_CLARO);
 		btnBuscarRuta.setForeground(Color.WHITE);
@@ -151,9 +150,9 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnBuscarRuta.setOpaque(true);
 		btnBuscarRuta.setFocusPainted(false);
 		btnBuscarRuta.addMouseListener(myAdapterAzul);
-		btnBuscarRuta.setPreferredSize(new Dimension(300, 50));
-		btnBuscarRuta.setMaximumSize(new Dimension(300, 50));
-		btnBuscarRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnBuscarRuta.setPreferredSize(new Dimension(300, 40));
+		btnBuscarRuta.setMaximumSize(new Dimension(300, 40));
+		btnBuscarRuta.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		btnBuscarRuta.addActionListener(e -> buscarRutaAprendizaje());
 		panel.add(btnBuscarRuta);
 		
@@ -166,13 +165,13 @@ public class PanelAprenderRecursividad extends JPanel {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(MAIN_FONDO);
 		
-		btnAnadirRuta = new JButton("Añadir Ruta");
+		btnAnadirRuta = new JButton("Añadir ruta");
 		btnAnadirRuta.setFont(SUBTITULO_MEDIO);
 		btnAnadirRuta.setBackground(VERDE_CLARO);
 		btnAnadirRuta.setForeground(Color.WHITE);
-		btnAnadirRuta.setPreferredSize(new Dimension(150, 45));
-		btnAnadirRuta.setMinimumSize(new Dimension(150, 45));
-		btnAnadirRuta.setMaximumSize(new Dimension(150, 45));
+		btnAnadirRuta.setPreferredSize(new Dimension(150, 40));
+		btnAnadirRuta.setMinimumSize(new Dimension(150, 40));
+		btnAnadirRuta.setMaximumSize(new Dimension(150, 40));
 		btnAnadirRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAnadirRuta.setBorderPainted(false);
 		btnAnadirRuta.setContentAreaFilled(false);
@@ -200,7 +199,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnVolver.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//MODIFICADO
+		//SIN CAMBIOS
 		btnVolver.addActionListener(e -> {
 			if (accionVolver != null) {
 				accionVolver.actionPerformed(e);
@@ -213,7 +212,6 @@ public class PanelAprenderRecursividad extends JPanel {
 		panel.add(btnVolver);
 		
 		return panel;
-
 	}
 	
 	private void buscarRutaAprendizaje() {
@@ -505,7 +503,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	        	   
 	               if (totalFallidos == 0) {
 	                   mostrarInfo(PanelAprenderRecursividad.this,
-	                       "¡Te has inscrito exitosamente en " + totalExitosos + " curso(s)!",
+	                       "¡Se ha inscrito exitosamente en " + totalExitosos + " curso(s)!",
 	                       "Inscripción exitosa");
 	               } else {
 	                   mostrarWarning(PanelAprenderRecursividad.this,

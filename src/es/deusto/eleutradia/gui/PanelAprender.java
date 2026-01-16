@@ -158,21 +158,21 @@ public class PanelAprender extends JPanel {
 		panelBotonAbajo.setBackground(MAIN_PANEL);
 		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 		
-		JButton botonRecursividad = new JButton("Recursividad");
+		JButton botonRecursividad = new JButton("Ruta Aprendizaje");
 		botonRecursividad.setMinimumSize(new Dimension(140, 45));
 		botonRecursividad.setPreferredSize(new Dimension(140, 45));
 		botonRecursividad.setMaximumSize(new Dimension(140, 45));
-		botonRecursividad.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonRecursividad.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonRecursividad.setBackground(VERDE_CLARO);
 		botonRecursividad.setForeground(Color.WHITE);
-		botonRecursividad.setFont(SUBTITULO_MEDIO);
+		botonRecursividad.setFont(SUBTITULO_PEQUENO);
 		botonRecursividad.setBorderPainted(false);
 		botonRecursividad.setContentAreaFilled(false);
 		botonRecursividad.setOpaque(true);
 		botonRecursividad.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//MODIFICADO
+		//ADAPTADO (ActionListener personalizado)
 		botonRecursividad.addActionListener(e -> {
 			JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
 			
@@ -218,7 +218,7 @@ public class PanelAprender extends JPanel {
 		botonSimulacion.setFocusPainted(false);
 		
 		//IAG (Gemini)
-		//MODIFICADO
+		//ADAPTADO (ActionListener personalizado)
 		botonSimulacion.addActionListener(e -> {
             
             JFrame ventanaPrincipal = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -387,7 +387,7 @@ public class PanelAprender extends JPanel {
 		
 		try {
 			//IAG (Gemini)
-			//SIN MODIFICAR
+			//SIN CAMBIOS
 			ImageIcon icono = new ImageIcon(getClass().getResource(curso.getRutaImagen()));
 			Image imagen = icono.getImage().getScaledInstance(TAMANO_TARJETA.width, ALTURA_IMAGEN, Image.SCALE_SMOOTH);
 			//END IAG
@@ -579,7 +579,7 @@ public class PanelAprender extends JPanel {
 			    if (yaInscrito) { return; }
 			    
 			    //IAG (Gemini)
-				//SIN MODIFICAR
+				//SIN CAMBIOS
 			    JRootPane rootPane = SwingUtilities.getRootPane(panelCursosInfo);
 			    PanelCargaThreads panelCarga = new PanelCargaThreads();
 			    rootPane.setGlassPane(panelCarga);
