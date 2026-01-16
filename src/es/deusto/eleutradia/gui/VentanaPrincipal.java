@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,6 +22,7 @@ import javax.swing.border.TitledBorder;
 
 import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.Usuario;
+import es.deusto.eleutradia.service.MarketDataService;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
 
@@ -60,6 +63,15 @@ public class VentanaPrincipal extends JFrame {
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 		this.setVisible(true);
+		MarketDataService.getInstance().startService();
+		this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("Cerrando aplicación y deteniendo mercado...");
+                MarketDataService.getInstance().stopService();
+                System.exit(0); 
+            }
+        });
 	}
 	
 	private void configurarVentana() {
