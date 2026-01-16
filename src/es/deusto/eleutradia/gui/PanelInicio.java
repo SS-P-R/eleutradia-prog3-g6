@@ -768,8 +768,10 @@ public class PanelInicio extends JPanel{
 	        labelPrecio.setForeground(Color.BLACK);
 	        labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
 	        
+	        //IAG (Chatgpt)
 	        JLabel labelDescripcion = new JLabel("<html><div style='width:700px'>Información detallada del producto financiero. " +
 	            "Aquí se mostraría datos históricos, análisis técnico, recomendaciones y más detalles relevantes.</div></html>");
+	        //END-IAG
 	        labelDescripcion.setFont(CUERPO_GRANDE);
 	        labelDescripcion.setForeground(GRIS_MEDIO);
 	        labelDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -792,9 +794,79 @@ public class PanelInicio extends JPanel{
         panel.setPreferredSize(new Dimension(200, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         
-        // TODO
+        //Algunas estadísticas
+        JPanel tarjetaEstadisticas = crearPanelEstadisticasBasicas();
+        panel.add(tarjetaEstadisticas);
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+        
+        //Algunas acciones
+        JPanel tarjetaAcciones = crearPanelAccionesBasicas();
+        panel.add(tarjetaAcciones);
+        panel.add(Box.createVerticalGlue());
+        
         return panel;
 	}
+	
+    private JPanel crearPanelEstadisticasBasicas() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
+            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+        
+        JLabel labelTitulo = new JLabel("Estadísticas:");
+        labelTitulo.setFont(SUBTITULO_MEDIO);
+        labelTitulo.setForeground(AZUL_OSCURO);
+        labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        panel.add(labelTitulo);
+        panel.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        //Últimas operaciones
+        int numOperaciones = 0;
+        for (Cartera c : usuario.getCarteras()) {
+            if (c.getOperaciones() != null) {
+                numOperaciones += c.getOperaciones().size();
+            }
+        } 
+        JPanel panelOperaciones = crearFilaEstadistica("Operaciones:", String.valueOf(numOperaciones), GRIS_MEDIO);
+        panel.add(panelOperaciones);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        
+        //Cursos activos
+        if (usuario instanceof Particular) {
+            Particular particular = (Particular) usuario;
+            int numCursos = particular.getCursos().size();
+            JPanel panelCursos = crearFilaEstadistica("Cursos activos:", String.valueOf(numCursos), VERDE_CLARO);
+            panel.add(panelCursos);
+        }
+        
+        return panel;
+    }
+    
+    private JPanel crearPanelAccionesBasicas() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(MAIN_BORDE, 1),
+            BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+        
+        JLabel labelTitulo = new JLabel("Continua aprendiendo e invirtiendo");
+        labelTitulo.setFont(SUBTITULO_MEDIO);
+        labelTitulo.setForeground(AZUL_OSCURO);
+        labelTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        panel.add(labelTitulo);
+        panel.add(Box.createRigidArea(new Dimension(0, 15)));
+        
+        //TODO
+        
+        return panel;
+    }
 
     private JPanel crearFilaEstadistica(String etiqueta, String valor, Color colorValor) {
         JPanel panel = new JPanel(new BorderLayout(5, 0));
