@@ -155,6 +155,21 @@ public class PanelAprenderRecursividad extends JPanel {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panel.setBackground(MAIN_FONDO);
 		
+		btnAnadirRuta = new JButton("Añadir Ruta");
+		btnAnadirRuta.setFont(SUBTITULO_MEDIO);
+		btnAnadirRuta.setBackground(VERDE_CLARO);
+		btnAnadirRuta.setForeground(Color.WHITE);
+		btnAnadirRuta.setPreferredSize(new Dimension(150, 45));
+		btnAnadirRuta.setMinimumSize(new Dimension(150, 45));
+		btnAnadirRuta.setMaximumSize(new Dimension(150, 45));
+		btnAnadirRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAnadirRuta.setBorderPainted(false);
+		btnAnadirRuta.setContentAreaFilled(false);
+		btnAnadirRuta.setOpaque(true);
+		btnAnadirRuta.setFocusPainted(false);
+		btnAnadirRuta.addMouseListener(myAdapterVerde);
+		btnAnadirRuta.setVisible(false);
+		
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(SUBTITULO_MEDIO);
 		btnVolver.setBackground(GRIS_MEDIO);
@@ -164,11 +179,16 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnVolver.setContentAreaFilled(false);
 		btnVolver.setOpaque(true);
 		btnVolver.setFocusPainted(false);
+		
+		//IAG (Gemini)
+				//MODIFICADO
 		btnVolver.addActionListener(e -> {
 			if (accionVolver != null) {
 				accionVolver.actionPerformed(e);
 			}
 		});
+		//END IAG
+		
 		btnVolver.addMouseListener(myAdapterGris);
 		
 		panel.add(btnVolver);
