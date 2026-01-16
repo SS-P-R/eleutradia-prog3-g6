@@ -158,14 +158,14 @@ public class PanelAprender extends JPanel {
 		panelBotonAbajo.setBackground(MAIN_PANEL);
 		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 		
-		JButton botonRecursividad = new JButton("Recursividad");
+		JButton botonRecursividad = new JButton("Ruta Aprendizaje");
 		botonRecursividad.setMinimumSize(new Dimension(140, 45));
 		botonRecursividad.setPreferredSize(new Dimension(140, 45));
 		botonRecursividad.setMaximumSize(new Dimension(140, 45));
-		botonRecursividad.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonRecursividad.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		botonRecursividad.setBackground(VERDE_CLARO);
 		botonRecursividad.setForeground(Color.WHITE);
-		botonRecursividad.setFont(SUBTITULO_MEDIO);
+		botonRecursividad.setFont(SUBTITULO_PEQUENO);
 		botonRecursividad.setBorderPainted(false);
 		botonRecursividad.setContentAreaFilled(false);
 		botonRecursividad.setOpaque(true);
