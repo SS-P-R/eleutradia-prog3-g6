@@ -8,10 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,18 +19,14 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 
 import es.deusto.eleutradia.domain.Cartera;
 import es.deusto.eleutradia.domain.Curso;
@@ -607,9 +599,191 @@ public class PanelInicio extends JPanel{
 	
 	    private JPanel crearPanelGrafico() {
 	        JPanel panel = new JPanel(new BorderLayout(10, 10));
+	        panel.setBackground(Color.WHITE);
+	        panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+	        
+	        //Encabezado
+	        JPanel panelEncabezado = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	        panelEncabezado.setBackground(Color.WHITE);
+	        panelEncabezado.setBorder(BorderFactory.createEmptyBorder(15, 15, 5, 15));
+	        
+	        JLabel labelTitulo = new JLabel("Producto destacado");
+	        labelTitulo.setFont(SUBTITULO_GRANDE);
+	        labelTitulo.setForeground(AZUL_OSCURO);
+	        panelEncabezado.add(labelTitulo);
+	        
+	        //Contenido
+	        JPanel panelContenido = new JPanel();
+	        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+	        panelContenido.setBackground(Color.WHITE);
+	        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 15, 10, 15));
+	        
+	        if (productos == null || productos.isEmpty()) {
+	            JLabel labelVacio = new JLabel("No hay productos disponibles");
+	            labelVacio.setFont(CUERPO_GRANDE);
+	            labelVacio.setForeground(GRIS_CLARO);
+	            labelVacio.setAlignmentX(Component.LEFT_ALIGNMENT);
+	            panelContenido.add(labelVacio);
+	        } else {
+	        // Información del producto
+	        JLabel labelNombreProducto = new JLabel();
+            labelNombreProducto.setFont(CUERPO_GRANDE);
+            labelNombreProducto.setForeground(Color.BLACK);
+            labelNombreProducto.setAlignmentX(Component.LEFT_ALIGNMENT);
+            panelContenido.add(labelNombreProducto);
+            panelContenido.add(Box.createRigidArea(new Dimension(0, 5)));
+            
+            JLabel labelPrecioProducto = new JLabel();
+            labelPrecioProducto.setFont(SUBTITULO_MEDIO);
+            labelPrecioProducto.setForeground(AZUL_OSCURO);
+            labelPrecioProducto.setAlignmentX(Component.LEFT_ALIGNMENT);
+            panelContenido.add(labelPrecioProducto);
+            panelContenido.add(Box.createRigidArea(new Dimension(0, 8)));
+            
+            JLabel labelVariacionProducto = new JLabel();
+            labelVariacionProducto.setFont(CUERPO_PEQUENO);
+            labelVariacionProducto.setAlignmentX(Component.LEFT_ALIGNMENT);
+            panelContenido.add(labelVariacionProducto);
+            
+            JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            panelBoton.setBackground(Color.WHITE);
+            panelBoton.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+            
+            JButton botonSiguiente = new JButton("Siguiente");
+            botonSiguiente.setFont(CUERPO_MEDIO);
+            botonSiguiente.setBackground(AZUL_CLARO);
+            botonSiguiente.setForeground(Color.WHITE);
+            botonSiguiente.setBorderPainted(false);
+            botonSiguiente.setContentAreaFilled(false);
+            botonSiguiente.setOpaque(true);
+            botonSiguiente.setFocusPainted(false);
+            botonSiguiente.addMouseListener(myAdapterAzul);
+
+            panelBoton.add(botonSiguiente);
+            panelContenido.add(panelBoton);
+
+            //Actualizar producto
+            Runnable actualizarProducto = () -> {
+                ProductoFinanciero productoActual = productos.get(indiceProductoActual);
+
+                //Aleatorio
+                Random random = new Random();
+                double variacion = (random.nextDouble() * 6) - 3;
+
+                String simbolo;
+                Color colorVariacion;
+
+                if (variacion >= 0) {
+                    simbolo = "▲";
+                    colorVariacion = VERDE_CLARO;
+                } else {
+                    simbolo = "▼";
+                    colorVariacion = Color.RED;
+                }
+
+                labelNombreProducto.setText(productoActual.getNombre());
+                labelPrecioProducto.setText(formatoMoneda.format(productoActual.getValorUnitario()) + " €");
+                labelVariacionProducto.setText(simbolo + " " + formatoPorcentaje.format(Math.abs(variacion)) + "%");
+                labelVariacionProducto.setForeground(colorVariacion);
+            };
+
+            //Botón para actualizar el producto
+            botonSiguiente.addActionListener(e -> {
+                indiceProductoActual = (indiceProductoActual + 1) % productos.size();
+                SwingUtilities.invokeLater(actualizarProducto);
+            });
+
+            //Hilo para rotar de manera automática sin pulsar el botón
+            Thread hiloProductos = new Thread(() -> {
+                try {
+                    while (true) {
+                        Thread.sleep(8000);
+                        indiceProductoActual = (indiceProductoActual + 1) % productos.size();
+                        SwingUtilities.invokeLater(actualizarProducto);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            hiloProductos.setDaemon(true);
+            hiloProductos.start();
+
+            SwingUtilities.invokeLater(actualizarProducto);
+        }
+        
+	    panel.add(panelEncabezado, BorderLayout.NORTH);
+	    panel.add(panelContenido, BorderLayout.CENTER);
+        
+        //Focus y click
+	    panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 2));
+            	panel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	panel.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+            }
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (frame == null) {
+                	frame = new JFrame("Detalles del Producto");
+                	frame.setSize(800, 600);
+                	frame.setLocationRelativeTo(null);
+                	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }
+                
+                JPanel panelDetalles = crearPanelDetallesProducto();
+                frame.getContentPane().removeAll();
+                frame.add(panelDetalles);
+                frame.revalidate();
+                frame.repaint();
+                frame.setVisible(true);
+            }
+        });
+	    return panel;
+	}
+	    
+	    private JPanel crearPanelDetallesProducto() {
+	        JPanel panel = new JPanel(new BorderLayout(15, 15));
+	        panel.setBackground(Color.WHITE);
+	        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+	        
+	        ProductoFinanciero producto = productos.get(indiceProductoActual);
+	        
+	        JLabel labelTitulo = new JLabel(producto.getNombre());
+	        labelTitulo.setFont(TITULO_GRANDE);
+	        labelTitulo.setForeground(AZUL_OSCURO);
+	        
+	        JPanel panelInfo = new JPanel();
+	        panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
+	        panelInfo.setBackground(Color.WHITE);
+	        panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+	        
+	        JLabel labelPrecio = new JLabel("Precio actual: " + formatoMoneda.format(producto.getValorUnitario()) + " €");
+	        labelPrecio.setFont(SUBTITULO_GRANDE);
+	        labelPrecio.setForeground(Color.BLACK);
+	        labelPrecio.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        
+	        JLabel labelDescripcion = new JLabel("<html><div style='width:700px'>Información detallada del producto financiero. " +
+	            "Aquí se mostraría datos históricos, análisis técnico, recomendaciones y más detalles relevantes.</div></html>");
+	        labelDescripcion.setFont(CUERPO_GRANDE);
+	        labelDescripcion.setForeground(GRIS_MEDIO);
+	        labelDescripcion.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        
+	        panelInfo.add(labelPrecio);
+	        panelInfo.add(Box.createRigidArea(new Dimension(0, 15)));
+	        panelInfo.add(labelDescripcion);
+	        
+	        panel.add(labelTitulo, BorderLayout.NORTH);
+	        panel.add(panelInfo, BorderLayout.CENTER);
+	        
 	        return panel;
 	    }
-	                       
+                       
 	
 	private JPanel crearPanelLateral() {
         JPanel panel = new JPanel();
