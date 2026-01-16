@@ -1,7 +1,5 @@
 package es.deusto.eleutradia.gui.style;
 
-import static es.deusto.eleutradia.gui.style.UITema.MAIN_BORDE;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
