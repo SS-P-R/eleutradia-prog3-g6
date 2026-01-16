@@ -70,7 +70,9 @@ public abstract class Usuario {
 	}
 
 	public void setDomicilioFiscal(Pais domicilioFiscal) {
-		this.domicilioFiscal = domicilioFiscal;
+		if (domicilioFiscal != null) {
+			this.domicilioFiscal = domicilioFiscal;
+		}
 	}
 
 	public PerfilFinanciero getPerfilFinanciero() {

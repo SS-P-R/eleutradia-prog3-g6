@@ -1406,6 +1406,29 @@ public class EleutradiaDBManager {
 	    return carteras;
 	}
 	
+	public Pais getPaisByNombre(String nombrePais) {
+		String sqlSelect = "SELECT * FROM Pais WHERE nombre = ?";
+		Pais pais = null;
+		
+		try (Connection conn = DriverManager.getConnection(connectionUrl);
+			 PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
+			
+			pstmt.setString(1, nombrePais);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				pais = new Pais(rs.getInt(1), rs.getString(2), RegionGeografica.values()[rs.getInt(3)]);
+			}
+			rs.close();
+			
+		} catch (Exception ex) {
+			System.err.format("Error al obtener país por nombre: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+		}
+		
+		return pais;
+	}
+	
 	// MÉTODOS DE ACTUALIZACIÓN
 	
 	public boolean updatePosicion(Posicion posicion, int idCartera) {

@@ -511,6 +511,7 @@ public class PanelPerfil extends JPanel {
             usuario.setEmail(txtEmail.getText());
             usuario.setTelefono(txtTelefono.getText());
             usuario.setDireccion(txtDireccion.getText());
+            usuario.setDomicilioFiscal(dbManager.getPaisByNombre(txtFiscal.getText()));
             boolean exito = dbManager.updateUsuario(usuario);
             
             if (exito) {
