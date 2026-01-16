@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 
 import es.deusto.eleutradia.db.EleutradiaDBManager;
 import es.deusto.eleutradia.domain.Cartera;
+import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.domain.PerfilFinanciero;
 import es.deusto.eleutradia.domain.TipoProducto;
 import es.deusto.eleutradia.domain.Usuario;
@@ -67,38 +68,57 @@ public class PanelPerfil extends JPanel {
     }
     
     private JPanel crearPanelCabecera() {
-        JPanel panel = crearCard();
-        panel.setLayout(new BorderLayout(20, 10));
-        String inicialNombre = String.valueOf(usuario.getNombre().charAt(0)).toUpperCase();
-        String inicialApellido = String.valueOf(usuario.getNombre().split("\\s+")[1].charAt(0)).toUpperCase();
-        JLabel lblAvatar = new JLabel(inicialNombre + inicialApellido);
-        lblAvatar.setFont(new Font("Segoe UI", Font.BOLD, 56));
-        lblAvatar.setHorizontalAlignment(JLabel.CENTER);
-        lblAvatar.setPreferredSize(new Dimension(100, 100));
-        panel.add(lblAvatar, BorderLayout.WEST);
-        JPanel infoPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        infoPanel.setBackground(MAIN_PANEL);
-        
-        JLabel lblNombre = new JLabel(usuario.getNombre());
-        lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        lblNombre.setForeground(Color.BLACK);
-        
-        JLabel lblEmail = new JLabel(usuario.getEmail());
-        lblEmail.setFont(CUERPO_GRANDE);
-        lblEmail.setForeground(Color.BLACK);
-        
-        JLabel lblTipo = new JLabel("Cuenta Activa • " + usuario.getCarteras().size() + " Cartera(s)");
-        lblTipo.setFont(CUERPO_GRANDE);
-        lblTipo.setForeground(VERDE_CLARO);
-        
-        infoPanel.add(lblNombre);
-        infoPanel.add(lblEmail);
-        infoPanel.add(lblTipo);
-        
-        panel.add(infoPanel, BorderLayout.CENTER);
-        
-        return panel;
-    }
+	    JPanel panel = crearCard();
+	    panel.setLayout(new BorderLayout(20, 10));
+	    
+	    // Obtener iniciales de forma segura
+	    String[] partesNombre = usuario.getNombre().split("\\s+");
+	    String inicialNombre = String.valueOf(partesNombre[0].charAt(0)).toUpperCase();
+	    
+	    // Si hay apellido (Particular), usar su inicial. Si no (Empresa), usar segunda letra del nombre
+	    String inicialApellido;
+	    if (partesNombre.length > 1) {
+	        // Caso Particular: "Nombre Apellido"
+	        inicialApellido = String.valueOf(partesNombre[1].charAt(0)).toUpperCase();
+	    } else if (partesNombre[0].length() > 1) {
+	        // Caso Empresa con una palabra: usar segunda letra
+	        inicialApellido = String.valueOf(partesNombre[0].charAt(1)).toUpperCase();
+	    } else {
+	        // Caso extremo: nombre de una sola letra
+	        inicialApellido = inicialNombre;
+	    }
+	    
+	    JLabel lblAvatar = new JLabel(inicialNombre + inicialApellido);
+	    lblAvatar.setFont(new Font("Segoe UI", Font.BOLD, 56));
+	    lblAvatar.setHorizontalAlignment(JLabel.CENTER);
+	    lblAvatar.setPreferredSize(new Dimension(100, 100));
+	    panel.add(lblAvatar, BorderLayout.WEST);
+	    
+	    JPanel infoPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+	    infoPanel.setBackground(MAIN_PANEL);
+	    
+	    JLabel lblNombre = new JLabel(usuario.getNombre());
+	    lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 28));
+	    lblNombre.setForeground(Color.BLACK);
+	    
+	    JLabel lblEmail = new JLabel(usuario.getEmail());
+	    lblEmail.setFont(CUERPO_GRANDE);
+	    lblEmail.setForeground(Color.BLACK);
+	    
+	    // Diferenciar el texto según el tipo de usuario
+	    String tipoUsuario = usuario instanceof Particular ? "Particular" : "Empresa";
+	    JLabel lblTipo = new JLabel("Cuenta " + tipoUsuario + " • " + usuario.getCarteras().size() + " Cartera(s)");
+	    lblTipo.setFont(CUERPO_GRANDE);
+	    lblTipo.setForeground(VERDE_CLARO);
+	    
+	    infoPanel.add(lblNombre);
+	    infoPanel.add(lblEmail);
+	    infoPanel.add(lblTipo);
+	    
+	    panel.add(infoPanel, BorderLayout.CENTER);
+	    
+	    return panel;
+	}
     
     private JPanel crearPanelInformacionPersonal() {
         JPanel panel = crearCard();
