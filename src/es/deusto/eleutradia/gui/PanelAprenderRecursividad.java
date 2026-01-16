@@ -12,6 +12,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,6 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import es.deusto.eleutradia.domain.Curso;
@@ -35,6 +38,10 @@ public class PanelAprenderRecursividad extends JPanel {
 	
 
 	private static final long serialVersionUID = 1L;
+	
+	private final Icon iconRuta = new ImageIcon(getClass().getResource("/images/iconos/aprenderCerrado.png"));
+
+	private final Icon iconPaso = new ImageIcon(getClass().getResource("/images/iconos/aprenderAbierto.png"));
 	
 	private JComboBox<String> comboNivelObjetivo;
 	private JButton btnBuscarRuta;
@@ -210,6 +217,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	}
 	
 	private void buscarRutaAprendizaje() {
+		
 		String nivelObjetivoStr = (String) comboNivelObjetivo.getSelectedItem();
 		NivelConocimiento nivelObjetivo = NivelConocimiento.valueOf(nivelObjetivoStr);
 		
@@ -284,6 +292,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	}
 	
 	private NivelConocimiento obtenerSiguienteNivel(NivelConocimiento nivelActual) {
+		
 		NivelConocimiento[] niveles = NivelConocimiento.values();
 		int indiceActual = nivelActual.ordinal();
 		
@@ -295,6 +304,7 @@ public class PanelAprenderRecursividad extends JPanel {
 	}
 	
 	private void mostrarResultados(List<List<Curso>> rutas, NivelConocimiento nivelObjetivo) {
+		
 		panelResultado.removeAll();
 		
 		if (rutas.isEmpty()) {
@@ -333,6 +343,62 @@ public class PanelAprenderRecursividad extends JPanel {
 			treeResultados = new JTree(rootNode);
 			treeResultados.setFont(CUERPO_GRANDE);
 			treeResultados.setBackground(Color.WHITE);
+			
+			treeResultados.setCellRenderer(new DefaultTreeCellRenderer() {
+
+			    private static final long serialVersionUID = 1L;
+
+			    @Override
+			    public Component getTreeCellRendererComponent(
+			            JTree tree, Object value, boolean selected,
+			            boolean expanded, boolean leaf, int row, boolean hasFocus) {
+
+			        super.getTreeCellRendererComponent(
+			                tree, value, selected, expanded, leaf, row, hasFocus);
+
+			        setFont(CUERPO_GRANDE);
+			        setBackgroundNonSelectionColor(Color.WHITE);
+			        setBackgroundSelectionColor(new Color(200, 210, 240));
+
+			        if (value instanceof DefaultMutableTreeNode) {
+			            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+			            Object userObject = node.getUserObject();
+
+			            String texto;
+			            if (userObject instanceof RutaInfo) {
+			                texto = ((RutaInfo) userObject).nombre;
+			            } else {
+			                texto = userObject.toString();
+			            }
+
+			            // 🔹 RUTA
+			            if (texto.startsWith("Ruta ")) {
+			                setForeground(AZUL_OSCURO);
+			                setFont(SUBTITULO_MEDIO);
+			                setIcon(iconRuta);
+
+			            // 🔹 PASO
+			            } else if (texto.startsWith("Paso ")) {
+			                setForeground(AZUL_CLARO);
+			                setIcon(iconPaso);
+
+			            // 🔹 NIVEL INICIAL
+			            } else if (texto.startsWith("Nivel inicial")) {
+			                setForeground(VERDE_CLARO);
+			                setIcon(null);
+
+			            // 🔹 CABECERA
+			            } else if (texto.startsWith("Rutas encontradas")) {
+			                setForeground(GRIS_OSCURO);
+			                setFont(SUBTITULO_GRANDE);
+			                setIcon(null); // sin icono
+			            }
+			        }
+
+			        return this;
+			    }
+			});
+
 			
 			//IAG (Gemini)
 			//NO MODIFICADO
