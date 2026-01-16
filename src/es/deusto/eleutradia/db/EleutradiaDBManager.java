@@ -47,7 +47,6 @@ public class EleutradiaDBManager {
 	private static final String CSV_GESTORAS = "resources/data/gestoras.csv";
 	private static final String CSV_PRODUCTOS = "resources/data/productos.csv";
 	private static final String CSV_CURSOS = "resources/data/cursos.csv";
-	private static final String CSV_REQUISITOS = "resources/data/requisitos.csv";
 	private static final String CSV_MODULOS = "resources/data/modulos.csv";
 	private static final String CSV_LECCIONES = "resources/data/lecciones.csv";
 	
@@ -105,9 +104,6 @@ public class EleutradiaDBManager {
 	        
 	        List<Curso> cursos = this.loadCSV(CSV_CURSOS, Curso::parseCSV);
 	        this.insertCursos(cursos.toArray(new Curso[0]));
-	        
-	        List<String[]> requisitosData = this.loadCSV(CSV_REQUISITOS, this::parseRequisitosCSV);
-	        this.insertRequisitosDesdeCSV(requisitosData);
 	        
 	        List<String[]> modulosData = this.loadCSV(CSV_MODULOS, Modulo::parseCSV);
 	        this.insertModulos(modulosData);
@@ -749,55 +745,6 @@ public class EleutradiaDBManager {
 		}
 	}
 	
-	public void insertRequisitos(int cursoId, int... requisitosIds) {
-	    String sql = "INSERT OR IGNORE INTO CursoRequisitos (curso_id, requisito_id) VALUES (?, ?)";
-	    
-	    try (Connection conn = DriverManager.getConnection(connectionUrl);
-	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
-	        
-	        for (int r : requisitosIds) {
-	            pStmt.setInt(1, cursoId);
-	            pStmt.setInt(2, r);
-	            pStmt.executeUpdate();
-	        }
-	        
-	    } catch (Exception ex) {
-	        System.err.format("Error insertando requisitos: %s%n", ex.getMessage());
-	        ex.printStackTrace();
-	    } 
-	}	
-	
-	private String[] parseRequisitosCSV(String linea) {
-	    if (linea == null || linea.isBlank()) {
-	    	return null;
-	    }else {
-		    return linea.split(";");
-	    }
-	}
-
-	public void insertRequisitosDesdeCSV(List<String[]> requisitosData) {
-	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
-	    	
-	        for (String[] data : requisitosData) {
-	            if (!(data == null || data.length < 2)) {
-		            String nombreCurso = data[0].trim();
-		            String nombreRequisito = data[1].trim();
-		            
-		            int cursoId = getCursoIdByNombre(conn, nombreCurso);
-		            int requisitoId = getCursoIdByNombre(conn, nombreRequisito);
-		            
-		            if (cursoId != -1 && requisitoId != -1) {
-		                insertRequisitos(cursoId, requisitoId);
-		            }
-	            }
-	        }
-	        
-	    } catch (Exception ex) {
-	        System.err.format("Error insertando requisitos: %s%n", ex.getMessage());
-	        ex.printStackTrace();
-	    }
-	}
-	
 	public void insertModulos(List<String[]> modulosData) {
 	    String sql = "INSERT OR IGNORE INTO Modulo (nombre, posicion, curso) VALUES (?, ?, ?);";
 	    
@@ -1271,7 +1218,6 @@ public class EleutradiaDBManager {
 	    return productos;
 	}
 	
-	// Método para recuperar la estructura de árbol completa de las carteras
 	public List<Cartera> getCarteras() {
 	    List<Cartera> carteras = new ArrayList<>();
 	    Map<Integer, Cartera> mapaCarteras = new HashMap<>();
@@ -1388,7 +1334,6 @@ public class EleutradiaDBManager {
 	    return requisitosIds;
 	}
 
-	
 	// MÉTODOS DE INSCRIPCIÓN A CURSOS
 	
 	public boolean inscribirParticularACurso(String dni, int idCurso) {
@@ -1643,7 +1588,6 @@ public class EleutradiaDBManager {
 	    }
 	}
 
-	// Método específico para cambiar la contraseña
 	public boolean editarContrasena(Object usuario, String nuevaPassword) {
 	    String sql;
 	    String id;
@@ -1672,7 +1616,7 @@ public class EleutradiaDBManager {
 	    }
 	}
 	
-	// MÉTODOS PRIVADOS AUXILIARES
+	// MÉTODOS AUXILIARES DE RECUPERACIÓN
 	
 	private int getPaisIdByNombre(Connection conn, String nombrePais) {
 	    String sql = "SELECT id FROM Pais WHERE nombre = ?;";

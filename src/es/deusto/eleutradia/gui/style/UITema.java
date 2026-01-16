@@ -303,7 +303,6 @@ public class UITema {
     // Método para configurar la ScrollBar de cualquier componente
     public static JScrollPane configurarScrollPane(JComponent contenido) {
         JScrollPane scrollPane = new JScrollPane(contenido);
-        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUI(personalizarScrollBarUI());

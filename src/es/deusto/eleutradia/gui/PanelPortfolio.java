@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -383,7 +384,10 @@ public class PanelPortfolio extends JPanel {
         tablePosiciones.getColumnModel().getColumn(5).setCellRenderer(rentRenderer);
         tablePosiciones.getColumnModel().getColumn(6).setCellRenderer(rentRenderer);
         
-        panel.add(configurarScrollPane(tablePosiciones), BorderLayout.CENTER);
+        JScrollPane scrollPane = configurarScrollPane(tablePosiciones);
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+        
+        panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;
     }
@@ -425,7 +429,10 @@ public class PanelPortfolio extends JPanel {
         operationsList.setCellRenderer(new UITema.ListRendererHover());        
         aplicarEfectoHover(operationsList);
         
-        panel.add(configurarScrollPane(operationsList), BorderLayout.CENTER);
+        JScrollPane scrollPane = configurarScrollPane(operationsList);
+        scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+        
+        panel.add(scrollPane, BorderLayout.CENTER);
         
         return panel;
     }
