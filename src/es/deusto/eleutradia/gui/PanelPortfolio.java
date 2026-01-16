@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -563,6 +564,8 @@ public class PanelPortfolio extends JPanel {
         List<Operacion> ops = carteraSeleccionada.getOperaciones();
         int start = Math.max(0, ops.size() - 10);
         
+        List<String> nuevasOperaciones = new ArrayList<>();
+        
         for (int i = ops.size() - 1; i >= start; i--) {
             Operacion op = ops.get(i);
             String tipo = op.getTipoOp() ? "COMPRA" : "VENTA ";
@@ -570,7 +573,7 @@ public class PanelPortfolio extends JPanel {
             
             String simboloDivisaProducto = op.getProdFinanciero().getDivisa().getSimbolo();
             
-            operationsListModel.addElement(String.format("%s %s | %s | %.2f unidades de %s a %.2f %s",
+            nuevasOperaciones.add(String.format("%s %s | %s | %.2f unidades de %s a %.2f %s",
                 simboloOp,
                 op.getFechaOp().toString(),
                 tipo,
@@ -582,8 +585,14 @@ public class PanelPortfolio extends JPanel {
         }
         
         if (ops.isEmpty()) {
-            operationsListModel.addElement("No hay operaciones registradas en esta cartera");
+            nuevasOperaciones.add("No hay operaciones registradas en esta cartera");
         }
+        
+        //IAG
+        //SIN CAMBIOS
+        operationsListModel.removeAllElements();
+        nuevasOperaciones.forEach(operationsListModel::addElement);
+        //END IAG
     }
     
     public void refrescarDatos() {

@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -621,8 +622,31 @@ public class UITema {
                 setForeground(Color.BLACK);
             } else {
                 // Comprobar si el mouse está sobre este item
-                Point mousePos = list.getMousePosition();
-                if (mousePos != null && list.locationToIndex(mousePos) == index) {
+                Point mousePos = null;
+                int hoverIndex = -1;
+                
+                try {
+                	mousePos = list.getMousePosition();
+                	if (mousePos != null) {
+                        hoverIndex = list.locationToIndex(mousePos);
+                        
+                        // Verificar que el índice está dentro del rango
+                        if (hoverIndex < 0 || hoverIndex >= list.getModel().getSize()) {
+                            hoverIndex = -1;
+                        }
+                        
+                        // Verificar que el punto realmente está sobre una celda válida
+                        Rectangle cellBounds = list.getCellBounds(hoverIndex, hoverIndex);
+                        if (cellBounds == null || !cellBounds.contains(mousePos)) {
+                            hoverIndex = -1;
+                        }
+                    }
+                } catch (Exception e) {
+                    // Si ocurre cualquier excepción, ignorar el efecto hover
+                    hoverIndex = -1;
+                }
+
+                if (hoverIndex == index) {
                     setBackground(new Color(220, 235, 255));
                 } else {
                     // Colores alternos
