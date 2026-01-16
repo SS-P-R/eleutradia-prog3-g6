@@ -169,9 +169,9 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnAnadirRuta.setFont(SUBTITULO_MEDIO);
 		btnAnadirRuta.setBackground(VERDE_CLARO);
 		btnAnadirRuta.setForeground(Color.WHITE);
-		btnAnadirRuta.setPreferredSize(new Dimension(150, 40));
-		btnAnadirRuta.setMinimumSize(new Dimension(150, 40));
-		btnAnadirRuta.setMaximumSize(new Dimension(150, 40));
+		btnAnadirRuta.setPreferredSize(new Dimension(150, 45));
+		btnAnadirRuta.setMinimumSize(new Dimension(150, 45));
+		btnAnadirRuta.setMaximumSize(new Dimension(150, 45));
 		btnAnadirRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnAnadirRuta.setBorderPainted(false);
 		btnAnadirRuta.setContentAreaFilled(false);
@@ -193,6 +193,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnVolver.setPreferredSize(new Dimension(150, 45));
 		btnVolver.setMinimumSize(new Dimension(150, 45));
 		btnVolver.setMaximumSize(new Dimension(150, 45));
+		btnVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnVolver.setBorderPainted(false);
 		btnVolver.setContentAreaFilled(false);
 		btnVolver.setOpaque(true);
