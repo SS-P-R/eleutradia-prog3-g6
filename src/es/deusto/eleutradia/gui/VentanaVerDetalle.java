@@ -398,6 +398,7 @@ public class VentanaVerDetalle extends JDialog {
             timerDetalle.stop();
         }
         super.dispose();
+        
     }
     
     MouseAdapter myAdapterGris = new MouseAdapter() {
