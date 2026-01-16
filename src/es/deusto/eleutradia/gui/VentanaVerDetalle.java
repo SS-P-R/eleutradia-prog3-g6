@@ -385,7 +385,6 @@ public class VentanaVerDetalle extends JDialog {
                             }
                         }
                     }
-                    
                     this.producto = pFresco;
                     break;
                 }
