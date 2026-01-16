@@ -41,7 +41,7 @@ public class VentanaVerDetalle extends JDialog {
     
     private ProductoFinanciero producto;
     private JLabel labelPrecio;
-    private JLabel lblRentabilidadYTD;
+    private Map<PlazoRentabilidad, javax.swing.JLabel> mapaLabelsRentabilidad = new java.util.HashMap<>();
     private Timer timerDetalle;
     private EleutradiaDBManager dbManager = new EleutradiaDBManager();
 
@@ -280,25 +280,13 @@ public class VentanaVerDetalle extends JDialog {
         for (Map.Entry<PlazoRentabilidad, BigDecimal> entry : producto.getRentabilidades().entrySet()) {
             String plazo = entry.getKey().getDefinicion();
             BigDecimal valor = entry.getValue();
-            JLabel lblValorRent = new JLabel(entry.getValue() + "%");
-            
             gbc.gridx = 0; gbc.gridy = fila; gbc.weightx = 0.4;
             panelGrid.add(crearLabelInfo(plazo + ":"), gbc);
-            
-            if (entry.getKey() == PlazoRentabilidad.YTD) {
-                lblRentabilidadYTD = lblValorRent; 
-                if (entry.getValue().doubleValue() >= 0) {
-                    lblRentabilidadYTD.setForeground(new Color(0, 150, 60));
-                } else {
-                    lblRentabilidadYTD.setForeground(Color.RED);
-                }
-            }
-            
             gbc.gridx = 1; gbc.weightx = 0.6;
+            JLabel labelValor = new JLabel();
+            labelValor.setFont(SUBTITULO_MEDIO);
             if (valor != null) {
                 String textoValor = String.format("%.2f%%", valor);
-                JLabel labelValor = new JLabel(textoValor);
-                labelValor.setFont(SUBTITULO_MEDIO);
                 
                 if (valor.compareTo(BigDecimal.ZERO) > 0) {
                     labelValor.setForeground(VERDE_OSCURO);
@@ -310,10 +298,12 @@ public class VentanaVerDetalle extends JDialog {
                     labelValor.setForeground(GRIS_OSCURO);
                     labelValor.setText("― " + textoValor);
                 }
-                panelGrid.add(labelValor, gbc);
             } else {
-                panelGrid.add(crearLabelValor("No disponible"), gbc);
+                labelValor.setText("No disponible");
+                labelValor.setForeground(GRIS_OSCURO);
             }
+            mapaLabelsRentabilidad.put(entry.getKey(), labelValor);
+            panelGrid.add(labelValor, gbc);
             
             fila++;
         }
@@ -357,30 +347,42 @@ public class VentanaVerDetalle extends JDialog {
         return label;
     }
 
- // Método iniciarActualizacionEnTiempoReal()
-
     private void iniciarActualizacionEnTiempoReal() {
-        timerDetalle = new Timer(2000, e -> {
-            List<ProductoFinanciero> todos = dbManager.getProductos();
+        // Usamos javax.swing.Timer
+        timerDetalle = new javax.swing.Timer(2000, e -> {
+            
+            java.util.List<ProductoFinanciero> todos = dbManager.getProductos(); 
             
             for (ProductoFinanciero pFresco : todos) {
                 if (pFresco.getId() == this.producto.getId()) {
                     double precioNuevo = pFresco.getValorUnitario();
-                    labelPrecio.setText(String.format("%.2f %s", precioNuevo, pFresco.getDivisa()));
-                    
-                    if (precioNuevo > this.producto.getValorUnitario()) {
-                    	labelPrecio.setForeground(new Color(0, 180, 0));
-                    } else if (precioNuevo < this.producto.getValorUnitario()) {
-                    	labelPrecio.setForeground(Color.RED);
-                    }
-                    if (lblRentabilidadYTD != null && pFresco.getRentabilidades().containsKey(PlazoRentabilidad.YTD)) {
-                        BigDecimal nuevaRent = pFresco.getRentabilidades().get(PlazoRentabilidad.YTD);
-                        lblRentabilidadYTD.setText(String.format("%.2f %%", nuevaRent));
+                    if (labelPrecio != null) {
+                        labelPrecio.setText(String.format("%.2f %s", precioNuevo, pFresco.getDivisa()));
                         
-                        if (nuevaRent.doubleValue() >= 0) {
-                            lblRentabilidadYTD.setForeground(new Color(0, 150, 60));
-                        } else {
-                            lblRentabilidadYTD.setForeground(Color.RED);
+                        if (precioNuevo > this.producto.getValorUnitario()) {
+                            labelPrecio.setForeground(new Color(0, 180, 0));
+                        } else if (precioNuevo < this.producto.getValorUnitario()) {
+                            labelPrecio.setForeground(Color.RED);
+                        }
+                    }
+                    for (Map.Entry<PlazoRentabilidad, BigDecimal> entry : pFresco.getRentabilidades().entrySet()) {
+                        PlazoRentabilidad plazo = entry.getKey();
+                        BigDecimal valorNuevo = entry.getValue();
+                        
+                        if (mapaLabelsRentabilidad.containsKey(plazo)) {
+                            javax.swing.JLabel labelAActualizar = mapaLabelsRentabilidad.get(plazo);
+                            String textoValor = String.format("%.2f%%", valorNuevo);
+                            
+                            if (valorNuevo.compareTo(BigDecimal.ZERO) > 0) {
+                                labelAActualizar.setForeground(VERDE_OSCURO); 
+                                labelAActualizar.setText("▲ " + textoValor);
+                            } else if (valorNuevo.compareTo(BigDecimal.ZERO) < 0) {
+                                labelAActualizar.setForeground(ROJO_CLARO);
+                                labelAActualizar.setText("▼ " + textoValor);
+                            } else {
+                                labelAActualizar.setForeground(GRIS_OSCURO);
+                                labelAActualizar.setText("― " + textoValor);
+                            }
                         }
                     }
                     
@@ -389,7 +391,7 @@ public class VentanaVerDetalle extends JDialog {
                 }
             }
         });
-        timerDetalle.start(); 
+        timerDetalle.start();
     }
     
     @Override
