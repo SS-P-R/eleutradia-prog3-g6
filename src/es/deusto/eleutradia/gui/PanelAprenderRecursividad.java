@@ -187,6 +187,8 @@ public class PanelAprenderRecursividad extends JPanel {
 				panelResultado.repaint();
 			});
 			
+			System.out.println(rutas.toString());
+			
 		}).start();
 	}
 	
@@ -205,7 +207,42 @@ public class PanelAprenderRecursividad extends JPanel {
 	private void busquedaRecursivaAux(List<List<Curso>> result, List<Curso> rutaActual,
 			NivelConocimiento nivelActual, NivelConocimiento nivelObjetivo, 
 			List<Curso> todosCursos) {
-
+		
+		if (nivelActual == nivelObjetivo && !rutaActual.isEmpty()) {
+			result.add(new ArrayList<>(rutaActual));
+			return;
+		}
+		
+		if (nivelActual.ordinal() > nivelObjetivo.ordinal()) {
+			return;
+		}
+		
+		NivelConocimiento siguienteNivel = obtenerSiguienteNivel(nivelActual);
+		
+		if (siguienteNivel == null) {
+			return;
+		}
+		
+		for (Curso curso : todosCursos) {
+			if (curso.getNivelRecomendado() == siguienteNivel && !rutaActual.contains(curso)) {
+				rutaActual.add(curso);
+				
+				busquedaRecursivaAux(result, rutaActual, siguienteNivel, nivelObjetivo, todosCursos);
+				
+				rutaActual.remove(rutaActual.size() - 1);
+			}
+		}
+	}
+	
+	private NivelConocimiento obtenerSiguienteNivel(NivelConocimiento nivelActual) {
+		NivelConocimiento[] niveles = NivelConocimiento.values();
+		int indiceActual = nivelActual.ordinal();
+		
+		if (indiceActual < niveles.length - 1) {
+			return niveles[indiceActual + 1];
+		}
+		
+		return null;
 	}
 
 
