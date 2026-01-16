@@ -179,10 +179,12 @@ public class PanelAprender extends JPanel {
 			if (ventanaPrincipal != null) {
 				Container vistaOriginalCompleta = ventanaPrincipal.getContentPane();
 				
-				PanelAprenderRecursividad panelRecursividad = new PanelAprenderRecursividad();
+				PanelAprenderRecursividad panelRecursividad = new PanelAprenderRecursividad(usuarioLogeado);
 				
 				panelRecursividad.addAccionVolver(eventoVolver -> {
 					ventanaPrincipal.setContentPane(vistaOriginalCompleta);
+					
+					actualizarProgressBar();
 					ventanaPrincipal.revalidate();
 					ventanaPrincipal.repaint();
 					

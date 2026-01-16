@@ -19,10 +19,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.NivelConocimiento;
+import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -35,11 +39,23 @@ public class PanelAprenderRecursividad extends JPanel {
 	private JComboBox<String> comboNivelObjetivo;
 	private JButton btnBuscarRuta;
 	private JButton btnVolver;
+	private JButton btnAnadirRuta;
 	private JPanel panelResultado;
+	private JPanel panelBotones;
+	
 	private ActionListener accionVolver;
 	
-	public PanelAprenderRecursividad() {
-
+	private Particular usuarioLogeado;
+	private List<List<Curso>> rutasEncontradas;
+	private List<Curso> rutaSeleccionada;
+	private JTree treeResultados;
+	
+	public PanelAprenderRecursividad(Particular usuario) {
+		
+		this.usuarioLogeado = usuario;
+		this.rutasEncontradas = new ArrayList<>();
+		this.rutaSeleccionada = null;
+		
 		setLayout(new BorderLayout(20, 20));
 		setBackground(MAIN_FONDO);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -62,7 +78,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		panelResultado.setBackground(MAIN_FONDO);
 		add(panelResultado, BorderLayout.CENTER);
 		
-		JPanel panelBotones = crearPanelBotones();
+		panelBotones = crearPanelBotones();
 		add(panelBotones, BorderLayout.EAST);
 
 	}
@@ -139,23 +155,52 @@ public class PanelAprenderRecursividad extends JPanel {
 
 	private JPanel crearPanelBotones() {
 
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(MAIN_FONDO);
+		
+		btnAnadirRuta = new JButton("Añadir Ruta");
+		btnAnadirRuta.setFont(SUBTITULO_MEDIO);
+		btnAnadirRuta.setBackground(VERDE_CLARO);
+		btnAnadirRuta.setForeground(Color.WHITE);
+		btnAnadirRuta.setPreferredSize(new Dimension(150, 45));
+		btnAnadirRuta.setMinimumSize(new Dimension(150, 45));
+		btnAnadirRuta.setMaximumSize(new Dimension(150, 45));
+		btnAnadirRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnAnadirRuta.setBorderPainted(false);
+		btnAnadirRuta.setContentAreaFilled(false);
+		btnAnadirRuta.setOpaque(true);
+		btnAnadirRuta.setFocusPainted(false);
+		
+		btnAnadirRuta.addActionListener(e -> inscribirseARuta());
+		btnAnadirRuta.addMouseListener(myAdapterVerde);
+		btnAnadirRuta.setVisible(false);
+		
+		panel.add(btnAnadirRuta);
+
+		panel.add(Box.createVerticalGlue());
 		
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(SUBTITULO_MEDIO);
 		btnVolver.setBackground(GRIS_MEDIO);
 		btnVolver.setForeground(Color.WHITE);
 		btnVolver.setPreferredSize(new Dimension(150, 45));
+		btnVolver.setMinimumSize(new Dimension(150, 45));
+		btnVolver.setMaximumSize(new Dimension(150, 45));
 		btnVolver.setBorderPainted(false);
 		btnVolver.setContentAreaFilled(false);
 		btnVolver.setOpaque(true);
 		btnVolver.setFocusPainted(false);
+		
+		//IAG (Gemini)
+		//MODIFICADO
 		btnVolver.addActionListener(e -> {
 			if (accionVolver != null) {
 				accionVolver.actionPerformed(e);
 			}
 		});
+		//END IAG
+		
 		btnVolver.addMouseListener(myAdapterGris);
 		
 		panel.add(btnVolver);
@@ -167,6 +212,9 @@ public class PanelAprenderRecursividad extends JPanel {
 	private void buscarRutaAprendizaje() {
 		String nivelObjetivoStr = (String) comboNivelObjetivo.getSelectedItem();
 		NivelConocimiento nivelObjetivo = NivelConocimiento.valueOf(nivelObjetivoStr);
+		
+		rutaSeleccionada = null;
+		btnAnadirRuta.setVisible(false);
 		
 		new Thread(() -> {
 			SwingUtilities.invokeLater(() -> {
@@ -266,6 +314,7 @@ public class PanelAprenderRecursividad extends JPanel {
 				
 				DefaultMutableTreeNode rutaNode = new DefaultMutableTreeNode(
 						String.format("Ruta %d", i + 1));
+				rutaNode.setUserObject(new RutaInfo(String.format("Ruta %d", i + 1), ruta));
 				rootNode.add(rutaNode);
 				
 				DefaultMutableTreeNode nivelInicialNode = new DefaultMutableTreeNode(
@@ -281,11 +330,38 @@ public class PanelAprenderRecursividad extends JPanel {
 				}
 			}
 			
-			JTree tree = new JTree(rootNode);
-			tree.setFont(CUERPO_GRANDE);
-			tree.setBackground(Color.WHITE);
+			treeResultados = new JTree(rootNode);
+			treeResultados.setFont(CUERPO_GRANDE);
+			treeResultados.setBackground(Color.WHITE);
+			
+			//IAG (Gemini)
+			//NO MODIFICADO
+			treeResultados.addTreeSelectionListener(new TreeSelectionListener() {
+				@Override
+				public void valueChanged(TreeSelectionEvent e) {
+					TreePath path = e.getNewLeadSelectionPath();
+					if (path != null) {
+						DefaultMutableTreeNode selectedNode = 
+								(DefaultMutableTreeNode) path.getLastPathComponent();
+						
+						// Verificar si el nodo seleccionado es una ruta
+						if (selectedNode.getUserObject() instanceof RutaInfo) {
+							RutaInfo info = (RutaInfo) selectedNode.getUserObject();
+							rutaSeleccionada = info.cursos;
+							btnAnadirRuta.setVisible(true);
+						} else {
+							rutaSeleccionada = null;
+							btnAnadirRuta.setVisible(false);
+						}
+					} else {
+						rutaSeleccionada = null;
+						btnAnadirRuta.setVisible(false);
+					}
+				}
+			});
+			//END IAG
 
-			JScrollPane scrollPane = configurarScrollPane(tree);
+			JScrollPane scrollPane = new JScrollPane(treeResultados);
 			scrollPane.setPreferredSize(new Dimension(0, 300));
 			scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
 			
@@ -295,9 +371,115 @@ public class PanelAprenderRecursividad extends JPanel {
 		panelResultado.revalidate();
 		panelResultado.repaint();
 	}
+	
+	private void inscribirseARuta() {
+	       if (rutaSeleccionada == null || rutaSeleccionada.isEmpty()) {
+	           mostrarError(this, "No hay ninguna ruta seleccionada.", "Error");
+	           return;
+	       }
+
+	       List<Curso> cursosAInscribir = new ArrayList<>();
+	       List<Curso> cursosYaInscritos = new ArrayList<>();
+	       
+	       for (Curso curso : rutaSeleccionada) {
+	           boolean yaInscrito = usuarioLogeado.getCursos().stream()
+	                   .anyMatch(c -> c.getId() == curso.getId());
+	           if (yaInscrito) cursosYaInscritos.add(curso);
+	           else cursosAInscribir.add(curso);
+	       }
+	       if (cursosAInscribir.isEmpty()) {
+	           mostrarInfo(this, "Ya estás inscrito en todos los cursos de esta ruta.", "Información");
+	           return;
+	       }
+
+
+	       String mensaje = "¿Deseas inscribirte en los siguientes cursos?\n";
+	       for (Curso curso : cursosAInscribir) {
+	       	mensaje += "• " + curso.getNombre().toString() + "\n";
+	       }
+	      
+	       if (!cursosYaInscritos.isEmpty()) {
+	           mensaje += "\nYa estás inscrito en:\n";
+	           for (Curso curso : cursosYaInscritos) {
+	           	mensaje += "• " + curso.getNombre().toString() + "\n";
+	           }
+	       }
+	       if (!mostrarConfirmacion(this, mensaje.toString(), "Confirmar inscripción")) {
+	           return;
+	       }
+
+
+	       btnAnadirRuta.setEnabled(false);
+	       
+	       new Thread(() -> {
+	    	   
+	           int exitosos = 0;
+	           int fallidos = 0;
+	           
+	           for (Curso curso : cursosAInscribir) {
+	               
+	        	   boolean exito = MainEleutradia.getDBManager().inscribirParticularACurso(usuarioLogeado.getDni(), curso.getId());
+	               
+	               if (exito) {
+	                   usuarioLogeado.addCurso(curso);
+	                   exitosos++;
+	               } else {
+	                   fallidos++;
+	               }
+	              
+	               try { 
+	            	   Thread.sleep(300); 
+	               } catch (InterruptedException ignored) {
+	            	   
+	               }
+	           }
+	           
+	           final int totalExitosos = exitosos;
+	           final int totalFallidos = fallidos;
+	           
+	           SwingUtilities.invokeLater(() -> {
+
+	        	   btnAnadirRuta.setEnabled(true);
+	        	   
+	               if (totalFallidos == 0) {
+	                   mostrarInfo(PanelAprenderRecursividad.this,
+	                       "¡Te has inscrito exitosamente en " + totalExitosos + " curso(s)!",
+	                       "Inscripción exitosa");
+	               } else {
+	                   mostrarWarning(PanelAprenderRecursividad.this,
+	                       String.format("Inscripciones exitosas: %d\nFallidas: %d", totalExitosos, totalFallidos),
+	                       "Inscripción con errores");
+	               }
+	              
+	               rutaSeleccionada = null;
+	               btnAnadirRuta.setVisible(false);
+	               
+	               if (treeResultados != null) {
+	            	   treeResultados.clearSelection();
+	               }
+	           });
+	       }).start();
+	       
+	}
 
 
 	public void addAccionVolver(ActionListener listener) {
 		this.accionVolver = listener;
 	}
+	
+	private static class RutaInfo {
+		String nombre;
+		List<Curso> cursos;
+		
+		RutaInfo(String nombre, List<Curso> cursos) {
+			this.nombre = nombre;
+			this.cursos = cursos;
+		}
+		
+		@Override
+		public String toString() {
+			return nombre;
+		}
+	}
+
 }
