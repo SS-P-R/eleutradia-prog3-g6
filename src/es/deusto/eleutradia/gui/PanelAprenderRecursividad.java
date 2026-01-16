@@ -16,7 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.NivelConocimiento;
@@ -173,21 +176,14 @@ public class PanelAprenderRecursividad extends JPanel {
 			});
 			
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
 			List<List<Curso>> rutas = busquedaRecursivaRutas(nivelObjetivo);
-
 			
-			SwingUtilities.invokeLater(() -> {
-				panelResultado.removeAll();
-				panelResultado.revalidate();
-				panelResultado.repaint();
-			});
-			
-			System.out.println(rutas.toString());
+			SwingUtilities.invokeLater(() -> mostrarResultados(rutas, nivelObjetivo));
 			
 		}).start();
 	}
@@ -243,6 +239,56 @@ public class PanelAprenderRecursividad extends JPanel {
 		}
 		
 		return null;
+	}
+	
+	private void mostrarResultados(List<List<Curso>> rutas, NivelConocimiento nivelObjetivo) {
+		panelResultado.removeAll();
+		
+		if (rutas.isEmpty()) {
+			JLabel labelSinResultados = new JLabel("No se encontraron rutas de aprendizaje disponibles.");
+			labelSinResultados.setFont(CUERPO_GRANDE);
+			labelSinResultados.setForeground(ROJO_CLARO);
+			labelSinResultados.setHorizontalAlignment(JLabel.CENTER);
+			panelResultado.add(labelSinResultados, BorderLayout.CENTER);
+		} else {
+
+			DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(
+					String.format("Rutas encontradas: %d (de PRINCIPIANTE a %s)", 
+							rutas.size(), nivelObjetivo));
+			
+			for (int i = 0; i < rutas.size(); i++) {
+				List<Curso> ruta = rutas.get(i);
+				
+				DefaultMutableTreeNode rutaNode = new DefaultMutableTreeNode(
+						String.format("Ruta %d", i + 1));
+				rootNode.add(rutaNode);
+				
+				DefaultMutableTreeNode nivelInicialNode = new DefaultMutableTreeNode(
+						"Nivel inicial: PRINCIPIANTE");
+				rutaNode.add(nivelInicialNode);
+				
+				for (int j = 0; j < ruta.size(); j++) {
+					Curso curso = ruta.get(j);
+					DefaultMutableTreeNode cursoNode = new DefaultMutableTreeNode(
+							String.format("Paso %d: %s (Nivel: %s)", 
+									j + 1, curso.getNombre(), curso.getNivelRecomendado()));
+					rutaNode.add(cursoNode);
+				}
+			}
+			
+			JTree tree = new JTree(rootNode);
+			tree.setFont(CUERPO_GRANDE);
+			tree.setBackground(Color.WHITE);
+
+			JScrollPane scrollPane = configurarScrollPane(tree);
+			scrollPane.setPreferredSize(new Dimension(0, 300));
+			scrollPane.setBorder(BorderFactory.createLineBorder(MAIN_BORDE, 1));
+			
+			panelResultado.add(scrollPane, BorderLayout.CENTER);
+		}
+		
+		panelResultado.revalidate();
+		panelResultado.repaint();
 	}
 
 
