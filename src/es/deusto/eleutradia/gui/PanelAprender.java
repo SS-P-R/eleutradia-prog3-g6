@@ -619,6 +619,55 @@ public class PanelAprender extends JPanel {
 		labelCurso.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		panelContenido.add(labelCurso);
 		
+		//Requisitos
+		if(!curso.getRequistos().isEmpty()) {
+			JLabel labelRequisitos = new JLabel("Requisitos");
+	        labelRequisitos.setFont(SUBTITULO_GRANDE);
+	        labelRequisitos.setForeground(AZUL_OSCURO);
+	        labelRequisitos.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        labelRequisitos.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
+	        panelContenido.add(labelRequisitos);
+	        
+	        List<Curso> todosRequisitos = curso.getAllRequisitos();
+	        
+	        if(!todosRequisitos.isEmpty()){
+	        	JLabel labelInfoRequisitos = new JLabel("Debería completar primero estos cursos:");
+	        	labelInfoRequisitos.setFont(CUERPO_GRANDE);
+	        	labelInfoRequisitos.setForeground(GRIS_CLARO);
+	        	labelInfoRequisitos.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        	labelInfoRequisitos.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
+	        	panelContenido.add(labelInfoRequisitos);
+	        	
+	        	String estado;
+	        	Color color;
+	        	for(Curso r : todosRequisitos) {
+	        		boolean completado = false;
+	        		for(Curso c : usuarioLogeado.getCursos()) {
+	        			if(c.getId()==r.getId()) {
+	        				completado=true;
+	        				break;
+	        			}
+	        		}
+	        		if(completado) {
+	        			estado= "(Completado)";
+	        			color = VERDE_CLARO;
+	        		}else {
+	        			estado = "(Pendiente)";
+	        			color= Color.red;
+	        		}
+	        		
+	        		JLabel labelRequisito = new JLabel("      " + " " + r.getNombre() + estado);
+	        		labelRequisito.setFont(CUERPO_GRANDE);
+	        		labelRequisito.setForeground(color);
+	        		labelRequisito.setAlignmentX(Component.LEFT_ALIGNMENT);
+	        		labelRequisito.setBorder(BorderFactory.createEmptyBorder(3,0,0,0));
+	        		panelContenido.add(labelRequisito);
+	        	}
+	        }
+	        
+		}
+		
+		
 		int numeroModulo = 1;
 		int numeroLeccion = 1;
 		

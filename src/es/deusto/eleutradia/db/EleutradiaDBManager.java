@@ -47,6 +47,7 @@ public class EleutradiaDBManager {
 	private static final String CSV_GESTORAS = "resources/data/gestoras.csv";
 	private static final String CSV_PRODUCTOS = "resources/data/productos.csv";
 	private static final String CSV_CURSOS = "resources/data/cursos.csv";
+	private static final String CSV_REQUISITOS = "resources/data/requisitos.csv";
 	private static final String CSV_MODULOS = "resources/data/modulos.csv";
 	private static final String CSV_LECCIONES = "resources/data/lecciones.csv";
 	
@@ -104,6 +105,9 @@ public class EleutradiaDBManager {
 	        
 	        List<Curso> cursos = this.loadCSV(CSV_CURSOS, Curso::parseCSV);
 	        this.insertCursos(cursos.toArray(new Curso[0]));
+	        
+	        List<String[]> requisitosData = this.loadCSV(CSV_REQUISITOS, this::parseRequisitosCSV);
+	        this.insertRequisitosDesdeCSV(requisitosData);
 	        
 	        List<String[]> modulosData = this.loadCSV(CSV_MODULOS, Modulo::parseCSV);
 	        this.insertModulos(modulosData);
@@ -362,6 +366,17 @@ public class EleutradiaDBManager {
 						    FOREIGN KEY (nivelRecomendado) REFERENCES NivelConocimiento(id)
 						);
 				""");
+				
+				// Tabla: Requisitos
+				stmt.execute("""
+						CREATE TABLE IF NOT EXISTS CursoRequisitos (
+						    curso_id INTEGER NOT NULL,
+						    requisito_id INTEGER NOT NULL,
+						    PRIMARY KEY (curso_id, requisito_id),	
+						    FOREIGN KEY (curso_id) REFERENCES Curso(id) ON DELETE CASCADE,
+							FOREIGN KEY (requisito_id) REFERENCES Curso(id) ON DELETE CASCADE
+						);
+						""");
 				
 				// Tabla: Módulo
 				stmt.execute("""
@@ -732,6 +747,55 @@ public class EleutradiaDBManager {
 			System.err.format("Error insertando cursos de la lista: %s%n", ex.getMessage());
 			ex.printStackTrace();
 		}
+	}
+	
+	public void insertRequisitos(int cursoId, int... requisitosIds) {
+	    String sql = "INSERT OR IGNORE INTO CursoRequisitos (curso_id, requisito_id) VALUES (?, ?)";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        for (int r : requisitosIds) {
+	            pStmt.setInt(1, cursoId);
+	            pStmt.setInt(2, r);
+	            pStmt.executeUpdate();
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando requisitos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    } 
+	}	
+	
+	private String[] parseRequisitosCSV(String linea) {
+	    if (linea == null || linea.isBlank()) {
+	    	return null;
+	    }else {
+		    return linea.split(";");
+	    }
+	}
+
+	public void insertRequisitosDesdeCSV(List<String[]> requisitosData) {
+	    try (Connection conn = DriverManager.getConnection(connectionUrl)) {
+	    	
+	        for (String[] data : requisitosData) {
+	            if (!(data == null || data.length < 2)) {
+		            String nombreCurso = data[0].trim();
+		            String nombreRequisito = data[1].trim();
+		            
+		            int cursoId = getCursoIdByNombre(conn, nombreCurso);
+		            int requisitoId = getCursoIdByNombre(conn, nombreRequisito);
+		            
+		            if (cursoId != -1 && requisitoId != -1) {
+		                insertRequisitos(cursoId, requisitoId);
+		            }
+	            }
+	        }
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error insertando requisitos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
 	}
 	
 	public void insertModulos(List<String[]> modulosData) {
@@ -1280,7 +1344,16 @@ public class EleutradiaDBManager {
 	            for (Modulo m : modulos) {
 	                curso.addModulo(m);
 	            }
-	            	            
+	            
+	            // Cargar los requisitos del curso
+	            List<Integer> requisitosIds = getRequisitosIds(cursoId);
+	            for (Integer requisitoId : requisitosIds) {
+	                Curso requisito = getCursoById(requisitoId, conn);
+	                if (requisito != null) {
+	                    curso.addRequisito(requisito);
+	                }
+	            }
+	            
 	            cursos.add(curso);
 	        }
 	        
@@ -1291,6 +1364,30 @@ public class EleutradiaDBManager {
 	    
 	    return cursos;
 	}
+	
+	public List<Integer> getRequisitosIds(int cursoId) {
+	    List<Integer> requisitosIds = new ArrayList<>();
+	    String sql = "SELECT requisito_id FROM CursoRequisitos WHERE curso_id = ?";
+	    
+	    try (Connection conn = DriverManager.getConnection(connectionUrl);
+	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
+	        
+	        pStmt.setInt(1, cursoId);
+	        ResultSet rs = pStmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            requisitosIds.add(rs.getInt("requisito_id"));
+	        }
+	        rs.close();
+	        
+	    } catch (Exception ex) {
+	        System.err.format("Error obteniendo requisitos: %s%n", ex.getMessage());
+	        ex.printStackTrace();
+	    }
+	    
+	    return requisitosIds;
+	}
+
 	
 	// MÉTODOS DE INSCRIPCIÓN A CURSOS
 	
@@ -1386,6 +1483,15 @@ public class EleutradiaDBManager {
 	            List<Modulo> modulos = getModulosByCursoId(cursoId, conn);
 	            for (Modulo m : modulos) {
 	                curso.addModulo(m);
+	            }
+	            
+	            // Cargar los requisitos del curso
+	            List<Integer> requisitosIds = getRequisitosIds(cursoId);
+	            for (Integer requisitoId : requisitosIds) {
+	                Curso requisito = getCursoById(requisitoId, conn);
+	                if (requisito != null) {
+	                    curso.addRequisito(requisito);
+	                }
 	            }
 	            
 	            cursos.add(curso);
