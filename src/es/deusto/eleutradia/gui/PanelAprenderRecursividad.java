@@ -23,6 +23,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import es.deusto.eleutradia.domain.Curso;
 import es.deusto.eleutradia.domain.NivelConocimiento;
+import es.deusto.eleutradia.domain.Particular;
 import es.deusto.eleutradia.main.MainEleutradia;
 
 import static es.deusto.eleutradia.gui.style.UITema.*;
@@ -35,11 +36,23 @@ public class PanelAprenderRecursividad extends JPanel {
 	private JComboBox<String> comboNivelObjetivo;
 	private JButton btnBuscarRuta;
 	private JButton btnVolver;
+	private JButton btnAnadirRuta;
 	private JPanel panelResultado;
+	private JPanel panelBotones;
+	
 	private ActionListener accionVolver;
 	
-	public PanelAprenderRecursividad() {
-
+	private Particular usuarioLogeado;
+	private List<List<Curso>> rutasEncontradas;
+	private List<Curso> rutaSeleccionada;
+	private JTree treeResultados;
+	
+	public PanelAprenderRecursividad(Particular usuario) {
+		
+		this.usuarioLogeado = usuario;
+		this.rutasEncontradas = new ArrayList<>();
+		this.rutaSeleccionada = null;
+		
 		setLayout(new BorderLayout(20, 20));
 		setBackground(MAIN_FONDO);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -62,7 +75,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		panelResultado.setBackground(MAIN_FONDO);
 		add(panelResultado, BorderLayout.CENTER);
 		
-		JPanel panelBotones = crearPanelBotones();
+		panelBotones = crearPanelBotones();
 		add(panelBotones, BorderLayout.EAST);
 
 	}
