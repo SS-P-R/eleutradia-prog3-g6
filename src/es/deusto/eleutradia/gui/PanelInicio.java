@@ -49,8 +49,7 @@ public class PanelInicio extends JPanel{
 	private DecimalFormat formatoPorcentaje = new DecimalFormat("0.00");
 	private JFrame frame;
 	
-    private static final Dimension TAMANO_TARJETA_PEQUENA = new Dimension(140, 100);
-    private ArrayList<ProductoFinanciero> productoRandom = new ArrayList<>();
+    //private static final Dimension TAMANO_TARJETA_PEQUENA = new Dimension(140, 100);
     private List<ProductoFinanciero> productos;
     private int indiceProductoActual = 0;
 
@@ -84,8 +83,8 @@ public class PanelInicio extends JPanel{
         this.add(scrollCentral, BorderLayout.CENTER);
         
         // Panel lateral, estadísticas
-        JPanel panelLateral = crearPanelLateral();
-        this.add(panelLateral, BorderLayout.EAST);
+        JPanel panelInferior = crearPanelInferior();
+        this.add(panelInferior, BorderLayout.SOUTH);
 	}
 	
 	private JPanel crearPanelBienvenida() {
@@ -787,22 +786,18 @@ public class PanelInicio extends JPanel{
 	    }
                        
 	
-	private JPanel crearPanelLateral() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	private JPanel crearPanelInferior() {
+        JPanel panel = new JPanel(new GridLayout(1, 3, 20, 0));
         panel.setBackground(MAIN_FONDO);
-        panel.setPreferredSize(new Dimension(200, 0));
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         
         //Algunas estadísticas
         JPanel tarjetaEstadisticas = crearPanelEstadisticasBasicas();
         panel.add(tarjetaEstadisticas);
-        panel.add(Box.createRigidArea(new Dimension(0, 20)));
         
         //Algunas acciones
         JPanel tarjetaAcciones = crearPanelAccionesBasicas();
         panel.add(tarjetaAcciones);
-        panel.add(Box.createVerticalGlue());
         
         return panel;
 	}

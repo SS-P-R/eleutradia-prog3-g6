@@ -363,17 +363,6 @@ public class EleutradiaDBManager {
 						);
 				""");
 				
-				// Tabla: Requisitos
-				stmt.execute("""
-						CREATE TABLE IF NOT EXISTS CursoRequisitos (
-						    curso_id INTEGER NOT NULL,
-						    requisito_id INTEGER NOT NULL,
-						    PRIMARY KEY (curso_id, requisito_id),	
-						    FOREIGN KEY (curso_id) REFERENCES Curso(id) ON DELETE CASCADE,
-							FOREIGN KEY (requisito_id) REFERENCES Curso(id) ON DELETE CASCADE
-						);
-						""");
-				
 				// Tabla: Módulo
 				stmt.execute("""
 						CREATE TABLE IF NOT EXISTS Modulo (
@@ -1290,16 +1279,7 @@ public class EleutradiaDBManager {
 	            for (Modulo m : modulos) {
 	                curso.addModulo(m);
 	            }
-	            
-	            // Cargar los requisitos del curso
-	            List<Integer> requisitosIds = getRequisitosIds(cursoId);
-	            for (Integer requisitoId : requisitosIds) {
-	                Curso requisito = getCursoById(requisitoId, conn);
-	                if (requisito != null) {
-	                    curso.addRequisito(requisito);
-	                }
-	            }
-	            
+	            	            
 	            cursos.add(curso);
 	        }
 	        
@@ -1311,29 +1291,6 @@ public class EleutradiaDBManager {
 	    return cursos;
 	}
 	
-	public List<Integer> getRequisitosIds(int cursoId) {
-	    List<Integer> requisitosIds = new ArrayList<>();
-	    String sql = "SELECT requisito_id FROM CursoRequisitos WHERE curso_id = ?";
-	    
-	    try (Connection conn = DriverManager.getConnection(connectionUrl);
-	         PreparedStatement pStmt = conn.prepareStatement(sql)) {
-	        
-	        pStmt.setInt(1, cursoId);
-	        ResultSet rs = pStmt.executeQuery();
-	        
-	        while (rs.next()) {
-	            requisitosIds.add(rs.getInt("requisito_id"));
-	        }
-	        rs.close();
-	        
-	    } catch (Exception ex) {
-	        System.err.format("Error obteniendo requisitos: %s%n", ex.getMessage());
-	        ex.printStackTrace();
-	    }
-	    
-	    return requisitosIds;
-	}
-
 	// MÉTODOS DE INSCRIPCIÓN A CURSOS
 	
 	public boolean inscribirParticularACurso(String dni, int idCurso) {
@@ -1429,16 +1386,7 @@ public class EleutradiaDBManager {
 	            for (Modulo m : modulos) {
 	                curso.addModulo(m);
 	            }
-	            
-	            // Cargar los requisitos del curso
-	            List<Integer> requisitosIds = getRequisitosIds(cursoId);
-	            for (Integer requisitoId : requisitosIds) {
-	                Curso requisito = getCursoById(requisitoId, conn);
-	                if (requisito != null) {
-	                    curso.addRequisito(requisito);
-	                }
-	            }
-	            
+	            	            
 	            cursos.add(curso);
 	        }
 	        rs.close();
