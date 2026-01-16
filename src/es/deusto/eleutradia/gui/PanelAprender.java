@@ -183,6 +183,8 @@ public class PanelAprender extends JPanel {
 				
 				panelRecursividad.addAccionVolver(eventoVolver -> {
 					ventanaPrincipal.setContentPane(vistaOriginalCompleta);
+					
+					actualizarProgressBar();
 					ventanaPrincipal.revalidate();
 					ventanaPrincipal.repaint();
 					
