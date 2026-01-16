@@ -159,7 +159,7 @@ public class PanelAprender extends JPanel {
 		panelBotonAbajo.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 		
 		// Botón de práctica de recursividad
-		JButton botonRecursividad = new JButton("Práctica Recursividad");
+		JButton botonRecursividad = new JButton("Recursividad");
 		botonRecursividad.setMinimumSize(new Dimension(140, 45));
 		botonRecursividad.setPreferredSize(new Dimension(140, 45));
 		botonRecursividad.setMaximumSize(new Dimension(140, 45));
@@ -201,7 +201,10 @@ public class PanelAprender extends JPanel {
 		panelBotonAbajo.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		JButton botonSimulacion = new JButton("Simulación");
-		botonSimulacion.setPreferredSize(new Dimension(150, 45));
+		botonSimulacion.setMinimumSize(new Dimension(140, 45));
+		botonSimulacion.setPreferredSize(new Dimension(140, 45));
+		botonSimulacion.setMaximumSize(new Dimension(140, 45));
+		botonSimulacion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		botonSimulacion.setBackground(AZUL_CLARO);
 		botonSimulacion.setForeground(Color.WHITE);
 		botonSimulacion.setFont(SUBTITULO_GRANDE);
