@@ -71,7 +71,6 @@ public class PanelAprenderRecursividad extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(MAIN_FONDO);
-		panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 		
 		JLabel labelTitulo = new JLabel("La forma mas rápida para Aprender");
 		labelTitulo.setFont(TITULO_GRANDE);
@@ -84,7 +83,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		labelSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		panel.add(labelTitulo);
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(Box.createVerticalStrut(8));
 		panel.add(labelSubtitulo);
 		
 		return panel;
@@ -96,8 +95,8 @@ public class PanelAprenderRecursividad extends JPanel {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(BorderFactory.createCompoundBorder(
-		        BorderFactory.createLineBorder(MAIN_BORDE, 1),
-		        BorderFactory.createEmptyBorder(30, 30, 30, 30)
+		        BorderFactory.createLineBorder(MAIN_BORDE),
+		        BorderFactory.createEmptyBorder(25, 25, 25, 25)
 		));
 		
 		JLabel labelNivel = new JLabel("Selecciona tu nivel objetivo:");
@@ -106,7 +105,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		labelNivel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(labelNivel);
 
-		panel.add(Box.createVerticalStrut(15));
+		panel.add(Box.createVerticalStrut(12));
 		
 		comboNivelObjetivo = new JComboBox<>();
 		comboNivelObjetivo.addItem("INTERMEDIO");
@@ -118,7 +117,7 @@ public class PanelAprenderRecursividad extends JPanel {
 		comboNivelObjetivo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(comboNivelObjetivo);
 		
-		panel.add(Box.createVerticalStrut(25));
+		panel.add(Box.createVerticalStrut(20));
 		
 		btnBuscarRuta = new JButton("Buscar Ruta de Aprendizaje");
 		btnBuscarRuta.setFont(SUBTITULO_MEDIO);
@@ -134,8 +133,6 @@ public class PanelAprenderRecursividad extends JPanel {
 		btnBuscarRuta.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnBuscarRuta.addActionListener(e -> buscarRutaAprendizaje());
 		panel.add(btnBuscarRuta);
-
-
 		
 		return panel;
 	}
