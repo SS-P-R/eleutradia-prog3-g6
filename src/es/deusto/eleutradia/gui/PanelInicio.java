@@ -3,6 +3,7 @@ package es.deusto.eleutradia.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -13,7 +14,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -76,11 +76,7 @@ public class PanelInicio extends JPanel{
         
         // Panel central, info general
         JPanel panelCentral = crearPanelCentral();
-        JScrollPane scrollCentral = new JScrollPane(panelCentral);
-        scrollCentral.setBorder(BorderFactory.createEmptyBorder());
-        scrollCentral.getVerticalScrollBar().setUI(personalizarScrollBarUI());
-        scrollCentral.getHorizontalScrollBar().setUI(personalizarScrollBarUI());
-        this.add(scrollCentral, BorderLayout.CENTER);
+        this.add(configurarScrollPane(panelCentral), BorderLayout.CENTER);
         
         // Panel lateral, estadísticas
         JPanel panelInferior = crearPanelInferior();
@@ -101,7 +97,7 @@ public class PanelInicio extends JPanel{
         panelSaludo.setBackground(Color.WHITE);
         
         LocalDate hoy = LocalDate.now();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' yyyy");
         String fechaFormateada = hoy.format(formato);
         
         JLabel labelFecha = new JLabel(fechaFormateada);
@@ -717,8 +713,8 @@ public class PanelInicio extends JPanel{
 	    panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-            	panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 2));
-            	panel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            	panel.setBorder(BorderFactory.createLineBorder(AZUL_CLARO, 1));
+            	panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
             
             @Override
